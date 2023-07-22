@@ -4,6 +4,16 @@
   <url>
     <loc>http://example.org/about/</loc>
     <lastmod>2023-07-22T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="http://example.org/zh-tw/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://example.org/about/"
+                />
   </url><url>
     <loc>http://example.org/</loc>
     <xhtml:link
@@ -42,8 +52,28 @@
                 />
   </url><url>
     <loc>http://example.org/contact/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="http://example.org/zh-tw/contact/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://example.org/contact/"
+                />
   </url><url>
     <loc>http://example.org/projects/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="http://example.org/zh-tw/projects/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://example.org/projects/"
+                />
   </url><url>
     <loc>http://example.org/series/</loc>
     <xhtml:link
