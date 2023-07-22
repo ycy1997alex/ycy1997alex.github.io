@@ -6,5 +6,42 @@
     <description>Recent content on Alex Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>http://example.org/about/</link>
+      <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/about/</guid>
+      <description>Hello, I&amp;rsquo;m Alex!
+I was working as a R&amp;amp;D engineer in a medical service process startup, where I was responsible for biomedical signal algorithm development and handled some project management tasks.
+I have a master’s degree in Brain Science from National Yang Ming Chiao Tung University. I have experience in brain science, intelligent healthcare big data, and specialize in physiological signal analysis, nonlinear science, medical AI.
+I have dual bachelor’s degrees in Aeronautics and Astronautics (AA) and Psychology from National Cheng Kung University.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>http://example.org/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/contact/</guid>
+      <description>Email: ycy1997alex@gmail.com
+LinkedIn: chunyenyu1997
+GitHub: ycy1997alex</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>http://example.org/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/projects/</guid>
+      <description>PROJECT EXPERIENCELink to heading2023/02 ~ 2023/06 Project
+Identifying Key Features for Sleep Quality Prediction Before Sleeping
+Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 Project
+Sleep Enhancement Service Process Planning and Development
+Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCELink to heading2020/07 ~ 2021/12 Side Project
+Predicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
+    </item>
+    
   </channel>
 </rss>
