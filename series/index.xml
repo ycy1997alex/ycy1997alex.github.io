@@ -2,9 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on Alex Yu</title>
-    <link>http://example.org/series/</link>
+    <link>https://ycy1997alex.github.io/series/</link>
     <description>Recent content in Series on Alex Yu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="http://example.org/series/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Demo</title>
+      <link>https://ycy1997alex.github.io/series/demo/</link>
+      <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycy1997alex.github.io/series/demo/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

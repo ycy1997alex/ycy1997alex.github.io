@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>測試 on 尤俊硯</title>
+    <link>https://ycy1997alex.github.io/zh-tw/categories/%E6%B8%AC%E8%A9%A6/</link>
+    <description>Recent content in 測試 on 尤俊硯</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/zh-tw/categories/%E6%B8%AC%E8%A9%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>第一篇貼文</title>
+      <link>https://ycy1997alex.github.io/zh-tw/posts/first-post/</link>
+      <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycy1997alex.github.io/zh-tw/posts/first-post/</guid>
+      <description>這是我第一篇以hugo建立之靜態網頁，其主題為coder.</description>
+    </item>
+    
+  </channel>
+</rss>

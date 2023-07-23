@@ -2,101 +2,206 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://example.org/about/</loc>
+    <loc>https://ycy1997alex.github.io/authors/alex-yu/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ycy1997alex.github.io/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/authors/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/authors/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/authors/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/categories/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/categories/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/coder/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/coder/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/coder/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/css/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/css/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/css/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/categories/demo/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ycy1997alex.github.io/series/demo/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ycy1997alex.github.io/posts/first-post/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/posts/first-post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/posts/first-post/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/html/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/html/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/html/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/hugo/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/hugo/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/hugo/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/markdown/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/markdown/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/markdown/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/posts/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/posts/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/series/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/series/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/tags/</loc>
+    <lastmod>2023-07-23T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://ycy1997alex.github.io/zh-tw/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ycy1997alex.github.io/tags/"
+                />
+  </url><url>
+    <loc>https://ycy1997alex.github.io/about/</loc>
     <lastmod>2023-07-22T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="http://example.org/zh-tw/about/"
+                href="https://ycy1997alex.github.io/zh-tw/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/about/"
+                href="https://ycy1997alex.github.io/about/"
                 />
   </url><url>
-    <loc>http://example.org/</loc>
+    <loc>https://ycy1997alex.github.io/contact/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="http://example.org/zh-tw/"
+                href="https://ycy1997alex.github.io/zh-tw/contact/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/"
+                href="https://ycy1997alex.github.io/contact/"
                 />
   </url><url>
-    <loc>http://example.org/authors/</loc>
+    <loc>https://ycy1997alex.github.io/projects/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="http://example.org/zh-tw/authors/"
+                href="https://ycy1997alex.github.io/zh-tw/projects/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/authors/"
-                />
-  </url><url>
-    <loc>http://example.org/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="http://example.org/zh-tw/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://example.org/categories/"
-                />
-  </url><url>
-    <loc>http://example.org/contact/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="http://example.org/zh-tw/contact/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://example.org/contact/"
-                />
-  </url><url>
-    <loc>http://example.org/projects/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="http://example.org/zh-tw/projects/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://example.org/projects/"
-                />
-  </url><url>
-    <loc>http://example.org/series/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="http://example.org/zh-tw/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://example.org/series/"
-                />
-  </url><url>
-    <loc>http://example.org/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="http://example.org/zh-tw/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://example.org/tags/"
+                href="https://ycy1997alex.github.io/projects/"
                 />
   </url>
 </urlset>

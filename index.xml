@@ -2,16 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Alex Yu</title>
-    <link>http://example.org/</link>
+    <link>https://ycy1997alex.github.io/</link>
     <description>Recent content on Alex Yu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>First Post</title>
+      <link>https://ycy1997alex.github.io/posts/first-post/</link>
+      <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycy1997alex.github.io/posts/first-post/</guid>
+      <description>This is my first post via applying hugo to build static pages, and the theme is coder.</description>
+    </item>
+    
     <item>
       <title>About</title>
-      <link>http://example.org/about/</link>
+      <link>https://ycy1997alex.github.io/about/</link>
       <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/about/</guid>
+      <guid>https://ycy1997alex.github.io/about/</guid>
       <description>Hello, I&amp;rsquo;m Alex!
 I was working as a R&amp;amp;D engineer in a medical service process startup, where I was responsible for biomedical signal algorithm development and handled some project management tasks.
 I have a master’s degree in Brain Science from National Yang Ming Chiao Tung University. I have experience in brain science, intelligent healthcare big data, and specialize in physiological signal analysis, nonlinear science, medical AI.
@@ -20,10 +30,10 @@ I have dual bachelor’s degrees in Aeronautics and Astronautics (AA) and Psycho
     
     <item>
       <title>Contact</title>
-      <link>http://example.org/contact/</link>
+      <link>https://ycy1997alex.github.io/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/contact/</guid>
+      <guid>https://ycy1997alex.github.io/contact/</guid>
       <description>Email: ycy1997alex@gmail.com
 LinkedIn: chunyenyu1997
 GitHub: ycy1997alex</description>
@@ -31,16 +41,13 @@ GitHub: ycy1997alex</description>
     
     <item>
       <title>Projects</title>
-      <link>http://example.org/projects/</link>
+      <link>https://ycy1997alex.github.io/projects/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/projects/</guid>
-      <description>PROJECT EXPERIENCELink to heading2023/02 ~ 2023/06 Project
-Identifying Key Features for Sleep Quality Prediction Before Sleeping
-Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 Project
-Sleep Enhancement Service Process Planning and Development
-Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCELink to heading2020/07 ~ 2021/12 Side Project
-Predicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
+      <guid>https://ycy1997alex.github.io/projects/</guid>
+      <description>PROJECT EXPERIENCELink to heading2023/02 ~ 2023/06 ProjectLink to headingIdentifying Key Features for Sleep Quality Prediction Before Sleeping
+Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 ProjectLink to headingSleep Enhancement Service Process Planning and Development
+Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCELink to heading2020/07 ~ 2021/12 Side ProjectLink to headingPredicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
     </item>
     
   </channel>

@@ -2,9 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors on 尤俊硯</title>
-    <link>http://example.org/zh-tw/authors/</link>
+    <link>https://ycy1997alex.github.io/zh-tw/authors/</link>
     <description>Recent content in Authors on 尤俊硯</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language><atom:link href="http://example.org/zh-tw/authors/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/zh-tw/authors/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>尤俊硯</title>
+      <link>https://ycy1997alex.github.io/zh-tw/authors/%E5%B0%A4%E4%BF%8A%E7%A1%AF/</link>
+      <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycy1997alex.github.io/zh-tw/authors/%E5%B0%A4%E4%BF%8A%E7%A1%AF/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

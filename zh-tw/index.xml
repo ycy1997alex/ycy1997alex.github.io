@@ -2,45 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>尤俊硯</title>
-    <link>http://example.org/zh-tw/</link>
+    <link>https://ycy1997alex.github.io/zh-tw/</link>
     <description>Recent content on 尤俊硯</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language><atom:link href="http://example.org/zh-tw/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/zh-tw/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>第一篇貼文</title>
+      <link>https://ycy1997alex.github.io/zh-tw/posts/first-post/</link>
+      <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycy1997alex.github.io/zh-tw/posts/first-post/</guid>
+      <description>這是我第一篇以hugo建立之靜態網頁，其主題為coder.</description>
+    </item>
+    
     <item>
       <title>關於</title>
-      <link>http://example.org/zh-tw/about/</link>
+      <link>https://ycy1997alex.github.io/zh-tw/about/</link>
       <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/zh-tw/about/</guid>
+      <guid>https://ycy1997alex.github.io/zh-tw/about/</guid>
       <description>Hello, I&amp;rsquo;m Alex!
-曾任醫療服務流程新創公司之研發工程師，負責生醫訊號演算法開發，亦負責部分專案管理事務 為國立陽明交通大學醫學院腦科學研究所碩士，具腦科學、智慧醫療和大數據分析經驗，擅長生理訊號分析、非線性科學和醫療AI 為國立成功大學航空太空工程學系、心理學系雙學士，航太系專題與SLAM、影像辨識與最佳化有關，並於大學時期選修心理所多變量分析，擅長統計與大數據分析 工作經驗Link to heading2022/06 ~ 2023/06
-研發工程師 @ 漢民原醫股份有限公司
+曾任醫療服務流程新創公司之研發工程師，負責生醫訊號演算法開發，亦負責部分專案管理事務 為國立陽明交通大學醫學院腦科學研究所碩士，具腦科學、智慧醫療和大數據分析經驗，擅長生理訊號分析、非線性科學和醫療人工智慧 為國立成功大學航空太空工程學系、心理學系雙學士，航太系專題與SLAM、影像辨識與最佳化有關，並於大學時期選修心理所多變量分析，擅長統計與大數據分析 工作經驗Link to heading2022/06 ~ 2023/06Link to heading研發工程師 @ 漢民原醫股份有限公司
 睡眠相關研究與發展、輔助專案管理
-研究與發展：生理訊號處理、醫療AI/ML演算法開發 產品與解決方案：智慧醫院規劃、智慧醫療服務規劃 專案管理：合約談判、QMS、ISO13485、合作對象聯繫、預算控制 學歷Link to heading2022年1月畢業於國立陽明交通大學（臺灣臺北）
-醫學院 腦科學研究所 神經工程暨腦資訊組 碩士 論文：靜息態功能性磁振造影相位調變在思覺失調症中的應用 指導教授：楊智傑 (Albert C. Yang) 教授、醫師 (於台北榮民總醫院服務) 2020年1月畢業於國立成功大學（臺灣臺南）
-工學院 航空太空工程學系 學士 (專題：機器學習於2D點雲之物件辨識技術研究) 雙主修：社會科學院 心理學系 學士 航太系控制組專題指導教授：彭兆仲 (Chao-Chung Peng) 副教授 專長Link to heading統計多變量分析與資料視覺化 精熟Link to heading應用類別：行為科學、醫療數據、腦連結、統計圖表、問卷量表、流程關係圖 軟體：SPSS、Excel、PowerBI 程式語言： MATLAB、Python、R 腦與生理訊號處理與分析 精熟Link to heading訊號類別：fMRI BOLD、ECG 分析技術：希爾伯特-黃轉換、AI/ML輔助辨識功能 影像類別：MRI、CT、X光 程式語言：MATLAB、Python、R 人工智慧/機器學習 精熟Link to heading類別：物件辨識 (Mask R-CNN、OCR)、醫療大數據、醫學影像、遷移學習 熟悉套件：Scikit-Learn、Keras、TensorFlow 程式語言：Python、MATLAB 航太、飛機設計與機械工程 精熟Link to heading運算類別：機械五大力學、控制系統設計、構型設計、結構估算、升阻計算 工程繪圖：零組件、結構設計、曲面、3D列印 程式語言：MATLAB、C/C++ 腦科學、心理學與精神醫學 精熟Link to heading領域類別：變態心理學、精神疾病、腦造影技術、實驗設計 分析技術：變異數分析/多變量變異數分析、人工智慧/機器學習 專案管理 初步接觸Link to heading內容：組織會議與規劃專案、團隊協商、客戶應對與協商、 品質系統：QMS、ISO13485 獎項/獎學金Link to heading2020年 | 國立陽明大學（後續合併為國立陽明交通大學）</description>
+研究與發展：生理訊號處理、醫療AI/ML演算法開發 產品與解決方案：智慧醫院規劃、智慧醫療服務規劃 專案管理：合約談判、QMS、ISO13485、合作對象聯繫、預算控制 學歷Link to heading2022年1月畢業於國立陽明交通大學（臺灣臺北）Link to heading醫學院 腦科學研究所 神經工程暨腦資訊組 碩士 論文：靜息態功能性磁振造影相位調變在思覺失調症中的應用 指導教授：楊智傑 (Albert C. Yang) 教授、醫師 (於台北榮民總醫院服務) 2020年1月畢業於國立成功大學（臺灣臺南）Link to heading工學院 航空太空工程學系 學士 (專題：機器學習於2D點雲之物件辨識技術研究) 雙主修：社會科學院 心理學系 學士 航太系控制組專題指導教授：彭兆仲 (Chao-Chung Peng) 副教授 專長Link to heading統計多變量分析與資料視覺化 精熟Link to heading應用類別：行為科學、醫療數據、腦連結、統計圖表、問卷量表、流程關係圖 軟體：SPSS、Excel、PowerBI 程式語言： MATLAB、Python、R 腦與生理訊號處理與分析 精熟Link to heading訊號類別：fMRI BOLD、ECG 分析技術：希爾伯特-黃轉換、AI/ML輔助辨識功能 影像類別：MRI、CT、X光 程式語言：MATLAB、Python、R 人工智慧/機器學習 精熟Link to heading類別：物件辨識 (Mask R-CNN、OCR)、醫療大數據、醫學影像、遷移學習 熟悉套件：Scikit-Learn、Keras、TensorFlow 程式語言：Python、MATLAB 航太、飛機設計與機械工程 精熟Link to heading運算類別：機械五大力學、控制系統設計、構型設計、結構估算、升阻計算 工程繪圖：零組件、結構設計、曲面、3D列印 程式語言：MATLAB、C/C++ 腦科學、心理學與精神醫學 精熟Link to heading領域類別：變態心理學、精神疾病、腦造影技術、實驗設計 分析技術：變異數分析/多變量變異數分析、人工智慧/機器學習 專案管理 初步接觸Link to heading內容：組織會議與規劃專案、團隊協商、客戶應對與協商 品質系統：QMS、ISO13485 獎項/獎學金Link to heading2020年 | 國立陽明大學（後續合併為國立陽明交通大學）Link to heading醫學院尹衍樑先生入學優異獎學金 2020年 | 中華民國科技部（後改制為國科會）Link to heading大專學生研究創作獎 2016年 | 國立成功大學Link to heading大一學年書卷獎 研討會論文Link to headingChun-Yen Yu, Shih-Jen Tsai, Albert Chih-Chieh Yang, “Phase modulation of resting-state fMRI BOLD signal in cases of schizophrenia with medication”, 2021 Society of Neuroscience (SfN), Chicago, USA</description>
     </item>
     
     <item>
       <title>專案</title>
-      <link>http://example.org/zh-tw/projects/</link>
+      <link>https://ycy1997alex.github.io/zh-tw/projects/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/zh-tw/projects/</guid>
-      <description>PROJECT EXPERIENCELink to heading2023/02 ~ 2023/06 Project
-Identifying Key Features for Sleep Quality Prediction Before Sleeping
-Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 Project
-Sleep Enhancement Service Process Planning and Development
-Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCELink to heading2020/07 ~ 2021/12 Side Project
-Predicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
+      <guid>https://ycy1997alex.github.io/zh-tw/projects/</guid>
+      <description>專案經驗Link to heading2023/02 ~ 2023/06 專案Link to heading識別入睡前預測睡眠品質的關鍵特徵
+開發一演算法，並建立從訊號擷取裝置到訊號分析的流程 2022/07 ~ 2023/04 專案Link to heading睡眠促進服務流程的規劃與開發
+規劃睡眠促進服務流程，並開發了相關輔助軟體、工具 學術專案經驗Link to heading2020/07 ~ 2021/12 個人專案Link to heading建立雙五角測試深度學習模型以預測簡短智能測驗
+發展模型供認知能力測試APP使用，臨床流程從15-20分鐘簡短至2-3分鐘 2021/03 ~ 2021/06 課堂專案Link to heading以深度神經網絡進行CT腦出血分類模型與視覺化解釋
+開發快速區分不同類型的腦出血方法以縮短臨床評估時間 2021/03 ~ 2021/06 課堂專案Link to heading以深度學習演算法進行X光肺炎偵測
+開發MATLAB APP，提供一個可區分肺炎及呈現肺炎診測熱區圖模型 2020/12 ~ 2021/06 Google DSC ProgramLink to headingNutAction (Android App) Algorithm UI/UX
+結合影像辨識、飲食追蹤與外送服務的APP 2020/03 ~ 2020/06 課堂專案Link to heading建立雙五角測試機器學習模型以預測簡短智能測驗</description>
     </item>
     
     <item>
       <title>聯絡</title>
-      <link>http://example.org/zh-tw/contact/</link>
+      <link>https://ycy1997alex.github.io/zh-tw/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/zh-tw/contact/</guid>
+      <guid>https://ycy1997alex.github.io/zh-tw/contact/</guid>
       <description>Email: ycy1997alex@gmail.com
 LinkedIn: chunyenyu1997
 GitHub: ycy1997alex</description>
