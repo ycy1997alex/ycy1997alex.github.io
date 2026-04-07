@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Alex Yu</title>
@@ -6,49 +6,58 @@
     <description>Recent content on Alex Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 23 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://ycy1997alex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://ycy1997alex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026東京近郊自駕</title>
+      <link>https://ycy1997alex.github.io/posts/2026-tokyo-drive/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://ycy1997alex.github.io/posts/2026-tokyo-drive/</guid>
+      <description>東京近郊自駕 8 天 7 夜旅遊 Web App，整合總覽、清單、航班與每日行程。</description>
+    </item>
     <item>
       <title>First Post</title>
       <link>https://ycy1997alex.github.io/posts/first-post/</link>
       <pubDate>Sun, 23 Jul 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://ycy1997alex.github.io/posts/first-post/</guid>
       <description>This is my first post via applying hugo to build static pages, and the theme is coder.</description>
     </item>
-    
     <item>
       <title>About</title>
       <link>https://ycy1997alex.github.io/about/</link>
       <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://ycy1997alex.github.io/about/</guid>
       <description>Hello, I&amp;rsquo;m Alex!
 I was working as a R&amp;amp;D engineer in a medical service process startup, where I was responsible for biomedical signal algorithm development and handled some project management tasks.
-I have a master’s degree in Brain Science from National Yang Ming Chiao Tung University. I have experience in brain science, intelligent healthcare big data, and specialize in physiological signal analysis, nonlinear science, medical AI.
-I have dual bachelor’s degrees in Aeronautics and Astronautics (AA) and Psychology from National Cheng Kung University.</description>
+I have a master? degree in Brain Science from National Yang Ming Chiao Tung University. I have experience in brain science, intelligent healthcare big data, and specialize in physiological signal analysis, nonlinear science, medical AI.
+I have dual bachelor? degrees in Aeronautics and Astronautics (AA) and Psychology from National Cheng Kung University.</description>
     </item>
-    
     <item>
       <title>Contact</title>
       <link>https://ycy1997alex.github.io/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>https://ycy1997alex.github.io/contact/</guid>
       <description>Email: ycy1997alex@gmail.com
 LinkedIn: chunyenyu1997
 GitHub: ycy1997alex</description>
     </item>
-    
     <item>
       <title>Projects</title>
       <link>https://ycy1997alex.github.io/projects/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>https://ycy1997alex.github.io/projects/</guid>
-      <description>PROJECT EXPERIENCELink to heading2023/02 ~ 2023/06 ProjectLink to headingIdentifying Key Features for Sleep Quality Prediction Before Sleeping
-Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 ProjectLink to headingSleep Enhancement Service Process Planning and Development
-Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCELink to heading2020/07 ~ 2021/12 Side ProjectLink to headingPredicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
+      <description>PROJECT EXPERIENCE
+Link to heading
+2023/02 ~ 2023/06 Project
+Link to heading
+Identifying Key Features for Sleep Quality Prediction Before Sleeping
+Developed an algorithm and established a pipeline from signal extraction devices to analysis 2022/07 ~ 2023/04 Project
+Link to heading
+Sleep Enhancement Service Process Planning and Development
+Planned the sleep service process and developed auxiliary software tools RESEARCH PROJECT EXPERIENCE
+Link to heading
+2020/07 ~ 2021/12 Side Project
+Link to heading
+Predicting Model of Pentagon Drawing of Mini-Mental State Examination</description>
     </item>
-    
   </channel>
 </rss>
