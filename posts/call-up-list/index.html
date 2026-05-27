@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>教召令攜帶物品清單 · Alex Yu</title>
+<meta name="description" content="教召令攜帶物品確認清單，依穿戴、身上、背包與行李分類勾選。">
+<link rel="canonical" href="https://ycy1997alex.github.io/posts/call-up-list/">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f0e8;
+    --surface: #fffdf8;
+    --border: rgba(90,70,40,.15);
+    --text: #2a1f0f;
+    --muted: #7a6a55;
+    --accent: #8b3a1a;
+    --accent2: #4a6741;
+    --soft: rgba(139,58,26,.1);
+    --soft2: rgba(74,103,65,.12);
+    --stripe: rgba(139,58,26,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1510;
+      --surface: #231e17;
+      --border: rgba(200,180,140,.12);
+      --text: #ede5d8;
+      --muted: #a09080;
+      --accent: #d4724a;
+      --accent2: #7aaa6a;
+      --soft: rgba(212,114,74,.12);
+      --soft2: rgba(122,170,106,.12);
+      --stripe: rgba(212,114,74,.04);
+    }
+  }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page { max-width: 680px; margin: 0 auto; }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.5rem 1.6rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(90,60,20,.07);
+  }
+  .hero::before {
+    content: '🪖';
+    position: absolute;
+    right: 1.4rem; top: 1.2rem;
+    font-size: 3.5rem;
+    opacity: .15;
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: .85rem;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+  }
+  .hero-desc { color: var(--muted); font-size: .95rem; line-height: 1.6; }
+
+  /* ── Stats ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+    margin-top: 1.2rem;
+  }
+  @media (min-width: 480px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: .75rem .9rem;
+  }
+  .stat span { display: block; font-size: .8rem; color: var(--muted); margin-bottom: .2rem; }
+  .stat strong { font-size: 1.25rem; font-weight: 700; }
+
+  /* ── Progress ── */
+  .progress-row {
+    display: flex; align-items: center; gap: .85rem;
+    margin: 1.2rem 0 .6rem;
+  }
+  .bar {
+    flex: 1; height: 8px; background: var(--soft);
+    border-radius: 999px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+  .progress-count { font-weight: 700; font-size: 1rem; white-space: nowrap; }
+
+  .toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.4rem;
+  }
+  .toolbar-hint { font-size: .85rem; color: var(--muted); }
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: .85rem;
+    font-family: inherit;
+    padding: .4rem .9rem;
+    transition: border-color .2s, color .2s;
+  }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Section ── */
+  .section { margin-bottom: 1.8rem; }
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: .65rem;
+    margin-bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .section-title.green {
+    color: var(--accent2);
+    border-left-color: var(--accent2);
+  }
+
+  /* Sub-group (巢狀包包) */
+  .sub-group {
+    background: var(--stripe);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: .65rem .75rem .45rem;
+    margin-bottom: .6rem;
+  }
+  .sub-title {
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    padding-left: .1rem;
+  }
+
+  /* ── Checklist items ── */
+  .checks { display: grid; gap: .5rem; }
+  .check {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .7rem .9rem;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .check:hover { border-color: var(--accent); }
+  .check input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.3rem; height: 1.3rem;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, border-color .15s;
+  }
+  .check input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .check input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px; top: 1px;
+    width: 6px; height: 10px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(40deg);
+  }
+  .check span { font-size: .95rem; line-height: 1.4; }
+  .check.done { background: var(--stripe); }
+  .check.done span { color: var(--muted); text-decoration: line-through; }
+
+  /* sub-group 裡的 check 背景略暗 */
+  .sub-group .check { background: var(--bg); }
+  .sub-group .check.done { opacity: .7; }
+
+  .note {
+    font-size: .85rem;
+    color: var(--muted);
+    margin-top: 1.4rem;
+    text-align: center;
+    padding-bottom: .5rem;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Military Call-up · 教召令</div>
+    <h1>🪖 攜帶物品清單</h1>
+    <p class="hero-desc">依序確認穿著、去程隨身與行李袋，勾選狀態儲存在本裝置。</p>
+    <div class="stats">
+      <div class="stat"><span>穿著</span><strong id="stat-wear">0/0</strong></div>
+      <div class="stat"><span>身上</span><strong id="stat-body">0/0</strong></div>
+      <div class="stat"><span>後背包</span><strong id="stat-bag">0/0</strong></div>
+      <div class="stat"><span>行李袋</span><strong id="stat-luggage">0/0</strong></div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <div class="bar"><span class="bar-fill" id="bar-fill"></span></div>
+    <span class="progress-count" id="prog-count">0 / 0</span>
+  </div>
+  <div class="toolbar">
+    <span class="toolbar-hint">勾選狀態保存在這台裝置</span>
+    <button class="reset-btn" id="reset-btn" type="button">清除全部</button>
+  </div>
+
+  <!-- ── 穿著 ── -->
+  <div class="section">
+    <div class="section-title">👕 穿著</div>
+    <div class="checks">
+      <label class="check" data-id="w1" data-group="wear"><input type="checkbox"><span>短袖</span></label>
+      <label class="check" data-id="w2" data-group="wear"><input type="checkbox"><span>輕薄長褲</span></label>
+      <label class="check" data-id="w3" data-group="wear"><input type="checkbox"><span>運動鞋</span></label>
+      <label class="check" data-id="w4" data-group="wear"><input type="checkbox"><span>短襪</span></label>
+      <label class="check" data-id="w5" data-group="wear"><input type="checkbox"><span>軍中穿的內褲</span></label>
+      <label class="check" data-id="w6" data-group="wear"><input type="checkbox"><span>遮陽外套</span></label>
+    </div>
+  </div>
+
+  <!-- ── 身上 ── -->
+  <div class="section">
+    <div class="section-title green">🪪 去程攜帶・身上</div>
+    <div class="checks">
+      <label class="check" data-id="b1" data-group="body"><input type="checkbox"><span>眼鏡</span></label>
+      <label class="check" data-id="b2" data-group="body"><input type="checkbox"><span>手機</span></label>
+      <label class="check" data-id="b3" data-group="body"><input type="checkbox"><span>手錶</span></label>
+      <label class="check" data-id="b4" data-group="body"><input type="checkbox"><span>身分證</span></label>
+      <label class="check" data-id="b5" data-group="body"><input type="checkbox"><span>健保卡</span></label>
+      <label class="check" data-id="b6" data-group="body"><input type="checkbox"><span>汽車駕照</span></label>
+      <label class="check" data-id="b7" data-group="body"><input type="checkbox"><span>現金 $1500</span></label>
+      <label class="check" data-id="b8" data-group="body"><input type="checkbox"><span>信用卡 1 張</span></label>
+    </div>
+  </div>
+
+  <!-- ── 隨身後背包 ── -->
+  <div class="section">
+    <div class="section-title green">🎒 去程攜帶・隨身後背包</div>
+    <div class="checks">
+      <label class="check" data-id="p1" data-group="bag"><input type="checkbox"><span>教召令正本</span></label>
+      <label class="check" data-id="p2" data-group="bag"><input type="checkbox"><span>工作地證明正本</span></label>
+      <label class="check" data-id="p3" data-group="bag"><input type="checkbox"><span>其他證明正本</span></label>
+      <label class="check" data-id="p4" data-group="bag"><input type="checkbox"><span>行動電源</span></label>
+      <label class="check" data-id="p5" data-group="bag"><input type="checkbox"><span>充電線</span></label>
+      <label class="check" data-id="p6" data-group="bag"><input type="checkbox"><span>充電器</span></label>
+      <label class="check" data-id="p7" data-group="bag"><input type="checkbox"><span>摺疊傘</span></label>
+      <label class="check" data-id="p8" data-group="bag"><input type="checkbox"><span>保溫瓶與水</span></label>
+      <label class="check" data-id="p9" data-group="bag"><input type="checkbox"><span>有線耳機</span></label>
+      <label class="check" data-id="p10" data-group="bag"><input type="checkbox"><span>眼鏡盒</span></label>
+      <label class="check" data-id="p11" data-group="bag"><input type="checkbox"><span>保健食品</span></label>
+      <label class="check" data-id="p12" data-group="bag"><input type="checkbox"><span>口罩</span></label>
+      <label class="check" data-id="p13" data-group="bag"><input type="checkbox"><span>衛生紙 / 面紙</span></label>
+      <label class="check" data-id="p14" data-group="bag"><input type="checkbox"><span>濕紙巾</span></label>
+      <label class="check" data-id="p15" data-group="bag"><input type="checkbox"><span>降溫濕巾</span></label>
+      <label class="check" data-id="p16" data-group="bag"><input type="checkbox"><span>酒精</span></label>
+      <label class="check" data-id="p17" data-group="bag"><input type="checkbox"><span>易口舒</span></label>
+      <label class="check" data-id="p18" data-group="bag"><input type="checkbox"><span>降溫噴霧</span></label>
+      <label class="check" data-id="p19" data-group="bag"><input type="checkbox"><span>防蚊液</span></label>
+      <label class="check" data-id="p20" data-group="bag"><input type="checkbox"><span>蚊蟲藥</span></label>
+      <label class="check" data-id="p21" data-group="bag"><input type="checkbox"><span>免洗餐具</span></label>
+      <label class="check" data-id="p22" data-group="bag"><input type="checkbox"><span>筆 ×3</span></label>
+      <label class="check" data-id="p23" data-group="bag"><input type="checkbox"><span>隨身筆記本</span></label>
+      <label class="check" data-id="p24" data-group="bag"><input type="checkbox"><span>便利貼</span></label>
+    </div>
+
+    <!-- 醫藥用品包 -->
+    <div class="sub-group" style="margin-top:.75rem">
+      <div class="sub-title">💊 醫藥用品包</div>
+      <div class="checks">
+        <label class="check" data-id="pm1" data-group="bag"><input type="checkbox"><span>常備藥</span></label>
+        <label class="check" data-id="pm2" data-group="bag"><input type="checkbox"><span>OK 蹦</span></label>
+        <label class="check" data-id="pm3" data-group="bag"><input type="checkbox"><span>耳塞備品</span></label>
+      </div>
+    </div>
+
+    <!-- 常用生活用具包 -->
+    <div class="sub-group">
+      <div class="sub-title">🧴 常用生活用具包</div>
+      <div class="checks">
+        <label class="check" data-id="pl1" data-group="bag"><input type="checkbox"><span>指甲剪</span></label>
+        <label class="check" data-id="pl2" data-group="bag"><input type="checkbox"><span>鼻毛刀</span></label>
+        <label class="check" data-id="pl3" data-group="bag"><input type="checkbox"><span>耳杓</span></label>
+        <label class="check" data-id="pl4" data-group="bag"><input type="checkbox"><span>小鏡子</span></label>
+        <label class="check" data-id="pl5" data-group="bag"><input type="checkbox"><span>刮鬍刀</span></label>
+        <label class="check" data-id="pl6" data-group="bag"><input type="checkbox"><span>梳子</span></label>
+      </div>
+    </div>
+
+    <!-- 睡覺用品包 -->
+    <div class="sub-group">
+      <div class="sub-title">😴 睡覺用品包</div>
+      <div class="checks">
+        <label class="check" data-id="ps1" data-group="bag"><input type="checkbox"><span>耳塞</span></label>
+        <label class="check" data-id="ps2" data-group="bag"><input type="checkbox"><span>眼罩</span></label>
+        <label class="check" data-id="ps3" data-group="bag"><input type="checkbox"><span>手電筒</span></label>
+        <label class="check" data-id="ps4" data-group="bag"><input type="checkbox"><span>眼藥水</span></label>
+        <label class="check" data-id="ps5" data-group="bag"><input type="checkbox"><span>護手霜</span></label>
+        <label class="check" data-id="ps6" data-group="bag"><input type="checkbox"><span>乳液</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 行李袋 ── -->
+  <div class="section">
+    <div class="section-title">🧳 去程攜帶・行李袋</div>
+    <div class="checks">
+      <label class="check" data-id="l1" data-group="luggage"><input type="checkbox"><span>迷彩內衣 ×3</span></label>
+      <label class="check" data-id="l2" data-group="luggage"><input type="checkbox"><span>短袖上衣 ×2</span></label>
+      <label class="check" data-id="l3" data-group="luggage"><input type="checkbox"><span>短褲 ×2</span></label>
+      <label class="check" data-id="l4" data-group="luggage"><input type="checkbox"><span>一般內褲 ×2</span></label>
+      <label class="check" data-id="l5" data-group="luggage"><input type="checkbox"><span>輕薄內褲 ×3</span></label>
+      <label class="check" data-id="l6" data-group="luggage"><input type="checkbox"><span>厚襪子 ×3</span></label>
+      <label class="check" data-id="l7" data-group="luggage"><input type="checkbox"><span>鞋墊</span></label>
+      <label class="check" data-id="l8" data-group="luggage"><input type="checkbox"><span>拖鞋</span></label>
+      <label class="check" data-id="l9" data-group="luggage"><input type="checkbox"><span>毛巾</span></label>
+      <label class="check" data-id="l10" data-group="luggage"><input type="checkbox"><span>護膝</span></label>
+      <label class="check" data-id="l11" data-group="luggage"><input type="checkbox"><span>吹風機</span></label>
+      <label class="check" data-id="l12" data-group="luggage"><input type="checkbox"><span>體香噴霧</span></label>
+      <label class="check" data-id="l13" data-group="luggage"><input type="checkbox"><span>酸痛貼布</span></label>
+      <label class="check" data-id="l14" data-group="luggage"><input type="checkbox"><span>蜂膠</span></label>
+      <label class="check" data-id="l15" data-group="luggage"><input type="checkbox"><span>嘴破藥</span></label>
+      <label class="check" data-id="l16" data-group="luggage"><input type="checkbox"><span>衛生紙備品</span></label>
+      <label class="check" data-id="l17" data-group="luggage"><input type="checkbox"><span>濕紙巾備品</span></label>
+      <label class="check" data-id="l18" data-group="luggage"><input type="checkbox"><span>面霜</span></label>
+      <label class="check" data-id="l19" data-group="luggage"><input type="checkbox"><span>延長線</span></label>
+      <label class="check" data-id="l20" data-group="luggage"><input type="checkbox"><span>夾子</span></label>
+      <label class="check" data-id="l21" data-group="luggage"><input type="checkbox"><span>橡皮筋</span></label>
+      <label class="check" data-id="l22" data-group="luggage"><input type="checkbox"><span>餅乾 / 乾糧</span></label>
+      <label class="check" data-id="l23" data-group="luggage"><input type="checkbox"><span>巧克力 / 糖果</span></label>
+      <label class="check" data-id="l24" data-group="luggage"><input type="checkbox"><span>飲料</span></label>
+    </div>
+
+    <!-- 牙刷盒 -->
+    <div class="sub-group" style="margin-top:.75rem">
+      <div class="sub-title">🪥 牙刷盒</div>
+      <div class="checks">
+        <label class="check" data-id="lt1" data-group="luggage"><input type="checkbox"><span>牙刷</span></label>
+        <label class="check" data-id="lt2" data-group="luggage"><input type="checkbox"><span>牙膏</span></label>
+        <label class="check" data-id="lt3" data-group="luggage"><input type="checkbox"><span>牙線棒</span></label>
+      </div>
+    </div>
+
+    <!-- 洗澡用品袋 -->
+    <div class="sub-group">
+      <div class="sub-title">🚿 洗澡用品袋</div>
+      <div class="checks">
+        <label class="check" data-id="lb1" data-group="luggage"><input type="checkbox"><span>三合一</span></label>
+        <label class="check" data-id="lb2" data-group="luggage"><input type="checkbox"><span>洗面乳</span></label>
+        <label class="check" data-id="lb3" data-group="luggage"><input type="checkbox"><span>洗碗精</span></label>
+      </div>
+    </div>
+
+    <!-- 洗衣用品袋 -->
+    <div class="sub-group">
+      <div class="sub-title">🧺 洗衣用品袋</div>
+      <div class="checks">
+        <label class="check" data-id="lw1" data-group="luggage"><input type="checkbox"><span>洗衣皂</span></label>
+        <label class="check" data-id="lw2" data-group="luggage"><input type="checkbox"><span>洗衣刷</span></label>
+        <label class="check" data-id="lw3" data-group="luggage"><input type="checkbox"><span>洗衣袋</span></label>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">建議加入手機書籤，方便隨時勾選。</p>
+</div>
+
+<script>
+(function () {
+  var STORAGE_KEY = 'jiaozhaoPacking';
+  var groups = { wear: 'stat-wear', body: 'stat-body', bag: 'stat-bag', luggage: 'stat-luggage' };
+  var labels = document.querySelectorAll('[data-id]');
+  var state = {};
+
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { state = {}; }
+
+  function refresh() {
+    var total = labels.length, checked = 0;
+    var gc = {}, gt = {};
+    labels.forEach(function (lbl) {
+      var id = lbl.getAttribute('data-id');
+      var g = lbl.getAttribute('data-group');
+      var box = lbl.querySelector('input');
+      var on = !!state[id];
+      box.checked = on;
+      lbl.classList.toggle('done', on);
+      if (on) { checked++; gc[g] = (gc[g] || 0) + 1; }
+      gt[g] = (gt[g] || 0) + 1;
+    });
+    document.getElementById('prog-count').textContent = checked + ' / ' + total;
+    document.getElementById('bar-fill').style.width = ((checked / Math.max(total, 1)) * 100) + '%';
+    Object.keys(groups).forEach(function (g) {
+      var el = document.getElementById(groups[g]);
+      if (el) el.textContent = (gc[g] || 0) + '/' + (gt[g] || 0);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  labels.forEach(function (lbl) {
+    lbl.querySelector('input').addEventListener('change', function () {
+      state[lbl.getAttribute('data-id')] = this.checked;
+      refresh();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    state = {}; refresh();
+  });
+
+  refresh();
+}());
+</script>
+</body>
+</html>
