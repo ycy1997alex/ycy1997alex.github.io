@@ -31,7 +31,7 @@
     margin: 2.4rem auto 0;
     max-width: 680px;
     overflow: hidden;
-    padding: 1rem;
+    padding: 1.25rem;
   }
   .colorscheme-dark .callup {
     --bg: #1a1510;
@@ -53,7 +53,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 2rem 1.5rem 1.6rem;
+    padding: 2rem 1.25rem 1.5rem;
     margin-bottom: 1.4rem;
     position: relative;
     overflow: hidden;
@@ -68,19 +68,19 @@
     pointer-events: none;
   }
   .callup .hero-label {
-    font-size: .85rem;
+    font-size: 1.2rem;
     letter-spacing: .18em;
     color: var(--accent);
     text-transform: uppercase;
     margin-bottom: .5rem;
   }
   .callup .hero h1 {
-    font-size: 1.9rem;
+    font-size: 2.4rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.15;
     margin-bottom: .5rem;
   }
-  .callup .hero-desc { color: var(--muted); font-size: .95rem; line-height: 1.6; }
+  .callup .hero-desc { color: var(--muted); font-size: 1.2rem; line-height: 1.6; }
 
   /* ── Stats ── */
   .callup .stats {
@@ -94,10 +94,10 @@
     background: var(--soft);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: .75rem .9rem;
+    padding: 1.1rem;
   }
-  .callup .stat span { display: block; font-size: .8rem; color: var(--muted); margin-bottom: .2rem; }
-  .callup .stat strong { font-size: 1.25rem; font-weight: 700; }
+  .callup .stat span { display: block; font-size: 1.15rem; color: var(--muted); margin-bottom: .2rem; }
+  .callup .stat strong { display: block; font-size: 1.5rem; font-weight: 700; }
 
   /* ── Progress ── */
   .callup .progress-row {
@@ -114,22 +114,22 @@
     border-radius: 999px;
     transition: width .35s ease;
   }
-  .callup .progress-count { font-weight: 700; font-size: 1rem; white-space: nowrap; }
+  .callup .progress-count { font-weight: 700; font-size: 1.2rem; white-space: nowrap; }
 
   .callup .toolbar {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 1.4rem;
   }
-  .callup .toolbar-hint { font-size: .85rem; color: var(--muted); }
+  .callup .toolbar-hint { font-size: 1.15rem; color: var(--muted); }
   .callup .reset-btn {
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 999px;
     color: var(--text);
     cursor: pointer;
-    font-size: .85rem;
+    font-size: 1.2rem;
     font-family: inherit;
-    padding: .4rem .9rem;
+    padding: .55rem .95rem;
     transition: border-color .2s, color .2s;
   }
   .callup .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -137,12 +137,12 @@
   /* ── Section ── */
   .callup .section { margin-bottom: 1.8rem; }
   .callup .section-title {
-    font-size: 1.05rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--accent);
     border-left: 3px solid var(--accent);
     padding-left: .65rem;
-    margin-bottom: .75rem;
+    margin-bottom: .5rem;
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -161,7 +161,7 @@
     margin-bottom: .6rem;
   }
   .callup .sub-title {
-    font-size: .8rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: .12em;
     color: var(--muted);
@@ -179,7 +179,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: .7rem .9rem;
+    padding: .9rem 1rem;
     cursor: pointer;
     transition: border-color .15s, background .15s;
   }
@@ -187,7 +187,7 @@
   .callup .check input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
-    width: 1.3rem; height: 1.3rem;
+    width: 1.55rem; height: 1.55rem;
     border: 2px solid var(--border);
     border-radius: 5px;
     flex-shrink: 0;
@@ -202,13 +202,13 @@
   .callup .check input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
-    left: 3px; top: 1px;
-    width: 6px; height: 10px;
+    left: 4px; top: 1px;
+    width: 7px; height: 12px;
     border: 2px solid #fff;
     border-top: none; border-left: none;
     transform: rotate(40deg);
   }
-  .callup .check span { font-size: .95rem; line-height: 1.4; }
+  .callup .check span { font-size: 1.2rem; line-height: 1.45; }
   .callup .check.done { background: var(--stripe); }
   .callup .check.done span { color: var(--muted); text-decoration: line-through; }
 
@@ -217,7 +217,7 @@
   .callup .sub-group .check.done { opacity: .7; }
 
   .callup .note {
-    font-size: .85rem;
+    font-size: 1.2rem;
     color: var(--muted);
     margin-top: 1.4rem;
     text-align: center;
