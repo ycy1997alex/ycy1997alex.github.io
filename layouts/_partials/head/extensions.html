@@ -1,0 +1,7 @@
+{{- /* 多語 SEO：hreflang alternate links（en ↔ zh-tw），theme 預留的 head 擴充點 */ -}}
+{{- if .IsTranslated }}
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.Locale | default .Language.Lang }}" href="{{ .Permalink }}">
+{{- end }}
+<link rel="alternate" hreflang="x-default" href="{{ (index .AllTranslations 0).Permalink }}">
+{{- end }}

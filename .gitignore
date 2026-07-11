@@ -1,0 +1,4 @@
+# Hugo 建置輸出與快取（由 GitHub Actions 產生，不進版控）
+public/
+resources/
+.hugo_build.lock
