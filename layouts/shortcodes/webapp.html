@@ -1,0 +1,7 @@
+{{- /* 嵌入 assets/fragments/ 下的互動網頁 fragment（單一原始檔，雙語版本共用） */ -}}
+{{- $name := .Get 0 -}}
+{{- with resources.Get (printf "fragments/%s" $name) -}}
+{{ .Content | safeHTML }}
+{{- else -}}
+{{- errorf "webapp shortcode: 找不到 assets/fragments/%s" $name -}}
+{{- end -}}

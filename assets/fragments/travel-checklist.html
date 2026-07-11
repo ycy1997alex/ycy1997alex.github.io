@@ -1,0 +1,170 @@
+<style>
+.trip{--bg:#fff;--surface:#fff;--border:rgba(14,30,37,.12);--text:#20303a;--muted:#61727e;--accent:#1f6b75;--soft:rgba(31,107,117,.12);background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(245,246,250,.98));border:1px solid var(--border);border-radius:28px;box-shadow:0 18px 40px rgba(14,30,37,.08);color:var(--text);margin-top:2.4rem;overflow:hidden}.colorscheme-dark .trip{--surface:rgba(34,42,48,.92);--border:rgba(207,220,231,.1);--text:#edf5f7;--muted:#aebfc7;--accent:#8fd9d4;--soft:rgba(143,217,212,.14);background:linear-gradient(180deg,rgba(24,30,35,.98),rgba(17,21,25,.98))}.trip *{box-sizing:border-box}.trip-hero{padding:2rem 1.25rem 1.5rem;background:radial-gradient(circle at top right,rgba(255,180,130,.18),transparent 34%),radial-gradient(circle at left top,rgba(82,175,182,.2),transparent 30%)}.trip-hero h2{font-size:2.4rem;line-height:1.15;margin:.5rem 0}.trip-hero p,.trip-panel p,.trip-card p,.trip-note{color:var(--muted)}.trip-hero p,.trip-panel p,.trip-card p,.trip-note{margin:0}.trip-small{font-size:1.2rem;color:var(--muted)}.trip-stats,.trip-grid,.trip-checks,.trip-stops{display:grid;gap:1rem}.trip-stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:1rem}.trip-stat,.trip-card,.trip-check,.trip-stop,.trip-links-card{background:var(--surface);border:1px solid var(--border);border-radius:18px}.trip-stat,.trip-card,.trip-links-card{padding:1.1rem}.trip-stat span{display:block;color:var(--muted);font-size:1.15rem}.trip-stat strong{display:block;font-size:1.5rem}.trip-progress{align-items:center;display:flex;gap:.75rem;margin-bottom:.85rem}.trip-bar{background:var(--soft);border-radius:999px;flex:1;height:.75rem;overflow:hidden}.trip-fill{background:linear-gradient(90deg,#22744f,var(--accent));display:block;height:100%;width:0;transition:width .3s ease}.trip-checks{gap:.7rem}.trip-check{align-items:center;display:flex;gap:.8rem;padding:.9rem 1rem}.trip-check input{accent-color:var(--accent);height:1.55rem;margin:0;width:1.55rem}.trip-check.done span{color:var(--muted);text-decoration:line-through}.trip-btn{background:transparent;border:1px solid var(--border);border-radius:999px;color:var(--text);cursor:pointer;font-size:1.2rem;font-weight:700;padding:.55rem .95rem}.trip-note{font-size:1.2rem;margin-top:1rem}.trip-section-title{font-size:1.4rem;font-weight:700;color:var(--accent);margin:1.4rem 0 .5rem;padding-left:.2rem;border-left:3px solid var(--accent);padding-left:.65rem}.trip-body{padding:1.25rem}.trip-top-gap{margin-top:.5rem}.trip-nav-bar{align-items:center;display:flex;justify-content:space-between;gap:.7rem;margin-bottom:1rem}@media(min-width:768px){.trip-hero{padding:2.3rem 2rem 1.7rem}.trip-body{padding-left:1.6rem;padding-right:1.6rem}.trip-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+<p>出發前的通用核對清單，涵蓋證件、行李、隨身物品、出發前置與回程整理，勾選狀態會保存在這台裝置。</p>
+
+<div class="trip" id="trip-app">
+
+  <!-- Hero -->
+  <section class="trip-hero">
+    <div class="trip-small">Travel Checklist</div>
+    <h2>✈️ 旅遊確認清單</h2>
+    <p>出發前請逐項確認，回程也記得整理行李與申報事項。</p>
+    <div class="trip-stats">
+      <div class="trip-stat"><span>證件類</span><strong id="stat-docs">0 / 0</strong></div>
+      <div class="trip-stat"><span>行李類</span><strong id="stat-luggage">0 / 0</strong></div>
+      <div class="trip-stat"><span>隨身物品</span><strong id="stat-carry">0 / 0</strong></div>
+      <div class="trip-stat"><span>回程確認</span><strong id="stat-return">0 / 0</strong></div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <div class="trip-body">
+
+    <!-- 總進度 -->
+    <div class="trip-progress" style="margin-top:.5rem">
+      <div class="trip-bar"><span class="trip-fill" id="trip-fill"></span></div>
+      <strong id="trip-count">0 / 0</strong>
+    </div>
+    <div class="trip-nav-bar">
+      <span style="font-size:1.15rem;color:var(--muted)">勾選狀態會保存在這台裝置</span>
+      <button class="trip-btn" id="trip-reset" type="button">清除全部</button>
+    </div>
+
+    <!-- 證件類 -->
+    <div class="trip-section-title">📋 證件類</div>
+    <div class="trip-checks">
+      <label class="trip-check" data-wrap="d1"><input type="checkbox" data-check-id="d1" data-group="docs"><span>護照（確認有效期限 ≥ 6 個月）</span></label>
+      <label class="trip-check" data-wrap="d2"><input type="checkbox" data-check-id="d2" data-group="docs"><span>身分證（備用）</span></label>
+      <label class="trip-check" data-wrap="d3"><input type="checkbox" data-check-id="d3" data-group="docs"><span>健保卡</span></label>
+      <label class="trip-check" data-wrap="d4"><input type="checkbox" data-check-id="d4" data-group="docs"><span>駕照原件（若需自駕）</span></label>
+      <label class="trip-check" data-wrap="d5"><input type="checkbox" data-check-id="d5" data-group="docs"><span>國際駕照 / 日文譯本（依目的地）</span></label>
+      <label class="trip-check" data-wrap="d6"><input type="checkbox" data-check-id="d6" data-group="docs"><span>信用卡（確認額度、海外手續費）</span></label>
+      <label class="trip-check" data-wrap="d7"><input type="checkbox" data-check-id="d7" data-group="docs"><span>台幣現金（備用）</span></label>
+      <label class="trip-check" data-wrap="d8"><input type="checkbox" data-check-id="d8" data-group="docs"><span>當地外幣現金</span></label>
+      <label class="trip-check" data-wrap="d9"><input type="checkbox" data-check-id="d9" data-group="docs"><span>交通卡（IC 卡 / 悠遊卡等）</span></label>
+      <label class="trip-check" data-wrap="d10"><input type="checkbox" data-check-id="d10" data-group="docs"><span>機票確認信 / 電子票（截圖備存）</span></label>
+      <label class="trip-check" data-wrap="d11"><input type="checkbox" data-check-id="d11" data-group="docs"><span>住宿訂房確認信（截圖備存）</span></label>
+      <label class="trip-check" data-wrap="d12"><input type="checkbox" data-check-id="d12" data-group="docs"><span>租車預約確認書（含取車地址）</span></label>
+      <label class="trip-check" data-wrap="d13"><input type="checkbox" data-check-id="d13" data-group="docs"><span>旅遊保險單（確認涵蓋範圍與急難電話）</span></label>
+    </div>
+
+    <!-- 行李類 -->
+    <div class="trip-section-title">🧳 行李類（托運）</div>
+    <div class="trip-checks">
+      <label class="trip-check" data-wrap="l1"><input type="checkbox" data-check-id="l1" data-group="luggage"><span>內衣褲（天數 + 1 套）</span></label>
+      <label class="trip-check" data-wrap="l2"><input type="checkbox" data-check-id="l2" data-group="luggage"><span>襪子（天數 + 1 雙）</span></label>
+      <label class="trip-check" data-wrap="l3"><input type="checkbox" data-check-id="l3" data-group="luggage"><span>短袖 T 恤</span></label>
+      <label class="trip-check" data-wrap="l4"><input type="checkbox" data-check-id="l4" data-group="luggage"><span>長袖 / 薄外套（依氣候）</span></label>
+      <label class="trip-check" data-wrap="l5"><input type="checkbox" data-check-id="l5" data-group="luggage"><span>長褲 / 休閒褲</span></label>
+      <label class="trip-check" data-wrap="l6"><input type="checkbox" data-check-id="l6" data-group="luggage"><span>睡衣 / 居家服</span></label>
+      <label class="trip-check" data-wrap="l7"><input type="checkbox" data-check-id="l7" data-group="luggage"><span>牙刷、牙膏、牙線</span></label>
+      <label class="trip-check" data-wrap="l8"><input type="checkbox" data-check-id="l8" data-group="luggage"><span>洗面乳、防曬乳、保濕品</span></label>
+      <label class="trip-check" data-wrap="l9"><input type="checkbox" data-check-id="l9" data-group="luggage"><span>防蚊液（依季節）</span></label>
+      <label class="trip-check" data-wrap="l10"><input type="checkbox" data-check-id="l10" data-group="luggage"><span>刮鬍刀、梳子、指甲剪</span></label>
+      <label class="trip-check" data-wrap="l11"><input type="checkbox" data-check-id="l11" data-group="luggage"><span>毛巾、拖鞋</span></label>
+      <label class="trip-check" data-wrap="l12"><input type="checkbox" data-check-id="l12" data-group="luggage"><span>常備藥（止痛、腸胃、感冒、OK 繃）</span></label>
+      <label class="trip-check" data-wrap="l13"><input type="checkbox" data-check-id="l13" data-group="luggage"><span>暈車 / 暈機藥（依需要）</span></label>
+      <label class="trip-check" data-wrap="l14"><input type="checkbox" data-check-id="l14" data-group="luggage"><span>行李秤（控制重量）</span></label>
+      <label class="trip-check" data-wrap="l15"><input type="checkbox" data-check-id="l15" data-group="luggage"><span>延長線 / 電源轉接頭</span></label>
+      <label class="trip-check" data-wrap="l16"><input type="checkbox" data-check-id="l16" data-group="luggage"><span>手錶充電器 / 其他設備充電器</span></label>
+      <label class="trip-check" data-wrap="l17"><input type="checkbox" data-check-id="l17" data-group="luggage"><span>行李箱鎖 / 束帶（視情況）</span></label>
+      <label class="trip-check" data-wrap="l18"><input type="checkbox" data-check-id="l18" data-group="luggage"><span>購物袋 / 環保袋（折疊式）</span></label>
+    </div>
+
+    <!-- 隨身物品 -->
+    <div class="trip-section-title">🎒 隨身物品（登機包）</div>
+    <div class="trip-checks">
+      <label class="trip-check" data-wrap="c1"><input type="checkbox" data-check-id="c1" data-group="carry"><span>手機（確認電量、飛航模式設定）</span></label>
+      <label class="trip-check" data-wrap="c2"><input type="checkbox" data-check-id="c2" data-group="carry"><span>行動電源（100Wh 以下、放隨身）</span></label>
+      <label class="trip-check" data-wrap="c3"><input type="checkbox" data-check-id="c3" data-group="carry"><span>充電線（手機 + 其他設備）</span></label>
+      <label class="trip-check" data-wrap="c4"><input type="checkbox" data-check-id="c4" data-group="carry"><span>耳機（降噪 / 有線備用）</span></label>
+      <label class="trip-check" data-wrap="c5"><input type="checkbox" data-check-id="c5" data-group="carry"><span>SIM 卡 / eSIM 啟用確認</span></label>
+      <label class="trip-check" data-wrap="c6"><input type="checkbox" data-check-id="c6" data-group="carry"><span>相機 + 記憶卡 + 電池（確認電量）</span></label>
+      <label class="trip-check" data-wrap="c7"><input type="checkbox" data-check-id="c7" data-group="carry"><span>摺疊傘</span></label>
+      <label class="trip-check" data-wrap="c8"><input type="checkbox" data-check-id="c8" data-group="carry"><span>口罩（備用數個）</span></label>
+      <label class="trip-check" data-wrap="c9"><input type="checkbox" data-check-id="c9" data-group="carry"><span>衛生紙、濕紙巾、酒精噴霧</span></label>
+      <label class="trip-check" data-wrap="c10"><input type="checkbox" data-check-id="c10" data-group="carry"><span>保溫瓶 / 水壺（空瓶過安檢）</span></label>
+      <label class="trip-check" data-wrap="c11"><input type="checkbox" data-check-id="c11" data-group="carry"><span>零食 / 乾糧（長途備用）</span></label>
+      <label class="trip-check" data-wrap="c12"><input type="checkbox" data-check-id="c12" data-group="carry"><span>頸枕 / 眼罩（長途飛行）</span></label>
+      <label class="trip-check" data-wrap="c13"><input type="checkbox" data-check-id="c13" data-group="carry"><span>鑰匙（確認家門 / 車鑰匙交代妥當）</span></label>
+    </div>
+
+    <!-- 出發前置 -->
+    <div class="trip-section-title">🏠 出發前置確認</div>
+    <div class="trip-checks">
+      <label class="trip-check" data-wrap="b1"><input type="checkbox" data-check-id="b1" data-group="before"><span>瓦斯爐關閉、確認無明火</span></label>
+      <label class="trip-check" data-wrap="b2"><input type="checkbox" data-check-id="b2" data-group="before"><span>冰箱清空易壞食材</span></label>
+      <label class="trip-check" data-wrap="b3"><input type="checkbox" data-check-id="b3" data-group="before"><span>電器插頭拔除（熱水器、電視等）</span></label>
+      <label class="trip-check" data-wrap="b4"><input type="checkbox" data-check-id="b4" data-group="before"><span>門窗鎖好、確認鑰匙</span></label>
+      <label class="trip-check" data-wrap="b5"><input type="checkbox" data-check-id="b5" data-group="before"><span>預先辦理網路報到（機票）</span></label>
+      <label class="trip-check" data-wrap="b6"><input type="checkbox" data-check-id="b6" data-group="before"><span>下載離線地圖（Google Maps / Maps.me）</span></label>
+      <label class="trip-check" data-wrap="b7"><input type="checkbox" data-check-id="b7" data-group="before"><span>行程資訊備份（截圖 / 離線儲存）</span></label>
+      <label class="trip-check" data-wrap="b8"><input type="checkbox" data-check-id="b8" data-group="before"><span>告知家人 / 朋友行程與緊急聯絡方式</span></label>
+      <label class="trip-check" data-wrap="b9"><input type="checkbox" data-check-id="b9" data-group="before"><span>外幣兌換完成</span></label>
+      <label class="trip-check" data-wrap="b10"><input type="checkbox" data-check-id="b10" data-group="before"><span>植物 / 寵物委託照料</span></label>
+    </div>
+
+    <!-- 回程整理 -->
+    <div class="trip-section-title">🔄 回程整理</div>
+    <div class="trip-checks">
+      <label class="trip-check" data-wrap="r1"><input type="checkbox" data-check-id="r1" data-group="return"><span>確認登機包：食物、非液體免稅品</span></label>
+      <label class="trip-check" data-wrap="r2"><input type="checkbox" data-check-id="r2" data-group="return"><span>托運行李：酒類、飲料、食品放托運</span></label>
+      <label class="trip-check" data-wrap="r3"><input type="checkbox" data-check-id="r3" data-group="return"><span>藥妝、伴手禮、購物品收納完畢</span></label>
+      <label class="trip-check" data-wrap="r4"><input type="checkbox" data-check-id="r4" data-group="return"><span>原帶衣物與生活用品重新收回</span></label>
+      <label class="trip-check" data-wrap="r5"><input type="checkbox" data-check-id="r5" data-group="return"><span>行李重量確認（托運 ≤ 23 kg / 件）</span></label>
+      <label class="trip-check" data-wrap="r6"><input type="checkbox" data-check-id="r6" data-group="return"><span>確認行動電源放隨身（不可托運）</span></label>
+      <label class="trip-check" data-wrap="r7"><input type="checkbox" data-check-id="r7" data-group="return"><span>入境申報：肉製品、生鮮、保健食品限額</span></label>
+      <label class="trip-check" data-wrap="r8"><input type="checkbox" data-check-id="r8" data-group="return"><span>飯店退房前確認物品無遺留</span></label>
+      <label class="trip-check" data-wrap="r9"><input type="checkbox" data-check-id="r9" data-group="return"><span>租車還車確認（無劃傷、油量、收據）</span></label>
+      <label class="trip-check" data-wrap="r10"><input type="checkbox" data-check-id="r10" data-group="return"><span>電話卡 / SIM 停用或保留</span></label>
+    </div>
+
+    <p class="trip-note" style="margin-bottom:1.25rem">建議把這頁加入手機主畫面，清單勾選最方便。</p>
+  </div><!-- /trip-body -->
+
+</div><!-- /trip -->
+<script>
+(function(){
+  var groups={docs:'stat-docs',luggage:'stat-luggage',carry:'stat-carry',return:'stat-return'};
+  var boxes=[].slice.call(document.querySelectorAll('[data-check-id]'));
+  var fill=document.getElementById('trip-fill');
+  var count=document.getElementById('trip-count');
+  var state={};
+  try{state=JSON.parse(localStorage.getItem('travelChecklist')||'{}')}catch(e){state={}}
+
+  function refresh(){
+    var total=boxes.length,checked=0;
+    var gc={};
+    boxes.forEach(function(box){
+      var id=box.getAttribute('data-check-id');
+      var g=box.getAttribute('data-group');
+      var on=!!state[id];
+      box.checked=on;
+      document.querySelector('[data-wrap="'+id+'"]').classList.toggle('done',on);
+      if(on){checked++;gc[g]=(gc[g]||0)+1}
+      gc[g+'t']=(gc[g+'t']||0)+1;
+    });
+    count.textContent=checked+' / '+total;
+    fill.style.width=((checked/Math.max(total,1))*100)+'%';
+    Object.keys(groups).forEach(function(g){
+      var el=document.getElementById(groups[g]);
+      if(el){el.textContent=(gc[g]||0)+' / '+(gc[g+'t']||0)}
+    });
+    localStorage.setItem('travelChecklist',JSON.stringify(state));
+  }
+
+  boxes.forEach(function(box){
+    box.addEventListener('change',function(){
+      state[box.getAttribute('data-check-id')]=box.checked;
+      refresh();
+    });
+  });
+
+  document.getElementById('trip-reset').addEventListener('click',function(){
+    state={};refresh();
+  });
+
+  refresh();
+}());
+</script>
