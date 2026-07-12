@@ -32,6 +32,8 @@ description = "Alex Yu's personal website"
 keywords = "blog,developer,personal"
 info = ["Algorithm Development", "Software Engineer"]
 avatarURL = "images/fuji-odd-eyed-meow.jpg"
+# 社群分享預覽圖 (og:image / twitter:image)
+images = ["images/fuji-odd-eyed-meow.jpg"]
 dateFormat = "January 2, 2006"
 since = 2023
 colorScheme = "auto"
