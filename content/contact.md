@@ -2,7 +2,11 @@
 title: "Contact"
 ---
 
-<div style="text-align: center;">
+<style>
+  /* 主題 CSS 有 .content article p { text-align: justify }，需用更高特異性覆蓋才會置中 */
+  .content article .contact-center p { text-align: center; }
+</style>
+<div class="contact-center">
 
 Email: [ycy1997alex@gmail.com](mailto:ycy1997alex@gmail.com)
 
