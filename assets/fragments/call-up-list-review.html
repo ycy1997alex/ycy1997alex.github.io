@@ -1,0 +1,438 @@
+<style>
+  .callupr, .callupr *::before, .callupr *::after { box-sizing: border-box; }
+
+  .callupr {
+    --bg: #f5f0e8;
+    --surface: #fffdf8;
+    --border: rgba(90,70,40,.15);
+    --text: #2a1f0f;
+    --muted: #7a6a55;
+    --accent: #8b3a1a;
+    --accent2: #4a6741;
+    --star: #c9971f;
+    --soft: rgba(139,58,26,.1);
+    --stripe: rgba(139,58,26,.04);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 18px 40px rgba(90,60,20,.08);
+    color: var(--text);
+    margin: 2.4rem auto 0;
+    max-width: 680px;
+    overflow: hidden;
+    padding: 1.25rem;
+  }
+  .colorscheme-dark .callupr {
+    --bg: #1a1510;
+    --surface: #231e17;
+    --border: rgba(200,180,140,.12);
+    --text: #ede5d8;
+    --muted: #a09080;
+    --accent: #d4724a;
+    --accent2: #7aaa6a;
+    --star: #e0b24a;
+    --soft: rgba(212,114,74,.12);
+    --stripe: rgba(212,114,74,.04);
+  }
+
+  .callupr * { box-sizing: border-box; }
+
+  /* ── Hero ── */
+  .callupr .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.25rem 1.5rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(90,60,20,.07);
+  }
+  .callupr .hero::before {
+    content: '📝';
+    position: absolute;
+    right: 1.4rem; top: 1.2rem;
+    font-size: 3.5rem;
+    opacity: .15;
+    pointer-events: none;
+  }
+  .callupr .hero-label {
+    font-size: 1.2rem;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .callupr .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: .5rem;
+  }
+  .callupr .hero-desc { color: var(--muted); font-size: 1.2rem; line-height: 1.6; }
+  .callupr .legend { color: var(--muted); font-size: 1.15rem; margin-top: .9rem; }
+  .callupr .legend .star { color: var(--star); }
+
+  /* ── Progress ── */
+  .callupr .progress-row {
+    display: flex; align-items: center; gap: .85rem;
+    margin: 1.2rem 0 .6rem;
+  }
+  .callupr .bar {
+    flex: 1; height: 8px; background: var(--soft);
+    border-radius: 999px; overflow: hidden;
+  }
+  .callupr .bar-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+  .callupr .progress-count { font-weight: 700; font-size: 1.2rem; white-space: nowrap; }
+
+  .callupr .toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.4rem;
+  }
+  .callupr .toolbar-hint { font-size: 1.15rem; color: var(--muted); }
+  .callupr .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-family: inherit;
+    padding: .55rem .95rem;
+    transition: border-color .2s, color .2s;
+  }
+  .callupr .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Section ── */
+  .callupr .section { margin-bottom: 1.8rem; }
+  .callupr .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: .65rem;
+    margin-bottom: .5rem;
+  }
+
+  /* Sub-group */
+  .callupr .sub-group {
+    background: var(--stripe);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: .65rem .75rem .45rem;
+    margin-bottom: .6rem;
+  }
+  .callupr .sub-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    padding-left: .1rem;
+  }
+
+  /* ── Checklist items ── */
+  .callupr .checks { display: grid; gap: .5rem; }
+  .callupr .check {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .9rem 1rem;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .callupr .check:hover { border-color: var(--accent); }
+  .callupr .check input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.55rem; height: 1.55rem;
+    margin-top: .1rem;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, border-color .15s;
+  }
+  .callupr .check input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .callupr .check input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 7px; height: 12px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(40deg);
+  }
+  .callupr .check-body { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+  .callupr .check-row { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  .callupr .check-title { font-size: 1.5rem; line-height: 1.45; }
+  .callupr .check-stars { color: var(--star); font-size: 1.1rem; letter-spacing: .05em; white-space: nowrap; }
+  .callupr .check-note { font-size: 1.15rem; color: var(--muted); line-height: 1.5; }
+  .callupr .check.done { background: var(--stripe); }
+  .callupr .check.done .check-title { color: var(--muted); text-decoration: line-through; }
+
+  .callupr .sub-group .check { background: var(--bg); }
+  .callupr .sub-group .check.done { opacity: .7; }
+
+  .callupr .note {
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin-top: 1.4rem;
+    text-align: center;
+    padding-bottom: .5rem;
+  }
+</style>
+<p>教召結束後回顧整理的攜帶物品心得，依實際使用狀況標上推薦指數與備註，勾選狀態會保存在這台裝置。</p>
+
+<div class="callupr" id="callupr-app">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Military Call-up · After Action Review</div>
+    <h1>🪖 教召物資心得清單</h1>
+    <p class="hero-desc">教召結束後的整理版，每項物品標註實際推薦指數與使用心得，方便下次教召參考。</p>
+    <p class="legend"><span class="star">★★★</span> 一定要帶　<span class="star">★★</span> 看個人需求　<span class="star">★</span> 可帶可不帶</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <div class="bar"><span class="bar-fill" id="bar-fill"></span></div>
+    <span class="progress-count" id="prog-count">0 / 0</span>
+  </div>
+  <div class="toolbar">
+    <span class="toolbar-hint">勾選狀態保存在這台裝置</span>
+    <button class="reset-btn" id="reset-btn" type="button">清除全部</button>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📋 必要物品</div>
+    <div class="checks">
+      <label class="check" data-id="e1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">教召令正本</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">報到需要</span></span></label>
+      <label class="check" data-id="e2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">工作地證明正本</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">報到需要</span></span></label>
+      <label class="check" data-id="e3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">個人私章（或蓋手印）</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">領錢需要</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪖 穿著</div>
+    <div class="checks">
+      <label class="check" data-id="w1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">短袖</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">輕薄為主，走進去就流汗了</span></span></label>
+      <label class="check" data-id="w2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">輕薄長褲</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">輕薄為主，走進去就流汗了</span></span></label>
+      <label class="check" data-id="w3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">外套</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">有需要的話可以當作被子或枕頭</span></span></label>
+      <label class="check" data-id="w4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">運動鞋</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">輕薄為主</span></span></label>
+      <label class="check" data-id="w5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">軍中穿的襪子</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">要夠厚，不然絕對長水泡</span></span></label>
+      <label class="check" data-id="w6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">軍中穿的內褲</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">最好可以方便洗（也可以買免洗的）</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💳 身上</div>
+    <div class="checks">
+      <label class="check" data-id="b1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">眼鏡</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">要有心理準備可能會多刮痕</span></span></label>
+      <label class="check" data-id="b2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">手機</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">應該 1 支就夠？？？</span></span></label>
+      <label class="check" data-id="b3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">非智慧手錶</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">對時用</span></span></label>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">👛 錢包</div>
+      <div class="checks">
+        <label class="check" data-id="bw1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">身分證</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">對身份用：報到、領錢</span></span></label>
+        <label class="check" data-id="bw2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">健保卡</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">若有轉診時會用到</span></span></label>
+        <label class="check" data-id="bw3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">悠遊卡／一卡通 1 張</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">直接帶有悠遊卡功能的信用卡，去營區內的便利商店方便好用</span></span></label>
+        <label class="check" data-id="bw4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">駕照</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">不確定有沒有需要</span></span></label>
+        <label class="check" data-id="bw5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">現金 $1500</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+        <label class="check" data-id="bw6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">信用卡 1 張</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+        <label class="check" data-id="bw7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">提款卡 1 張</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">👖 放在迷彩衣或褲</div>
+      <div class="checks">
+        <label class="check" data-id="bp1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身面紙</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">擦臉很需要</span></span></label>
+        <label class="check" data-id="bp2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身衛生紙</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">可以買全家的「旅行包柔紙巾」，屁股會感謝你</span></span></label>
+        <label class="check" data-id="bp3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身濕紙巾</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">記得帶多一點、用量大</span></span></label>
+        <label class="check" data-id="bp4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">易口舒／巧克力／糖果</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">嘴巴吃個東西比較不無聊</span></span></label>
+        <label class="check" data-id="bp5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身筆記本</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">記東西用</span></span></label>
+        <label class="check" data-id="bp6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">免洗餐具</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">建議隨身帶一組，以免筷子出事</span></span></label>
+        <label class="check" data-id="bp7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">筆 × 1</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">應該進去會發一支，但還是帶一隻備用</span></span></label>
+        <label class="check" data-id="bp8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">筷套</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">可以裝軍中發的筷子用</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">🎒 隨身包</div>
+      <div class="checks">
+        <label class="check" data-id="bc1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">防水隨身包</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">裝書用，或是裝一些隨身用的東西（例如下面 3 項）</span></span></label>
+        <label class="check" data-id="bc2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身用品</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">書（2 天 1 本計算，其實也可以跟別人交換看）、單字書、數獨、小象棋…畢竟團體生活總是會有等的時間，要可以打發時間用…</span></span></label>
+        <label class="check" data-id="bc3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">餅乾／乾糧</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">有時候真的很難吃</span></span></label>
+        <label class="check" data-id="bc4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">運動飲料的沖泡包</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">如果有得買運動飲料就不用帶</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">🔌 電器包</div>
+      <div class="checks">
+        <label class="check" data-id="be1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">有線耳機</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">用手機不要讓隔壁的知道你在幹嘛</span></span></label>
+        <label class="check" data-id="be2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">行動電源</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">在裡面有機會能充滿就充滿</span></span></label>
+        <label class="check" data-id="be3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">充電線</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">當然要</span></span></label>
+        <label class="check" data-id="be4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">充電器</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">當然要</span></span></label>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💊 醫藥用品包</div>
+    <div class="checks">
+      <label class="check" data-id="m1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">常備口服藥</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">很多人在一起就會感冒</span></span></label>
+      <label class="check" data-id="m2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">蜂膠／口內膏</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">嘴破時使用</span></span></label>
+      <label class="check" data-id="m3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">外傷藥膏</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">找抗生素類型的，水泡或小割傷時擦</span></span></label>
+      <label class="check" data-id="m4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">OK 蹦</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">多帶，把傷口貼一下、當緩衝用</span></span></label>
+      <label class="check" data-id="m5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">蚊蟲藥</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">軍營的蚊子…</span></span></label>
+      <label class="check" data-id="m6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">透氣膠帶／優肌絆</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">比你想得常可能會用到，貼個手、貼個腳，打靶還可以固定眼鏡</span></span></label>
+      <label class="check" data-id="m7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">酸痛貼布</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">打完靶會需要貼、走太多路會需要貼、出很累的公差會需要貼</span></span></label>
+      <label class="check" data-id="m8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">護膝</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">個人需求</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪮 常用生活用具包</div>
+    <div class="checks">
+      <label class="check" data-id="d1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">刮鬍刀</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">雜毛還是需要刮的吧</span></span></label>
+      <label class="check" data-id="d2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">指甲剪</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">到了第二個禮拜有需要</span></span></label>
+      <label class="check" data-id="d3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">小鏡子</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+      <label class="check" data-id="d4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">梳子</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">看個人需求</span></span></label>
+      <label class="check" data-id="d5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">鼻毛刀</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">看個人需求</span></span></label>
+      <label class="check" data-id="d6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">耳杓</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">看個人需求</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💤 睡覺用品包</div>
+    <div class="checks">
+      <label class="check" data-id="s1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">耳塞（記得多帶備品）</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">打靶用 1 副（因為會很髒）、睡覺用 1-2 副</span></span></label>
+      <label class="check" data-id="s2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">眼罩</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">不然會亮醒</span></span></label>
+      <label class="check" data-id="s3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">手電筒</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">不然會跌死</span></span></label>
+      <label class="check" data-id="s4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">眼鏡盒</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">睡覺時可以放</span></span></label>
+      <label class="check" data-id="s5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">眼藥水</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">灰塵很多</span></span></label>
+      <label class="check" data-id="s6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">護手霜</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">推薦睡前擦，不然手會乾爆</span></span></label>
+      <label class="check" data-id="s7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">乳液</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">擦臉或擦身體</span></span></label>
+      <label class="check" data-id="s8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">面霜</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">👕 衣物</div>
+    <div class="checks">
+      <label class="check" data-id="c1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">短褲 × 2</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">洗澡後＆睡覺時 × 1 ＋ 在外面時 × 1</span></span></label>
+      <label class="check" data-id="c2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">內褲 × 2</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">換洗用或直接帶 14 件免洗內褲</span></span></label>
+      <label class="check" data-id="c3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">厚襪子 × 2</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">習慣穿兩層的話建議帶</span></span></label>
+      <label class="check" data-id="c4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">短袖 × 1</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">比較像是以防萬一</span></span></label>
+      <label class="check" data-id="c5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">輕薄長褲 × 1</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">比較像是以防萬一</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪥 牙刷盒</div>
+    <div class="checks">
+      <label class="check" data-id="t1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">牙刷</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">除非不刷牙</span></span></label>
+      <label class="check" data-id="t2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">牙膏</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">除非不刷牙</span></span></label>
+      <label class="check" data-id="t3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">牙線棒</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">除非不刷牙</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧴 洗澡用品</div>
+    <div class="checks">
+      <label class="check" data-id="sh1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗髮精</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">可用三合一代替，但應該是不用那麼克難</span></span></label>
+      <label class="check" data-id="sh2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">沐浴精</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">可用三合一代替，但應該是不用那麼克難</span></span></label>
+      <label class="check" data-id="sh3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗面乳</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">可用三合一代替，但應該是不用那麼克難</span></span></label>
+      <label class="check" data-id="sh4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗碗精</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">要準備隨身的</span></span></label>
+      <label class="check" data-id="sh5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗手乳</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">可以準備隨身的</span></span></label>
+      <label class="check" data-id="sh6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">毛巾</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">會公發，但有機會拿到很可怕的</span></span></label>
+      <label class="check" data-id="sh7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">沐浴籃</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">裝洗澡的用品滿方便的</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧼 洗衣用品</div>
+    <div class="checks">
+      <label class="check" data-id="l1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗衣皂／手洗精</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">手洗的話自己帶比較方便</span></span></label>
+      <label class="check" data-id="l2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗衣刷</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">如果覺得有需要</span></span></label>
+      <label class="check" data-id="l3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">洗衣袋</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">如果覺得有需要</span></span></label>
+      <label class="check" data-id="l4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">隨身洗衣機</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">如果真的懶得手洗又不嫌重的話…</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧺 洗完以後</div>
+    <div class="checks">
+      <label class="check" data-id="a1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">衣架 × 12</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">迷彩衣 × 2 ＋ 迷彩褲 × 2 ＋ 短褲 × 1 ＋ 毛巾 × 1 ＋ 雨衣 × 1 ＋ 雨褲 × 1 ＋［曬］迷彩內衣 × 1 ＋［曬］內褲 × 1 ＋［曬］襪子 × 1 ＋ 備用 × 1</span></span></label>
+      <label class="check" data-id="a2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">曬衣夾 × 6</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">迷彩內衣 × 1 ＋ 內褲 × 1 ＋ 襪子 × 2 ＋ 備用 × 2</span></span></label>
+      <label class="check" data-id="a3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">便利貼／標籤紙</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">貼在衣架上識別</span></span></label>
+      <label class="check" data-id="a4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">吹風機</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">吹頭髮</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧳 行李袋或後背包</div>
+    <div class="checks">
+      <label class="check" data-id="g1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">摺疊傘</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">遇到去程或回程下雨或遮陽用</span></span></label>
+      <label class="check" data-id="g2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">織品抗菌噴霧</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">類似風倍清的東西</span></span></label>
+      <label class="check" data-id="g3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">免洗抹布</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">有些寢具需要擦</span></span></label>
+      <label class="check" data-id="g4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">酒精</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">有些東西真的很髒</span></span></label>
+      <label class="check" data-id="g5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">降溫噴霧</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">天氣熱的時候噴還是有差的</span></span></label>
+      <label class="check" data-id="g6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">防蚊液</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">軍營的蚊子…離開前要噴</span></span></label>
+      <label class="check" data-id="g7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">爽身粉</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">抑汗使用，可灑一點在迷彩鞋，或是身上有需要擦</span></span></label>
+      <label class="check" data-id="g8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">鞋墊</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">皮鞋可能太硬</span></span></label>
+      <label class="check" data-id="g9"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">拖鞋</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">洗完澡穿</span></span></label>
+      <label class="check" data-id="g10"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">大包衛生紙</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">這應該不用解釋</span></span></label>
+      <label class="check" data-id="g11"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">延長線</span><span class="check-stars" title="推薦指數 3/3">★★★</span></span><span class="check-note">插頭少，推薦帶</span></span></label>
+      <label class="check" data-id="g12"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">止汗劑</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">汗至少會留少一點</span></span></label>
+      <label class="check" data-id="g13"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">保健食品</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+      <label class="check" data-id="g14"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">口罩</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">看個人需求</span></span></label>
+      <label class="check" data-id="g15"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">橡皮筋</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">突然需要綁東西的機會是有的</span></span></label>
+      <label class="check" data-id="g16"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">乾洗髮</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">早上或下午可以讓頭髮清爽點…</span></span></label>
+      <label class="check" data-id="g17"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">小枕頭</span><span class="check-stars" title="推薦指數 2/3">★★</span></span><span class="check-note">如果有確定會野營／睡個人帳的話必帶，不然幾乎不用睡</span></span></label>
+      <label class="check" data-id="g18"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">小剪刀</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">其實滿可能用到，不確定會不會被沒收</span></span></label>
+      <label class="check" data-id="g19"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">水瓶</span><span class="check-stars" title="推薦指數 1/3">★</span></span><span class="check-note">裡面會發，不過有個額外水瓶也不錯</span></span></label>
+    </div>
+  </div>
+
+  <p class="note">建議加入手機書籤，方便下次教召前對照勾選。</p>
+</div>
+<script>
+(function () {
+  var STORAGE_KEY = 'jiaozhaoPackingReview';
+  var labels = document.querySelectorAll('#callupr-app [data-id]');
+  var state = {};
+
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { state = {}; }
+
+  function refresh() {
+    var total = labels.length, checked = 0;
+    labels.forEach(function (lbl) {
+      var id = lbl.getAttribute('data-id');
+      var box = lbl.querySelector('input');
+      var on = !!state[id];
+      box.checked = on;
+      lbl.classList.toggle('done', on);
+      if (on) checked++;
+    });
+    document.getElementById('prog-count').textContent = checked + ' / ' + total;
+    document.getElementById('bar-fill').style.width = ((checked / Math.max(total, 1)) * 100) + '%';
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  labels.forEach(function (lbl) {
+    lbl.querySelector('input').addEventListener('change', function () {
+      state[lbl.getAttribute('data-id')] = this.checked;
+      refresh();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    state = {}; refresh();
+  });
+
+  refresh();
+}());
+</script>
