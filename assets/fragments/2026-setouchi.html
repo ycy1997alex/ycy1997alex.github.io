@@ -53,11 +53,9 @@
     box-sizing: border-box;
   }
 
-  /* 桌機橫向滿版：以負邊界撐出主題 90rem 容器 */
+  /* 桌機圓角。滿版寬度已改由全站 .container 負責，見 assets/css/custom.css */
   @media only screen and (min-width: 1024px) {
     .seto {
-      margin-left: calc((100% - min(96vw, 1720px)) / 2);
-      margin-right: calc((100% - min(96vw, 1720px)) / 2);
       border-radius: 28px;
     }
   }

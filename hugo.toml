@@ -39,6 +39,8 @@ since = 2023
 colorScheme = "auto"
 hideColorSchemeToggle = false
 maxSeeAlsoItems = 5
+# 主題樣式覆寫（在 coder.css 之後載入）
+customCSS = ["css/custom.css"]
 
 [[params.social]]
 name = "Github"

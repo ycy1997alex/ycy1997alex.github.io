@@ -1,0 +1,8 @@
+/* 桌機滿版：放寬 hugo-coder 固定 90rem (900px) 的內容欄。
+   導覽列、文章、列表頁、footer 共用同一個 .container，改這裡就整站生效。
+   .container 自帶的 margin: auto 與左右 2rem padding 維持不變。 */
+@media only screen and (min-width: 1024px) {
+  .container {
+    max-width: min(96vw, 1720px);
+  }
+}
