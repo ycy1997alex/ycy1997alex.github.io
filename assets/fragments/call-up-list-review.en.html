@@ -1,0 +1,445 @@
+<style>
+  .callupr, .callupr *::before, .callupr *::after { box-sizing: border-box; }
+
+  .callupr {
+    --bg: #f5f0e8;
+    --surface: #fffdf8;
+    --border: rgba(90,70,40,.15);
+    --text: #2a1f0f;
+    --muted: #7a6a55;
+    --accent: #8b3a1a;
+    --accent2: #4a6741;
+    --star: #c9971f;
+    --soft: rgba(139,58,26,.1);
+    --stripe: rgba(139,58,26,.04);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 18px 40px rgba(90,60,20,.08);
+    color: var(--text);
+    margin: 2.4rem auto 0;
+    max-width: 680px;
+    overflow: hidden;
+    padding: 1.25rem;
+  }
+  .colorscheme-dark .callupr {
+    --bg: #1a1510;
+    --surface: #231e17;
+    --border: rgba(200,180,140,.12);
+    --text: #ede5d8;
+    --muted: #a09080;
+    --accent: #d4724a;
+    --accent2: #7aaa6a;
+    --star: #e0b24a;
+    --soft: rgba(212,114,74,.12);
+    --stripe: rgba(212,114,74,.04);
+  }
+
+  .callupr * { box-sizing: border-box; }
+
+  /* ── Hero ── */
+  .callupr .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.25rem 1.5rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(90,60,20,.07);
+  }
+  .callupr .hero::before {
+    content: '📝';
+    position: absolute;
+    right: 1.4rem; top: 1.2rem;
+    font-size: 3.5rem;
+    opacity: .15;
+    pointer-events: none;
+  }
+  .callupr .hero-label {
+    font-size: 1.3rem;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .callupr .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: .5rem;
+  }
+  .callupr .hero-desc { color: var(--muted); font-size: 1.3rem; line-height: 1.6; }
+  .callupr .legend { color: var(--muted); font-size: 1.2rem; margin-top: .9rem; }
+  .callupr .legend .star { color: var(--star); }
+
+  /* ── Progress ── */
+  .callupr .progress-row {
+    display: flex; align-items: center; gap: .85rem;
+    margin: 1.2rem 0 .6rem;
+  }
+  .callupr .bar {
+    flex: 1; height: 8px; background: var(--soft);
+    border-radius: 999px; overflow: hidden;
+  }
+  .callupr .bar-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+  .callupr .progress-count { font-weight: 700; font-size: 1.3rem; white-space: nowrap; }
+
+  .callupr .toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.4rem;
+  }
+  .callupr .toolbar-hint { font-size: 1.2rem; color: var(--muted); }
+  .callupr .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-family: inherit;
+    padding: .55rem .95rem;
+    transition: border-color .2s, color .2s;
+  }
+  .callupr .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Section ── */
+  .callupr .section { margin-bottom: 1.8rem; }
+  .callupr .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: .65rem;
+    margin-bottom: .5rem;
+  }
+
+  /* Sub-group */
+  .callupr .sub-group {
+    background: var(--stripe);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: .65rem .75rem .45rem;
+    margin-bottom: .6rem;
+  }
+  .callupr .sub-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    padding-left: .1rem;
+  }
+
+  /* ── Checklist items ── */
+  .callupr .checks { display: grid; gap: .5rem; }
+  .callupr .check {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .9rem 1rem;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .callupr .check:hover { border-color: var(--accent); }
+  .callupr .check input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.55rem; height: 1.55rem;
+    margin-top: .1rem;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, border-color .15s;
+  }
+  .callupr .check input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .callupr .check input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 7px; height: 12px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(40deg);
+  }
+  .callupr .check-body { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+  .callupr .check-row { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  .callupr .check-title { font-size: 1.6rem; line-height: 1.45; }
+  .callupr .check-stars { color: var(--star); font-size: 1.2rem; letter-spacing: .05em; white-space: nowrap; }
+  .callupr .check-note { font-size: 1.2rem; color: var(--muted); line-height: 1.5; }
+  .callupr .check.done { background: var(--stripe); }
+  .callupr .check.done .check-title { color: var(--muted); text-decoration: line-through; }
+
+  .callupr .sub-group .check { background: var(--bg); }
+  .callupr .sub-group .check.done { opacity: .7; }
+
+  .callupr .note {
+    font-size: 1.3rem;
+    color: var(--muted);
+    margin-top: 1.4rem;
+    text-align: center;
+    padding-bottom: .5rem;
+  }
+
+  /* ── 桌機：解除 680px 卡片上限、清單改多欄。每項含標題＋星等＋備註，欄數比 callup 少一級 ── */
+  @media (min-width: 1024px) {
+    .callupr { max-width: none; padding: 2rem; }
+    .callupr .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1280px) { .callupr .checks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>
+<p>A post-service review of everything worth packing for reserve call-up training, with a recommendation rating and a note on how each item actually held up. Ticks are saved on this device.</p>
+
+<div class="callupr" id="callupr-app">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Military Call-up · After Action Review</div>
+    <h2>🪖 Call-up Packing: What Was Actually Worth It</h2>
+    <p class="hero-desc">Written up after the training finished. Every item carries a recommendation rating and a note on how it went, ready for next time.</p>
+    <p class="legend"><span class="star">★★★</span> Definitely bring&#12288;<span class="star">★★</span> Depends on you&#12288;<span class="star">★</span> Take it or leave it</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <div class="bar"><span class="bar-fill" id="bar-fill"></span></div>
+    <span class="progress-count" id="prog-count">0 / 0</span>
+  </div>
+  <div class="toolbar">
+    <span class="toolbar-hint">Ticks are saved on this device</span>
+    <button class="reset-btn" id="reset-btn" type="button">Clear all</button>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📋 Essentials</div>
+    <div class="checks">
+      <label class="check" data-id="e1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Original call-up order</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Required at check-in</span></span></label>
+      <label class="check" data-id="e2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Original proof of workplace</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Required at check-in</span></span></label>
+      <label class="check" data-id="e3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Personal seal (or a thumbprint)</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Required to collect the allowance</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪖 What to wear</div>
+    <div class="checks">
+      <label class="check" data-id="w1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">T-shirt</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Keep it light — you sweat the moment you walk in</span></span></label>
+      <label class="check" data-id="w2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Lightweight trousers</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Keep it light — you sweat the moment you walk in</span></span></label>
+      <label class="check" data-id="w3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Jacket</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Doubles as a blanket or a pillow if you need one</span></span></label>
+      <label class="check" data-id="w4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Trainers</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Light ones</span></span></label>
+      <label class="check" data-id="w5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Socks you don't mind ruining</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Thick enough, or you will absolutely get blisters</span></span></label>
+      <label class="check" data-id="w6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Underwear you don't mind ruining</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Easy to wash is best (disposable ones also work)</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💳 On you</div>
+    <div class="checks">
+      <label class="check" data-id="b1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Glasses</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Be prepared for them to pick up scratches</span></span></label>
+      <label class="check" data-id="b2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Phone</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">One should be enough???</span></span></label>
+      <label class="check" data-id="b3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Non-smart watch</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For telling the time</span></span></label>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">👛 Wallet</div>
+      <div class="checks">
+      <label class="check" data-id="bw1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">National ID card</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For identification: check-in and collecting the allowance</span></span></label>
+      <label class="check" data-id="bw2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Health insurance card</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Needed if you get referred to a hospital</span></span></label>
+      <label class="check" data-id="bw3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">EasyCard / iPASS ×1</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">A credit card with EasyCard built in is the easy option for the on-base convenience store</span></span></label>
+      <label class="check" data-id="bw4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Driving licence</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Not sure it is ever needed</span></span></label>
+      <label class="check" data-id="bw5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">NT$1,500 in cash</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="bw6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">One credit card</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="bw7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">One debit card</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">👖 In the camo shirt or trousers</div>
+      <div class="checks">
+      <label class="check" data-id="bp1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pocket tissues</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">You really need these for wiping your face</span></span></label>
+      <label class="check" data-id="bp2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pocket toilet paper</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">FamilyMart's travel-pack soft tissue — your backside will thank you</span></span></label>
+      <label class="check" data-id="bp3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pocket wet wipes</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Bring plenty, you get through them fast</span></span></label>
+      <label class="check" data-id="bp4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Lozenges / chocolate / sweets</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Having something to chew makes the waiting less dull</span></span></label>
+      <label class="check" data-id="bp5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pocket notebook</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For writing things down</span></span></label>
+      <label class="check" data-id="bp6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Disposable cutlery</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Worth carrying a set in case something happens to your chopsticks</span></span></label>
+      <label class="check" data-id="bp7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pen ×1</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">They should issue one, but bring a spare anyway</span></span></label>
+      <label class="check" data-id="bp8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Chopstick sleeve</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">For the chopsticks the army issues you</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">🎒 Day bag</div>
+      <div class="checks">
+      <label class="check" data-id="bc1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Waterproof day bag</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For books, or the three things below</span></span></label>
+      <label class="check" data-id="bc2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Things to pass the time</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Books (reckon one per two days, and you can swap with others), vocabulary books, sudoku, a small chess set… group life means a lot of waiting around</span></span></label>
+      <label class="check" data-id="bc3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Biscuits / dry rations</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Sometimes the food really is bad</span></span></label>
+      <label class="check" data-id="bc4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Sports drink powder sachets</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Skip these if sports drinks are on sale there</span></span></label>
+      </div>
+    </div>
+    <div class="sub-group">
+      <div class="sub-title">🔌 Electronics pouch</div>
+      <div class="checks">
+      <label class="check" data-id="be1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Wired earphones</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">So the person next to you can't tell what you are doing on your phone</span></span></label>
+      <label class="check" data-id="be2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Power bank</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Charge it to full whenever you get the chance</span></span></label>
+      <label class="check" data-id="be3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Charging cable</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Obviously</span></span></label>
+      <label class="check" data-id="be4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Charger</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Obviously</span></span></label>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💊 Medicine pouch</div>
+    <div class="checks">
+      <label class="check" data-id="m1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Everyday oral medicine</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Put that many people together and someone catches a cold</span></span></label>
+      <label class="check" data-id="m2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Propolis spray / oral gel</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For mouth ulcers</span></span></label>
+      <label class="check" data-id="m3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Wound ointment</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Get an antibiotic one, for blisters and small cuts</span></span></label>
+      <label class="check" data-id="m4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Plasters</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Bring extra — cover a cut, or use them as padding</span></span></label>
+      <label class="check" data-id="m5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Insect bite cream</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">The mosquitoes on base…</span></span></label>
+      <label class="check" data-id="m6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Micropore tape</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">You will use it more than you expect: tape a hand, tape a foot, even hold your glasses in place on the range</span></span></label>
+      <label class="check" data-id="m7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Pain relief patches</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">After the range, after too much walking, after a rough work detail</span></span></label>
+      <label class="check" data-id="m8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Knee support</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">Personal preference</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪮 Grooming pouch</div>
+    <div class="checks">
+      <label class="check" data-id="d1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Razor</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">The stubble still has to go</span></span></label>
+      <label class="check" data-id="d2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Nail clippers</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">You will want them by the second week</span></span></label>
+      <label class="check" data-id="d3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Small mirror</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="d4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Comb</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="d5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Nose hair trimmer</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="d6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Ear pick</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">Personal preference</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">💤 Sleep pouch</div>
+    <div class="checks">
+      <label class="check" data-id="s1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Earplugs (bring spares)</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">One pair for the range (they get filthy), one or two for sleeping</span></span></label>
+      <label class="check" data-id="s2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Eye mask</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Otherwise the lights wake you</span></span></label>
+      <label class="check" data-id="s3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Torch</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Otherwise you will trip over something</span></span></label>
+      <label class="check" data-id="s4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Glasses case</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Somewhere to put them at night</span></span></label>
+      <label class="check" data-id="s5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Eye drops</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">There is a lot of dust</span></span></label>
+      <label class="check" data-id="s6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Hand cream</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Use it before bed or your hands crack</span></span></label>
+      <label class="check" data-id="s7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Body lotion</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For your face or your body</span></span></label>
+      <label class="check" data-id="s8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Face cream</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">👕 Clothing</div>
+    <div class="checks">
+      <label class="check" data-id="c1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Shorts ×2</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">One for after the shower and sleeping, one for outdoors</span></span></label>
+      <label class="check" data-id="c2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Underwear ×2</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">To wash and rotate, or just bring 14 disposable pairs</span></span></label>
+      <label class="check" data-id="c3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Thick socks ×2</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Worth bringing if you double up</span></span></label>
+      <label class="check" data-id="c4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">T-shirt ×1</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">More of a just-in-case</span></span></label>
+      <label class="check" data-id="c5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Lightweight trousers ×1</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">More of a just-in-case</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🪥 Toothbrush case</div>
+    <div class="checks">
+      <label class="check" data-id="t1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Toothbrush</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Unless you plan not to brush</span></span></label>
+      <label class="check" data-id="t2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Toothpaste</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Unless you plan not to brush</span></span></label>
+      <label class="check" data-id="t3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Floss picks</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Unless you plan not to brush</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧴 Shower supplies</div>
+    <div class="checks">
+      <label class="check" data-id="sh1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Shampoo</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">A 3-in-1 covers it, but there is no need to rough it that much</span></span></label>
+      <label class="check" data-id="sh2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Body wash</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">A 3-in-1 covers it, but there is no need to rough it that much</span></span></label>
+      <label class="check" data-id="sh3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Face wash</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">A 3-in-1 covers it, but there is no need to rough it that much</span></span></label>
+      <label class="check" data-id="sh4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Dish soap</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Bring a travel-size one</span></span></label>
+      <label class="check" data-id="sh5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Hand soap</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">A travel-size one is worth having</span></span></label>
+      <label class="check" data-id="sh6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Towel</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">One is issued, but you might get a horrifying one</span></span></label>
+      <label class="check" data-id="sh7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Shower caddy</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Handy for carrying everything to the washroom</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧼 Laundry supplies</div>
+    <div class="checks">
+      <label class="check" data-id="l1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Laundry soap / hand-wash detergent</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Easier to bring your own if you are washing by hand</span></span></label>
+      <label class="check" data-id="l2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Laundry brush</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">If you think you need it</span></span></label>
+      <label class="check" data-id="l3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Laundry bag</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">If you think you need it</span></span></label>
+      <label class="check" data-id="l4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Portable washing machine</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">If you really cannot face hand-washing and don't mind the weight…</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧺 After washing</div>
+    <div class="checks">
+      <label class="check" data-id="a1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Coat hangers ×12</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Camo shirts ×2 + camo trousers ×2 + shorts ×1 + towel ×1 + rain jacket ×1 + rain trousers ×1 + [drying] camo undershirt ×1 + [drying] underwear ×1 + [drying] socks ×1 + spare ×1</span></span></label>
+      <label class="check" data-id="a2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Clothes pegs ×6</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Camo undershirt ×1 + underwear ×1 + socks ×2 + spare ×2</span></span></label>
+      <label class="check" data-id="a3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Sticky notes / labels</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Stick them on the hangers so you can tell yours apart</span></span></label>
+      <label class="check" data-id="a4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Hair dryer</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For drying your hair</span></span></label>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🧳 Duffel bag or backpack</div>
+    <div class="checks">
+      <label class="check" data-id="g1"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Folding umbrella</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For rain or sun on the way in and out</span></span></label>
+      <label class="check" data-id="g2"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Fabric antibacterial spray</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Something along the lines of Febreze</span></span></label>
+      <label class="check" data-id="g3"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Disposable cloths</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Some of the bedding needs wiping down</span></span></label>
+      <label class="check" data-id="g4"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Alcohol</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">Some things really are filthy</span></span></label>
+      <label class="check" data-id="g5"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Cooling spray</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">It does make a difference when it is hot</span></span></label>
+      <label class="check" data-id="g6"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Insect repellent</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">The mosquitoes on base… spray before you head out</span></span></label>
+      <label class="check" data-id="g7"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Talcum powder</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For sweat — a little in the camo boots, or wherever else you need it</span></span></label>
+      <label class="check" data-id="g8"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Insoles</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">The issued shoes can be too stiff</span></span></label>
+      <label class="check" data-id="g9"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Slippers</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">For after the shower</span></span></label>
+      <label class="check" data-id="g10"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Large pack of toilet paper</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">This one needs no explanation</span></span></label>
+      <label class="check" data-id="g11"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Extension lead</span><span class="check-stars" title="Recommendation 3/3">★★★</span></span><span class="check-note">There are few sockets, so bring one</span></span></label>
+      <label class="check" data-id="g12"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Antiperspirant</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">At least you will sweat a bit less</span></span></label>
+      <label class="check" data-id="g13"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Supplements</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="g14"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Face masks</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Personal preference</span></span></label>
+      <label class="check" data-id="g15"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Rubber bands</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">You do end up needing to tie something</span></span></label>
+      <label class="check" data-id="g16"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Dry shampoo</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Freshens your hair up in the morning or afternoon…</span></span></label>
+      <label class="check" data-id="g17"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Small pillow</span><span class="check-stars" title="Recommendation 2/3">★★</span></span><span class="check-note">Essential if you know you are camping or in an individual tent, otherwise you barely sleep anyway</span></span></label>
+      <label class="check" data-id="g18"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Small scissors</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">Genuinely useful, though they might be confiscated</span></span></label>
+      <label class="check" data-id="g19"><input type="checkbox"><span class="check-body"><span class="check-row"><span class="check-title">Water bottle</span><span class="check-stars" title="Recommendation 1/3">★</span></span><span class="check-note">One is issued, but a spare is nice</span></span></label>
+    </div>
+  </div>
+
+  <p class="note">Bookmark this page so it is easy to check against before the next call-up.</p>
+</div>
+<script>
+(function () {
+  var STORAGE_KEY = 'jiaozhaoPackingReview';
+  var labels = document.querySelectorAll('#callupr-app [data-id]');
+  var state = {};
+
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { state = {}; }
+
+  function refresh() {
+    var total = labels.length, checked = 0;
+    labels.forEach(function (lbl) {
+      var id = lbl.getAttribute('data-id');
+      var box = lbl.querySelector('input');
+      var on = !!state[id];
+      box.checked = on;
+      lbl.classList.toggle('done', on);
+      if (on) checked++;
+    });
+    document.getElementById('prog-count').textContent = checked + ' / ' + total;
+    document.getElementById('bar-fill').style.width = ((checked / Math.max(total, 1)) * 100) + '%';
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  labels.forEach(function (lbl) {
+    lbl.querySelector('input').addEventListener('change', function () {
+      state[lbl.getAttribute('data-id')] = this.checked;
+      refresh();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    state = {}; refresh();
+  });
+
+  refresh();
+}());
+</script>

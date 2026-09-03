@@ -1,0 +1,467 @@
+<style>
+  .callup, .callup *::before, .callup *::after { box-sizing: border-box; }
+
+  .callup {
+    --bg: #f5f0e8;
+    --surface: #fffdf8;
+    --border: rgba(90,70,40,.15);
+    --text: #2a1f0f;
+    --muted: #7a6a55;
+    --accent: #8b3a1a;
+    --accent2: #4a6741;
+    --soft: rgba(139,58,26,.1);
+    --soft2: rgba(74,103,65,.12);
+    --stripe: rgba(139,58,26,.04);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 18px 40px rgba(90,60,20,.08);
+    color: var(--text);
+    margin: 2.4rem auto 0;
+    max-width: 680px;
+    overflow: hidden;
+    padding: 1.25rem;
+  }
+  .colorscheme-dark .callup {
+    --bg: #1a1510;
+    --surface: #231e17;
+    --border: rgba(200,180,140,.12);
+    --text: #ede5d8;
+    --muted: #a09080;
+    --accent: #d4724a;
+    --accent2: #7aaa6a;
+    --soft: rgba(212,114,74,.12);
+    --soft2: rgba(122,170,106,.12);
+    --stripe: rgba(212,114,74,.04);
+  }
+
+  .callup * { box-sizing: border-box; }
+
+  /* ── Hero ── */
+  .callup .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.25rem 1.5rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(90,60,20,.07);
+  }
+  .callup .hero::before {
+    content: '🪖';
+    position: absolute;
+    right: 1.4rem; top: 1.2rem;
+    font-size: 3.5rem;
+    opacity: .15;
+    pointer-events: none;
+  }
+  .callup .hero-label {
+    font-size: 1.3rem;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .callup .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: .5rem;
+  }
+  .callup .hero-desc { color: var(--muted); font-size: 1.3rem; line-height: 1.6; }
+  .callup .review-link {
+    display: inline-block;
+    margin-top: .85rem;
+    font-size: 1.2rem;
+    color: var(--accent2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent2);
+  }
+  .callup .review-link:hover { opacity: .8; }
+
+  /* ── Stats ── */
+  .callup .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+    margin-top: 1.2rem;
+  }
+  @media (min-width: 480px) { .callup .stats { grid-template-columns: repeat(4, 1fr); } }
+  .callup .stat {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem;
+  }
+  .callup .stat span { display: block; font-size: 1.2rem; color: var(--muted); margin-bottom: .2rem; }
+  .callup .stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+
+  /* ── Progress ── */
+  .callup .progress-row {
+    display: flex; align-items: center; gap: .85rem;
+    margin: 1.2rem 0 .6rem;
+  }
+  .callup .bar {
+    flex: 1; height: 8px; background: var(--soft);
+    border-radius: 999px; overflow: hidden;
+  }
+  .callup .bar-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+  .callup .progress-count { font-weight: 700; font-size: 1.3rem; white-space: nowrap; }
+
+  .callup .toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.4rem;
+  }
+  .callup .toolbar-hint { font-size: 1.2rem; color: var(--muted); }
+  .callup .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-family: inherit;
+    padding: .55rem .95rem;
+    transition: border-color .2s, color .2s;
+  }
+  .callup .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Section ── */
+  .callup .section { margin-bottom: 1.8rem; }
+  .callup .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: .65rem;
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .callup .section-title.green {
+    color: var(--accent2);
+    border-left-color: var(--accent2);
+  }
+
+  /* Sub-group (巢狀包包) */
+  .callup .sub-group {
+    background: var(--stripe);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: .65rem .75rem .45rem;
+    margin-bottom: .6rem;
+  }
+  .callup .sub-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    padding-left: .1rem;
+  }
+
+  /* ── Checklist items ── */
+  .callup .checks { display: grid; gap: .5rem; }
+  .callup .check {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .9rem 1rem;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .callup .check:hover { border-color: var(--accent); }
+  .callup .check input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.55rem; height: 1.55rem;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, border-color .15s;
+  }
+  .callup .check input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .callup .check input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 7px; height: 12px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(40deg);
+  }
+  .callup .check span { font-size: 1.6rem; line-height: 1.45; }
+  .callup .check.done { background: var(--stripe); }
+  .callup .check.done span { color: var(--muted); text-decoration: line-through; }
+
+  /* sub-group 裡的 check 背景略暗 */
+  .callup .sub-group .check { background: var(--bg); }
+  .callup .sub-group .check.done { opacity: .7; }
+
+  .callup .note {
+    font-size: 1.3rem;
+    color: var(--muted);
+    margin-top: 1.4rem;
+    text-align: center;
+    padding-bottom: .5rem;
+  }
+
+  /* ── 桌機：解除 680px 卡片上限、清單改多欄（單欄拉到 1680px 會太空） ── */
+  @media (min-width: 1024px) {
+    .callup { max-width: none; padding: 2rem; }
+    .callup .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1280px) { .callup .checks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1600px) { .callup .checks { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+</style>
+<p>A packing checklist for Taiwanese Air Force reserve call-up training, grouped into what to wear, what to carry, the backpack and the duffel bag. Ticks are saved on this device.</p>
+
+<div class="callup" id="callup-app">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Military Call-up · Air Force Reserve</div>
+    <h2>🪖 Packing Checklist</h2>
+    <p class="hero-desc">Work through what to wear, what to carry on the way in, and the duffel bag. Ticks are saved on this device.</p>
+    <a class="review-link" href="../call-up-list-review/">📝 Already been through it? See what was actually worth bringing →</a>
+    <div class="stats">
+      <div class="stat"><span>Worn</span><strong id="stat-wear">0/0</strong></div>
+      <div class="stat"><span>On you</span><strong id="stat-body">0/0</strong></div>
+      <div class="stat"><span>Backpack</span><strong id="stat-bag">0/0</strong></div>
+      <div class="stat"><span>Duffel bag</span><strong id="stat-luggage">0/0</strong></div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <div class="bar"><span class="bar-fill" id="bar-fill"></span></div>
+    <span class="progress-count" id="prog-count">0 / 0</span>
+  </div>
+  <div class="toolbar">
+    <span class="toolbar-hint">Ticks are saved on this device</span>
+    <button class="reset-btn" id="reset-btn" type="button">Clear all</button>
+  </div>
+
+  <!-- ── Worn ── -->
+  <div class="section">
+    <div class="section-title">👕 What to wear</div>
+    <div class="checks">
+      <label class="check" data-id="w1" data-group="wear"><input type="checkbox"><span>T-shirt</span></label>
+      <label class="check" data-id="w2" data-group="wear"><input type="checkbox"><span>Lightweight trousers</span></label>
+      <label class="check" data-id="w3" data-group="wear"><input type="checkbox"><span>Trainers</span></label>
+      <label class="check" data-id="w4" data-group="wear"><input type="checkbox"><span>Socks you don't mind ruining</span></label>
+      <label class="check" data-id="w5" data-group="wear"><input type="checkbox"><span>Underwear you don't mind ruining</span></label>
+      <label class="check" data-id="w6" data-group="wear"><input type="checkbox"><span>(Cap)</span></label>
+    </div>
+  </div>
+
+  <!-- ── On you ── -->
+  <div class="section">
+    <div class="section-title green">🪪 On the way in · on you</div>
+    <div class="checks">
+      <label class="check" data-id="b1" data-group="body"><input type="checkbox"><span>Glasses</span></label>
+      <label class="check" data-id="b2" data-group="body"><input type="checkbox"><span>Phone</span></label>
+      <label class="check" data-id="b3" data-group="body"><input type="checkbox"><span>Non-smart watch</span></label>
+      <label class="check" data-id="b4" data-group="body"><input type="checkbox"><span>National ID card</span></label>
+      <label class="check" data-id="b5" data-group="body"><input type="checkbox"><span>Health insurance card</span></label>
+      <label class="check" data-id="b6" data-group="body"><input type="checkbox"><span>Driving licence</span></label>
+      <label class="check" data-id="b7" data-group="body"><input type="checkbox"><span>NT$1,500 in cash</span></label>
+      <label class="check" data-id="b8" data-group="body"><input type="checkbox"><span>One credit card</span></label>
+      <label class="check" data-id="b9" data-group="body"><input type="checkbox"><span>One debit card</span></label>
+    </div>
+  </div>
+
+  <!-- ── Backpack ── -->
+  <div class="section">
+    <div class="section-title green">🎒 On the way in · backpack</div>
+    <div class="checks">
+      <label class="check" data-id="p1" data-group="bag"><input type="checkbox"><span>Original call-up order</span></label>
+      <label class="check" data-id="p2" data-group="bag"><input type="checkbox"><span>Original proof of workplace</span></label>
+      <label class="check" data-id="p3" data-group="bag"><input type="checkbox"><span>Personal seal (or use a thumbprint)</span></label>
+      <label class="check" data-id="p4" data-group="bag"><input type="checkbox"><span>Power bank</span></label>
+      <label class="check" data-id="p5" data-group="bag"><input type="checkbox"><span>Charging cable</span></label>
+      <label class="check" data-id="p6" data-group="bag"><input type="checkbox"><span>Charger</span></label>
+      <label class="check" data-id="p7" data-group="bag"><input type="checkbox"><span>Folding umbrella</span></label>
+      <label class="check" data-id="p8" data-group="bag"><input type="checkbox"><span>Water bottle</span></label>
+      <label class="check" data-id="p9" data-group="bag"><input type="checkbox"><span>Wired earphones</span></label>
+      <label class="check" data-id="p10" data-group="bag"><input type="checkbox"><span>Glasses case</span></label>
+      <label class="check" data-id="p11" data-group="bag"><input type="checkbox"><span>Supplements</span></label>
+      <label class="check" data-id="p12" data-group="bag"><input type="checkbox"><span>Face masks</span></label>
+      <label class="check" data-id="p13" data-group="bag"><input type="checkbox"><span>Pocket tissues</span></label>
+      <label class="check" data-id="p14" data-group="bag"><input type="checkbox"><span>Pocket wet wipes</span></label>
+      <label class="check" data-id="p15" data-group="bag"><input type="checkbox"><span>Fabric antibacterial spray</span></label>
+      <label class="check" data-id="p16" data-group="bag"><input type="checkbox"><span>Alcohol</span></label>
+      <label class="check" data-id="p17" data-group="bag"><input type="checkbox"><span>Throat lozenges</span></label>
+      <label class="check" data-id="p18" data-group="bag"><input type="checkbox"><span>Cooling spray</span></label>
+      <label class="check" data-id="p19" data-group="bag"><input type="checkbox"><span>Insect repellent</span></label>
+      <label class="check" data-id="p20" data-group="bag"><input type="checkbox"><span>Bite cream</span></label>
+      <label class="check" data-id="p21" data-group="bag"><input type="checkbox"><span>Disposable cutlery</span></label>
+      <label class="check" data-id="p22" data-group="bag"><input type="checkbox"><span>Pens ×3</span></label>
+      <label class="check" data-id="p23" data-group="bag"><input type="checkbox"><span>Pocket notebook</span></label>
+      <label class="check" data-id="p24" data-group="bag"><input type="checkbox"><span>Sticky notes</span></label>
+    </div>
+
+    <!-- Medicine pouch -->
+    <div class="sub-group" style="margin-top:.75rem">
+      <div class="sub-title">💊 Medicine pouch</div>
+      <div class="checks">
+        <label class="check" data-id="pm1" data-group="bag"><input type="checkbox"><span>Everyday medicine</span></label>
+        <label class="check" data-id="pm2" data-group="bag"><input type="checkbox"><span>Topical ointment</span></label>
+        <label class="check" data-id="pm3" data-group="bag"><input type="checkbox"><span>Plasters</span></label>
+      </div>
+    </div>
+
+    <!-- Grooming pouch -->
+    <div class="sub-group">
+      <div class="sub-title">🧴 Grooming pouch</div>
+      <div class="checks">
+        <label class="check" data-id="pl1" data-group="bag"><input type="checkbox"><span>Nail clippers</span></label>
+        <label class="check" data-id="pl2" data-group="bag"><input type="checkbox"><span>Nose hair trimmer</span></label>
+        <label class="check" data-id="pl3" data-group="bag"><input type="checkbox"><span>Ear pick</span></label>
+        <label class="check" data-id="pl4" data-group="bag"><input type="checkbox"><span>Small mirror</span></label>
+        <label class="check" data-id="pl5" data-group="bag"><input type="checkbox"><span>Razor</span></label>
+        <label class="check" data-id="pl6" data-group="bag"><input type="checkbox"><span>Comb</span></label>
+      </div>
+    </div>
+
+    <!-- Sleep pouch -->
+    <div class="sub-group">
+      <div class="sub-title">😴 Sleep pouch</div>
+      <div class="checks">
+        <label class="check" data-id="ps1" data-group="bag"><input type="checkbox"><span>Earplugs</span></label>
+        <label class="check" data-id="ps2" data-group="bag"><input type="checkbox"><span>Eye mask</span></label>
+        <label class="check" data-id="ps3" data-group="bag"><input type="checkbox"><span>Torch</span></label>
+        <label class="check" data-id="ps4" data-group="bag"><input type="checkbox"><span>Eye drops</span></label>
+        <label class="check" data-id="ps5" data-group="bag"><input type="checkbox"><span>Hand cream</span></label>
+        <label class="check" data-id="ps6" data-group="bag"><input type="checkbox"><span>Body lotion</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Duffel bag ── -->
+  <div class="section">
+    <div class="section-title">🧳 On the way in · duffel bag</div>
+    <div class="checks">
+      <label class="check" data-id="l1" data-group="luggage"><input type="checkbox"><span>(Optional, bring your own) camo undershirts ×3</span></label>
+      <label class="check" data-id="l2" data-group="luggage"><input type="checkbox"><span>T-shirts ×2</span></label>
+      <label class="check" data-id="l3" data-group="luggage"><input type="checkbox"><span>Shorts ×2</span></label>
+      <label class="check" data-id="l4" data-group="luggage"><input type="checkbox"><span>Underwear ×3</span></label>
+      <label class="check" data-id="l5" data-group="luggage"><input type="checkbox"><span>Thick socks ×3</span></label>
+      <label class="check" data-id="l6" data-group="luggage"><input type="checkbox"><span>Small pillow</span></label>
+      <label class="check" data-id="l7" data-group="luggage"><input type="checkbox"><span>Coat hangers ×6</span></label>
+      <label class="check" data-id="l8" data-group="luggage"><input type="checkbox"><span>Clothes pegs ×6</span></label>
+      <label class="check" data-id="l9" data-group="luggage"><input type="checkbox"><span>Hair dryer</span></label>
+      <label class="check" data-id="l10" data-group="luggage"><input type="checkbox"><span>Insoles</span></label>
+      <label class="check" data-id="l11" data-group="luggage"><input type="checkbox"><span>Slippers</span></label>
+      <label class="check" data-id="l12" data-group="luggage"><input type="checkbox"><span>Towel</span></label>
+      <label class="check" data-id="l13" data-group="luggage"><input type="checkbox"><span>Knee support</span></label>
+      <label class="check" data-id="l14" data-group="luggage"><input type="checkbox"><span>Pain relief patches</span></label>
+      <label class="check" data-id="l15" data-group="luggage"><input type="checkbox"><span>Antiperspirant</span></label>
+      <label class="check" data-id="l16" data-group="luggage"><input type="checkbox"><span>Face cream</span></label>
+      <label class="check" data-id="l17" data-group="luggage"><input type="checkbox"><span>Propolis spray</span></label>
+      <label class="check" data-id="l18" data-group="luggage"><input type="checkbox"><span>Mouth ulcer gel</span></label>
+      <label class="check" data-id="l19" data-group="luggage"><input type="checkbox"><span>Large pack of tissues</span></label>
+      <label class="check" data-id="l20" data-group="luggage"><input type="checkbox"><span>Spare tissues</span></label>
+      <label class="check" data-id="l21" data-group="luggage"><input type="checkbox"><span>Spare wet wipes</span></label>
+      <label class="check" data-id="l22" data-group="luggage"><input type="checkbox"><span>Extension lead</span></label>
+      <label class="check" data-id="l23" data-group="luggage"><input type="checkbox"><span>Clips</span></label>
+      <label class="check" data-id="l24" data-group="luggage"><input type="checkbox"><span>Rubber bands</span></label>
+      <label class="check" data-id="l25" data-group="luggage"><input type="checkbox"><span>Biscuits / dry rations</span></label>
+      <label class="check" data-id="l26" data-group="luggage"><input type="checkbox"><span>Chocolate / sweets</span></label>
+      <label class="check" data-id="l27" data-group="luggage"><input type="checkbox"><span>Drinks</span></label>
+    </div>
+
+    <!-- Toothbrush case -->
+    <div class="sub-group" style="margin-top:.75rem">
+      <div class="sub-title">🪥 Toothbrush case</div>
+      <div class="checks">
+        <label class="check" data-id="lt1" data-group="luggage"><input type="checkbox"><span>Toothbrush</span></label>
+        <label class="check" data-id="lt2" data-group="luggage"><input type="checkbox"><span>Toothpaste</span></label>
+        <label class="check" data-id="lt3" data-group="luggage"><input type="checkbox"><span>Dental floss</span></label>
+      </div>
+    </div>
+
+    <!-- Shower bag -->
+    <div class="sub-group">
+      <div class="sub-title">🚿 Shower bag</div>
+      <div class="checks">
+        <label class="check" data-id="lb1" data-group="luggage"><input type="checkbox"><span>3-in-1 body wash</span></label>
+        <label class="check" data-id="lb2" data-group="luggage"><input type="checkbox"><span>Face wash</span></label>
+        <label class="check" data-id="lb3" data-group="luggage"><input type="checkbox"><span>Dish soap</span></label>
+      </div>
+    </div>
+
+    <!-- Laundry bag -->
+    <div class="sub-group">
+      <div class="sub-title">🧺 Laundry bag</div>
+      <div class="checks">
+        <label class="check" data-id="lw1" data-group="luggage"><input type="checkbox"><span>Laundry soap</span></label>
+        <label class="check" data-id="lw2" data-group="luggage"><input type="checkbox"><span>Laundry brush</span></label>
+        <label class="check" data-id="lw3" data-group="luggage"><input type="checkbox"><span>Laundry bag</span></label>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Bookmark this page on the phone so it is easy to tick items off.</p>
+</div>
+<script>
+(function () {
+  var STORAGE_KEY = 'jiaozhaoPacking';
+  var groups = { wear: 'stat-wear', body: 'stat-body', bag: 'stat-bag', luggage: 'stat-luggage' };
+  var labels = document.querySelectorAll('[data-id]');
+  var state = {};
+
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { state = {}; }
+
+  function refresh() {
+    var total = labels.length, checked = 0;
+    var gc = {}, gt = {};
+    labels.forEach(function (lbl) {
+      var id = lbl.getAttribute('data-id');
+      var g = lbl.getAttribute('data-group');
+      var box = lbl.querySelector('input');
+      var on = !!state[id];
+      box.checked = on;
+      lbl.classList.toggle('done', on);
+      if (on) { checked++; gc[g] = (gc[g] || 0) + 1; }
+      gt[g] = (gt[g] || 0) + 1;
+    });
+    document.getElementById('prog-count').textContent = checked + ' / ' + total;
+    document.getElementById('bar-fill').style.width = ((checked / Math.max(total, 1)) * 100) + '%';
+    Object.keys(groups).forEach(function (g) {
+      var el = document.getElementById(groups[g]);
+      if (el) el.textContent = (gc[g] || 0) + '/' + (gt[g] || 0);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  labels.forEach(function (lbl) {
+    lbl.querySelector('input').addEventListener('change', function () {
+      state[lbl.getAttribute('data-id')] = this.checked;
+      refresh();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    state = {}; refresh();
+  });
+
+  refresh();
+}());
+</script>

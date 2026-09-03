@@ -1,9 +1,9 @@
 ---
-title: "教召攜帶物品清單"
+title: "Reserve Call-up Packing Checklist"
 date: 2026-05-27
 authors: ["Alex Yu"]
-summary: "空軍教召攜帶物品確認清單，依穿戴、身上、背包與行李分類勾選。"
-description: "空軍教召攜帶物品確認清單，依穿戴、身上、背包與行李分類勾選。"
+summary: "A packing checklist for Taiwanese Air Force reserve call-up training, grouped into what to wear, what to carry, the backpack and the duffel bag."
+description: "A packing checklist for Taiwanese Air Force reserve call-up training, grouped into what to wear, what to carry, the backpack and the duffel bag."
 ---
 
-{{< webapp "call-up-list.html" >}}
+{{< webapp "call-up-list.en.html" >}}
