@@ -1,5 +1,6 @@
 ---
 title: "About"
+description: "Algorithm engineer in physiological signal analysis, medical AI and statistics. MSc Brain Science (NYCU); BS Aeronautics and Psychology (NCKU)."
 ---
 
 Hello, I'm Alex!
@@ -12,9 +13,9 @@ Hello, I'm Alex!
 
 ---
 
-# WORK EXPERIENCE
+## WORK EXPERIENCE
 
-#### **2022/06 ~ 2023/06**
+### **2022/06 ~ 2023/06**
 
 **R&D Engineer @ Hermes Advanced Therapy Systems (HATS)**
 
@@ -26,9 +27,9 @@ Sleep-related R&D & PM Assistant:
 
 ---
 
-# EDUCATION
+## EDUCATION
 
-#### **February 2020 ~ January 2022**
+### **February 2020 ~ January 2022**
 
 **National Yang Ming Chiao Tung University (NYCU) @ Taipei, Taiwan**
 
@@ -36,7 +37,7 @@ Sleep-related R&D & PM Assistant:
 - Thesis: Phase Modulation of Resting-State fMRI Signal and Its Application to Schizophrenia
 - Advisor: Prof. **[Albert Chih-Chieh Yang](https://scholar.google.com/citations?user=ii3jdz0AAAAJ)**, MD, PhD (served at Taipei Veterans General Hospital)
 
-#### **September 2015 ~ January 2020**
+### **September 2015 ~ January 2020**
 
 **National Cheng Kung University (NCKU) @ Tainan, Taiwan**
 
@@ -46,7 +47,7 @@ Sleep-related R&D & PM Assistant:
 
 ---
 
-# SKILLS
+## SKILLS
 
 ### Multivariate Statistical Analysis & Data Visualization `Proficient`
 
@@ -85,23 +86,23 @@ Sleep-related R&D & PM Assistant:
 
 ---
 
-# AWARDS/SCHOLARSHIPS
+## AWARDS/SCHOLARSHIPS
 
-#### **2020 | National Yang Ming Chiao Tung University**
+### **2020 | National Yang Ming Chiao Tung University**
 
 - Mr. Samuel Yin Freshman Merit Scholarship
 
-#### **2020 | Ministry of Science and Technology**
+### **2020 | Ministry of Science and Technology**
 
 - College Student Research Creativity Award (for 2019)
 
-#### **2016 | National Cheng Kung University**
+### **2016 | National Cheng Kung University**
 
 - Academic Excellence Award (freshman year)
 
 ---
 
-# CONFERENCE PAPER
+## CONFERENCE PAPER
 
 1. _**Chun-Yen Yu**_, Shih-Jen Tsai, Albert Chih-Chieh Yang, "Phase modulation of resting-state fMRI BOLD signal in cases of schizophrenia with medication", 2021 Society of Neuroscience (SfN), Chicago, USA
 
@@ -113,15 +114,15 @@ Sleep-related R&D & PM Assistant:
 
 ---
 
-# EXPERIENCE IN CLUBS/STUDENT ORGANIZATIONS
+## EXPERIENCE IN CLUBS/STUDENT ORGANIZATIONS
 
-#### **2017/08 ~ 2018/07**
+### **2017/08 ~ 2018/07**
 
 Executive Secretary @ United Departmental Student Association of NCKU
 
 - Administrative support
 
-#### **2016/08 ~ 2017/07**
+### **2016/08 ~ 2017/07**
 
 **Vice President** @ Departmental Student Association of Aeronautics and Astronautics of NCKU
 
@@ -129,7 +130,7 @@ Executive Secretary @ United Departmental Student Association of NCKU
 - Facilitated inter-association activities
 - Managed academic affairs & equipment
 
-#### **2016/08 ~ 2018/07**
+### **2016/08 ~ 2018/07**
 
 **Vice Captain** @ Table Tennis Team of Aeronautics and Astronautics of NCKU
 

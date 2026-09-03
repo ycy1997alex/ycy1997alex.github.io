@@ -1,8 +1,28 @@
 ---
 title: "專案"
+description: "研究與工程專案：睡眠品質預測、顱內出血分類、肺炎偵測、2D-SLAM 物件辨識與無人機設計。"
 ---
 
-# 專案經驗
+## 近期作品
+
+### **2026/08 ~ 進行中** `寫作／開源`
+
+iThome 2026 鐵人賽 — 三個介面，一套工作流？30 天 Claude 跨領域實戰
+<!-- TODO: 換成鐵人賽系列頁網址 -->
+
+- 每天一篇，寫 claude.ai、Claude Desktop 與 Claude Code 在研究、Office 自動化與資料工作流上的實際使用
+- 相關程式碼、提示詞與產出物同步發布在 [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
+
+### **2026** `互動示範`
+
+[單檔互動示範頁](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/)
+
+- 飛機起飛與降落模擬、注意力測驗組、預設模式網路玻璃腦
+- 每一個都是單一 HTML 檔：CSS 與 JS 全部 inline，沒有建置步驟，也沒有外部相依
+
+---
+
+## 專案經驗
 
 ### **2023/02 ~ 2023/06** `專案`
 
@@ -18,7 +38,7 @@ title: "專案"
 
 ---
 
-# 學術專案經驗
+## 學術專案經驗
 
 ### **2020/07 ~ 2021/12** `個人專案`
 

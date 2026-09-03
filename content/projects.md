@@ -1,8 +1,29 @@
 ---
 title: "Projects"
+description: "Research and engineering projects: sleep quality prediction, intracranial haemorrhage classification, pneumonia detection and 2D-SLAM object recognition."
 ---
 
-# PROJECT EXPERIENCE
+## RECENT WORK
+
+### **2026/08 ~ present** `Writing / Open Source`
+
+iThome 2026 Ironman Contest — 30 days of cross-domain work with Claude
+<!-- TODO: 換成鐵人賽系列頁網址 -->
+
+
+- One article per day on using claude.ai, Claude Desktop and Claude Code across research, Office automation and data workflows
+- Supporting code, prompts and generated artifacts published to [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
+
+### **2026** `Demos`
+
+[Single-file interactive explainers](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/)
+
+- Flight take-off and landing simulation, an attention test battery, and a default mode network glass brain
+- Each one is a single self-contained HTML file — inline CSS and JS, no build step, no external dependencies
+
+---
+
+## PROJECT EXPERIENCE
 
 ### **2023/02 ~ 2023/06** `Project`
 
@@ -18,7 +39,7 @@ Sleep Enhancement Service Process Planning and Development
 
 ---
 
-# RESEARCH PROJECT EXPERIENCE
+## RESEARCH PROJECT EXPERIENCE
 
 ### **2020/07 ~ 2021/12** `Side Project`
 
