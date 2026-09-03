@@ -14,6 +14,6 @@ LinkedIn: [chunyenyu1997](https://www.linkedin.com/in/chunyenyu1997/)
 
 GitHub: [ycy1997alex](https://github.com/ycy1997alex)
 
-![image alt](/images/AVATAR_FB.jpg)
+![Alex Yu](/images/AVATAR_FB.jpg)
 
 </div>
