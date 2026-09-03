@@ -1,7 +1,5 @@
 # GitHub Pages 自動部署：push 到 main 後由 Actions 建置 Hugo 並發布
 # 注意：此檔假設 Hugo 專案位於 repo 根目錄。
-# 若正式採用 Case_A，請把 Case_A/ 的內容移到 repo 根目錄，
-# 並把本檔放到 repo 的 .github/workflows/hugo.yml。
 name: Deploy Hugo site to Pages
 
 on:
