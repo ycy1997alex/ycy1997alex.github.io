@@ -6,4 +6,6 @@ summary: "廣島進、高松出的瀨戶內海五日行程 Web App，整合總�
 description: "廣島進、高松出的瀨戶內海五日行程 Web App，整合總覽、去回程打勾清單、入境規定與每日行程。"
 ---
 
+> **This post is in Traditional Chinese Only.**
+
 {{< webapp "2026-setouchi.html" >}}

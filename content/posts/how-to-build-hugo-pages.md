@@ -2,12 +2,14 @@
 title: "如何建立Hugo靜態網頁"
 date: 2023-07-23
 lastmod: 2026-08-31
-authors: ["尤俊硯"]
-series: ["網頁"]
+authors: ["Alex Yu"]
+series: ["Web"]
 tags: ["hugo", "Github Pages", "個人網頁", "靜態網頁", "部落格"]
 summary: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
 description: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
 ---
+
+> **This post is in Traditional Chinese Only.**
 
 > 這篇是大綱，內容之後會再補完整。
 
