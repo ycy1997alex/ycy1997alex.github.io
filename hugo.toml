@@ -31,9 +31,13 @@ author = "Alex Yu"
 description = "Alex Yu's personal website"
 keywords = "blog,developer,personal"
 info = ["Algorithm Development", "Software Engineer"]
-avatarURL = "images/fuji-odd-eyed-meow.jpg"
-# 社群分享預覽圖 (og:image / twitter:image)
-images = ["images/fuji-odd-eyed-meow.jpg"]
+# 首頁頭像不走 avatarURL：改由 layouts/_partials/home/avatar.html 覆寫 theme 的
+# partial，從 assets/images/fuji-odd-eyed-meow.jpg 產出 400px 的 WebP + JPEG。
+# 原圖 1024px/173KB 只會被畫成 200px，直接輸出等於白下載 5 倍像素。
+#
+# 社群分享預覽圖 (og:image / twitter:image)：人像 + 姓名 + 專長的名片卡，
+# 由 tools/make_og_card.py 產生。首頁頭像仍是那隻貓，兩者刻意不同。
+images = ["images/og-card.jpg"]
 dateFormat = "January 2, 2006"
 since = 2023
 colorScheme = "auto"

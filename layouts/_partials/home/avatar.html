@@ -1,0 +1,23 @@
+{{- /*
+  覆寫 theme 的 avatar partial。
+
+  原版直接輸出 static/ 底下的原圖（1024x1024, 173KB），但 CSS 只把它畫成
+  20rem = 200px，等於每次載入首頁都多下載約 5 倍的像素，而且沒有 width/height
+  會造成版面位移（CLS），alt 也只是 "avatar" 這種對螢幕閱讀器沒有意義的字。
+
+  改成從 assets/ 讀圖，交給 Hugo 產出 400px（200px 的 2x）的 WebP，
+  另外留一份 JPEG 給不支援 WebP 的瀏覽器。
+*/ -}}
+{{- with resources.Get "images/fuji-odd-eyed-meow.jpg" }}
+  {{- $jpg := .Resize "400x400 jpg q85" }}
+  {{- $webp := .Resize "400x400 webp q80" }}
+  <div class="avatar">
+    <picture>
+      <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+      <img src="{{ $jpg.RelPermalink }}"
+           width="{{ $jpg.Width }}" height="{{ $jpg.Height }}"
+           alt="{{ site.Params.author | default site.Title }}"
+           fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+{{- end }}
