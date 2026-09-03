@@ -1,0 +1,65 @@
+Copyright (c) 2023-2026 Alex Yu (尤俊硯)
+
+This repository holds two kinds of material, licensed differently.
+
+
+================================================================================
+1. SITE CONTENT — CC BY-NC 4.0
+================================================================================
+
+Applies to the written content of the site: everything under content/, and the
+text, wording and item lists inside the interactive pages in assets/fragments/.
+
+Licensed under the Creative Commons Attribution-NonCommercial 4.0 International
+License (CC BY-NC 4.0).
+
+    You are free to share and adapt this material, provided you give
+    appropriate credit and do not use it for commercial purposes.
+
+    Full text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+
+================================================================================
+2. SITE CODE — MIT
+================================================================================
+
+Applies to the code that builds and styles the site: layouts/, assets/css/,
+tools/, hugo.toml, the GitHub Actions workflow, and the HTML/CSS/JavaScript
+structure of the pages in assets/fragments/ and static/demo/.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+================================================================================
+3. EXCLUSIONS
+================================================================================
+
+Neither licence covers:
+
+  - Photographs of identifiable people, including
+    static/images/尤俊硯大頭貼-24.jpg, static/images/AVATAR_FB.jpg and the
+    share card static/images/og-card.jpg generated from them.
+    All rights reserved.
+
+  - assets/images/fuji-odd-eyed-meow.jpg. All rights reserved.
+
+  - themes/hugo-coder/, which is the hugo-coder theme by Luiz de Prá,
+    distributed under its own MIT License. See themes/hugo-coder/LICENSE.md.
