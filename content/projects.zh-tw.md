@@ -7,18 +7,25 @@ description: "研究與工程專案：睡眠品質預測、顱內出血分類、
 
 ### **2026/08 ~ 進行中** `寫作／開源`
 
-iThome 2026 鐵人賽 — 三個介面，一套工作流？30 天 Claude 跨領域實戰
-<!-- TODO: 換成鐵人賽系列頁網址 -->
+[iThome 2026 鐵人賽 — 三個介面，一套工作流？30 天 Claude 跨領域實戰](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)
 
 - 每天一篇，寫 claude.ai、Claude Desktop 與 Claude Code 在研究、Office 自動化與資料工作流上的實際使用
 - 相關程式碼、提示詞與產出物同步發布在 [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
 ### **2026** `互動示範`
 
-[單檔互動示範頁](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/)
+單檔互動示範頁（需要密碼，密碼寫在鐵人賽 [Day 5 的文章](https://ithelp.ithome.com.tw/articles/10403858)裡）
 
-- 飛機起飛與降落模擬、注意力測驗組、預設模式網路玻璃腦
+- [飛機起飛與降落模擬](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/flight-simulation/)
+- [注意力測驗組](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/attention-battery/)
+- [預設模式網路玻璃腦](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/dmn-glassbrain/)
 - 每一個都是單一 HTML 檔：CSS 與 JS 全部 inline，沒有建置步驟，也沒有外部相依
+
+### **2026** `提示詞示範`
+
+[台灣財經 YouTube 影片摘要規則書](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/prompt-yt-financial/)（需要密碼，密碼寫在鐵人賽 [Day 4 的文章](https://ithelp.ithome.com.tw/articles/10403715)裡）
+
+- 用一份結構化規則書驅動 NotebookLM，把多支財經影片整理成一份可直接分享的深度摘要，並附上三次獨立執行的結果供比較
 
 ---
 

@@ -7,19 +7,25 @@ description: "Research and engineering projects: sleep quality prediction, intra
 
 ### **2026/08 ~ present** `Writing / Open Source`
 
-iThome 2026 Ironman Contest — 30 days of cross-domain work with Claude
-<!-- TODO: 換成鐵人賽系列頁網址 -->
-
+[iThome 2026 Ironman Contest — 30 days of cross-domain work with Claude](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)
 
 - One article per day on using claude.ai, Claude Desktop and Claude Code across research, Office automation and data workflows
 - Supporting code, prompts and generated artifacts published to [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
 ### **2026** `Demos`
 
-[Single-file interactive explainers](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/)
+Single-file interactive explainers (password required — it is published in the series' [Day 5 article](https://ithelp.ithome.com.tw/articles/10403858))
 
-- Flight take-off and landing simulation, an attention test battery, and a default mode network glass brain
+- [Flight take-off and landing simulation](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/flight-simulation/)
+- [Attention test battery](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/attention-battery/)
+- [Default mode network glass brain](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/dmn-glassbrain/)
 - Each one is a single self-contained HTML file — inline CSS and JS, no build step, no external dependencies
+
+### **2026** `Prompt Demo`
+
+[Taiwanese finance YouTube summarisation rulebook](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/prompt-yt-financial/) (password required — it is published in the series' [Day 4 article](https://ithelp.ithome.com.tw/articles/10403715))
+
+- A structured rulebook drives NotebookLM to turn several finance videos into one shareable deep-dive summary, with three independent runs shown for comparison
 
 ---
 
