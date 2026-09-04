@@ -3,6 +3,10 @@ title = "Alex Yu"
 theme = "hugo-coder"
 defaultContentLanguage = "en"
 enableEmoji = true
+# front matter 沒寫時區的日期一律當成 +08:00。不設的話 Hugo 當成 UTC，
+# 於是當天發的文在台灣時間早上 8 點之前都算未來日期，而 buildFuture 預設
+# 是 false，那篇會整篇不建置；CI 跑在 UTC，等於線上直接看不到那篇。
+timeZone = "Asia/Taipei"
 
 [pagination]
 pagerSize = 20
