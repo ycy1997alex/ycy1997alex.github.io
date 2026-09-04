@@ -1,9 +1,20 @@
+<!-- 這個檔案由 tools/make_setouchi_fragment.py 產生，請勿手動編輯。
+     要改內容請改那支腳本再重跑，否則下次執行就會被蓋掉。 -->
 <style>
-  /* ──────────────────────────────────────────────
-     瀨戶內海行程 App
-     配色：內海藍（primary）＋ 夕燒珊瑚（secondary）
-     字級：1rem = 10px（主題 html 62.5%），最小 1.35rem = 13.5px
-     ────────────────────────────────────────────── */
+  /* ──────────────────────────────────────────────────────────────
+     瀨戶內海行程 App（2026-09 改版）
+
+     字級只有五級，而且每一處都明寫，不留任何繼承主題 1.8rem 的文字：
+       2.2rem / 22px  分頁主標
+       1.8rem / 18px  卡片標題
+       1.6rem / 16px  區塊小標
+       1.5rem / 15px  內文
+       1.3rem / 13px  註記、標籤、表格
+
+     主題把 html 設成 font-size: 62.5%，所以 1rem = 10px，改動前先確認這件事。
+     配色：內海藍（accent）＋ 夕燒珊瑚（accent2），另有五天各自的色碼 d1–d5，
+     那五色沿用互動地圖既有的一組，讓總覽、分日行程、地圖篩選對得起來。
+     ────────────────────────────────────────────────────────────── */
   .seto {
     --bg: #f7f9fb;
     --surface: #ffffff;
@@ -20,6 +31,8 @@
     --stripe: rgba(23, 85, 127, .045);
     --shadow: 0 18px 44px rgba(16, 46, 74, .10);
     --shadow-sm: 0 4px 14px rgba(16, 46, 74, .07);
+    --d1: #1C6E8C; --d2: #2E8B6F; --d3: #C08327; --d4: #C4452F; --d5: #5B4B8A;
+    --on-accent: #ffffff;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 24px;
@@ -34,7 +47,7 @@
     --surface: #1a232d;
     --sunk: #141d26;
     --border: rgba(160, 195, 225, .14);
-    --border-strong: rgba(160, 195, 225, .3);
+    --border-strong: rgba(160, 195, 225, .30);
     --text: #e9f1f8;
     --muted: #9db1c4;
     --accent: #6fb6e8;
@@ -44,2142 +57,1282 @@
     --soft2: rgba(242, 145, 106, .14);
     --stripe: rgba(111, 182, 232, .05);
     --shadow: 0 18px 44px rgba(0, 0, 0, .38);
-    --shadow-sm: 0 4px 14px rgba(0, 0, 0, .3);
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, .30);
+    /* 淺色那組直接放進深底會糊掉，換成同色相、明度拉高的一組 */
+    --d1: #5AA6C9; --d2: #5FB894; --d3: #D9A94E; --d4: #E8765A; --d5: #9182C4;
+    --on-accent: #0f151c;
   }
 
-  .seto *,
-  .seto *::before,
-  .seto *::after {
-    box-sizing: border-box;
-  }
-
-  /* 桌機圓角。滿版寬度已改由全站 .container 負責，見 assets/css/custom.css */
-  @media only screen and (min-width: 1024px) {
-    .seto {
-      border-radius: 28px;
-    }
-  }
+  .seto *, .seto *::before, .seto *::after { box-sizing: border-box; }
+  @media only screen and (min-width: 1024px) { .seto { border-radius: 28px; } }
 
   /* ── Hero ── */
   .seto-hero {
-    padding: 2.4rem 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    padding: 2.6rem 2rem 2.2rem;
     background:
       radial-gradient(120% 140% at 92% 0%, var(--soft2), transparent 46%),
       radial-gradient(110% 130% at 0% 0%, var(--soft), transparent 52%);
-    border-bottom: 1px solid var(--border);
   }
+  .seto-eyebrow { color: var(--accent); font-size: 1.3rem; font-weight: 700; letter-spacing: .16em; }
+  .seto-hero h2 { font-size: 2.2rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.35; margin: .7rem 0 .6rem; }
+  /* 行長不在這裡管：全站 .container 已經收到 768px（見 assets/css/custom.css）。
+     這裡再加 max-width 會變成雙重限制，而且 ch 量的是「0」的寬度、
+     中文字約 2ch，用在中文上會提早一半換行。 */
+  .seto-hero > p { color: var(--muted); font-size: 1.5rem; line-height: 1.7; margin: 0; }
 
-  .seto-eyebrow {
-    color: var(--accent);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-  }
+  .seto-rail { display: grid; gap: .7rem; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 1.8rem; }
+  .seto-rail > div { padding-top: .8rem; }
+  .seto-rail b { display: block; font-size: 1.3rem; font-weight: 700; }
+  .seto-rail span { display: block; font-size: 1.3rem; line-height: 1.5; margin-top: .2rem; }
 
-  .seto-hero h2 {
-    font-size: 3.2rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin: .8rem 0 .6rem;
-  }
-
-  .seto-hero > p {
-    color: var(--muted);
-    font-size: 1.8rem;
-    line-height: 1.7;
-    margin: 0;
-    max-width: 92rem;
-  }
-
-  .seto-stats {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 1.6rem;
-  }
-
-  .seto-stat {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
-    border-radius: 14px;
-    box-shadow: var(--shadow-sm);
-    padding: 1.1rem 1.2rem;
-  }
-
-  .seto-stat span {
-    color: var(--muted);
-    display: block;
-    font-size: 1.5rem;
-    margin-bottom: .3rem;
-  }
-
-  .seto-stat strong {
-    display: block;
-    font-size: 2.1rem;
-    font-weight: 700;
-    line-height: 1.35;
-  }
-
-  /* ── Tabs ── */
-  .seto-controls {
-    background: var(--bg); /* 不支援 color-mix 的瀏覽器用實色 */
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 1.5rem 1.1rem;
-    position: sticky;
-    top: 0;
-    z-index: 5;
-  }
-
-  .seto-tabs {
-    display: flex;
-    gap: .6rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-bottom: .2rem;
-  }
-
-  .seto-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .seto-tab {
-    background: var(--soft);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    color: var(--accent-ink);
-    cursor: pointer;
-    flex: 0 0 auto;
-    font-family: inherit;
-    font-size: 1.6rem;
-    font-weight: 700;
-    padding: .8rem 1.3rem;
-    transition: background .18s, color .18s, box-shadow .18s;
-  }
-
-  .seto-tab:hover {
-    background: color-mix(in srgb, var(--accent) 22%, transparent);
-  }
-
-  .seto-tab.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 6px 16px rgba(23, 85, 127, .28);
-    color: #fff;
-  }
-
-  .colorscheme-dark .seto-tab.active {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .4);
-    color: #0d1720;
-  }
-
+  /* ── 分頁列 ── */
   .seto-nav {
-    align-items: center;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-    margin-top: 1rem;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 1.1rem 0 1.1rem 2rem; position: sticky; top: 0; z-index: 5;
   }
-
-  .seto-btn {
-    background: transparent;
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    color: var(--text);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1.6rem;
-    font-weight: 700;
-    padding: .6rem 1.2rem;
-    transition: border-color .18s, color .18s, background .18s;
+  .seto-pills {
+    align-items: center; display: flex; flex-wrap: wrap; gap: .6rem; padding-right: 2rem;
   }
-
-  .seto-btn:hover {
-    background: var(--soft);
-    border-color: var(--accent);
-    color: var(--accent);
+  .seto-pill {
+    background: transparent; border: 1px solid var(--border); border-radius: 999px;
+    color: var(--muted); cursor: pointer; font-family: inherit; font-size: 1.3rem;
+    font-weight: 500; letter-spacing: .02em; padding: .5rem 1.3rem;
+    transition: border-color .2s, color .2s; white-space: nowrap;
   }
-
-  #seto-indicator {
-    color: var(--muted);
-    font-size: 1.6rem;
-    font-weight: 700;
-    white-space: nowrap;
+  .seto-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .seto-pill[aria-selected="true"] {
+    background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700;
   }
+  .seto-sep { background: var(--border); height: 1.5rem; margin: 0 .3rem; width: 1px; }
 
-  /* ── Panels ── */
-  .seto-viewport {
-    overflow: hidden;
-    touch-action: pan-y;
+  /* ── 面板 ── */
+  .seto-panel { padding: 2.2rem 2rem 2.8rem; }
+  .seto-panel[hidden] { display: none; }
+  .seto-panel > h3 {
+    font-size: 2.2rem; font-weight: 700; letter-spacing: -.01em;
+    line-height: 1.35; margin: 0 0 .6rem;
   }
-
-  .seto-track {
-    display: flex;
-    transition: transform .32s ease;
-    width: 1100%;
+  .seto-panel > h3 + p { color: var(--muted); font-size: 1.5rem; line-height: 1.7; margin: 0 0 1.6rem; }
+  .seto-h4 {
+    border-left: 3px solid var(--accent); color: var(--accent);
+    font-size: 1.6rem; font-weight: 700; line-height: 1.4; margin: 2.6rem 0 1rem; padding-left: .9rem;
   }
+  .seto-h4:first-child { margin-top: 0; }
+  .seto-h4 em { color: var(--muted); font-style: normal; font-weight: 500; }
 
-  .seto-panel {
-    flex: 0 0 9.0909091%;
-    max-width: 9.0909091%;
-    padding: 1.8rem 1.5rem 2.6rem;
+  /* ── 卡片 ── */
+  .seto-g3 { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .seto-g2 { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .seto-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: var(--shadow-sm); padding: 1.4rem 1.5rem;
   }
+  .seto-card .k { color: var(--muted); font-size: 1.3rem; line-height: 1.5; }
+  .seto-card .t { font-size: 1.8rem; font-weight: 700; line-height: 1.35; margin-top: .3rem; }
+  .seto-card .d { color: var(--muted); font-size: 1.3rem; line-height: 1.55; margin-top: .5rem; }
+  .seto-card ul { margin: .5rem 0 0; padding-left: 1.9rem; }
+  .seto-card li { color: var(--muted); font-size: 1.3rem; line-height: 1.65; }
 
-  .seto-panel h3 {
-    font-size: 2.6rem;
-    font-weight: 700;
-    line-height: 1.3;
-    margin: 0 0 .5rem;
+  /* ── 表格 ── */
+  .seto-tw {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; overflow-x: auto;
   }
-
-  .seto-lead {
-    color: var(--muted);
-    font-size: 1.8rem;
-    line-height: 1.7;
-    margin: 0;
-    max-width: 92rem;
-  }
-
-  .seto-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .6rem;
-    margin-top: 1.2rem;
-  }
-
-  .seto-chip {
-    background: var(--soft);
-    border-radius: 999px;
-    color: var(--accent-ink);
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: .45rem .95rem;
-  }
-
-  .seto-section {
-    margin-top: 2.4rem;
-  }
-
-  .seto-subhead {
-    align-items: center;
-    display: flex;
-    font-size: 2.2rem;
-    font-weight: 700;
-    gap: .7rem;
-    margin: 0 0 1rem;
-  }
-
-  .seto-subhead::before {
-    background: var(--accent);
-    border-radius: 3px;
-    content: '';
-    display: block;
-    height: 2rem;
-    width: 5px;
-  }
-
-  /* ── Cards ── */
-  .seto-grid,
-  .seto-stops {
-    display: grid;
-    gap: 1.2rem;
-    align-items: start;
-  }
-
-  /* 內容較長的卡片區塊固定單欄（總覽、入境與行李、伴手禮採買） */
-  .seto-grid.is-single {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .seto-card,
-  .seto-stop,
-  .seto-links-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    box-shadow: var(--shadow-sm);
-    transition: border-color .18s, box-shadow .18s;
-  }
-
-  .seto-card:hover,
-  .seto-stop:hover,
-  .seto-links-card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow);
-  }
-
-  .seto-card,
-  .seto-links-card {
-    padding: 1.4rem 1.5rem 1.5rem;
-  }
-
-  .seto-card h4,
-  .seto-links-card h4 {
-    align-items: baseline;
-    color: var(--text);
-    display: flex;
-    font-size: 2rem;
-    font-weight: 700;
-    gap: .6rem;
-    line-height: 1.4;
-    margin: 0 0 .7rem;
-  }
-
-  .seto-card h4::before,
-  .seto-links-card h4::before {
-    background: var(--accent2);
-    border-radius: 50%;
-    content: '';
-    flex: 0 0 auto;
-    height: .9rem;
-    width: .9rem;
-  }
-
-  .seto-card p {
-    color: var(--muted);
-    font-size: 1.7rem;
-    line-height: 1.75;
-    margin: 0;
-  }
-
-  .seto-card p + p {
-    margin-top: .8rem;
-  }
-
-  .seto-list {
-    margin: 0;
-    padding-left: 2rem;
-  }
-
-  .seto-list li {
-    font-size: 1.7rem;
-    line-height: 1.75;
-  }
-
-  .seto-list li + li {
-    margin-top: .6rem;
-  }
-
-  .seto-list li::marker {
-    color: var(--accent);
-  }
-
-  /* ── Route banner ── */
-  .seto-route {
-    background: var(--soft);
-    border: 1px solid var(--border);
-    border-left: 5px solid var(--accent);
-    border-radius: 16px;
-    font-size: 1.7rem;
-    line-height: 1.85;
-    margin-top: 1.6rem;
-    padding: 1.3rem 1.5rem;
-  }
-
-  .seto-route strong {
-    color: var(--accent);
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    margin-bottom: .5rem;
-  }
-
-  /* ── Stops (details) ── */
-  .seto-stop {
-    overflow: hidden;
-  }
-
-  .seto-stop summary {
-    align-items: center;
-    cursor: pointer;
-    display: grid;
-    gap: .8rem;
-    grid-template-columns: 1fr auto auto;
-    list-style: none;
-    padding: 1.3rem 1.4rem;
-  }
-
-  .seto-stop summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .seto-stop summary::after {
-    border-bottom: 2px solid var(--muted);
-    border-right: 2px solid var(--muted);
-    content: '';
-    display: block;
-    height: .9rem;
-    transform: rotate(45deg) translate(-.2rem, -.2rem);
-    transition: transform .2s ease;
-    width: .9rem;
-  }
-
-  .seto-stop[open] summary::after {
-    transform: rotate(-135deg) translate(-.2rem, -.2rem);
-  }
-
-  .seto-stop-title strong {
-    display: block;
-    font-size: 1.9rem;
-    font-weight: 700;
-    line-height: 1.4;
-  }
-
-  .seto-stop-title small {
-    color: var(--muted);
-    display: block;
-    font-size: 1.5rem;
-    line-height: 1.5;
-    margin-top: .2rem;
-  }
-
-  .seto-type {
-    background: var(--soft2);
-    border-radius: 999px;
-    color: var(--accent2);
-    font-size: 1.35rem;
-    font-weight: 700;
-    padding: .35rem .8rem;
-    white-space: nowrap;
-  }
-
-  .seto-stop-body {
-    border-top: 1px solid var(--border);
-    padding: 1.2rem 1.4rem 1.4rem;
-  }
-
-  .seto-stop-body > p {
-    color: var(--muted);
-    font-size: 1.7rem;
-    line-height: 1.75;
-    margin: 0 0 .8rem;
-  }
-
-  .seto-stop-body > p b {
-    color: var(--text);
-  }
-
-  .seto-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .6rem;
-    margin-top: 1rem;
-  }
-
-  .seto-links a {
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    color: var(--accent);
-    font-size: 1.45rem;
-    font-weight: 700;
-    padding: .45rem .95rem;
-    text-decoration: none;
-    transition: background .18s, border-color .18s;
-  }
-
-  .seto-links a:hover {
-    background: var(--soft);
-    border-color: var(--accent);
-  }
-
-  .seto-note {
-    color: var(--muted);
-    font-size: 1.6rem;
-    line-height: 1.7;
-    margin-top: 1.4rem;
-  }
-
-  /* ── Tip callout ── */
-  .seto-tip {
-    background: var(--soft2);
-    border: 1px solid var(--border);
-    border-left: 5px solid var(--accent2);
-    border-radius: 16px;
-    font-size: 1.7rem;
-    line-height: 1.8;
-    margin-top: 1.6rem;
-    padding: 1.3rem 1.5rem;
-  }
-
-  .seto-tip b {
-    color: var(--accent2);
-    margin-right: .4rem;
-  }
-
-  /* ── Tables ── */
-  .seto-tablewrap {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    box-shadow: var(--shadow-sm);
-    overflow-x: auto;
-  }
-
-  .seto-table {
-    border-collapse: collapse;
-    font-size: 1.6rem;
-    min-width: 100%;
-    white-space: nowrap;
-  }
-
-  .seto-table th,
-  .seto-table td {
-    border-bottom: 1px solid var(--border);
-    line-height: 1.6;
-    padding: .95rem 1.2rem;
-    text-align: left;
-  }
-
+  .seto-table { border-collapse: collapse; font-size: 1.3rem; min-width: 100%; width: 100%; }
+  .seto-table thead tr { background: var(--sunk); }
   .seto-table th {
-    background: var(--soft);
-    color: var(--accent);
-    font-size: 1.55rem;
-    font-weight: 700;
+    border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 700;
+    padding: .9rem 1.2rem; text-align: left; white-space: nowrap;
   }
+  .seto-table td { border-bottom: 1px solid var(--border); line-height: 1.6; padding: .9rem 1.2rem; vertical-align: top; }
+  .seto-table tbody tr:last-child td { border-bottom: 0; }
+  .seto-table tbody tr:nth-child(even) { background: var(--stripe); }
+  .seto-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-  .seto-table tbody tr:nth-child(even) {
-    background: var(--stripe);
+  /* ── 天別列 ── */
+  .seto-rows { display: flex; flex-direction: column; gap: .7rem; }
+  .seto-row {
+    align-items: center; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; display: flex; gap: 1.3rem; padding: 1.1rem 1.4rem;
   }
+  .seto-row .d { flex: 0 0 7.4rem; font-size: 1.3rem; font-weight: 700; }
+  .seto-row .t { flex: 1 1 auto; font-size: 1.5rem; font-weight: 700; }
+  .seto-row .m { color: var(--muted); font-size: 1.3rem; text-align: right; }
 
-  .seto-table tr:last-child td {
-    border-bottom: none;
+  /* ── 標籤 ── */
+  .seto-tag { border-radius: 4px; font-size: 1.3rem; font-weight: 700; padding: .1rem .6rem; white-space: nowrap; }
+  .seto-tag.warn { background: var(--soft2); color: var(--accent2); }
+  .seto-tag.info { background: var(--soft); color: var(--accent); }
+
+  /* ── 分日行程手風琴 ── */
+  .seto-acc { display: flex; flex-direction: column; gap: .8rem; }
+  .seto-day { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .seto-day > summary {
+    align-items: center; cursor: pointer; display: flex; gap: 1.3rem;
+    list-style: none; padding: 1.3rem 1.5rem;
   }
+  .seto-day > summary::-webkit-details-marker { display: none; }
+  .seto-day > summary:hover { background: var(--stripe); }
+  /* 這欄放的是「D1　9/24（四）」完整日期，7.4rem 會把（四）擠到第二行 */
+  .seto-day > summary .d { flex: 0 0 10.6rem; font-size: 1.3rem; font-weight: 700; white-space: nowrap; }
+  .seto-day > summary .t { flex: 1 1 auto; font-size: 1.6rem; font-weight: 700; }
+  .seto-day > summary .m { color: var(--muted); font-size: 1.3rem; text-align: right; }
+  .seto-day > summary .chev { color: var(--muted); flex: 0 0 1.6rem; transition: transform .2s; }
+  .seto-day[open] > summary { background: var(--sunk); }
+  .seto-day[open] > summary .chev { transform: rotate(180deg); }
+  .seto-daybody { border-top: 1px solid var(--border); padding: .4rem 1.5rem 1.6rem; }
 
-  .seto-table td.wrap {
-    min-width: 18rem;
-    white-space: normal;
+  .seto-route {
+    align-items: center; background: var(--sunk); border-radius: 8px; color: var(--muted);
+    display: flex; flex-wrap: wrap; font-size: 1.3rem; gap: .6rem; line-height: 1.6;
+    margin-top: 1.2rem; padding: .9rem 1.2rem;
   }
+  .seto-route i { color: var(--border-strong); font-style: normal; }
 
-  /* ── Checklist ── */
+  .seto-spot { background: var(--sunk); border-radius: 10px; margin-top: .8rem; padding: 1.2rem 1.4rem; }
+  .seto-spot h5 { display: inline; font-size: 1.6rem; font-weight: 700; margin: 0; }
+  .seto-spot .when { color: var(--muted); font-size: 1.3rem; margin-left: .8rem; }
+  .seto-spot p { color: var(--muted); font-size: 1.3rem; line-height: 1.65; margin: .4rem 0 0; }
+  .seto-daybody ul { margin: .6rem 0 0; padding-left: 1.9rem; }
+  .seto-daybody li { color: var(--muted); font-size: 1.3rem; line-height: 1.7; }
+  .seto-daybody li b { color: var(--text); }
+
+  .seto-dayfoot {
+    align-items: center; border-top: 1px dashed var(--border); display: flex; flex-wrap: wrap;
+    gap: 1.4rem; margin-top: 1.6rem; padding-top: 1.2rem;
+  }
+  .seto-gotomap {
+    align-items: center; background: transparent; border: 0; color: var(--accent); cursor: pointer;
+    display: inline-flex; font-family: inherit; font-size: 1.3rem; font-weight: 700; gap: .5rem; padding: 0;
+  }
+  .seto-gotomap:hover { color: var(--accent-ink); text-decoration: underline; }
+  .seto-dayfoot .meal { align-items: center; color: var(--muted); display: inline-flex; font-size: 1.3rem; gap: .5rem; }
+
+  /* ── 互動地圖 ── */
+  .seto-mapchips { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.2rem; }
+  .seto-mapwrap {
+    border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-sm);
+    display: grid; grid-template-columns: 23.2rem minmax(0, 1fr); overflow: hidden;
+  }
+  .seto-mapside {
+    background: var(--sunk); border-right: 1px solid var(--border);
+    height: 46rem; overflow-y: auto; padding: 1.1rem;
+  }
+  .seto-mapday { align-items: center; display: flex; gap: .7rem; margin: 1.2rem .2rem .6rem; }
+  .seto-mapday:first-child { margin-top: 0; }
+  .seto-mapday b { font-size: 1.3rem; font-weight: 700; }
+  .seto-mapday i { border-radius: 50%; flex: 0 0 .8rem; height: .8rem; }
+  .seto-mapcard {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; margin-bottom: .6rem; padding: .9rem 1.1rem; transition: border-color .15s, transform .15s;
+    width: 100%; text-align: left; font-family: inherit;
+  }
+  .seto-mapcard:hover { border-color: var(--accent); transform: translateX(2px); }
+  /* 這三個是 <span>，不宣告 display:block 會擠成一行、margin 也吃不到 */
+  .seto-mapcard .t { display: block; font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .seto-mapcard .n { display: block; font-size: 1.5rem; font-weight: 700; line-height: 1.35; margin: .1rem 0 .2rem; }
+  .seto-mapcard .x { color: var(--muted); display: block; font-size: 1.3rem; line-height: 1.45; }
+  .seto-map { background: var(--sunk); height: 46rem; position: relative; }
+  /* 手機上先蓋一層遮罩，點過才把地圖拖曳打開。
+     不這樣做的話，單指滑到地圖就會被地圖吃掉、整頁捲不動；
+     但直接關掉 dragging 又會讓地圖完全推不動（Leaflet 的雙指是縮放，不是平移）。 */
+  .seto-mapgate {
+    align-items: center; background: rgba(15, 21, 28, .45); color: #fff; cursor: pointer;
+    display: none; font-size: 1.5rem; font-weight: 700; inset: 0; justify-content: center;
+    position: absolute; z-index: 500;
+  }
+  .seto-mapgate span {
+    background: rgba(15, 21, 28, .78); border-radius: 999px; padding: .9rem 1.8rem;
+  }
+  .seto-map.gated .seto-mapgate { display: flex; }
+  .seto-map .leaflet-popup-content { font-family: inherit; margin: 1.2rem 1.4rem; }
+  .seto-pop .h { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+  .seto-pop .m { color: #5b7185; font-size: 1.3rem; margin: .2rem 0 .6rem; }
+  .seto-pop .x { font-size: 1.3rem; line-height: 1.5; }
+  .seto-pop .btns { display: flex; gap: .6rem; margin-top: .9rem; }
+  .seto-pop a { background: #17557f; border-radius: 5px; color: #fff; font-size: 1.3rem; padding: .4rem .9rem; text-decoration: none; }
+  .seto-pop a.alt { background: #fff; border: 1px solid #17557f; color: #17557f; }
+  .seto-pin {
+    align-items: center; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.35);
+    color: #fff; display: flex; font-size: 1.2rem; font-weight: 700; height: 100%; justify-content: center; width: 100%;
+  }
+  .seto-mapload { align-items: center; color: var(--muted); display: flex; font-size: 1.3rem; height: 100%; justify-content: center; }
+
+  /* ── 規定橫條 ── */
+  .seto-rules { display: flex; flex-direction: column; }
+  .seto-rule {
+    align-items: flex-start; background: var(--surface); border: 1px solid var(--border);
+    display: flex; gap: 1.1rem; padding: 1.1rem 1.4rem;
+  }
+  .seto-rule + .seto-rule { border-top: 0; }
+  .seto-rule:first-child { border-radius: 10px 10px 0 0; }
+  .seto-rule:last-child { border-radius: 0 0 10px 10px; }
+  .seto-rule:only-child { border-radius: 10px; }
+  .seto-rule b { display: block; font-size: 1.5rem; line-height: 1.5; }
+  .seto-rule p { color: var(--muted); font-size: 1.3rem; line-height: 1.6; margin: .2rem 0 0; }
+
+  .seto-callout {
+    align-items: flex-start; background: var(--surface); border: 1px solid var(--accent);
+    border-radius: 12px; box-shadow: var(--shadow-sm); display: flex; gap: 1.2rem; padding: 1.4rem 1.5rem;
+  }
+  .seto-callout svg { color: var(--accent); flex: 0 0 2rem; margin-top: .2rem; }
+  .seto-callout b { display: block; font-size: 1.6rem; font-weight: 700; line-height: 1.4; }
+  .seto-callout p { color: var(--muted); font-size: 1.3rem; line-height: 1.6; margin: .3rem 0 0; }
+
+  /* ── 行前檢查時間軸 ── */
+  .seto-when {
+    align-items: flex-start; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; display: flex; gap: 1.3rem; padding: 1.3rem 1.5rem;
+  }
+  .seto-when > .w { flex: 0 0 7.4rem; font-size: 1.3rem; font-weight: 700; }
+  .seto-when > div:last-child { flex: 1 1 auto; }
+  .seto-when b { display: block; font-size: 1.6rem; font-weight: 700; line-height: 1.4; }
+  .seto-when p { color: var(--muted); font-size: 1.3rem; line-height: 1.65; margin: .3rem 0 0; }
+  .seto-when a { font-size: 1.3rem; font-weight: 700; }
+
+  /* ── 勾選清單 ── */
   .seto-progress {
-    align-items: center;
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    align-items: center; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; display: flex; gap: 1.3rem; padding: 1.3rem 1.5rem;
   }
-
-  .seto-bar {
-    background: var(--sunk);
-    border-radius: 999px;
-    flex: 1;
-    height: 1rem;
-    overflow: hidden;
+  .seto-bar { background: var(--soft); border-radius: 999px; flex: 1 1 auto; height: .7rem; overflow: hidden; }
+  .seto-bar i { background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 999px; display: block; height: 100%; transition: width .35s ease; }
+  .seto-count { font-size: 1.6rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .seto-reset {
+    background: transparent; border: 1px solid var(--border); border-radius: 999px; color: var(--muted);
+    cursor: pointer; font-family: inherit; font-size: 1.3rem; padding: .4rem 1.1rem; white-space: nowrap;
   }
-
-  .seto-fill {
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 999px;
-    display: block;
-    height: 100%;
-    transition: width .35s ease;
-    width: 0;
+  .seto-reset:hover { border-color: var(--accent2); color: var(--accent2); }
+  .seto-groupstats { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .9rem; }
+  .seto-groupstat {
+    background: var(--sunk); border-radius: 999px; color: var(--muted); font-size: 1.3rem;
+    font-weight: 700; padding: .4rem 1.1rem;
   }
-
-  .seto-count {
-    font-size: 1.8rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  .seto-hint {
-    color: var(--muted);
-    font-size: 1.5rem;
-  }
-
-  .seto-group {
-    margin-top: 2.2rem;
-  }
-
-  .seto-group-title {
-    align-items: center;
-    display: flex;
-    font-size: 2.1rem;
-    font-weight: 700;
-    gap: .7rem;
-    color: var(--accent);
-  }
-
-  .seto-group-title::before {
-    background: var(--accent);
-    border-radius: 3px;
-    content: '';
-    display: block;
-    height: 1.9rem;
-    width: 5px;
-  }
-
-  .seto-group-hint {
-    color: var(--muted);
-    font-size: 1.5rem;
-    line-height: 1.6;
-    margin: .4rem 0 .9rem 1.2rem;
-  }
-
-  .seto-sub {
-    background: var(--sunk);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    margin-bottom: .9rem;
-    padding: 1rem 1.1rem 1.1rem;
-  }
-
-  .seto-sub-title {
-    color: var(--muted);
-    font-size: 1.7rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    margin-bottom: .8rem;
-  }
-
-  .seto-checks {
-    display: grid;
-    gap: .7rem;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
+  .seto-groupstat b { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .seto-groupstat.full { background: var(--soft); color: var(--accent); }
+  .seto-sub { font-size: 1.6rem; font-weight: 700; margin: 2.2rem 0 .2rem; }
+  .seto-sub span { color: var(--muted); font-size: 1.3rem; font-weight: 500; }
+  .seto-subsub { color: var(--muted); font-size: 1.3rem; margin: 1.1rem 0 0; }
+  .seto-checkgrid { display: grid; gap: .6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: .8rem; }
   .seto-check {
-    align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    gap: .9rem;
-    padding: .9rem 1.1rem;
-    transition: border-color .15s, background .15s;
+    align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; display: flex; font-size: 1.3rem; gap: .8rem; line-height: 1.4;
+    min-height: 4.4rem; padding: .8rem 1rem; user-select: none;
   }
+  .seto-check:hover { border-color: var(--accent); }
+  .seto-check input { accent-color: var(--accent); flex: 0 0 1.5rem; height: 1.5rem; margin: 0; width: 1.5rem; }
+  .seto-check.done { background: var(--sunk); color: var(--muted); }
+  .seto-check.done span { text-decoration: line-through; }
 
-  .seto-check:hover {
-    border-color: var(--accent);
-  }
 
-  .seto-check input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent;
-    border: 2px solid var(--border-strong);
-    border-radius: 6px;
-    cursor: pointer;
-    flex: 0 0 auto;
-    height: 2rem;
-    margin: 0;
-    position: relative;
-    transition: background .15s, border-color .15s;
-    width: 2rem;
-  }
+  /* ── 說明條 ── */
+  .seto-note { background: var(--soft); border-radius: 10px; font-size: 1.3rem; line-height: 1.75; margin-top: 1.4rem; padding: 1.2rem 1.4rem; }
+  .seto-note b { color: var(--accent); }
+  .seto-note + .seto-note { margin-top: .8rem; }
 
-  .seto-check input[type="checkbox"]:checked {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .seto-check input[type="checkbox"]:checked::after {
-    border: 2px solid #fff;
-    border-left: none;
-    border-top: none;
-    content: '';
-    height: 1.1rem;
-    left: .5rem;
-    position: absolute;
-    top: .1rem;
-    transform: rotate(42deg);
-    width: .6rem;
-  }
-
-  .colorscheme-dark .seto-check input[type="checkbox"]:checked::after {
-    border-color: #0d1720;
-  }
-
-  .seto-check span {
-    font-size: 1.7rem;
-    line-height: 1.5;
-  }
-
-  .seto-check.done {
-    background: var(--stripe);
-  }
-
-  .seto-check.done span {
-    color: var(--muted);
-    text-decoration: line-through;
-  }
-
-  /* ── Breakpoints ── */
-  @media only screen and (min-width: 768px) {
-    .seto-hero {
-      padding: 3rem 2.2rem 2.4rem;
-    }
-
-    .seto-hero h2 {
-      font-size: 4rem;
-    }
-
-    .seto-controls {
-      padding-left: 2.2rem;
-      padding-right: 2.2rem;
-    }
-
-    .seto-panel {
-      padding: 2.4rem 2.2rem 3.2rem;
-    }
-
-    .seto-panel h3 {
-      font-size: 3rem;
-    }
-
-    .seto-stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .seto-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .seto-checks {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media only screen and (min-width: 900px) {
-    .seto-stops {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media only screen and (min-width: 1100px) {
-    .seto-hero {
-      padding: 3.4rem 3rem 2.8rem;
-    }
-
-    .seto-controls {
-      padding-left: 3rem;
-      padding-right: 3rem;
-    }
-
-    .seto-panel {
-      padding: 3rem 3rem 4rem;
-    }
-
-    .seto-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .seto-checks {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media only screen and (min-width: 1280px) {
-    .seto-stops {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  /* ── 手機 ── */
+  @media only screen and (max-width: 768px) {
+    .seto { border-radius: 18px; }
+    .seto-hero { padding: 2rem 1.5rem 1.8rem; }
+    .seto-hero h2 { font-size: 2rem; }
+    .seto-nav { padding: 1rem 0 1rem 1.5rem; }
+    .seto-pills { flex-wrap: nowrap; overflow-x: auto; padding-right: 1.5rem; -webkit-overflow-scrolling: touch; }
+    .seto-panel { padding: 1.8rem 1.5rem 2.2rem; }
+    .seto-panel > h3 { font-size: 2rem; }
+    /* 五天骨幹在窄螢幕改直排，橫排五格會擠成一坨 */
+    .seto-rail { grid-template-columns: 1fr; gap: .5rem; }
+    .seto-rail > div { border-top: 0 !important; border-left: 3px solid; padding: .2rem 0 .2rem .9rem; }
+    .seto-rail > div:nth-child(1) { border-left-color: var(--d1); }
+    .seto-rail > div:nth-child(2) { border-left-color: var(--d2); }
+    .seto-rail > div:nth-child(3) { border-left-color: var(--d3); }
+    .seto-rail > div:nth-child(4) { border-left-color: var(--d4); }
+    .seto-rail > div:nth-child(5) { border-left-color: var(--d5); }
+    .seto-rail b, .seto-rail span { display: inline; }
+    .seto-rail span::before { content: "　"; }
+    .seto-g3, .seto-g2 { grid-template-columns: 1fr; }
+    .seto-checkgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .seto-row, .seto-day > summary { flex-wrap: wrap; }
+    .seto-row .m, .seto-day > summary .m { flex: 1 1 100%; text-align: left; }
+    .seto-when { flex-wrap: wrap; }
+    .seto-mapwrap { grid-template-columns: 1fr; }
+    .seto-mapside { border-bottom: 1px solid var(--border); border-right: 0; height: 24rem; }
+    .seto-map { height: 38rem; }
   }
 </style>
-<p>2026/09/24-28 廣島進、高松出的瀨戶內海五日跟團行程整理，包含總覽、行前檢查、入境與行李規定、去回程打勾清單、Day 1 到 Day 5，以及伴手禮採買。</p>
 
 <div class="seto" id="seto-app">
-
-  <!-- Hero -->
   <section class="seto-hero">
-    <div class="seto-eyebrow">Setouchi · Hiroshima in / Takamatsu out</div>
-    <h2>2026/09/24-28 廣島進・高松出</h2>
-    <p>五天四夜跟團，從廣島入境、高松離境，串連宮島潮汐、瀨戶內海航路、道後溫泉、栗林公園與金刀比羅宮 785 階。</p>
-    <div class="seto-stats">
-      <div class="seto-stat"><span>旅遊天數</span><strong>5 天 4 夜</strong></div>
-      <div class="seto-stat"><span>交通方式</span><strong>華航直飛・全程遊覽車</strong></div>
-      <div class="seto-stat"><span>住宿數量</span><strong>4 間住宿</strong></div>
-      <div class="seto-stat"><span>主題重點</span><strong>潮汐、航路、溫泉、庭園、石階</strong></div>
-    </div>
+    <div class="seto-eyebrow">SETOUCHI · 5 DAYS</div>
+    <h2>廣島進・高松出　瀨戶內海五日</h2>
+    <p>2026/09/24（四）－09/28（一）。跟團行程，兩段飛機、一段瀨戶內海航線，四晚住宿分別落在廣島、今治、高松、琴平。</p>
+<div class="seto-rail">
+  <div style="border-top:3px solid var(--d1)"><b style="color:var(--d1)">D1　9/24</b><span>廣島・宮島</span></div>
+  <div style="border-top:3px solid var(--d2)"><b style="color:var(--d2)">D2　9/25</b><span>瀨戶內海・松山・道後</span></div>
+  <div style="border-top:3px solid var(--d3)"><b style="color:var(--d3)">D3　9/26</b><span>今治・毛巾美術館・高松</span></div>
+  <div style="border-top:3px solid var(--d4)"><b style="color:var(--d4)">D4　9/27</b><span>瀨戶大橋・金刀比羅宮・琴平</span></div>
+  <div style="border-top:3px solid var(--d5)"><b style="color:var(--d5)">D5　9/28</b><span>善通寺・高松商店街・栗林公園</span></div>
+</div>
   </section>
 
-  <!-- Tab Controls -->
-  <section class="seto-controls">
-    <div class="seto-tabs">
-      <button class="seto-tab" data-index="0" type="button">總覽</button>
-      <button class="seto-tab" data-index="1" type="button">行前檢查</button>
-      <button class="seto-tab" data-index="2" type="button">入境與行李</button>
-      <button class="seto-tab" data-index="3" type="button">清單・去程</button>
-      <button class="seto-tab" data-index="4" type="button">清單・回程</button>
-      <button class="seto-tab" data-index="5" type="button">Day 1</button>
-      <button class="seto-tab" data-index="6" type="button">Day 2</button>
-      <button class="seto-tab" data-index="7" type="button">Day 3</button>
-      <button class="seto-tab" data-index="8" type="button">Day 4</button>
-      <button class="seto-tab" data-index="9" type="button">Day 5</button>
-      <button class="seto-tab" data-index="10" type="button">伴手禮採買</button>
+<nav class="seto-nav" aria-label="分頁">
+  <div class="seto-pills" role="tablist">
+    <button class="seto-pill" type="button" role="tab" data-panel="overview" id="seto-tab-overview" aria-controls="seto-panel-overview" aria-selected="false" tabindex="-1">總覽</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="days" id="seto-tab-days" aria-controls="seto-panel-days" aria-selected="false" tabindex="-1">分日行程</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="map" id="seto-tab-map" aria-controls="seto-panel-map" aria-selected="false" tabindex="-1">互動地圖</button>
+    <span class="seto-sep" aria-hidden="true"></span>
+    <button class="seto-pill" type="button" role="tab" data-panel="preflight" id="seto-tab-preflight" aria-controls="seto-panel-preflight" aria-selected="false" tabindex="-1">行前檢查</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="japan" id="seto-tab-japan" aria-controls="seto-panel-japan" aria-selected="false" tabindex="-1">入境日本</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="taiwan" id="seto-tab-taiwan" aria-controls="seto-panel-taiwan" aria-selected="false" tabindex="-1">入境台灣</button>
+    <span class="seto-sep" aria-hidden="true"></span>
+    <button class="seto-pill" type="button" role="tab" data-panel="out" id="seto-tab-out" aria-controls="seto-panel-out" aria-selected="false" tabindex="-1">去程清單</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="back" id="seto-tab-back" aria-controls="seto-panel-back" aria-selected="false" tabindex="-1">回程清單</button>
+    <button class="seto-pill" type="button" role="tab" data-panel="souvenir" id="seto-tab-souvenir" aria-controls="seto-panel-souvenir" aria-selected="false" tabindex="-1">伴手禮採買</button>
+  </div>
+</nav>
+
+<section class="seto-panel" id="seto-panel-overview" role="tabpanel" aria-labelledby="seto-tab-overview" hidden>
+<h3>總覽</h3>
+<p>五天的骨架、班機、住宿與餐食。每天配一個顏色，這個顏色會一路跟到分日行程和互動地圖。</p>
+
+<div class="seto-g3">
+  <div class="seto-card">
+    <div class="k">最需要體力的一天</div>
+    <div class="t">D4　金刀比羅宮</div>
+    <div class="d">御本宮 785 階，來回抓 1.5 小時。這趟唯一要挑鞋的行程。</div>
+  </div>
+  <div class="seto-card">
+    <div class="k">出發前一週要查</div>
+    <div class="t">宮島潮位</div>
+    <div class="d">250 cm 以上社殿才浮在海上，100 cm 以下才走得到大鳥居腳下，一天只會出現一種。</div>
+  </div>
+  <div class="seto-card">
+    <div class="k">自由時間最長</div>
+    <div class="t">D3 · D5　高松</div>
+    <div class="d">各 180 分鐘。藥妝與伴手禮集中在這兩段用掉最有效率。</div>
+  </div>
+</div>
+
+<h4 class="seto-h4">來回班機</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th>行程</th><th>航班</th><th>出發</th><th>抵達</th><th>飛行</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">去程</td><td class="seto-num">CI 112</td>
+        <td class="seto-num">09/24 07:10　TPE</td><td class="seto-num">09/24 10:35　HIJ</td>
+        <td style="color:var(--muted)">2h25m</td></tr>
+      <tr><td style="font-weight:700">回程</td><td class="seto-num">CI 179</td>
+        <td class="seto-num">09/28 19:05　TAK</td><td class="seto-num">09/28 20:55　TPE</td>
+        <td style="color:var(--muted)">2h50m</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4 class="seto-h4">行程與住宿</h4>
+<div class="seto-rows">
+  <div class="seto-row" style="border-left:3px solid var(--d1)"><div class="d" style="color:var(--d1)">D1　9/24</div><div class="t">廣島・宮島</div><div class="m">廣島麗嘉皇家酒店</div></div>
+  <div class="seto-row" style="border-left:3px solid var(--d2)"><div class="d" style="color:var(--d2)">D2　9/25</div><div class="t">瀨戶內海・松山・道後</div><div class="m">今治國際飯店</div></div>
+  <div class="seto-row" style="border-left:3px solid var(--d3)"><div class="d" style="color:var(--d3)">D3　9/26</div><div class="t">今治・毛巾美術館・高松</div><div class="m">JR Hotel Clement 高松</div></div>
+  <div class="seto-row" style="border-left:3px solid var(--d4)"><div class="d" style="color:var(--d4)">D4　9/27</div><div class="t">瀨戶大橋・金刀比羅宮・琴平</div><div class="m">琴平溫泉 琴參閣</div></div>
+  <div class="seto-row" style="border-left:3px solid var(--d5)"><div class="d" style="color:var(--d5)">D5　9/28</div><div class="t">善通寺・高松商店街・栗林公園</div><div class="m">當日返台</div></div>
+</div>
+
+<h4 class="seto-h4">每日餐食</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:5.6rem">日</th><th>早餐</th><th>午餐</th><th>晚餐</th></tr></thead>
+    <tbody>
+        <tr><td style="color:var(--d1);font-weight:700">D1</td><td style="color:var(--muted)">機上簡餐</td><td>宮島牡蠣釜飯定食</td><td>廣島風味餐</td></tr>
+        <tr><td style="color:var(--d2);font-weight:700">D2</td><td style="color:var(--muted)">飯店早餐</td><td>鯛魚飯定食套餐</td><td>飯店內用套餐</td></tr>
+        <tr><td style="color:var(--d3);font-weight:700">D3</td><td style="color:var(--muted)">飯店早餐</td><td>在地風味餐</td><td><span class="seto-tag warn">自理</span> 發放代金 ¥5,000</td></tr>
+        <tr><td style="color:var(--d4);font-weight:700">D4</td><td style="color:var(--muted)">飯店早餐</td><td>烏龍麵套餐</td><td>溫泉會席晚宴</td></tr>
+        <tr><td style="color:var(--d5);font-weight:700">D5</td><td style="color:var(--muted)">飯店早餐</td><td><span class="seto-tag warn">自理</span> 高松中央商店街</td><td>機上簡餐</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="seto-note">
+  <b>行程主線。</b>桃園 → 廣島（飛）→ 宮島 → 廣島宿 → 廣島港（船）→ 松山 → 道後 → 今治宿 →
+  毛巾美術館 → 高松宿 → 瀨戶大橋 → 金刀比羅宮 → 琴平宿 → 善通寺 → 栗林公園 → 高松（飛）→ 桃園。
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-days" role="tabpanel" aria-labelledby="seto-tab-days" hidden>
+<h3>分日行程</h3>
+<p>單欄排列，點日期列展開。展開後有當日路線、景點細節與晚上的去處，最下方可以直接跳到互動地圖看那一天的點位。</p>
+<div class="seto-acc">
+  <details class="seto-day" style="border-left:3px solid var(--d1)" open>
+    <summary><span class="d" style="color:var(--d1)">D1　9/24（四）</span><span class="t">廣島・宮島</span><span class="m">廣島麗嘉皇家酒店</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+    <div class="seto-daybody">
+      <div class="seto-route"><span>桃園機場</span><i>→</i><span>CI 112</span><i>→</i><span>廣島機場</span><i>→</i><span>宮島口</span><i>→</i><span>渡輪</span><i>→</i><span>嚴島神社</span><i>→</i><span>表參道商店街</span><i>→</i><span>廣島市區</span></div>
+      <div class="seto-spot"><h5>嚴島神社・海上大鳥居</h5><span class="when">14:10</span><p>這裡的看點不是建築，是潮位。潮位 250 公分以上，社殿才會呈現「浮在海上」的樣子；潮位 100 公分以下，才走得到大鳥居腳下。兩者一天不會同時出現，出發前查好潮位，就能先知道會看到哪一版風景。</p></div>
+      <div class="seto-spot"><h5>千疊閣（千畳閣・豊国神社）與五重塔</h5><span class="when">15:25</span><p>就在神社上方的小丘，人潮明顯少於本社，木造大空間很好拍，五重塔的角度也在這裡。時間夠就上去，來回約 15 分鐘。</p></div>
+      <div class="seto-spot"><h5>宮島表參道商店街</h5><span class="when">15:55</span><p>從渡輪口通往神社，回程一定會走到。現烤紅葉饅頭熱的跟常溫盒裝完全兩回事；炸紅葉饅頭只有島上吃得到。世界最大飯杓長 7.7 公尺，在商店街中段。</p></div>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">島上要注意的</h4>
+      <ul>
+        <li><b>宮島鹿</b>與奈良不同，這裡不販售鹿仙貝、也不建議餵食。牠們會咬紙袋和地圖，手上的食物請收好。</li>
+        <li>燒牡蠣攤很香，但午餐已經是牡蠣釜飯定食，斟酌胃容量。</li>
+        <li>其他還走得到的：紅葉谷公園、宮島纜車、獅子岩展望台、大聖院、大願寺。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">廣島市區的晚上</h4>
+      <ul>
+        <li><b>原爆圓頂館</b>夜間有打光，戶外不限時間，配平和記念公園、和平之鐘散步一圈約 40 分鐘。</li>
+        <li><b>平和記念資料館</b>9–11 月開到 19:00、最後入館 18:30，而 17:30–18:30 是完全預約制。晚餐後臨時起意大概率撲空，要去就當天早上先線上訂票（大人 200 円）。</li>
+        <li>本通商店街、流川一帶是宵夜與藥妝的主戰場，離飯店都在步行距離。太陽商城有 UNIQLO、GU。</li>
+      </ul>
+      <div class="seto-dayfoot">
+        <button class="seto-gotomap" type="button" data-goto-day="1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"></polygon><line x1="8" y1="3" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="21"></line></svg>在地圖上看這天</button>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>午餐　宮島牡蠣釜飯定食</span>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>晚餐　廣島風味餐</span>
+      </div>
     </div>
-    <div class="seto-nav">
-      <button class="seto-btn" id="seto-prev" type="button">上一頁</button>
-      <span id="seto-indicator">1 / 11</span>
-      <button class="seto-btn" id="seto-next" type="button">下一頁</button>
+  </details>
+  <details class="seto-day" style="border-left:3px solid var(--d2)">
+    <summary><span class="d" style="color:var(--d2)">D2　9/25（五）</span><span class="t">瀨戶內海・松山・道後</span><span class="m">今治國際飯店</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+    <div class="seto-daybody">
+      <div class="seto-route"><span>廣島</span><i>→</i><span>廣島港</span><i>→</i><span>瀨戶內海汽船</span><i>→</i><span>松山城</span><i>→</i><span>道後溫泉本館</span><i>→</i><span>今治</span></div>
+      <div class="seto-spot"><h5>瀨戶內海汽船</h5><span class="when">08:30</span><p>這天的隱藏亮點。航線經吳港，一路是島影、造船廠與跨海橋。建議一上船先找甲板位置，別整段待在船艙裡滑手機，這是全程最好的海景時段。海風偏涼，外套帶著。</p></div>
+      <div class="seto-spot"><h5>松山城</h5><span class="when">13:10</span><p>日本現存十二天守之一，也是少數有登山纜車的城。纜車抵達後還要再走約 10 分鐘才到本丸。行程註明團體搭廂型纜車；如果現場能自己選，建議上下各搭一種，露天吊椅的體驗完全不同（穿裙裝者請留意）。天守內部可俯瞰松山市區與瀨戶內海。</p></div>
+      <div class="seto-spot"><h5>道後溫泉本館</h5><span class="when">15:15</span><p>2019 年起的保存修理工程已於 2024 年完成、全館恢復營業。木造三層樓、國家重要文化財，是現役公共浴場中極少數的例子。營業到 23:00（22:30 停止售票），單純入浴（神之湯）700 円。</p></div>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">道後溫泉街怎麼走</h4>
+      <ul>
+        <li>本館外觀拍照 → 道後溫泉駅前的機關鐘（整點會動）→ 旁邊的免費足湯 → 少爺列車合照 → 道後 HAIKARA 通商店街覓食。</li>
+        <li>邊走邊吃：坊っちゃん団子、一六蛋糕捲、じゃこ天、蜜柑霜淇淋。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">今治的晚上</h4>
+      <ul>
+        <li><b>今治城</b>距飯店步行約 20 分鐘，日本三大水城之一（護城河引海水，會看到海魚），夜間打光很好拍。</li>
+        <li><b>炭火燒鳥</b>今治是名產地，特色是鐵板重壓炙烤，皮脆。晚餐已含飯店套餐，這算加碼。</li>
+        <li>今治毛巾明天早上會去美術館，市區這裡不必急著買。飯店本身有日式庭園。</li>
+      </ul>
+      <div class="seto-dayfoot">
+        <button class="seto-gotomap" type="button" data-goto-day="2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"></polygon><line x1="8" y1="3" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="21"></line></svg>在地圖上看這天</button>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>午餐　鯛魚飯定食套餐</span>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>晚餐　飯店內用套餐</span>
+      </div>
     </div>
-  </section>
+  </details>
+  <details class="seto-day" style="border-left:3px solid var(--d3)">
+    <summary><span class="d" style="color:var(--d3)">D3　9/26（六）</span><span class="t">今治・毛巾美術館・高松</span><span class="m">JR Hotel Clement 高松</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+    <div class="seto-daybody">
+      <div class="seto-route"><span>今治</span><i>→</i><span>今治毛巾美術館</span><i>→</i><span>高松丸龜町・中央商店街</span><i>→</i><span>高松市區</span></div>
+      <div class="seto-spot"><h5>今治毛巾美術館</h5><span class="when">09:15</span><p>可看製程、逛歐式庭園。實用價值在於：這是全程買毛巾伴手禮最好的一站，品項齊、又比機場划算。認明紅藍白的「今治タオル」認證標籤，有標的才是通過吸水性等檢測的正品。</p></div>
+      <div class="seto-spot"><h5>高松丸龜町・中央商店街</h5><span class="when">14:50</span><p>自由活動 180 分，晚餐發放代金 ¥5,000 自理。全長 2.7 公里、日本最長的拱廊商店街，有頂棚，下雨不影響。北段（丸龜町）重新改建過、較時髦；越往南越有昭和老街的味道。</p></div>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">晚餐第一順位</h4>
+      <ul>
+        <li><b>骨付鳥</b>帶骨烤雞腿，分肉嫩的「ひな（雛）」與嚼勁重、香氣強的「おや（親）」。名店「一鶴 高松店」在兵庫町，週六 11:00 起營業，晚餐時段常排 60–90 分鐘，想吃就早點去或提早離開商店街。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">附近還能走的</h4>
+      <ul>
+        <li><b>玉藻公園（高松城）</b>就在飯店隔壁，海水護城河的日本三大水城之一（白天營業，晚上僅能看外圍）。</li>
+        <li><b>北浜 alley</b>老倉庫改造的咖啡雜貨區，夜景很好看。</li>
+        <li><b>サンポート高松</b>車站北側的港邊，有會發光的玻璃紅燈塔，散步用。旁邊是玉藻防波堤。</li>
+        <li>飯店 21F 有酒吧「Astro」；製冰機在 5 樓。</li>
+      </ul>
+      <div class="seto-dayfoot">
+        <button class="seto-gotomap" type="button" data-goto-day="3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"></polygon><line x1="8" y1="3" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="21"></line></svg>在地圖上看這天</button>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>午餐　在地風味餐</span>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>晚餐　自理・發放代金 ¥5,000</span>
+      </div>
+    </div>
+  </details>
+  <details class="seto-day" style="border-left:3px solid var(--d4)">
+    <summary><span class="d" style="color:var(--d4)">D4　9/27（日）</span><span class="t">瀨戶大橋・金刀比羅宮・琴平</span><span class="m">琴平溫泉 琴參閣</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+    <div class="seto-daybody">
+      <div class="seto-route"><span>高松</span><i>→</i><span>瀨戶大橋塔・紀念公園</span><i>→</i><span>金刀比羅宮</span><i>→</i><span>琴平溫泉</span></div>
+      <div class="seto-spot"><h5>瀨戶大橋塔</h5><span class="when">09:15</span><p>展望艙最高 108 公尺（行程表寫的 175 公尺應是誤植；132 公尺是含避雷針的塔高）。整趟約 10 分鐘，邊旋轉三圈邊上升，是「旋轉昇降式」展望塔中世界最高的一座，全日本已經沒剩幾座。營業 9:00–17:00（16:20 停止入場），大人 800 円、15 人以上團體 720 円。週一公休，這天是週日沒問題；旁邊的紀念館與紀念公園免費。</p></div>
+      <div class="seto-spot"><h5>金刀比羅宮</h5><span class="when">12:30</span><p>這趟唯一需要「準備」的行程。到御本宮是 785 階，來回抓 1.5 小時。行程表寫的 1368 階是再往上到奧社（嚴魂神社），那要再多 40 分鐘以上；除非領隊給到 2.5 小時以上，否則不建議衝。鞋子是全程最關鍵的裝備。石階不算陡，但長而連續，表參道入口附近的店家有免費出借拐杖。</p></div>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">爬階梯路上的幾個點</h4>
+      <ul>
+        <li>一個典故：實際上是 786 階，但諧音「なやむ（煩惱）」不吉利，所以中途刻意設計了一階往下，變成 785 階。爬的時候可以找找看。</li>
+        <li>約 500 階處有資生堂 PARLOUR 的咖啡廳「神椿」，是最好的休息與補水點。</li>
+        <li>大門旁的「五人百姓」是境內唯一獲准擺攤的五個家族，賣加美代飴，本身就是歷史景點的一部分。</li>
+        <li><b>御本宮的展望台</b>可以望見整片讚岐平原與讚岐富士（飯野山），爬上去的回報就在這裡。另外別忘了本宮限定的「幸福黃色御守」。</li>
+        <li>下山時的表參道有中野烏龍麵學校、灸まん本舖，伴手禮可以在這裡一次解決。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">晚上：琴參閣</h4>
+      <ul>
+        <li>這晚是團體晚宴，等於沒有自由時間。</li>
+        <li><b>宴會結束後琴參閣有大浴場</b>，這是全程最從容的泡湯機會，別錯過。讚水館 1F「こんぴらの湯」「かぶきの湯」，15:00–24:00、05:00–09:30。</li>
+        <li>真的還想走走：飯店附近有日本最高的燈籠「高燈籠」（27 公尺，在琴電琴平站旁）與屋頂式的「鞘橋」，散步 20 分鐘的量。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">行前準備</h4>
+      <ul>
+        <li>好走的鞋、一瓶水、小毛巾。9 月下旬爬完 785 階會流汗。</li>
+      </ul>
+      <div class="seto-dayfoot">
+        <button class="seto-gotomap" type="button" data-goto-day="4"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"></polygon><line x1="8" y1="3" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="21"></line></svg>在地圖上看這天</button>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>午餐　烏龍麵套餐</span>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>晚餐　溫泉會席晚宴</span>
+      </div>
+    </div>
+  </details>
+  <details class="seto-day" style="border-left:3px solid var(--d5)">
+    <summary><span class="d" style="color:var(--d5)">D5　9/28（一）</span><span class="t">善通寺・高松商店街・栗林公園</span><span class="m">當日返台</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+    <div class="seto-daybody">
+      <div class="seto-route"><span>琴平溫泉</span><i>→</i><span>善通寺</span><i>→</i><span>高松中央商店街</span><i>→</i><span>栗林公園</span><i>→</i><span>高松機場</span><i>→</i><span>CI 179</span></div>
+      <div class="seto-spot"><h5>善通寺</h5><span class="when">08:50</span><p>弘法大師（空海）誕生地，四國八十八所第七十五番札所，與高野山、京都東寺並列弘法大師三大靈場。境內約 45,000 ㎡，隔一條路分成東院（伽藍）與西院（誕生院）兩區，兩邊都要走到才算完整。五重塔高 43 公尺，內部僅於黃金週特別公開，這次只能看外觀。御影堂地下的「戒壇めぐり」是約 100 公尺的全黑通道，左手扶牆前進，真的伸手不見五指（含寶物館，大人 700 円，這一站唯一要買票的地方）。境內禁拍本尊。</p></div>
+      <div class="seto-spot"><h5>栗林公園</h5><span class="when">14:10</span><p>這趟最值得認真逛的地方，也是最後一站。日本最大的國家指定特別名勝，米其林綠色指南三星。以紫雲山為借景，六個水池、十三座假山。行程含抹茶＋和菓子，地點多半是南湖畔的掬月亭，先喝完再走，不要拖到最後才被叫回車上。</p></div>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">栗林公園的動線</h4>
+      <ul>
+        <li><b>飛來峰</b>全園第一名的拍照點，可俯瞰南湖與偃月橋，明信片畫面就是這裡。抹茶體驗結束後第一個去。</li>
+        <li>箱松、屏風松修剪了三百年，近看比遠看震撼。</li>
+        <li>全園 75 公頃，時間有限就專心走「南庭」，北庭可以放掉。若時間充裕，另外收費的和船遊覽（約 30 分鐘）從水面看庭園是完全不同的角度。</li>
+        <li>東門走 3 分鐘就是自助烏龍麵名店「上原屋本店」（–14:30），中午沒吃到烏龍麵的最後機會。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">高松機場：先搞懂樓層</h4>
+      <ul>
+        <li>重點是<b>伴手禮店幾乎都在安檢「前」</b>（1F 與 2F 大廳），過安檢後只剩免稅店與登機口小店。免稅店起飛前 90 分才開（約 17:35）。請在報到後、進安檢前買完。</li>
+        <li>2F 安檢前：ANA FESTA（8:30–20:00，有機場限定品）、四國空市場 YOSORA（品項最雜）、さぬき銘品店（香川銘菓與烏龍麵）、ファミリーマート（6:15–20:00）。</li>
+        <li>1F：空港売店 四季の里（8:00–19:45，報到櫃檯同層）、はやし家製麺所（也賣半生麵）。</li>
+        <li>機場必買：茶のしずく（產量少、不做網購）、和三盆糖、讚岐烏龍麵半生麵、骨付鳥真空包、小豆島橄欖製品。</li>
+      </ul>
+      <h4 class="seto-h4" style="margin:1.8rem 0 0">收尾提醒</h4>
+      <ul>
+        <li>早上退房前先把「機上要用」與「託運」分好，當天不會再回飯店。</li>
+        <li>午餐自理記得帶現金；栗林公園結束後直接上車去機場，之後就只剩機場能買東西。</li>
+      </ul>
+      <div class="seto-dayfoot">
+        <button class="seto-gotomap" type="button" data-goto-day="5"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"></polygon><line x1="8" y1="3" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="21"></line></svg>在地圖上看這天</button>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>午餐　自理・高松中央商店街</span>
+        <span class="meal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>晚餐　機上簡餐</span>
+      </div>
+    </div>
+  </details>
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-map" role="tabpanel" aria-labelledby="seto-tab-map" hidden>
+<h3>互動地圖</h3>
+<p>24 個點位、五條當日路線，底圖是 OpenStreetMap。點左側卡片或地圖圖釘看細節，每個點都附 Google 地圖與導航連結。
+地圖只在第一次打開這頁時才載入，不會拖慢其他分頁。</p>
+
+<div class="seto-mapchips" id="seto-mapchips">
+  <button class="seto-pill" type="button" data-day="0" aria-selected="true">全部</button>
+  <button class="seto-pill" type="button" data-day="1" aria-selected="false" style="border-color:var(--d1);color:var(--d1)">D1　廣島</button>
+  <button class="seto-pill" type="button" data-day="2" aria-selected="false" style="border-color:var(--d2);color:var(--d2)">D2　瀨戶內海</button>
+  <button class="seto-pill" type="button" data-day="3" aria-selected="false" style="border-color:var(--d3);color:var(--d3)">D3　今治</button>
+  <button class="seto-pill" type="button" data-day="4" aria-selected="false" style="border-color:var(--d4);color:var(--d4)">D4　瀨戶大橋</button>
+  <button class="seto-pill" type="button" data-day="5" aria-selected="false" style="border-color:var(--d5);color:var(--d5)">D5　善通寺</button>
+</div>
+
+<div class="seto-mapwrap">
+  <div class="seto-mapside" id="seto-mapside"></div>
+  <div class="seto-map" id="seto-mapcanvas"><div class="seto-mapload">地圖載入中…</div></div>
+</div>
+
+<div class="seto-note">
+  <b>桌機滾輪只會捲頁，不會誤縮放地圖</b>，要縮放請用左上角的 + / − 或雙指。
+  手機上地圖預設是擋住的，點一下才開放拖曳，不然手指滑到地圖就會把整頁的捲動吃掉。
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-preflight" role="tabpanel" aria-labelledby="seto-tab-preflight" hidden>
+<h3>行前檢查</h3>
+<p>出發前要動手的事，按「什麼時候做」排，不按類別排。</p>
+
+<div class="seto-rows">
+  <div class="seto-when" style="border-left:3px solid var(--accent2)">
+    <div class="w" style="color:var(--accent2)">前一週</div>
+    <div>
+      <b>查宮島潮位</b>
+      <p>宮島觀光協會的年間潮汐表，查 9/24 的曲線。表上是「廣島港」潮位，嚴島港會略早一些。
+      250 cm 以上社殿浮在海上，100 cm 以下才走得到大鳥居腳下。兩者一天不會同時出現。</p>
+      <p><a href="https://www.miyajima.or.jp/sio/sio01.php" target="_blank" rel="noopener">miyajima.or.jp/sio →</a></p>
+    </div>
+  </div>
+  <div class="seto-when" style="border-left:3px solid var(--accent2)">
+    <div class="w" style="color:var(--accent2)">前一週</div>
+    <div>
+      <b>留意颱風</b>
+      <p>9 月下旬瀨戶內海白天 28–30°C 且偏悶，船上、山上、夜間偏涼，一件薄外套足夠。仍在颱風季尾端。</p>
+    </div>
+  </div>
+  <div class="seto-when" style="border-left:3px solid var(--accent)">
+    <div class="w" style="color:var(--accent)">前 6 小時</div>
+    <div>
+      <b>填 Visit Japan Web</b>
+      <p>抵達日本前 6 小時以上填妥，辦理入境手續時出示。</p>
+    </div>
+  </div>
+  <div class="seto-when" style="border-left:3px solid var(--d1)">
+    <div class="w" style="color:var(--d1)">D1 早上</div>
+    <div>
+      <b>想去平和記念資料館就先訂票</b>
+      <p>9–11 月開到 19:00、最後入館 18:30，而 17:30–18:30 這個時段是完全預約制，
+      只有事先網路購票才能進。晚餐後臨時起意大概率撲空。大人 200 円。</p>
+    </div>
+  </div>
+  <div class="seto-when" style="border-left:3px solid var(--d5)">
+    <div class="w" style="color:var(--d5)">D5 早上</div>
+    <div>
+      <b>退房前先分行李</b>
+      <p>當天不會再回飯店。把「機上要用」與「託運」分好，午餐自理記得帶現金。</p>
+    </div>
+  </div>
+</div>
+
+<h4 class="seto-h4">帶什麼、帶多少</h4>
+<div class="seto-g2">
+  <div class="seto-card">
+    <div class="t" style="margin-top:0">鞋子</div>
+    <div class="d">全程只有 D4 金刀比羅宮 785 階需要真正好走的鞋，但那天佔比很重。石階不算陡，但長而連續。</div>
+  </div>
+  <div class="seto-card">
+    <div class="t" style="margin-top:0">現金</div>
+    <div class="d">宮島、琴平表參道的小店仍有不少只收現金；渡輪與電車可用 ICOCA／Suica 等交通 IC 卡。
+    建議帶一些千円鈔與零錢。</div>
+  </div>
+</div>
+
+<h4 class="seto-h4">網路</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:9.6rem">方式</th><th>方案</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">實體 SIM</td><td>翔翼日行卡（KDDI 原生卡，無限流量）</td></tr>
+      <tr><td style="font-weight:700">eSIM</td><td>KLOOK（Softbank 5G／DOCOMO 4G LTE，吃到飽，不穩就退）、KKday、易遊網</td></tr>
+      <tr><td style="font-weight:700">漫遊</td><td>中華電信日本方案</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4 class="seto-h4">華航行李規定</h4>
+<div class="seto-g3">
+  <div class="seto-card"><div class="k">託運</div><div class="t" style="font-size:1.6rem">長寬高總和 ≤ 158 cm</div></div>
+  <div class="seto-card"><div class="k">手提</div><div class="t" style="font-size:1.6rem">56 × 36 × 23 cm　7 kg</div>
+    <div class="d">尺寸含輪子、把手及側袋</div></div>
+  <div class="seto-card"><div class="k">個人物品</div><div class="t" style="font-size:1.6rem">40 × 30 × 15 cm</div>
+    <div class="d">或總和 ≤ 85 cm。小背包、電腦、公事包、相機、傘具、大衣</div></div>
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-japan" role="tabpanel" aria-labelledby="seto-tab-japan" hidden>
+<h3>入境日本</h3>
+<p>2026 年新規定。</p>
+
+<div class="seto-callout">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect>
+    <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line>
+    <line x1="3" y1="10" x2="21" y2="10"></line></svg>
+  <div>
+    <b>Visit Japan Web　抵達前 6 小時以上填妥</b>
+    <p>入境手續時出示。這是整份規定裡唯一有時間壓力的一項。</p>
+  </div>
+</div>
+
+<h4 class="seto-h4">禁止與限制</h4>
+<div class="seto-rules">
+  <div class="seto-rule"><span class="seto-tag warn">禁</span>
+    <div><b>蔬果類（包含種子）、肉類、肉製品</b><p>包含飛機餐剩餘食物。</p></div></div>
+  <div class="seto-rule"><span class="seto-tag warn">禁</span>
+    <div><b>偽造商品與盜版光碟</b></div></div>
+  <div class="seto-rule"><span class="seto-tag info">限</span>
+    <div><b>行動電源必須清楚標示容量（Wh），且要 100 Wh 以內</b></div></div>
+</div>
+
+<h4 class="seto-h4">數量與金額上限</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:12rem">項目</th><th>上限</th><th style="width:17rem">備註</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">藥物</td><td>2 個月份以內</td>
+        <td style="color:var(--muted)">附醫師處方或中文／英文說明</td></tr>
+      <tr><td style="font-weight:700">名牌精品</td><td>免稅額 ¥200,000</td>
+        <td style="color:var(--muted)">包包、錶、珠寶。約新台幣 4 萬元</td></tr>
+      <tr><td style="font-weight:700">酒・菸・香水</td>
+        <td><span class="seto-tag warn">三選一</span> 酒 3 瓶（每瓶 760 ml）／香菸 200 支／香水 2 盎司</td>
+        <td style="color:var(--muted)">超過免稅數量需申報</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-taiwan" role="tabpanel" aria-labelledby="seto-tab-taiwan" hidden>
+<h3>入境台灣</h3>
+<p>回程那一段。禁攜帶清單特地標了「最常見」，因為出事的幾乎都是那幾樣。</p>
+
+<h4 class="seto-h4">禁止攜帶</h4>
+<div class="seto-g2">
+  <div class="seto-card"><div class="k">最常見</div><div class="t" style="font-size:1.6rem">肉類製品</div>
+    <div class="d">香腸、火腿、肉乾、臘肉、肉鬆、牛肉乾、罐裝肉、肉粉</div></div>
+  <div class="seto-card"><div class="k">最常見</div><div class="t" style="font-size:1.6rem">未經核准的乳製品</div>
+    <div class="d">生乳、未殺菌乳酪、部分手工起司</div></div>
+  <div class="seto-card"><div class="k">最常見</div><div class="t" style="font-size:1.6rem">所有生鮮水果、蔬菜</div>
+    <div class="d">香蕉、葡萄、蘋果、生菜、馬鈴薯、蒜頭</div></div>
+  <div class="seto-card"><div class="k">最常見</div><div class="t" style="font-size:1.6rem">高風險蛋製品</div>
+    <div class="d">生蛋、半熟蛋、溏心蛋、未檢疫鹹蛋、茶葉蛋</div></div>
+</div>
+
+<div class="seto-note">
+  <b>判斷不了就主動問。</b>機場動植物檢疫櫃檯會以實物現場判斷，主動詢問即使判定不合格，也不會受罰。
+</div>
+
+<h4 class="seto-h4">數量上限</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:17rem">類別</th><th>限量</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">一般食品</td>
+        <td>總價值 &lt; USD 1,000，且總重量 ≤ 6 公斤<span style="color:var(--muted)">　零食、泡麵、飲料、茶包等</span></td></tr>
+      <tr><td style="font-weight:700">錠狀／膠囊保健食品</td>
+        <td>每種 ≤ 12 瓶（盒、罐、包、袋），合計 ≤ 36 瓶<span style="color:var(--muted)">　維他命、酵素、膠原蛋白等</span></td></tr>
+      <tr><td style="font-weight:700">應申報</td><td>酒類 &gt; 1.5 公升、捲菸 &gt; 1 條（200 支）、雪茄 &gt; 25 支</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h4 class="seto-h4">醫療器材限量 <em>每人每半年一次為原則，且僅供個人自用</em></h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:22rem">類別</th><th>限量</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">液體 OK 繃</td><td>最多 4 條（罐、瓶、支）</td></tr>
+      <tr><td style="font-weight:700">醫用棉棒</td><td>最多 200 支</td></tr>
+      <tr><td style="font-weight:700">日拋型隱形眼鏡</td><td>單一度數最多 60 片，每人限單一品牌、最多兩種度數</td></tr>
+      <tr><td style="font-weight:700">矯正鏡片（近視／遠視）</td><td>最多 1 副</td></tr>
+      <tr><td style="font-weight:700">醫用口罩</td><td>最多 250 片（個）</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-out" role="tabpanel" aria-labelledby="seto-tab-out" hidden>
+<h3>去程行李清單</h3>
+<p>勾選狀態存在這台裝置的瀏覽器裡，關掉再打開還在。去程與回程各自獨立計數。</p>
+<div class="seto-checklist" data-key="setouchi2026Out">
+  <div class="seto-progress">
+    <div class="seto-bar"><i data-fill style="width:0"></i></div>
+    <strong class="seto-count"><span data-count>0</span> / 84</strong>
+    <button class="seto-reset" type="button" data-reset>全部清空</button>
+  </div>
+  <div class="seto-groupstats">
+    <span class="seto-groupstat" data-stat="body">身上 <b>0 / 0</b></span>
+    <span class="seto-groupstat" data-stat="bag">隨身後背包 <b>0 / 0</b></span>
+    <span class="seto-groupstat" data-stat="checked">託運行李（中 in 大） <b>0 / 0</b></span>
+  </div>
+  <h4 class="seto-sub">身上 <span>每日必檢查</span></h4>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ob1" data-group="body"><input type="checkbox"><span>眼鏡</span></label>
+    <label class="seto-check" data-id="ob2" data-group="body"><input type="checkbox"><span>手機</span></label>
+    <label class="seto-check" data-id="ob3" data-group="body"><input type="checkbox"><span>手錶</span></label>
+  </div>
+  <p class="seto-subsub">穿著</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ow1" data-group="body"><input type="checkbox"><span>短袖長褲</span></label>
+    <label class="seto-check" data-id="ow2" data-group="body"><input type="checkbox"><span>防曬薄外套</span></label>
+    <label class="seto-check" data-id="ow3" data-group="body"><input type="checkbox"><span>運動鞋</span></label>
+  </div>
+  <p class="seto-subsub">護照＆錢包</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="op1" data-group="body"><input type="checkbox"><span>護照</span></label>
+    <label class="seto-check" data-id="op2" data-group="body"><input type="checkbox"><span>身分證</span></label>
+    <label class="seto-check" data-id="op3" data-group="body"><input type="checkbox"><span>健保卡</span></label>
+    <label class="seto-check" data-id="op4" data-group="body"><input type="checkbox"><span>信用卡（錢包）</span></label>
+    <label class="seto-check" data-id="op5" data-group="body"><input type="checkbox"><span>交通卡（錢包）</span></label>
+    <label class="seto-check" data-id="op6" data-group="body"><input type="checkbox"><span>日幣現金（錢包）</span></label>
+  </div>
+  <h4 class="seto-sub">隨身後背包 <span>每容器 &lt; 100 ml、總液體 &lt; 1 L，塑膠袋裝</span></h4>
+  <p class="seto-subsub">電器類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="oe1" data-group="bag"><input type="checkbox"><span>行動電源</span></label>
+    <label class="seto-check" data-id="oe2" data-group="bag"><input type="checkbox"><span>充電線</span></label>
+    <label class="seto-check" data-id="oe3" data-group="bag"><input type="checkbox"><span>充電器</span></label>
+    <label class="seto-check" data-id="oe4" data-group="bag"><input type="checkbox"><span>Sim 卡</span></label>
+    <label class="seto-check" data-id="oe5" data-group="bag"><input type="checkbox"><span>藍芽耳機</span></label>
+    <label class="seto-check" data-id="oe6" data-group="bag"><input type="checkbox"><span>有線耳機（+ 轉接頭）</span></label>
+  </div>
+  <p class="seto-subsub">衛生用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="oh1" data-group="bag"><input type="checkbox"><span>濕紙巾</span></label>
+    <label class="seto-check" data-id="oh2" data-group="bag"><input type="checkbox"><span>衛生紙</span></label>
+    <label class="seto-check" data-id="oh3" data-group="bag"><input type="checkbox"><span>面紙</span></label>
+    <label class="seto-check" data-id="oh4" data-group="bag"><input type="checkbox"><span>餐具</span></label>
+    <label class="seto-check" data-id="oh5" data-group="bag"><input type="checkbox"><span>免洗餐具</span></label>
+    <label class="seto-check" data-id="oh6" data-group="bag"><input type="checkbox"><span>酒精（&lt; 100 ml）</span></label>
+  </div>
+  <p class="seto-subsub">醫藥用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="om1" data-group="bag"><input type="checkbox"><span>常備口服藥</span></label>
+    <label class="seto-check" data-id="om2" data-group="bag"><input type="checkbox"><span>暈車藥</span></label>
+    <label class="seto-check" data-id="om3" data-group="bag"><input type="checkbox"><span>口內膏</span></label>
+    <label class="seto-check" data-id="om4" data-group="bag"><input type="checkbox"><span>酸痛貼布</span></label>
+    <label class="seto-check" data-id="om5" data-group="bag"><input type="checkbox"><span>OK 蹦</span></label>
+    <label class="seto-check" data-id="om6" data-group="bag"><input type="checkbox"><span>透氣膠帶／優肌絆</span></label>
+    <label class="seto-check" data-id="om7" data-group="bag"><input type="checkbox"><span>眼藥水</span></label>
+    <label class="seto-check" data-id="om8" data-group="bag"><input type="checkbox"><span>外傷藥膏</span></label>
+    <label class="seto-check" data-id="om9" data-group="bag"><input type="checkbox"><span>蚊蟲藥</span></label>
+  </div>
+  <p class="seto-subsub">睡覺用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="os1" data-group="bag"><input type="checkbox"><span>人工淚液</span></label>
+    <label class="seto-check" data-id="os2" data-group="bag"><input type="checkbox"><span>耳塞</span></label>
+    <label class="seto-check" data-id="os3" data-group="bag"><input type="checkbox"><span>眼罩</span></label>
+  </div>
+  <p class="seto-subsub">日常用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="od1" data-group="bag"><input type="checkbox"><span>眼鏡盒（墨鏡）</span></label>
+    <label class="seto-check" data-id="od2" data-group="bag"><input type="checkbox"><span>筆</span></label>
+    <label class="seto-check" data-id="od3" data-group="bag"><input type="checkbox"><span>筆記本／便條紙</span></label>
+    <label class="seto-check" data-id="od4" data-group="bag"><input type="checkbox"><span>保溫瓶與水</span></label>
+    <label class="seto-check" data-id="od5" data-group="bag"><input type="checkbox"><span>易口舒／口香糖</span></label>
+    <label class="seto-check" data-id="od6" data-group="bag"><input type="checkbox"><span>保健食品</span></label>
+    <label class="seto-check" data-id="od7" data-group="bag"><input type="checkbox"><span>口罩</span></label>
+    <label class="seto-check" data-id="od8" data-group="bag"><input type="checkbox"><span>行李秤</span></label>
+    <label class="seto-check" data-id="od9" data-group="bag"><input type="checkbox"><span>頸枕（看個人需求）</span></label>
+    <label class="seto-check" data-id="od10" data-group="bag"><input type="checkbox"><span>摺疊傘</span></label>
+    <label class="seto-check" data-id="od11" data-group="bag"><input type="checkbox"><span>第二錢包</span></label>
+    <label class="seto-check" data-id="od12" data-group="bag"><input type="checkbox"><span>鑰匙</span></label>
+  </div>
+  <h4 class="seto-sub">託運行李（中 in 大） <span>總液體 &lt; 5 L</span></h4>
+  <p class="seto-subsub">衣物</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="oc1" data-group="checked"><input type="checkbox"><span>上衣（短袖）×4</span></label>
+    <label class="seto-check" data-id="oc2" data-group="checked"><input type="checkbox"><span>褲子 ×4</span></label>
+    <label class="seto-check" data-id="oc3" data-group="checked"><input type="checkbox"><span>內衣褲 ×4</span></label>
+    <label class="seto-check" data-id="oc4" data-group="checked"><input type="checkbox"><span>襪子 ×4</span></label>
+    <label class="seto-check" data-id="oc5" data-group="checked"><input type="checkbox"><span>睡衣 ×2</span></label>
+    <label class="seto-check" data-id="oc6" data-group="checked"><input type="checkbox"><span>短褲 ×2</span></label>
+    <label class="seto-check" data-id="oc7" data-group="checked"><input type="checkbox"><span>護膝</span></label>
+    <label class="seto-check" data-id="oc8" data-group="checked"><input type="checkbox"><span>棉質春秋外套 ×1</span></label>
+    <label class="seto-check" data-id="oc9" data-group="checked"><input type="checkbox"><span>帽子 ×1</span></label>
+  </div>
+  <p class="seto-subsub">外出用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="oo1" data-group="checked"><input type="checkbox"><span>止汗劑</span></label>
+    <label class="seto-check" data-id="oo2" data-group="checked"><input type="checkbox"><span>防曬乳</span></label>
+    <label class="seto-check" data-id="oo3" data-group="checked"><input type="checkbox"><span>防蚊液</span></label>
+    <label class="seto-check" data-id="oo4" data-group="checked"><input type="checkbox"><span>衛生紙備品</span></label>
+    <label class="seto-check" data-id="oo5" data-group="checked"><input type="checkbox"><span>濕紙巾備品</span></label>
+    <label class="seto-check" data-id="oo6" data-group="checked"><input type="checkbox"><span>衛生用品</span></label>
+  </div>
+  <p class="seto-subsub">房間用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="or1" data-group="checked"><input type="checkbox"><span>拖鞋</span></label>
+    <label class="seto-check" data-id="or2" data-group="checked"><input type="checkbox"><span>毛巾</span></label>
+    <label class="seto-check" data-id="or3" data-group="checked"><input type="checkbox"><span>衣架 &amp; 曬衣夾 ×4</span></label>
+  </div>
+  <p class="seto-subsub">保養用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ok1" data-group="checked"><input type="checkbox"><span>護手霜</span></label>
+    <label class="seto-check" data-id="ok2" data-group="checked"><input type="checkbox"><span>面霜</span></label>
+    <label class="seto-check" data-id="ok3" data-group="checked"><input type="checkbox"><span>乳液</span></label>
+  </div>
+  <p class="seto-subsub">盥洗與清潔用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="oq1" data-group="checked"><input type="checkbox"><span>洗面乳</span></label>
+    <label class="seto-check" data-id="oq2" data-group="checked"><input type="checkbox"><span>洗碗精</span></label>
+    <label class="seto-check" data-id="oq3" data-group="checked"><input type="checkbox"><span>梳子</span></label>
+    <label class="seto-check" data-id="oq4" data-group="checked"><input type="checkbox"><span>牙刷</span></label>
+    <label class="seto-check" data-id="oq5" data-group="checked"><input type="checkbox"><span>牙膏</span></label>
+    <label class="seto-check" data-id="oq6" data-group="checked"><input type="checkbox"><span>牙線棒</span></label>
+    <label class="seto-check" data-id="oq7" data-group="checked"><input type="checkbox"><span>刮鬍刀</span></label>
+    <label class="seto-check" data-id="oq8" data-group="checked"><input type="checkbox"><span>指甲剪</span></label>
+    <label class="seto-check" data-id="oq9" data-group="checked"><input type="checkbox"><span>小鏡子</span></label>
+  </div>
+  <p class="seto-subsub">電器</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ot1" data-group="checked"><input type="checkbox"><span>延長線</span></label>
+    <label class="seto-check" data-id="ot2" data-group="checked"><input type="checkbox"><span>手錶充電器</span></label>
+    <label class="seto-check" data-id="ot3" data-group="checked"><input type="checkbox"><span>自拍棒</span></label>
+  </div>
+  <p class="seto-subsub">其他</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ox1" data-group="checked"><input type="checkbox"><span>隨身垃圾袋</span></label>
+    <label class="seto-check" data-id="ox2" data-group="checked"><input type="checkbox"><span>登機包</span></label>
+    <label class="seto-check" data-id="ox3" data-group="checked"><input type="checkbox"><span>購物袋</span></label>
+  </div>
+</div>
+<div class="seto-note">
+  <b>行動電源必須清楚標示 Wh，且要 100 Wh 以內。</b>2026 年日本新規，沒標容量的一律不能帶。
+  這條放在清單裡而不是規定頁，因為要在收行李的當下看到。
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-back" role="tabpanel" aria-labelledby="seto-tab-back" hidden>
+<h3>回程行李清單</h3>
+<p>比去程多了登機包與託運（大）兩塊，那是買回來的東西要放的地方。</p>
+<div class="seto-checklist" data-key="setouchi2026Back">
+  <div class="seto-progress">
+    <div class="seto-bar"><i data-fill style="width:0"></i></div>
+    <strong class="seto-count"><span data-count>0</span> / 90</strong>
+    <button class="seto-reset" type="button" data-reset>全部清空</button>
+  </div>
+  <div class="seto-groupstats">
+    <span class="seto-groupstat" data-stat="body">身上 <b>0 / 0</b></span>
+    <span class="seto-groupstat" data-stat="bag">隨身後背包 <b>0 / 0</b></span>
+    <span class="seto-groupstat" data-stat="shop">登機包・託運（大） <b>0 / 0</b></span>
+    <span class="seto-groupstat" data-stat="checked">託運行李（中） <b>0 / 0</b></span>
+  </div>
+  <h4 class="seto-sub">身上 <span>每日必檢查</span></h4>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rb1" data-group="body"><input type="checkbox"><span>眼鏡</span></label>
+    <label class="seto-check" data-id="rb2" data-group="body"><input type="checkbox"><span>手機</span></label>
+    <label class="seto-check" data-id="rb3" data-group="body"><input type="checkbox"><span>手錶</span></label>
+  </div>
+  <p class="seto-subsub">穿著</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rw1" data-group="body"><input type="checkbox"><span>短袖長褲</span></label>
+    <label class="seto-check" data-id="rw2" data-group="body"><input type="checkbox"><span>防曬薄外套</span></label>
+    <label class="seto-check" data-id="rw3" data-group="body"><input type="checkbox"><span>運動鞋</span></label>
+  </div>
+  <p class="seto-subsub">護照＆錢包</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rp1" data-group="body"><input type="checkbox"><span>護照</span></label>
+    <label class="seto-check" data-id="rp2" data-group="body"><input type="checkbox"><span>身分證</span></label>
+    <label class="seto-check" data-id="rp3" data-group="body"><input type="checkbox"><span>健保卡</span></label>
+    <label class="seto-check" data-id="rp4" data-group="body"><input type="checkbox"><span>信用卡（錢包）</span></label>
+    <label class="seto-check" data-id="rp5" data-group="body"><input type="checkbox"><span>交通卡（錢包）</span></label>
+    <label class="seto-check" data-id="rp6" data-group="body"><input type="checkbox"><span>日幣現金（錢包）</span></label>
+  </div>
+  <h4 class="seto-sub">隨身後背包 <span>每容器 &lt; 100 ml、總液體 &lt; 1 L，塑膠袋裝</span></h4>
+  <p class="seto-subsub">電器類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="re1" data-group="bag"><input type="checkbox"><span>行動電源</span></label>
+    <label class="seto-check" data-id="re2" data-group="bag"><input type="checkbox"><span>充電線</span></label>
+    <label class="seto-check" data-id="re3" data-group="bag"><input type="checkbox"><span>充電器</span></label>
+    <label class="seto-check" data-id="re4" data-group="bag"><input type="checkbox"><span>Sim 卡</span></label>
+    <label class="seto-check" data-id="re5" data-group="bag"><input type="checkbox"><span>藍芽耳機</span></label>
+    <label class="seto-check" data-id="re6" data-group="bag"><input type="checkbox"><span>有線耳機（+ 轉接頭）</span></label>
+  </div>
+  <p class="seto-subsub">衛生用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rh1" data-group="bag"><input type="checkbox"><span>濕紙巾</span></label>
+    <label class="seto-check" data-id="rh2" data-group="bag"><input type="checkbox"><span>衛生紙</span></label>
+    <label class="seto-check" data-id="rh3" data-group="bag"><input type="checkbox"><span>面紙</span></label>
+    <label class="seto-check" data-id="rh4" data-group="bag"><input type="checkbox"><span>餐具</span></label>
+    <label class="seto-check" data-id="rh5" data-group="bag"><input type="checkbox"><span>免洗餐具</span></label>
+    <label class="seto-check" data-id="rh6" data-group="bag"><input type="checkbox"><span>酒精（&lt; 100 ml）</span></label>
+  </div>
+  <p class="seto-subsub">醫藥用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rm1" data-group="bag"><input type="checkbox"><span>常備口服藥</span></label>
+    <label class="seto-check" data-id="rm2" data-group="bag"><input type="checkbox"><span>暈車藥</span></label>
+    <label class="seto-check" data-id="rm3" data-group="bag"><input type="checkbox"><span>口內膏</span></label>
+    <label class="seto-check" data-id="rm4" data-group="bag"><input type="checkbox"><span>酸痛貼布</span></label>
+    <label class="seto-check" data-id="rm5" data-group="bag"><input type="checkbox"><span>OK 蹦</span></label>
+    <label class="seto-check" data-id="rm6" data-group="bag"><input type="checkbox"><span>透氣膠帶／優肌絆</span></label>
+    <label class="seto-check" data-id="rm7" data-group="bag"><input type="checkbox"><span>眼藥水</span></label>
+    <label class="seto-check" data-id="rm8" data-group="bag"><input type="checkbox"><span>外傷藥膏</span></label>
+    <label class="seto-check" data-id="rm9" data-group="bag"><input type="checkbox"><span>蚊蟲藥</span></label>
+  </div>
+  <p class="seto-subsub">睡覺用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rs1" data-group="bag"><input type="checkbox"><span>人工淚液</span></label>
+    <label class="seto-check" data-id="rs2" data-group="bag"><input type="checkbox"><span>耳塞</span></label>
+    <label class="seto-check" data-id="rs3" data-group="bag"><input type="checkbox"><span>眼罩</span></label>
+  </div>
+  <p class="seto-subsub">日常用品類</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rd1" data-group="bag"><input type="checkbox"><span>眼鏡盒（墨鏡）</span></label>
+    <label class="seto-check" data-id="rd2" data-group="bag"><input type="checkbox"><span>筆</span></label>
+    <label class="seto-check" data-id="rd3" data-group="bag"><input type="checkbox"><span>筆記本／便條紙</span></label>
+    <label class="seto-check" data-id="rd4" data-group="bag"><input type="checkbox"><span>保溫瓶與水</span></label>
+    <label class="seto-check" data-id="rd5" data-group="bag"><input type="checkbox"><span>易口舒／口香糖</span></label>
+    <label class="seto-check" data-id="rd6" data-group="bag"><input type="checkbox"><span>保健食品</span></label>
+    <label class="seto-check" data-id="rd7" data-group="bag"><input type="checkbox"><span>口罩</span></label>
+    <label class="seto-check" data-id="rd8" data-group="bag"><input type="checkbox"><span>行李秤</span></label>
+    <label class="seto-check" data-id="rd9" data-group="bag"><input type="checkbox"><span>頸枕（看個人需求）</span></label>
+    <label class="seto-check" data-id="rd10" data-group="bag"><input type="checkbox"><span>摺疊傘</span></label>
+    <label class="seto-check" data-id="rd11" data-group="bag"><input type="checkbox"><span>第二錢包</span></label>
+    <label class="seto-check" data-id="rd12" data-group="bag"><input type="checkbox"><span>鑰匙</span></label>
+  </div>
+  <h4 class="seto-sub">登機包・託運（大） <span>回程多出來的那些</span></h4>
+  <p class="seto-subsub">登機包</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rg1" data-group="shop"><input type="checkbox"><span>免稅商品</span></label>
+    <label class="seto-check" data-id="rg2" data-group="shop"><input type="checkbox"><span>非液體物品</span></label>
+    <label class="seto-check" data-id="rg3" data-group="shop"><input type="checkbox"><span>食物</span></label>
+  </div>
+  <p class="seto-subsub">託運行李（大）</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rl1" data-group="shop"><input type="checkbox"><span>酒（&lt; 1.5 公升）</span></label>
+    <label class="seto-check" data-id="rl2" data-group="shop"><input type="checkbox"><span>飲料</span></label>
+    <label class="seto-check" data-id="rl3" data-group="shop"><input type="checkbox"><span>食品</span></label>
+    <label class="seto-check" data-id="rl4" data-group="shop"><input type="checkbox"><span>藥妝</span></label>
+    <label class="seto-check" data-id="rl5" data-group="shop"><input type="checkbox"><span>伴手禮</span></label>
+    <label class="seto-check" data-id="rl6" data-group="shop"><input type="checkbox"><span>保健食品</span></label>
+  </div>
+  <h4 class="seto-sub">託運行李（中） <span>總液體 &lt; 5 L</span></h4>
+  <p class="seto-subsub">衣物</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rc1" data-group="checked"><input type="checkbox"><span>上衣（短袖）×4</span></label>
+    <label class="seto-check" data-id="rc2" data-group="checked"><input type="checkbox"><span>褲子 ×4</span></label>
+    <label class="seto-check" data-id="rc3" data-group="checked"><input type="checkbox"><span>內衣褲 ×4</span></label>
+    <label class="seto-check" data-id="rc4" data-group="checked"><input type="checkbox"><span>襪子 ×4</span></label>
+    <label class="seto-check" data-id="rc5" data-group="checked"><input type="checkbox"><span>睡衣 ×2</span></label>
+    <label class="seto-check" data-id="rc6" data-group="checked"><input type="checkbox"><span>短褲 ×2</span></label>
+    <label class="seto-check" data-id="rc7" data-group="checked"><input type="checkbox"><span>護膝</span></label>
+    <label class="seto-check" data-id="rc8" data-group="checked"><input type="checkbox"><span>棉質春秋外套 ×1</span></label>
+    <label class="seto-check" data-id="rc9" data-group="checked"><input type="checkbox"><span>帽子 ×1</span></label>
+  </div>
+  <p class="seto-subsub">外出用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="ro1" data-group="checked"><input type="checkbox"><span>止汗劑</span></label>
+    <label class="seto-check" data-id="ro2" data-group="checked"><input type="checkbox"><span>防曬乳</span></label>
+    <label class="seto-check" data-id="ro3" data-group="checked"><input type="checkbox"><span>防蚊液</span></label>
+    <label class="seto-check" data-id="ro4" data-group="checked"><input type="checkbox"><span>衛生紙備品</span></label>
+    <label class="seto-check" data-id="ro5" data-group="checked"><input type="checkbox"><span>濕紙巾備品</span></label>
+    <label class="seto-check" data-id="ro6" data-group="checked"><input type="checkbox"><span>衛生用品</span></label>
+  </div>
+  <p class="seto-subsub">房間用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rr1" data-group="checked"><input type="checkbox"><span>拖鞋</span></label>
+    <label class="seto-check" data-id="rr2" data-group="checked"><input type="checkbox"><span>毛巾</span></label>
+    <label class="seto-check" data-id="rr3" data-group="checked"><input type="checkbox"><span>衣架 &amp; 曬衣夾 ×4</span></label>
+  </div>
+  <p class="seto-subsub">保養用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rk1" data-group="checked"><input type="checkbox"><span>護手霜</span></label>
+    <label class="seto-check" data-id="rk2" data-group="checked"><input type="checkbox"><span>面霜</span></label>
+    <label class="seto-check" data-id="rk3" data-group="checked"><input type="checkbox"><span>乳液</span></label>
+  </div>
+  <p class="seto-subsub">盥洗與清潔用品</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rq1" data-group="checked"><input type="checkbox"><span>洗面乳</span></label>
+    <label class="seto-check" data-id="rq2" data-group="checked"><input type="checkbox"><span>洗碗精</span></label>
+    <label class="seto-check" data-id="rq3" data-group="checked"><input type="checkbox"><span>梳子</span></label>
+    <label class="seto-check" data-id="rq4" data-group="checked"><input type="checkbox"><span>牙刷</span></label>
+    <label class="seto-check" data-id="rq5" data-group="checked"><input type="checkbox"><span>牙膏</span></label>
+    <label class="seto-check" data-id="rq6" data-group="checked"><input type="checkbox"><span>牙線棒</span></label>
+    <label class="seto-check" data-id="rq7" data-group="checked"><input type="checkbox"><span>刮鬍刀</span></label>
+    <label class="seto-check" data-id="rq8" data-group="checked"><input type="checkbox"><span>指甲剪</span></label>
+    <label class="seto-check" data-id="rq9" data-group="checked"><input type="checkbox"><span>小鏡子</span></label>
+  </div>
+  <p class="seto-subsub">電器</p>
+  <div class="seto-checkgrid">
+    <label class="seto-check" data-id="rt1" data-group="checked"><input type="checkbox"><span>延長線</span></label>
+    <label class="seto-check" data-id="rt2" data-group="checked"><input type="checkbox"><span>手錶充電器</span></label>
+    <label class="seto-check" data-id="rt3" data-group="checked"><input type="checkbox"><span>自拍棒</span></label>
+  </div>
+</div>
+<div class="seto-note">
+  <b>液體規則兩層都要顧。</b>隨身（後背包＋登機包合計）每容器 &lt; 100 ml、總量 &lt; 1 L；
+  託運總液體 &lt; 5 L，酒單獨還有 1.5 公升的申報線。
+</div>
+</section>
+
+<section class="seto-panel" id="seto-panel-souvenir" role="tabpanel" aria-labelledby="seto-tab-souvenir" hidden>
+<h3>伴手禮採買</h3>
+<p>適合認真採買的時段有三個：D1 晚上的廣島本通商店街、D3 傍晚與 D5 中午的高松中央商店街。
+琴平、今治、宮島都不是藥妝戰場，機場品項也少，建議把清單集中在這兩天用掉。</p>
+
+<h4 class="seto-h4">按地區買什麼</h4>
+<div class="seto-g3">
+  <div class="seto-card" style="border-top:3px solid var(--d1)">
+    <div class="k">廣島　D1 宮島表參道</div>
+    <div class="d" style="color:var(--text)">紅葉饅頭（現烤／盒裝兩種都買）、宮島杓子、牡蠣醬油、熊野筆（化妝刷，市區百貨）</div>
+  </div>
+  <div class="seto-card" style="border-top:3px solid var(--d3)">
+    <div class="k">愛媛　D2 道後／D3 毛巾美術館</div>
+    <div class="d" style="color:var(--text)">今治毛巾（認明認證標籤）、坊っちゃん団子、一六蛋糕捲、蜜柑果汁</div>
+  </div>
+  <div class="seto-card" style="border-top:3px solid var(--d5)">
+    <div class="k">香川　D3・D5 高松／D4 琴平</div>
+    <div class="d" style="color:var(--text)">和三盆糖、讚岐烏龍麵（半生麵）、灸まん、小豆島橄欖油與橄欖製品</div>
+  </div>
+</div>
+
+<h4 class="seto-h4">藥妝 <em>可勾選</em></h4>
+<div class="seto-checklist" data-key="setouchi2026Shop">
+  <div class="seto-progress">
+    <div class="seto-bar"><i data-fill style="width:0"></i></div>
+    <strong class="seto-count"><span data-count>0</span> / 18</strong>
+    <button class="seto-reset" type="button" data-reset>清空</button>
+  </div>
+  <div class="seto-tw" style="margin-top:1rem">
+    <table class="seto-table">
+      <thead><tr><th style="width:3.4rem"></th><th style="width:7.6rem">類別</th><th>品項</th><th style="width:10.4rem">預估價格</th><th style="width:17rem">備註</th></tr></thead>
+      <tbody>
+        <tr><td><label class="seto-check" data-id="sv1" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">常備藥</td><td>EVE 止痛藥（藍／金盒）</td><td class="seto-num" style="color:var(--muted)">¥600–900</td><td style="color:var(--muted)">成分強度不同，依需求選</td></tr>
+        <tr><td><label class="seto-check" data-id="sv2" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">常備藥</td><td>太田胃散／第一三共胃腸藥</td><td class="seto-num" style="color:var(--muted)">¥800–1,200</td><td style="color:var(--muted)"></td></tr>
+        <tr><td><label class="seto-check" data-id="sv3" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">常備藥</td><td>龍角散喉糖／喉嚨噴劑</td><td class="seto-num" style="color:var(--muted)">¥400–800</td><td style="color:var(--muted)"></td></tr>
+        <tr><td><label class="seto-check" data-id="sv4" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">痠痛護理</td><td>Salonpas 撒隆巴斯貼布</td><td class="seto-num" style="color:var(--muted)">¥500–800</td><td style="color:var(--muted)">爬完金刀比羅宮那晚會用到</td></tr>
+        <tr><td><label class="seto-check" data-id="sv5" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">痠痛護理</td><td>休足時間貼片</td><td class="seto-num" style="color:var(--muted)">¥500–700</td><td style="color:var(--muted)">同上，敷腿消疲勞</td></tr>
+        <tr><td><label class="seto-check" data-id="sv6" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">保健食品</td><td>合利他命 EX PLUS</td><td class="seto-num" style="color:var(--muted)">¥2,000–3,000</td><td style="color:var(--muted)">B 群，長年熱銷</td></tr>
+        <tr><td><label class="seto-check" data-id="sv7" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">眼睛口腔</td><td>Sante FX／樂敦眼藥水</td><td class="seto-num" style="color:var(--muted)">¥600–1,200</td><td style="color:var(--muted)">清涼度分級，怕刺激選低級數</td></tr>
+        <tr><td><label class="seto-check" data-id="sv8" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">眼睛口腔</td><td>NONIO／Ora2 牙膏、齒間刷</td><td class="seto-num" style="color:var(--muted)">¥300–600</td><td style="color:var(--muted)"></td></tr>
+        <tr><td><label class="seto-check" data-id="sv9" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">防曬保養</td><td>Anessa 安耐曬金瓶</td><td class="seto-num" style="color:var(--muted)">¥1,800–2,500</td><td style="color:var(--muted)"></td></tr>
+        <tr><td><label class="seto-check" data-id="sv10" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">防曬保養</td><td>肌研極潤化妝水／Curél 珂潤</td><td class="seto-num" style="color:var(--muted)">¥1,000–1,800</td><td style="color:var(--muted)">敏感肌選 Curél</td></tr>
+        <tr><td><label class="seto-check" data-id="sv11" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">防曬保養</td><td>Melano CC 維他命 C 精華</td><td class="seto-num" style="color:var(--muted)">¥1,000–1,300</td><td style="color:var(--muted)">淡斑</td></tr>
+        <tr><td><label class="seto-check" data-id="sv12" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">防曬保養</td><td>Imju 薏仁化妝水（大瓶）</td><td class="seto-num" style="color:var(--muted)">¥700–900</td><td style="color:var(--muted)">可全身用，划算</td></tr>
+        <tr><td><label class="seto-check" data-id="sv13" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">防曬保養</td><td>尊馬油</td><td class="seto-num" style="color:var(--muted)">¥500–900</td><td style="color:var(--muted)">乾裂修護，老品回購率高</td></tr>
+        <tr><td><label class="seto-check" data-id="sv14" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">面膜</td><td>LuLuLun 量販包</td><td class="seto-num" style="color:var(--muted)">¥1,500–2,000</td><td style="color:var(--muted)">藍／紅／白對應不同需求</td></tr>
+        <tr><td><label class="seto-check" data-id="sv15" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">面膜</td><td>Saborino 早安面膜</td><td class="seto-num" style="color:var(--muted)">¥900–1,200</td><td style="color:var(--muted)">60 秒洗臉 + 保養 + 妝前</td></tr>
+        <tr><td><label class="seto-check" data-id="sv16" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">面膜</td><td>QUALITY 集中毛孔面膜</td><td class="seto-num" style="color:var(--muted)">¥1,000–1,300</td><td style="color:var(--muted)">近期銷售榜冠軍</td></tr>
+        <tr><td><label class="seto-check" data-id="sv17" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">開架彩妝</td><td>CANMAKE 腮紅／修容</td><td class="seto-num" style="color:var(--muted)">¥700–1,200</td><td style="color:var(--muted)"></td></tr>
+        <tr><td><label class="seto-check" data-id="sv18" data-group="drug" style="border:0;background:transparent;min-height:0;padding:0"><input type="checkbox"><span class="sr"></span></label></td><td style="color:var(--muted)">開架彩妝</td><td>KISS ME／dejavu／Love Liner</td><td class="seto-num" style="color:var(--muted)">¥1,000–1,500</td><td style="color:var(--muted)">眼線、睫毛膏長年熱銷</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h4 class="seto-h4">零食伴手禮 <em>分送朋友的安全牌</em></h4>
+<div class="seto-g2">
+  <div class="seto-card">
+    <div class="t" style="margin-top:0;font-size:1.6rem">全國款</div>
+    <div class="k">超市／唐吉訶德的量販包比機場專櫃划算</div>
+    <ul>
+      <li>明治 香菇山／竹筍里，日本國民派系之爭，帶回去自帶話題性</li>
+      <li>Alfort 帆船餅乾、樂天 派之實、柿種米果</li>
+      <li>Pure 葡萄軟糖，山梨貓眼葡萄果汁內餡</li>
+      <li>iFactory 梅干片，長途搭車提神好用</li>
+      <li>ROYCE' 生巧克力／巧克力洋芋片，需冷藏，回程當天再買</li>
+    </ul>
+  </div>
+  <div class="seto-card">
+    <div class="t" style="margin-top:0;font-size:1.6rem">地區限定</div>
+    <div class="k">比全國款更有送禮意義，對照行程各天</div>
+    <ul>
+      <li>廣島（D1）紅葉饅頭，現烤與盒裝兩種都買</li>
+      <li>愛媛（D2–D3）坊っちゃん団子、一六蛋糕捲</li>
+      <li>香川（D3–D5）和三盆糖、灸まん</li>
+    </ul>
+  </div>
+</div>
+
+<h4 class="seto-h4">便利商店 <em>三家各有強項</em></h4>
+<div class="seto-g3">
+  <div class="seto-card">
+    <div class="t" style="margin-top:0;font-size:1.6rem">LAWSON</div>
+    <div class="k" style="color:var(--accent2);font-weight:700">台灣沒有分店，最值得專程試</div>
+    <div class="d">炸雞君、Uchi Café 生乳捲、GODIVA 聯名甜點、燒鳥串與玉子燒、MACHI café 咖啡</div>
+  </div>
+  <div class="seto-card">
+    <div class="t" style="margin-top:0;font-size:1.6rem">7-ELEVEN</div>
+    <div class="k">高單價線品質穩定</div>
+    <div class="d">金の系列、蕨餅、生銅鑼燒、蘭姆葡萄夾心餅乾</div>
+  </div>
+  <div class="seto-card">
+    <div class="t" style="margin-top:0;font-size:1.6rem">FamilyMart</div>
+    <div class="k">炸物與限定泡麵</div>
+    <div class="d">ファミチキ、SPAM 午餐肉洋芋片、各式限定泡麵</div>
+  </div>
+</div>
+<div class="seto-note">
+  三家跨店通殺：OHAYO 牛奶布丁（娟姍牛奶，被稱殿堂級）、整顆橘子優格、各家烤布蕾冰淇淋與季節限定雪見大福。
+</div>
+
+<h4 class="seto-h4">超商・百圓店實用小物</h4>
+<div class="seto-tw">
+  <table class="seto-table">
+    <thead><tr><th style="width:19rem">品項</th><th>什麼時候會用到</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">冷感濕紙巾</td><td>D4 爬金刀比羅宮石階時</td></tr>
+      <tr><td style="font-weight:700">蒸氣眼罩（花王 MEGURISM）</td><td>飛機上與爬完階梯那晚</td></tr>
+      <tr><td style="font-weight:700">休足時間貼片小包</td><td>超商即可買到的應急版</td></tr>
+      <tr><td style="font-weight:700">摺疊購物袋</td><td>日本超商塑膠袋要收費，帶一個省事</td></tr>
+      <tr><td style="font-weight:700">洗面乳／洗髮精分裝包、隱形眼鏡藥水小瓶</td><td>忘了帶的時候</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="seto-note">
+  <b>退稅適用舊制。</b>9 月出發，同店同日滿 5,000 円（未稅）憑護照當場免稅，消耗品會封袋，
+  不可在日本境內拆封。日本將於 2026/11/1 起改為「先付含稅、出境時退款」的新制，在回國之後才上路，這趟不受影響。
+</div>
+</section>
+</div>
 
-  <!-- Panels -->
-  <section class="seto-viewport" id="seto-viewport">
-    <div class="seto-track" id="seto-track">
-
-      <!-- Panel 0: 總覽 -->
-      <section class="seto-panel">
-        <h3>總體快速觀覽</h3>
-        <p class="seto-lead">先抓整體節奏，再切到行前檢查、打勾清單或每日行程細看。</p>
-        <div class="seto-chips">
-          <span class="seto-chip">左右滑動</span>
-          <span class="seto-chip">打勾清單</span>
-          <span class="seto-chip">展開卡片</span>
-        </div>
-
-        <div class="seto-section">
-          <div class="seto-grid is-single">
-            <section class="seto-card">
-              <h4>行程主線</h4>
-              <p>廣島入境後當天直奔宮島，第二天渡海到四國，接著沿今治、高松、琴平往東，最後從高松機場離境。整趟只有第 4 天的金刀比羅宮需要體力。</p>
-            </section>
-            <section class="seto-card">
-              <h4>最值得留意</h4>
-              <p>宮島看到哪一版風景由潮位決定，出發前一週就能查；金刀比羅宮 785 階要好走的鞋；第 5 天旅行社尚未公佈行程，但有整整七小時可用。</p>
-            </section>
-            <section class="seto-card">
-              <h4>五天摘要</h4>
-              <ul class="seto-list">
-                <li>Day 1（09/24 四）住廣島 ANA：桃園起飛、宮島嚴島神社與大鳥居、千疊閣、表參道商店街、廣島市區夜晚</li>
-                <li>Day 2（09/25 五）住今治國際：瀨戶內海汽船航路、松山城、道後溫泉本館與溫泉街、今治夜晚</li>
-                <li>Day 3（09/26 六）住 JR Clement 高松：今治毛巾美術館、栗林公園與抹茶體驗、丸龜町商店街、高松夜晚</li>
-                <li>Day 4（09/27 日）住琴參閣：瀨戶大橋塔、金刀比羅宮 785 階、琴平溫泉與兩梯次晚宴</li>
-                <li>Day 5（09/28 一）返台：全天行程未公佈、高松機場採買、CI179 傍晚起飛</li>
-              </ul>
-            </section>
-          </div>
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">來回班機</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <thead>
-                <tr><th>行程</th><th>航班</th><th>出發</th><th>抵達</th><th>飛行時間</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>去程</td><td>中華航空 CI 112</td><td>09/24 07:10 桃園 TPE</td><td>09/24 10:35 廣島 HIJ</td><td>2 小時 25 分</td></tr>
-                <tr><td>回程</td><td>中華航空 CI 179</td><td>09/28 19:05 高松 TAK</td><td>09/28 20:55 桃園 TPE</td><td>2 小時 50 分</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">行程與住宿</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <thead>
-                <tr><th></th><th>日期</th><th>行程概要</th><th>住宿</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>第 1 天</td><td>09/24 (四)</td><td>廣島・宮島</td><td>廣島 ANA 飯店</td></tr>
-                <tr><td>第 2 天</td><td>09/25 (五)</td><td>瀨戶內海・松山・道後</td><td>今治國際飯店</td></tr>
-                <tr><td>第 3 天</td><td>09/26 (六)</td><td>今治・栗林公園・高松</td><td>JR Hotel Clement 高松</td></tr>
-                <tr><td>第 4 天</td><td>09/27 (日)</td><td>瀨戶大橋・金刀比羅宮・琴平</td><td>琴參閣</td></tr>
-                <tr><td>第 5 天</td><td>09/28 (一)</td><td>高松</td><td>—</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">與第二梯次的交會</h4>
-          <p class="seto-lead">第二梯次 9/25 出發、廣島進出，景點相同但順序不同。實際上有三天三晚黏在一起：</p>
-          <div class="seto-tablewrap" style="margin-top:1rem">
-            <table class="seto-table">
-              <thead>
-                <tr><th>日期</th><th>第一梯次</th><th>會遇到？</th><th>交會情形</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>09/24 (四)</td><td>宮島 → 廣島宿</td><td>✗</td><td>二梯尚未出發</td></tr>
-                <tr><td>09/25 (五)</td><td>廣島港 → 松山城 → 道後 → 今治</td><td>◎ 很可能同船</td><td>12:35 開船；同住今治國際飯店</td></tr>
-                <tr><td>09/26 (六)</td><td>毛巾美術館 → 栗林公園 → 高松</td><td>○ 部分</td><td>同住 JR Clement 高松</td></tr>
-                <tr><td>09/27 (日)</td><td>瀨戶大橋塔 → 金刀比羅宮 → 琴平</td><td>◎ 晚宴合流</td><td>白天各走各的，晚上琴參閣晚宴</td></tr>
-                <tr><td>09/28 (一)</td><td>高松整天</td><td>✗</td><td>二梯往宮島、廣島宿</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="seto-tip">
-            <b>意即</b>9/25 到 9/27 這三晚都與第二梯次同飯店，9/27 晚上是唯一全體到齊的場合。想找二梯同事，09/27 晚宴那晚是最好的時機；09/25 與 09/26 住同一間飯店，自由活動可約。
-          </div>
-        </div>
-
-        <p class="seto-note">可以直接把這頁加入手機主畫面，勾選狀態會保存在這台裝置。</p>
-      </section>
-
-      <!-- Panel 1: 行前檢查 -->
-      <section class="seto-panel">
-        <h3>行前檢查與實用資訊</h3>
-        <p class="seto-lead">出發前一週再掃一次這頁就夠了。</p>
-
-        <div class="seto-grid seto-section">
-          <section class="seto-card">
-            <h4>鞋子</h4>
-            <p>全程只有第 4 天（金刀比羅宮 785 階）需要真正好走的鞋，但那天佔比很重。</p>
-          </section>
-          <section class="seto-card">
-            <h4>天氣</h4>
-            <p>9 月下旬瀨戶內海白天 28–30°C 且偏悶，船上、山上、夜間偏涼，一件薄外套足夠。仍在颱風季尾端，出發前一週留意。</p>
-          </section>
-          <section class="seto-card">
-            <h4>現金</h4>
-            <p>宮島、琴平表參道的小店仍有不少只收現金；渡輪與電車可用 ICOCA／Suica 等交通 IC 卡。建議帶一些千円鈔與零錢。</p>
-          </section>
-          <section class="seto-card">
-            <h4>潮汐查詢</h4>
-            <p>宮島觀光協會年間潮汐表，出發前一週查 9/24。</p>
-            <div class="seto-links">
-              <a target="_blank" rel="noopener" href="https://www.miyajima.or.jp/sio/sio01.php">宮島潮汐表</a>
-            </div>
-          </section>
-          <section class="seto-card">
-            <h4>預約類</h4>
-            <p>廣島平和記念資料館 17:30–18:30 時段須線上預約；其餘景點皆免預約。</p>
-          </section>
-          <section class="seto-links-card">
-            <h4>常用連結</h4>
-            <div class="seto-links">
-              <a target="_blank" rel="noopener" href="https://www.vjw.digital.go.jp/">Visit Japan Web</a>
-              <a target="_blank" rel="noopener" href="https://www.miyajima.or.jp/sio/sio01.php">宮島潮汐</a>
-              <a target="_blank" rel="noopener" href="https://hpmmuseum.jp/">平和記念資料館</a>
-              <a target="_blank" rel="noopener" href="https://dogo.jp/">道後溫泉</a>
-              <a target="_blank" rel="noopener" href="https://www.my-kagawa.jp/ritsuringarden">栗林公園</a>
-              <a target="_blank" rel="noopener" href="https://www.konpira.or.jp/">金刀比羅宮</a>
-              <a target="_blank" rel="noopener" href="https://www.takamatsu-airport.com/">高松機場</a>
-              <a target="_blank" rel="noopener" href="https://www.china-airlines.com/tw/zh/prepare-for-the-fly/information/baggage/checked-baggage">華航行李</a>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <!-- Panel 2: 入境與行李 -->
-      <section class="seto-panel">
-        <h3>入境、網路與行李規定</h3>
-        <p class="seto-lead">出發前先處理掉的雜事都在這頁。</p>
-
-        <div class="seto-grid is-single seto-section">
-          <section class="seto-card">
-            <h4>預先登錄入境手續</h4>
-            <p>抵達日本前 6 小時以上填妥 Visit Japan Web，辦理入境手續時出示。</p>
-            <div class="seto-links">
-              <a target="_blank" rel="noopener" href="https://www.vjw.digital.go.jp/">Visit Japan Web</a>
-            </div>
-          </section>
-          <section class="seto-card">
-            <h4>入境日本（2026 年新規定）</h4>
-            <ul class="seto-list">
-              <li>禁止攜帶蔬果類（含種子）、肉類、肉製品入境，包含飛機餐剩餘食物。</li>
-              <li>行動電源必須清楚標示容量（Wh），且在 100 Wh 以內。</li>
-              <li>不可攜帶偽造商品與盜版光碟。</li>
-              <li>藥物不可超過 2 個月份，並附醫師處方或中文／英文說明。</li>
-              <li>名牌精品免稅額 20 萬日圓（約新台幣 4 萬元）。</li>
-              <li>酒、菸、香水超量須申報，且僅能擇一免稅：酒 3 瓶（每瓶 760 ml）／香菸 200 支／香水 2 盎司。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>入境台灣（2026 年新規定）</h4>
-            <ul class="seto-list">
-              <li>應申報：酒類逾 1.5 公升、捲菸逾 1 條（200 支）、雪茄逾 25 支。</li>
-              <li>禁帶肉類製品：香腸、火腿、肉乾、臘肉、肉鬆、牛肉乾、罐裝肉、肉粉。</li>
-              <li>禁帶未經核准的乳製品：生乳、未殺菌乳酪、部分手工起司。</li>
-              <li>禁帶所有生鮮蔬果：香蕉、葡萄、蘋果、生菜、馬鈴薯、蒜頭。</li>
-              <li>禁帶高風險蛋製品：生蛋、半熟蛋、溏心蛋、未檢疫鹹蛋、茶葉蛋。</li>
-              <li>無法判斷就到機場動植物檢疫櫃檯問，主動詢問即使判定不合格也不會受罰。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>入境台灣・數量上限</h4>
-            <ul class="seto-list">
-              <li>一般食品（零食、泡麵、飲料、茶包）：總價值 1000 美元以下、總重量 6 公斤以內。</li>
-              <li>錠狀膠囊保健食品（維他命、酵素、膠原蛋白）：每種最多 12 瓶（盒、罐、包、袋），總計不超過 36 瓶。</li>
-              <li>常見醫療器材以「每人每半年一次」為原則，且僅供個人自用。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>網路方案</h4>
-            <ul class="seto-list">
-              <li>SIM 卡：翔翼日行卡 KDDI 吃到飽，原生卡無限流量。</li>
-              <li>eSIM：KLOOK（Softbank 5G / DOCOMO 4G LTE，不穩就退）、KKDAY。</li>
-              <li>漫遊：中華電信日本方案。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>華航・託運行李</h4>
-            <ul class="seto-list">
-              <li>每件行李長 + 寬 + 高總和需在 158 公分（含）以內。</li>
-            </ul>
-            <div class="seto-links">
-              <a target="_blank" rel="noopener" href="https://www.china-airlines.com/tw/zh/prepare-for-the-fly/information/baggage/checked-baggage">託運行李規定</a>
-            </div>
-          </section>
-          <section class="seto-card">
-            <h4>華航・手提行李</h4>
-            <ul class="seto-list">
-              <li>尺寸含輪子、把手及側袋，長 × 寬 × 高不可超過 56 × 36 × 23 公分。</li>
-              <li>單件重量不可超過 7 公斤。</li>
-            </ul>
-            <div class="seto-links">
-              <a target="_blank" rel="noopener" href="https://www.china-airlines.com/tw/zh/prepare-for-the-fly/information/baggage/carry-on-baggage">隨身行李規定</a>
-            </div>
-          </section>
-          <section class="seto-card">
-            <h4>華航・個人物品</h4>
-            <ul class="seto-list">
-              <li>尺寸含輪子、把手及側袋，長 × 高 × 寬不可超過 40 × 30 × 15 公分，或三邊總和不超過 85 公分；超過就併入手提行李額度計算。</li>
-              <li>小型背包、小型手提袋皮包、手提電腦、手提公事包。</li>
-              <li>適量免稅品、大衣、少量個人食物與飲料。</li>
-              <li>相機背袋、輕型相機、望遠鏡、傘具。</li>
-            </ul>
-          </section>
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">醫療器材限量</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <thead>
-                <tr><th>醫療器材類別</th><th>限量規定</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>液體 OK 繃</td><td>最多 4 條（罐、瓶、支）</td></tr>
-                <tr><td>醫用棉棒</td><td>最多 200 支</td></tr>
-                <tr><td class="wrap">日拋型隱形眼鏡</td><td class="wrap">單一度數最多 60 片，每人限單一品牌，最多兩種度數</td></tr>
-                <tr><td class="wrap">矯正鏡片（近視／遠視眼鏡片）</td><td>最多 1 副</td></tr>
-                <tr><td>醫用口罩</td><td>最多 250 片（個）</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- Panel 3: 清單・去程 -->
-      <section class="seto-panel">
-        <h3>攜帶物品清單・去程</h3>
-        <p class="seto-lead">搭飛機配置，依身上、隨身後背包與托運行李分類勾選。</p>
-
-        <div class="seto-checklist" data-key="setouchi2026Out">
-          <div class="seto-stats" style="margin-bottom:1.6rem">
-            <div class="seto-stat"><span>身上</span><strong data-stat="body">0/0</strong></div>
-            <div class="seto-stat"><span>後背包</span><strong data-stat="bag">0/0</strong></div>
-            <div class="seto-stat"><span>托運</span><strong data-stat="checked">0/0</strong></div>
-            <div class="seto-stat"><span>合計</span><strong data-stat="all">0/0</strong></div>
-          </div>
-
-          <div class="seto-progress">
-            <div class="seto-bar"><span class="seto-fill" data-fill></span></div>
-            <strong class="seto-count" data-count>0 / 0</strong>
-          </div>
-          <div class="seto-nav" style="margin-top:0">
-            <span class="seto-hint">勾選狀態會保存在這台裝置</span>
-            <button class="seto-btn" type="button" data-reset>清除勾選</button>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🧍 身上</div>
-            <p class="seto-group-hint">每日必檢查</p>
-            <div class="seto-checks">
-              <label class="seto-check" data-id="ob1" data-group="body"><input type="checkbox"><span>眼鏡</span></label>
-              <label class="seto-check" data-id="ob2" data-group="body"><input type="checkbox"><span>手機</span></label>
-              <label class="seto-check" data-id="ob3" data-group="body"><input type="checkbox"><span>手錶</span></label>
-            </div>
-            <div class="seto-sub" style="margin-top:.9rem">
-              <div class="seto-sub-title">👕 穿著</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="ow1" data-group="body"><input type="checkbox"><span>短袖長褲</span></label>
-                <label class="seto-check" data-id="ow2" data-group="body"><input type="checkbox"><span>防曬薄外套</span></label>
-                <label class="seto-check" data-id="ow3" data-group="body"><input type="checkbox"><span>運動鞋</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🪪 護照 &amp; 錢包</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="op1" data-group="body"><input type="checkbox"><span>護照</span></label>
-                <label class="seto-check" data-id="op2" data-group="body"><input type="checkbox"><span>身分證</span></label>
-                <label class="seto-check" data-id="op3" data-group="body"><input type="checkbox"><span>健保卡</span></label>
-                <label class="seto-check" data-id="op4" data-group="body"><input type="checkbox"><span>信用卡（錢包）</span></label>
-                <label class="seto-check" data-id="op5" data-group="body"><input type="checkbox"><span>交通卡（錢包）</span></label>
-                <label class="seto-check" data-id="op6" data-group="body"><input type="checkbox"><span>日幣現金（錢包）</span></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🎒 隨身後背包</div>
-            <p class="seto-group-hint">每個容器小於 100 ml、總液體小於 1 L，塑膠袋裝</p>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🔌 電器類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="oe1" data-group="bag"><input type="checkbox"><span>行動電源</span></label>
-                <label class="seto-check" data-id="oe2" data-group="bag"><input type="checkbox"><span>充電線</span></label>
-                <label class="seto-check" data-id="oe3" data-group="bag"><input type="checkbox"><span>充電器</span></label>
-                <label class="seto-check" data-id="oe4" data-group="bag"><input type="checkbox"><span>Sim 卡</span></label>
-                <label class="seto-check" data-id="oe5" data-group="bag"><input type="checkbox"><span>藍芽耳機</span></label>
-                <label class="seto-check" data-id="oe6" data-group="bag"><input type="checkbox"><span>有線耳機（+ 轉接頭）</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧻 衛生用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="oh1" data-group="bag"><input type="checkbox"><span>濕紙巾</span></label>
-                <label class="seto-check" data-id="oh2" data-group="bag"><input type="checkbox"><span>衛生紙</span></label>
-                <label class="seto-check" data-id="oh3" data-group="bag"><input type="checkbox"><span>面紙</span></label>
-                <label class="seto-check" data-id="oh4" data-group="bag"><input type="checkbox"><span>餐具</span></label>
-                <label class="seto-check" data-id="oh5" data-group="bag"><input type="checkbox"><span>免洗餐具</span></label>
-                <label class="seto-check" data-id="oh6" data-group="bag"><input type="checkbox"><span>酒精（&lt; 100 ml）</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">💊 醫藥用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="om1" data-group="bag"><input type="checkbox"><span>常備口服藥</span></label>
-                <label class="seto-check" data-id="om2" data-group="bag"><input type="checkbox"><span>暈車藥</span></label>
-                <label class="seto-check" data-id="om3" data-group="bag"><input type="checkbox"><span>口內膏</span></label>
-                <label class="seto-check" data-id="om4" data-group="bag"><input type="checkbox"><span>酸痛貼布</span></label>
-                <label class="seto-check" data-id="om5" data-group="bag"><input type="checkbox"><span>OK 蹦</span></label>
-                <label class="seto-check" data-id="om6" data-group="bag"><input type="checkbox"><span>透氣膠帶／優肌絆</span></label>
-                <label class="seto-check" data-id="om7" data-group="bag"><input type="checkbox"><span>眼藥水</span></label>
-                <label class="seto-check" data-id="om8" data-group="bag"><input type="checkbox"><span>外傷藥膏</span></label>
-                <label class="seto-check" data-id="om9" data-group="bag"><input type="checkbox"><span>蚊蟲藥</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">😴 睡覺用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="os1" data-group="bag"><input type="checkbox"><span>人工淚液</span></label>
-                <label class="seto-check" data-id="os2" data-group="bag"><input type="checkbox"><span>耳塞</span></label>
-                <label class="seto-check" data-id="os3" data-group="bag"><input type="checkbox"><span>眼罩</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧰 日常用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="od1" data-group="bag"><input type="checkbox"><span>眼鏡盒（墨鏡）</span></label>
-                <label class="seto-check" data-id="od2" data-group="bag"><input type="checkbox"><span>筆</span></label>
-                <label class="seto-check" data-id="od3" data-group="bag"><input type="checkbox"><span>筆記本／便條紙</span></label>
-                <label class="seto-check" data-id="od4" data-group="bag"><input type="checkbox"><span>保溫瓶與水</span></label>
-                <label class="seto-check" data-id="od5" data-group="bag"><input type="checkbox"><span>易口舒／口香糖</span></label>
-                <label class="seto-check" data-id="od6" data-group="bag"><input type="checkbox"><span>保健食品</span></label>
-                <label class="seto-check" data-id="od7" data-group="bag"><input type="checkbox"><span>口罩</span></label>
-                <label class="seto-check" data-id="od8" data-group="bag"><input type="checkbox"><span>行李秤</span></label>
-                <label class="seto-check" data-id="od9" data-group="bag"><input type="checkbox"><span>頸枕（看個人需求）</span></label>
-                <label class="seto-check" data-id="od10" data-group="bag"><input type="checkbox"><span>摺疊傘</span></label>
-                <label class="seto-check" data-id="od11" data-group="bag"><input type="checkbox"><span>第二錢包</span></label>
-                <label class="seto-check" data-id="od12" data-group="bag"><input type="checkbox"><span>鑰匙</span></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🧳 托運行李（中 in 大）</div>
-            <p class="seto-group-hint">總液體小於 5 L</p>
-            <div class="seto-sub">
-              <div class="seto-sub-title">👖 衣物</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="oc1" data-group="checked"><input type="checkbox"><span>上衣（短袖）×4</span></label>
-                <label class="seto-check" data-id="oc2" data-group="checked"><input type="checkbox"><span>褲子 ×4</span></label>
-                <label class="seto-check" data-id="oc3" data-group="checked"><input type="checkbox"><span>內衣褲 ×4</span></label>
-                <label class="seto-check" data-id="oc4" data-group="checked"><input type="checkbox"><span>襪子 ×4</span></label>
-                <label class="seto-check" data-id="oc5" data-group="checked"><input type="checkbox"><span>睡衣 ×2</span></label>
-                <label class="seto-check" data-id="oc6" data-group="checked"><input type="checkbox"><span>短褲 ×2</span></label>
-                <label class="seto-check" data-id="oc7" data-group="checked"><input type="checkbox"><span>護膝</span></label>
-                <label class="seto-check" data-id="oc8" data-group="checked"><input type="checkbox"><span>棉質春秋外套 ×1</span></label>
-                <label class="seto-check" data-id="oc9" data-group="checked"><input type="checkbox"><span>帽子 ×1</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🌞 外出用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="oo1" data-group="checked"><input type="checkbox"><span>止汗劑</span></label>
-                <label class="seto-check" data-id="oo2" data-group="checked"><input type="checkbox"><span>防曬乳</span></label>
-                <label class="seto-check" data-id="oo3" data-group="checked"><input type="checkbox"><span>防蚊液</span></label>
-                <label class="seto-check" data-id="oo4" data-group="checked"><input type="checkbox"><span>衛生紙備品</span></label>
-                <label class="seto-check" data-id="oo5" data-group="checked"><input type="checkbox"><span>濕紙巾備品</span></label>
-                <label class="seto-check" data-id="oo6" data-group="checked"><input type="checkbox"><span>衛生用品</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🛏 房間用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="or1" data-group="checked"><input type="checkbox"><span>拖鞋</span></label>
-                <label class="seto-check" data-id="or2" data-group="checked"><input type="checkbox"><span>毛巾</span></label>
-                <label class="seto-check" data-id="or3" data-group="checked"><input type="checkbox"><span>衣架 &amp; 曬衣夾 ×4</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧴 保養用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="ok1" data-group="checked"><input type="checkbox"><span>護手霜</span></label>
-                <label class="seto-check" data-id="ok2" data-group="checked"><input type="checkbox"><span>面霜</span></label>
-                <label class="seto-check" data-id="ok3" data-group="checked"><input type="checkbox"><span>乳液</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🪥 盥洗與清潔用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="oq1" data-group="checked"><input type="checkbox"><span>洗面乳</span></label>
-                <label class="seto-check" data-id="oq2" data-group="checked"><input type="checkbox"><span>洗碗精</span></label>
-                <label class="seto-check" data-id="oq3" data-group="checked"><input type="checkbox"><span>梳子</span></label>
-                <label class="seto-check" data-id="oq4" data-group="checked"><input type="checkbox"><span>牙刷</span></label>
-                <label class="seto-check" data-id="oq5" data-group="checked"><input type="checkbox"><span>牙膏</span></label>
-                <label class="seto-check" data-id="oq6" data-group="checked"><input type="checkbox"><span>牙線棒</span></label>
-                <label class="seto-check" data-id="oq7" data-group="checked"><input type="checkbox"><span>刮鬍刀</span></label>
-                <label class="seto-check" data-id="oq8" data-group="checked"><input type="checkbox"><span>指甲剪</span></label>
-                <label class="seto-check" data-id="oq9" data-group="checked"><input type="checkbox"><span>小鏡子</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🔋 電器</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="ot1" data-group="checked"><input type="checkbox"><span>延長線</span></label>
-                <label class="seto-check" data-id="ot2" data-group="checked"><input type="checkbox"><span>手錶充電器</span></label>
-                <label class="seto-check" data-id="ot3" data-group="checked"><input type="checkbox"><span>自拍棒</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">📦 其他</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="ox1" data-group="checked"><input type="checkbox"><span>隨身垃圾袋</span></label>
-                <label class="seto-check" data-id="ox2" data-group="checked"><input type="checkbox"><span>登機包</span></label>
-                <label class="seto-check" data-id="ox3" data-group="checked"><input type="checkbox"><span>購物袋</span></label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Panel 4: 清單・回程 -->
-      <section class="seto-panel">
-        <h3>攜帶物品清單・回程</h3>
-        <p class="seto-lead">回程多了登機包與購物用的大行李箱，其餘與去程相同。這份清單獨立記錄，不會與去程互相影響。</p>
-
-        <div class="seto-checklist" data-key="setouchi2026Back">
-          <div class="seto-stats" style="margin-bottom:1.6rem">
-            <div class="seto-stat"><span>身上</span><strong data-stat="body">0/0</strong></div>
-            <div class="seto-stat"><span>後背包</span><strong data-stat="bag">0/0</strong></div>
-            <div class="seto-stat"><span>購物與登機包</span><strong data-stat="shop">0/0</strong></div>
-            <div class="seto-stat"><span>托運</span><strong data-stat="checked">0/0</strong></div>
-          </div>
-
-          <div class="seto-progress">
-            <div class="seto-bar"><span class="seto-fill" data-fill></span></div>
-            <strong class="seto-count" data-count>0 / 0</strong>
-          </div>
-          <div class="seto-nav" style="margin-top:0">
-            <span class="seto-hint">勾選狀態會保存在這台裝置</span>
-            <button class="seto-btn" type="button" data-reset>清除勾選</button>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🧍 身上</div>
-            <p class="seto-group-hint">每日必檢查</p>
-            <div class="seto-checks">
-              <label class="seto-check" data-id="rb1" data-group="body"><input type="checkbox"><span>眼鏡</span></label>
-              <label class="seto-check" data-id="rb2" data-group="body"><input type="checkbox"><span>手機</span></label>
-              <label class="seto-check" data-id="rb3" data-group="body"><input type="checkbox"><span>手錶</span></label>
-            </div>
-            <div class="seto-sub" style="margin-top:.9rem">
-              <div class="seto-sub-title">👕 穿著</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rw1" data-group="body"><input type="checkbox"><span>短袖長褲</span></label>
-                <label class="seto-check" data-id="rw2" data-group="body"><input type="checkbox"><span>防曬薄外套</span></label>
-                <label class="seto-check" data-id="rw3" data-group="body"><input type="checkbox"><span>運動鞋</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🪪 護照 &amp; 錢包</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rp1" data-group="body"><input type="checkbox"><span>護照</span></label>
-                <label class="seto-check" data-id="rp2" data-group="body"><input type="checkbox"><span>身分證</span></label>
-                <label class="seto-check" data-id="rp3" data-group="body"><input type="checkbox"><span>健保卡</span></label>
-                <label class="seto-check" data-id="rp4" data-group="body"><input type="checkbox"><span>信用卡（錢包）</span></label>
-                <label class="seto-check" data-id="rp5" data-group="body"><input type="checkbox"><span>交通卡（錢包）</span></label>
-                <label class="seto-check" data-id="rp6" data-group="body"><input type="checkbox"><span>日幣現金（錢包）</span></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🎒 隨身後背包</div>
-            <p class="seto-group-hint">每個容器小於 100 ml、總液體小於 1 L，塑膠袋裝</p>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🔌 電器類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="re1" data-group="bag"><input type="checkbox"><span>行動電源</span></label>
-                <label class="seto-check" data-id="re2" data-group="bag"><input type="checkbox"><span>充電線</span></label>
-                <label class="seto-check" data-id="re3" data-group="bag"><input type="checkbox"><span>充電器</span></label>
-                <label class="seto-check" data-id="re4" data-group="bag"><input type="checkbox"><span>Sim 卡</span></label>
-                <label class="seto-check" data-id="re5" data-group="bag"><input type="checkbox"><span>藍芽耳機</span></label>
-                <label class="seto-check" data-id="re6" data-group="bag"><input type="checkbox"><span>有線耳機（+ 轉接頭）</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧻 衛生用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rh1" data-group="bag"><input type="checkbox"><span>濕紙巾</span></label>
-                <label class="seto-check" data-id="rh2" data-group="bag"><input type="checkbox"><span>衛生紙</span></label>
-                <label class="seto-check" data-id="rh3" data-group="bag"><input type="checkbox"><span>面紙</span></label>
-                <label class="seto-check" data-id="rh4" data-group="bag"><input type="checkbox"><span>餐具</span></label>
-                <label class="seto-check" data-id="rh5" data-group="bag"><input type="checkbox"><span>免洗餐具</span></label>
-                <label class="seto-check" data-id="rh6" data-group="bag"><input type="checkbox"><span>酒精（&lt; 100 ml）</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">💊 醫藥用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rm1" data-group="bag"><input type="checkbox"><span>常備口服藥</span></label>
-                <label class="seto-check" data-id="rm2" data-group="bag"><input type="checkbox"><span>暈車藥</span></label>
-                <label class="seto-check" data-id="rm3" data-group="bag"><input type="checkbox"><span>口內膏</span></label>
-                <label class="seto-check" data-id="rm4" data-group="bag"><input type="checkbox"><span>酸痛貼布</span></label>
-                <label class="seto-check" data-id="rm5" data-group="bag"><input type="checkbox"><span>OK 蹦</span></label>
-                <label class="seto-check" data-id="rm6" data-group="bag"><input type="checkbox"><span>透氣膠帶／優肌絆</span></label>
-                <label class="seto-check" data-id="rm7" data-group="bag"><input type="checkbox"><span>眼藥水</span></label>
-                <label class="seto-check" data-id="rm8" data-group="bag"><input type="checkbox"><span>外傷藥膏</span></label>
-                <label class="seto-check" data-id="rm9" data-group="bag"><input type="checkbox"><span>蚊蟲藥</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">😴 睡覺用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rs1" data-group="bag"><input type="checkbox"><span>人工淚液</span></label>
-                <label class="seto-check" data-id="rs2" data-group="bag"><input type="checkbox"><span>耳塞</span></label>
-                <label class="seto-check" data-id="rs3" data-group="bag"><input type="checkbox"><span>眼罩</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧰 日常用品類</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rd1" data-group="bag"><input type="checkbox"><span>眼鏡盒（墨鏡）</span></label>
-                <label class="seto-check" data-id="rd2" data-group="bag"><input type="checkbox"><span>筆</span></label>
-                <label class="seto-check" data-id="rd3" data-group="bag"><input type="checkbox"><span>筆記本／便條紙</span></label>
-                <label class="seto-check" data-id="rd4" data-group="bag"><input type="checkbox"><span>保溫瓶與水</span></label>
-                <label class="seto-check" data-id="rd5" data-group="bag"><input type="checkbox"><span>易口舒／口香糖</span></label>
-                <label class="seto-check" data-id="rd6" data-group="bag"><input type="checkbox"><span>保健食品</span></label>
-                <label class="seto-check" data-id="rd7" data-group="bag"><input type="checkbox"><span>口罩</span></label>
-                <label class="seto-check" data-id="rd8" data-group="bag"><input type="checkbox"><span>行李秤</span></label>
-                <label class="seto-check" data-id="rd9" data-group="bag"><input type="checkbox"><span>頸枕（看個人需求）</span></label>
-                <label class="seto-check" data-id="rd10" data-group="bag"><input type="checkbox"><span>摺疊傘</span></label>
-                <label class="seto-check" data-id="rd11" data-group="bag"><input type="checkbox"><span>第二錢包</span></label>
-                <label class="seto-check" data-id="rd12" data-group="bag"><input type="checkbox"><span>鑰匙</span></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🛍 登機包</div>
-            <p class="seto-group-hint">每個容器小於 100 ml、總液體小於 1 L，與後背包合計</p>
-            <div class="seto-checks">
-              <label class="seto-check" data-id="rg1" data-group="shop"><input type="checkbox"><span>免稅商品</span></label>
-              <label class="seto-check" data-id="rg2" data-group="shop"><input type="checkbox"><span>非液體物品</span></label>
-              <label class="seto-check" data-id="rg3" data-group="shop"><input type="checkbox"><span>食物</span></label>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🧳 托運行李（大）</div>
-            <p class="seto-group-hint">購物用，總液體小於 5 L</p>
-            <div class="seto-checks">
-              <label class="seto-check" data-id="rl1" data-group="shop"><input type="checkbox"><span>酒（&lt; 1.5 公升）</span></label>
-              <label class="seto-check" data-id="rl2" data-group="shop"><input type="checkbox"><span>飲料</span></label>
-              <label class="seto-check" data-id="rl3" data-group="shop"><input type="checkbox"><span>食品</span></label>
-              <label class="seto-check" data-id="rl4" data-group="shop"><input type="checkbox"><span>藥妝</span></label>
-              <label class="seto-check" data-id="rl5" data-group="shop"><input type="checkbox"><span>伴手禮</span></label>
-              <label class="seto-check" data-id="rl6" data-group="shop"><input type="checkbox"><span>保健食品</span></label>
-            </div>
-          </div>
-
-          <div class="seto-group">
-            <div class="seto-group-title">🧳 托運行李（中）</div>
-            <p class="seto-group-hint">總液體小於 5 L</p>
-            <div class="seto-sub">
-              <div class="seto-sub-title">👖 衣物</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rc1" data-group="checked"><input type="checkbox"><span>上衣（短袖）×4</span></label>
-                <label class="seto-check" data-id="rc2" data-group="checked"><input type="checkbox"><span>褲子 ×4</span></label>
-                <label class="seto-check" data-id="rc3" data-group="checked"><input type="checkbox"><span>內衣褲 ×4</span></label>
-                <label class="seto-check" data-id="rc4" data-group="checked"><input type="checkbox"><span>襪子 ×4</span></label>
-                <label class="seto-check" data-id="rc5" data-group="checked"><input type="checkbox"><span>睡衣 ×2</span></label>
-                <label class="seto-check" data-id="rc6" data-group="checked"><input type="checkbox"><span>短褲 ×2</span></label>
-                <label class="seto-check" data-id="rc7" data-group="checked"><input type="checkbox"><span>護膝</span></label>
-                <label class="seto-check" data-id="rc8" data-group="checked"><input type="checkbox"><span>棉質春秋外套 ×1</span></label>
-                <label class="seto-check" data-id="rc9" data-group="checked"><input type="checkbox"><span>帽子 ×1</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🌞 外出用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="ro1" data-group="checked"><input type="checkbox"><span>止汗劑</span></label>
-                <label class="seto-check" data-id="ro2" data-group="checked"><input type="checkbox"><span>防曬乳</span></label>
-                <label class="seto-check" data-id="ro3" data-group="checked"><input type="checkbox"><span>防蚊液</span></label>
-                <label class="seto-check" data-id="ro4" data-group="checked"><input type="checkbox"><span>衛生紙備品</span></label>
-                <label class="seto-check" data-id="ro5" data-group="checked"><input type="checkbox"><span>濕紙巾備品</span></label>
-                <label class="seto-check" data-id="ro6" data-group="checked"><input type="checkbox"><span>衛生用品</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🛏 房間用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rr1" data-group="checked"><input type="checkbox"><span>拖鞋</span></label>
-                <label class="seto-check" data-id="rr2" data-group="checked"><input type="checkbox"><span>毛巾</span></label>
-                <label class="seto-check" data-id="rr3" data-group="checked"><input type="checkbox"><span>衣架 &amp; 曬衣夾 ×4</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🧴 保養用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rk1" data-group="checked"><input type="checkbox"><span>護手霜</span></label>
-                <label class="seto-check" data-id="rk2" data-group="checked"><input type="checkbox"><span>面霜</span></label>
-                <label class="seto-check" data-id="rk3" data-group="checked"><input type="checkbox"><span>乳液</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🪥 盥洗與清潔用品</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rq1" data-group="checked"><input type="checkbox"><span>洗面乳</span></label>
-                <label class="seto-check" data-id="rq2" data-group="checked"><input type="checkbox"><span>洗碗精</span></label>
-                <label class="seto-check" data-id="rq3" data-group="checked"><input type="checkbox"><span>梳子</span></label>
-                <label class="seto-check" data-id="rq4" data-group="checked"><input type="checkbox"><span>牙刷</span></label>
-                <label class="seto-check" data-id="rq5" data-group="checked"><input type="checkbox"><span>牙膏</span></label>
-                <label class="seto-check" data-id="rq6" data-group="checked"><input type="checkbox"><span>牙線棒</span></label>
-                <label class="seto-check" data-id="rq7" data-group="checked"><input type="checkbox"><span>刮鬍刀</span></label>
-                <label class="seto-check" data-id="rq8" data-group="checked"><input type="checkbox"><span>指甲剪</span></label>
-                <label class="seto-check" data-id="rq9" data-group="checked"><input type="checkbox"><span>小鏡子</span></label>
-              </div>
-            </div>
-            <div class="seto-sub">
-              <div class="seto-sub-title">🔋 電器</div>
-              <div class="seto-checks">
-                <label class="seto-check" data-id="rt1" data-group="checked"><input type="checkbox"><span>延長線</span></label>
-                <label class="seto-check" data-id="rt2" data-group="checked"><input type="checkbox"><span>手錶充電器</span></label>
-                <label class="seto-check" data-id="rt3" data-group="checked"><input type="checkbox"><span>自拍棒</span></label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Panel 5: Day 1 -->
-      <section class="seto-panel">
-        <h3>Day 1　9/24（四）</h3>
-        <p class="seto-lead">廣島・宮島。入境後直奔宮島，晚上留給廣島市區。</p>
-        <div class="seto-route">
-          <strong>當日路線</strong>
-          桃園機場（CI 112 TPE 07:10 起飛）→ 廣島機場（HIJ 10:35 抵達）→ 約 1 小時 → 宮島口 → 渡輪 → 嚴島神社（厳島神社）、大鳥居、千疊閣（千畳閣）、表參道商店街（表参道商店街）→ 渡輪 → 約 29 分 → 廣島市區（廣島 ANA 飯店）
-        </div>
-
-        <div class="seto-stops seto-section">
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>嚴島神社／海上大鳥居</strong>
-                <small>厳島神社・大鳥居</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>這裡的看點不是建築，是潮位。</li>
-                <li>潮位 250 公分以上，社殿才會呈現「浮在海上」的樣子；潮位 100 公分以下，才走得到大鳥居腳下。</li>
-                <li>兩者一天不會同時出現，出發前查好潮位，就能先知道會看到哪一版風景。</li>
-                <li>查潮汐用宮島觀光協會的年間潮汐表，出發前一週查 9/24 的曲線。表上是「廣島港」潮位，嚴島港會略早一些。</li>
-              </ul>
-              <div class="seto-links">
-                <a target="_blank" rel="noopener" href="https://www.miyajima.or.jp/sio/sio01.php">宮島年間潮汐表</a>
-              </div>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>千疊閣與五重塔</strong>
-                <small>千畳閣・豊国神社</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>就在神社上方的小丘，人潮明顯少於本社。</li>
-                <li>木造大空間很好拍，五重塔的角度也在這裡。</li>
-                <li>時間夠就上去，來回約 15 分鐘。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>宮島鹿</strong>
-                <small>與奈良的規矩不同</small>
-              </span>
-              <span class="seto-type">提醒</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>這裡不販售鹿仙貝，也不建議餵食。</li>
-                <li>牠們會咬紙袋和地圖，手上的食物請收好。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>表參道商店街</strong>
-                <small>表参道商店街・自由時間約 30–60 分</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <p>這條街從渡輪口通往神社，回程一定會走到，順路吃完最有效率：</p>
-              <ul class="seto-list">
-                <li>現烤紅葉饅頭（もみじ饅頭），熱的跟常溫盒裝完全兩回事，一定要現場吃一顆。</li>
-                <li>炸紅葉饅頭（揚げもみじ），裹漿油炸串著吃，只有島上吃得到。</li>
-                <li>燒牡蠣攤，午餐已經是牡蠣釜飯定食，斟酌胃容量。</li>
-                <li>世界最大飯杓（大杓子／おおしゃもじ），長 7.7 公尺，在商店街中段，是拍照點。</li>
-                <li>伴手禮：宮島杓子（開運勝利意象）、牡蠣醬油。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>廣島市區的晚上</strong>
-                <small>自由時間約 1.5–2 小時</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <p>廣島 ANA 飯店位於中區中町，走到平和記念公園約 10 分鐘，是這趟最好走的一段夜晚。</p>
-              <ul class="seto-list">
-                <li>原爆圓頂館（原爆ドーム）夜間有打光，戶外不限時間，配平和記念公園、和平之鐘散步一圈約 40 分鐘。</li>
-                <li>平和記念資料館（広島平和記念資料館）9–11 月開到 19:00、最後入館 18:30；而 17:30–18:30 這個時段是完全預約制，只有事先網路購票才能進。晚餐後臨時起意，大概率撲空。要去就當天早上先線上訂票（大人 200 円）。</li>
-                <li>本通商店街（本通り商店街）、流川一帶是宵夜與藥妝的主戰場，離飯店都在步行距離。</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="seto-tip">
-          <b>小提醒</b>進宮島每人每次要繳「宮島訪問稅」100 円，搭船時併在船資裡收，團費通常已含；若被單獨收取不用意外。9 月下旬白天仍有 28–30°C 且悶，但船上與夜間會涼，薄外套建議隨身。
-        </div>
-      </section>
-
-      <!-- Panel 6: Day 2 -->
-      <section class="seto-panel">
-        <h3>Day 2　9/25（五）</h3>
-        <p class="seto-lead">瀨戶內海・松山・道後。渡海到四國，這天的重頭戲其實在船上。</p>
-        <div class="seto-route">
-          <strong>當日路線</strong>
-          廣島 → 約 20 分 → 廣島港 → 瀨戶內海汽船（せとうち汽船，廣島港～松山港）→ 約 28 分 → 松山城（松山城）→ 約 11 分 → 道後溫泉本館（道後温泉本館）、溫泉街散策 → 今治（今治國際飯店）
-        </div>
-
-        <div class="seto-stops seto-section">
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>瀨戶內海汽船</strong>
-                <small>せとうち汽船・這天的隱藏亮點</small>
-              </span>
-              <span class="seto-type">交通</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>航線經吳港，一路是島影、造船廠與跨海橋。</li>
-                <li>建議一上船先找甲板位置，別整段待在船艙裡滑手機，這是全程最好的海景時段。</li>
-                <li>海風偏涼，外套帶著。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>松山城</strong>
-                <small>現存十二天守之一</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>少數有登山纜車的城。纜車抵達後還要再走約 10 分鐘才到本丸。</li>
-                <li>行程註明團體搭廂型纜車、單人吊椅小學生以上可搭；如果現場能自己選，建議上下各搭一種，露天吊椅的體驗完全不同（穿裙裝者請留意）。</li>
-                <li>天守內部視野可俯瞰松山市區與瀨戶內海。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>道後溫泉本館</strong>
-                <small>道後温泉本館・國家重要文化財</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>2019 年起的保存修理工程已於 2024 年完成、全館恢復營業。</li>
-                <li>木造三層樓，是現役公共浴場中極少數的例子。</li>
-                <li>營業到 23:00（22:30 停止售票），單純入浴（神之湯）700 円。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>道後溫泉街</strong>
-                <small>自由時間約 1–1.5 小時，這天的主場</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <p>關鍵決策是「泡不泡」。1 小時的自由時間，脫穿衣服＋泡湯＋吹乾會非常趕。</p>
-              <p><b>方案 A：不泡湯，走完整條溫泉街（推薦）</b></p>
-              <ul class="seto-list">
-                <li>道後溫泉本館外觀拍照 → 道後溫泉駅前的機關鐘（坊っちゃんカラクリ時計，整點會動）→ 旁邊的免費足湯 → 少爺列車（坊っちゃん列車）合照 → 道後 HAIKARA 通商店街（道後ハイカラ通り）覓食。</li>
-                <li>邊走邊吃：坊っちゃん団子、一六蛋糕捲（タルト）、じゃこ天、蜜柑霜淇淋。</li>
-              </ul>
-              <p style="margin-top:1rem"><b>方案 B：一定要泡</b></p>
-              <ul class="seto-list">
-                <li>「椿之湯」（椿の湯），本地人的日常澡堂，最快、最便宜，適合時間緊的人。</li>
-                <li>「飛鳥乃湯泉」（飛鳥乃湯泉），最新、有露天湯與愛媛工藝展示，體驗最完整但也最花時間。</li>
-                <li>「本館」，建築體驗最好，但人最多、動線最複雜，1 小時內不建議。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>今治的晚上</strong>
-                <small>自由時間約 1–1.5 小時</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>今治城距飯店步行約 20 分鐘，日本三大水城之一（護城河引海水，會看到海魚），夜間打光很好拍。</li>
-                <li>炭火燒鳥（焼き鳥）：今治是燒鳥名產地，特色是鐵板重壓炙烤，皮脆。晚餐已含飯店套餐，這算加碼。</li>
-                <li>今治毛巾明天早上會去毛巾美術館，市區這裡不必急著買。</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="seto-tip">
-          <b>建議</b>把「認真泡湯」留到第 4 天的琴平溫泉飯店，那晚時間充裕、有大浴場，道後這段就專心散策與吃。
-        </div>
-      </section>
-
-      <!-- Panel 7: Day 3 -->
-      <section class="seto-panel">
-        <h3>Day 3　9/26（六）</h3>
-        <p class="seto-lead">今治・栗林公園・高松。栗林公園是這趟最值得認真逛的地方。</p>
-        <div class="seto-route">
-          <strong>當日路線</strong>
-          今治 → 約 21 分 → 今治毛巾美術館（今治タオル美術館）→ 栗林公園（栗林公園，附抹茶體驗＋和菓子）→ 約 10 分 → 高松丸龜町商店街（丸亀町商店街）→ 高松市區（JR Hotel Clement 高松）
-        </div>
-
-        <div class="seto-stops seto-section">
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>今治毛巾美術館</strong>
-                <small>今治タオル美術館</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>可看製程、逛歐式庭園。</li>
-                <li>實用價值在於：這是全程買毛巾伴手禮最好的一站，品項齊、又比機場划算。</li>
-                <li>認明紅藍白的「今治タオル」認證標籤，有標的才是通過吸水性等檢測的正品。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>栗林公園</strong>
-                <small>國家指定特別名勝・米其林綠色指南三星</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>日本最大的國家指定特別名勝，以紫雲山為借景，六個水池、十三座假山。</li>
-                <li>飛來峰（飛来峰）是全園第一名的拍照點，可俯瞰南湖與偃月橋，明信片畫面就是這裡。抹茶體驗（掬月亭）結束後第一個去。</li>
-                <li>箱松、屏風松是修剪了三百年的松樹造型，近看比遠看震撼。</li>
-                <li>動線：全園 75 公頃，時間有限就專心走「南庭」，北庭可以放掉。若時間充裕，另外收費的和船遊覽（約 30 分鐘）從水面看庭園是完全不同的角度。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>高松丸龜町・中央商店街</strong>
-                <small>丸亀町商店街・自由時間約 1 小時</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>全長 2.7 公里、日本最長的拱廊商店街，有頂棚，下雨不影響。</li>
-                <li>北段（丸龜町）是重新改建的，較時髦、有百貨感；越往南越有昭和老街的味道，兩段調性差很多，時間有限就挑一段走完。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>高松的晚上</strong>
-                <small>自由時間約 2 小時</small>
-              </span>
-              <span class="seto-type">自由</span>
-            </summary>
-            <div class="seto-stop-body">
-              <p>晚餐是日式燒肉，之後自由。JR Hotel Clement 就在高松車站旁，以下都在步行範圍：</p>
-              <ul class="seto-list">
-                <li>骨付鳥：香川的另一個名產，帶骨烤雞腿，分肉嫩的「ひな（雛）」與嚼勁重、香氣強的「おや（親）」。多數店晚上才開。</li>
-                <li>北浜 alley：老倉庫改造的咖啡雜貨區，步行約 10 分鐘，夜景很好看，是高松最上相的地方。</li>
-                <li>玉藻公園（玉藻公園・高松城）：就在飯店隔壁，海水護城河的日本三大水城之一（白天營業，晚上僅能看外圍）。</li>
-                <li>サンポート高松：車站北側的港邊，有防波堤紅燈塔（會發光的玻璃燈塔），散步收尾很舒服。</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="seto-tip">
-          <b>最容易錯過的一餐</b>讚岐烏龍麵的名店大多中午到下午就收，晚上反而吃不到道地的。解法：第 4 天早上放棄飯店早餐，去高松車站內的立食烏龍麵（約 7:00 開）。
-        </div>
-      </section>
-
-      <!-- Panel 8: Day 4 -->
-      <section class="seto-panel">
-        <h3>Day 4　9/27（日）</h3>
-        <p class="seto-lead">瀨戶大橋・金刀比羅宮・琴平。這趟唯一需要體力的一天。</p>
-        <div class="seto-route">
-          <strong>當日路線</strong>
-          高松 → 約 47 分 → 瀨戶內海大橋紀念館（瀬戸大橋記念館）、瀨戶大橋塔（瀬戸大橋タワー）→ 約 38 分 → 金刀比羅宮（金刀比羅宮・こんぴらさん）→ 約 1 分 → 琴平溫泉（琴平温泉，琴參閣・溫泉會席／兩梯次晚宴）
-        </div>
-
-        <div class="seto-stops seto-section">
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>瀨戶大橋塔</strong>
-                <small>瀬戸大橋タワー</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>展望艙最高 108 公尺（行程表寫的 175 公尺應是誤植；132 公尺是含避雷針的塔高）。</li>
-                <li>整趟約 10 分鐘，邊旋轉三圈邊上升，是「旋轉昇降式」展望塔中世界最高的一座。</li>
-                <li>營業 9:00–17:00（16:20 停止入場），大人 800 円、15 人以上團體 720 円。這種塔全日本已經沒剩幾座。</li>
-                <li>週一公休，這天是週日，沒問題。旁邊的瀨戶大橋紀念館本身免費。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>金刀比羅宮</strong>
-                <small>こんぴらさん・這趟唯一需要「準備」的行程</small>
-              </span>
-              <span class="seto-type">景點</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>到御本宮是 785 階，來回抓 1.5 小時。行程表寫的 1368 階是再往上到奧社（嚴魂神社），那要再多 40 分鐘以上。除非領隊給到 2.5 小時以上，否則不建議衝。</li>
-                <li>鞋子是全程最關鍵的裝備。石階不算陡，但長而連續。表參道入口附近的店家有免費出借拐杖。</li>
-                <li>一個典故：實際上是 786 階，但諧音「なやむ（煩惱）」不吉利，所以中途刻意設計了一階往下，變成 785 階。爬的時候可以找找看。</li>
-                <li>中途補給：約 500 階處有資生堂 PARLOUR 的咖啡廳「神椿」，是最好的休息與補水點。</li>
-                <li>大門旁的「五人百姓」是境內唯一獲准擺攤的五個家族，賣加美代飴，本身就是歷史景點的一部分。</li>
-                <li>御本宮的展望台可以望見整片讚岐平原與讚岐富士（飯野山），爬上去的回報就在這裡。另外別忘了本宮限定的「幸福黃色御守」。</li>
-                <li>下山時的表參道有中野烏龍麵學校（中野うどん学校）、灸まん本舖（灸まん本舗），伴手禮可以在這裡一次解決。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>晚上：兩梯次晚宴</strong>
-                <small>琴參閣・溫泉會席</small>
-              </span>
-              <span class="seto-type">晚宴</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>這晚是公司晚宴，等於沒有自由時間。</li>
-                <li>宴會結束後琴參閣有大浴場，這是全程最從容的泡湯機會，別錯過。</li>
-                <li>真的還想走走：飯店附近有日本最高的燈籠「高燈籠」（高灯籠，27 公尺，在琴電琴平站旁）與屋頂式的「鞘橋」，散步 20 分鐘的量。</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="seto-tip">
-          <b>行前準備</b>好走的鞋、一瓶水、小毛巾（9 月下旬爬完 785 階會流汗）。
-        </div>
-      </section>
-
-      <!-- Panel 9: Day 5 -->
-      <section class="seto-panel">
-        <h3>Day 5　9/28（一）</h3>
-        <p class="seto-lead">高松整天行程、傍晚班機。旅行社尚未公佈這天的安排。</p>
-        <div class="seto-route">
-          <strong>當日路線</strong>
-          琴平溫泉 → 未公佈行程（全天跟巴士）→ 高松機場（高松空港）→ 桃園機場　｜　CI179　19:05 起飛 / 20:55 抵桃園
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">時間回推：這天實際有多少可用時間</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <tbody>
-                <tr><td>19:05</td><td class="wrap">CI179 高松機場起飛（20:55 抵桃園）</td></tr>
-                <tr><td>約 17:00</td><td class="wrap">抵達高松機場（國際線建議起飛前 2 小時）</td></tr>
-                <tr><td>約 16:10</td><td class="wrap">從高松市區出發（市區→機場車程約 40–50 分）</td></tr>
-                <tr><td>約 08:30–09:00</td><td class="wrap">琴參閣退房出發</td></tr>
-                <tr><td>＝ 約 7 小時</td><td class="wrap">扣除移動後的實際觀光時間，這是完整的一整天，不是半天</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="seto-note">七小時的空檔幾乎確定會被填滿，不會只是「自由活動」。以下是依照車程距離與旅行團慣例推測的四種可能，依可能性排序。公佈後對照著看，準備方向不會差太多。</p>
-        </div>
-
-        <div class="seto-stops seto-section">
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>推測 A：倉敷美觀地區</strong>
-                <small>倉敷美観地区・岡山縣</small>
-              </span>
-              <span class="seto-type">最可能</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>琴平 →（過瀨戶大橋）→ 倉敷約 1.5 小時，倉敷 → 高松機場約 1.5 小時，給 3 小時自由活動剛好填滿一天。</li>
-                <li>白牆黑瓦的江戶時代倉庫町沿著柳樹運河並排，可搭小舟遊川；大原美術館收藏莫內、艾爾葛雷柯，是日本第一座西洋美術館。</li>
-                <li>加分之處：第 4 天只到瀨戶大橋「旁邊」的展望塔，這條路線會真的開過大橋本身，也是全程唯一會踏進本州的機會。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>推測 B：香川在地組合</strong>
-                <small>屋島＋免稅店＋高松市區</small>
-              </span>
-              <span class="seto-type">次可能</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>最省成本、也最容易臨時排出來的版本：屋島山上展望台 → 綜合免稅店 → 高松市區或永旺夢樂城自由活動。</li>
-                <li>屋島（屋島・屋島寺）是俯瞰瀨戶內海與高松市區最好的展望台，也是源平合戰古戰場。</li>
-                <li>如果公佈的行程裡出現「免稅店」或「購物中心」字樣，大概就是這個版本。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>推測 C：鳴門漩渦＋大塚國際美術館</strong>
-                <small>鳴門の渦潮・大塚国際美術館</small>
-              </span>
-              <span class="seto-type">有變數</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>琴平 → 鳴門約 1.5 小時，鳴門 → 高松機場約 1.2 小時，時間也塞得下。</li>
-                <li>大塚國際美術館用陶板原尺寸重現一千多件西洋名畫，館內可拍照可觸摸，是日本團客路線的熱門點。</li>
-                <li>變數：漩渦有潮汐時刻限制，一天只有幾個時段看得到，旅行社不一定敢排。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="seto-stop">
-            <summary>
-              <span class="seto-stop-title">
-                <strong>推測 D：小豆島</strong>
-                <small>小豆島・橄欖公園、天使之路</small>
-              </span>
-              <span class="seto-type">可能性最低</span>
-            </summary>
-            <div class="seto-stop-body">
-              <ul class="seto-list">
-                <li>高松港搭渡輪約 60 分鐘往返，加上島上移動，時間會非常緊。</li>
-                <li>天使之路（エンジェルロード）同樣受退潮時間限制，且趕船風險高，可能性最低。</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="seto-tip">
-          <b>不管排到哪一種</b>這天早上退房前先把「機上要用」與「託運」分好，當天不會再回飯店。若公佈後發現整天沒有排到吃讚岐烏龍麵，記得自己找機會（午餐）補上。
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">高松機場購物與用餐</h4>
-          <p class="seto-lead">機場不大，但店集中、營業到晚，19:05 的班機時間非常充裕。重點是先搞懂樓層，因為過了安檢就回不去了：</p>
-          <div class="seto-tablewrap" style="margin-top:1rem">
-            <table class="seto-table">
-              <thead>
-                <tr><th>樓層</th><th>店名</th><th>營業時間</th><th>重點</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>2F</td><td>ANA FESTA 高松ロビー店</td><td>8:30–20:00</td><td class="wrap">安檢前。香川伴手禮主力店之一，有機場限定品</td></tr>
-                <tr><td>2F</td><td>四國空市場（YOSORA）</td><td>8:30–20:00</td><td class="wrap">安檢前。品項最雜，適合一次掃</td></tr>
-                <tr><td>2F</td><td>さぬき銘品店</td><td>8:30–20:00</td><td class="wrap">安檢前。專攻香川銘菓與烏龍麵，不知道買什麼就來這</td></tr>
-                <tr><td>1F</td><td>空港売店 四季の里</td><td>8:00–19:45</td><td class="wrap">報到櫃檯同層，辦完登機手續順手逛</td></tr>
-                <tr><td>1F</td><td>はやし家製麺所</td><td>8:00–20:00</td><td class="wrap">機場內的讚岐烏龍麵，也賣半生麵伴手禮</td></tr>
-                <tr><td>2F</td><td>ファミリーマート</td><td>6:15–20:00</td><td class="wrap">安檢前。補零食、飲料、藥妝小物最快</td></tr>
-                <tr><td>2F</td><td>免稅店 DUTY FREE</td><td>起飛前 90 分起</td><td class="wrap">安檢後才開，且只在國際線起飛前 90 分營業</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="seto-note">機場必買（香川限定，市區不一定看得到）：</p>
-          <ul class="seto-list" style="margin-top:.8rem">
-            <li>茶のしずく，用香川高瀨茶做的饅頭，產量少、不做網購，機場是少數穩定買得到的地方。</li>
-            <li>和三盆糖，香川代表銘品，做成干菓子小盒裝，送禮體面又好帶。</li>
-            <li>讚岐烏龍麵（半生麵），保存期比生麵長，最適合託運帶回台灣。</li>
-            <li>骨付鳥真空包，第 3 天晚上沒吃到的話，這是補救方案。</li>
-            <li>小豆島橄欖製品、灸まん：橄欖油、橄欖茶、橄欖化妝品都有。</li>
-          </ul>
-        </div>
-
-        <div class="seto-tip">
-          <b>動線提醒</b>伴手禮店幾乎都在安檢「前」（1F 與 2F 大廳），過安檢後只剩免稅店與登機口小店。請在報到後、進安檢前買完。免稅店起飛前 90 分才開（約 17:35），若 17:00 到機場，先在 2F 大廳逛。
-        </div>
-      </section>
-
-      <!-- Panel 10: 伴手禮採買 -->
-      <section class="seto-panel">
-        <h3>伴手禮・藥妝・超商採買</h3>
-        <p class="seto-lead">適合認真採買的時段只有兩個：第 1 天晚上的廣島本通商店街、第 3 天傍晚的高松中央商店街。琴平、今治、宮島都不是藥妝戰場，機場品項也少，建議把清單集中在這兩天用掉。</p>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">伴手禮，按地區分</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <thead>
-                <tr><th>地區</th><th>在哪一天買</th><th>推薦品項</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>廣島</td><td>D1 宮島表參道</td><td class="wrap">紅葉饅頭（盒裝）、宮島杓子、牡蠣醬油、熊野筆（化妝刷，市區百貨）</td></tr>
-                <tr><td>愛媛</td><td class="wrap">D2 道後／D3 毛巾美術館</td><td class="wrap">今治毛巾（認明認證標籤）、坊っちゃん団子、一六蛋糕捲、蜜柑果汁</td></tr>
-                <tr><td>香川</td><td class="wrap">D3 高松商店街／D4 琴平表參道</td><td class="wrap">和三盆糖、讚岐烏龍麵（半生麵）、灸まん、小豆島橄欖油與橄欖製品</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="seto-section">
-          <h4 class="seto-subhead">藥妝｜近期網友討論度高的品項</h4>
-          <div class="seto-tablewrap">
-            <table class="seto-table">
-              <thead>
-                <tr><th>類別</th><th>品項</th><th>預估價格</th><th>備註</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>常備藥</td><td>EVE 止痛藥（藍/金盒）</td><td>¥600–900</td><td class="wrap">成分強度不同，依需求選</td></tr>
-                <tr><td>常備藥</td><td>太田胃散／第一三共胃腸藥</td><td>¥800–1,200</td><td></td></tr>
-                <tr><td>常備藥</td><td>龍角散喉糖／喉嚨噴劑</td><td>¥400–800</td><td></td></tr>
-                <tr><td>痠痛護理</td><td>Salonpas 撒隆巴斯貼布</td><td>¥500–800</td><td class="wrap">爬完金刀比羅宮那晚會用到</td></tr>
-                <tr><td>痠痛護理</td><td>休足時間貼片</td><td>¥500–700</td><td class="wrap">同上，敷腿消疲勞</td></tr>
-                <tr><td>保健食品</td><td>合利他命 EX PLUS</td><td>¥2,000–3,000</td><td class="wrap">B 群，長年熱銷</td></tr>
-                <tr><td>眼睛口腔</td><td>Sante FX／樂敦眼藥水</td><td>¥600–1,200</td><td class="wrap">清涼度分級，怕刺激選低級數</td></tr>
-                <tr><td>眼睛口腔</td><td>NONIO／Ora2 牙膏、齒間刷</td><td>¥300–600</td><td></td></tr>
-                <tr><td>防曬保養</td><td>Anessa 安耐曬金瓶</td><td>¥1,800–2,500</td><td></td></tr>
-                <tr><td>防曬保養</td><td>肌研極潤化妝水／Curél 珂潤</td><td>¥1,000–1,800</td><td class="wrap">敏感肌選 Curél</td></tr>
-                <tr><td>防曬保養</td><td>Melano CC 維他命 C 精華</td><td>¥1,000–1,300</td><td>淡斑</td></tr>
-                <tr><td>防曬保養</td><td>Imju 薏仁化妝水（大瓶）</td><td>¥700–900</td><td class="wrap">可全身用，划算</td></tr>
-                <tr><td>防曬保養</td><td>尊馬油</td><td>¥500–900</td><td class="wrap">乾裂修護，老品回購率高</td></tr>
-                <tr><td>面膜</td><td>LuLuLun 量販包</td><td>¥1,500–2,000</td><td class="wrap">藍／紅／白對應不同需求</td></tr>
-                <tr><td>面膜</td><td>Saborino 早安面膜</td><td>¥900–1,200</td><td class="wrap">60 秒洗臉 + 保養 + 妝前</td></tr>
-                <tr><td>面膜</td><td>QUALITY 集中毛孔面膜</td><td>¥1,000–1,300</td><td class="wrap">近期銷售榜冠軍</td></tr>
-                <tr><td>開架彩妝</td><td>CANMAKE 腮紅／修容</td><td>¥700–1,200</td><td></td></tr>
-                <tr><td>開架彩妝</td><td>KISS ME／dejavu／Love Liner</td><td>¥1,000–1,500</td><td class="wrap">眼線、睫毛膏長年熱銷</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="seto-tip">
-            <b>提醒</b>藥品涉及個人體質與用藥史，成分請看標示或問店內藥師，不要只照排行榜買。台灣入境自用藥品有數量上限（非處方藥大致每種 12 瓶盒、合計 36 瓶盒），出發前可查食藥署最新公告。
-          </div>
-        </div>
-
-        <div class="seto-grid is-single seto-section">
-          <section class="seto-card">
-            <h4>零食｜超市與唐吉訶德量販包</h4>
-            <ul class="seto-list">
-              <li>明治 香菇山／竹筍里（きのこの山／たけのこの里），日本國民派系之爭，帶回去自帶話題性。</li>
-              <li>Alfort 帆船餅乾，全麥餅＋巧克力，國民級零食。</li>
-              <li>Pure 葡萄軟糖，近年爆紅，山梨貓眼葡萄，果汁內餡。</li>
-              <li>樂天 派之實（パイの実），巧克力千層，甜點控必吃。</li>
-              <li>柿種米果（柿の種），下酒鹹點定番，小包好分送。</li>
-              <li>iFactory 梅干片，酸梅壓成片，長途搭車提神好用。</li>
-              <li>ROYCE' 生巧克力／巧克力洋芋片，需冷藏，建議回程當天再買。</li>
-              <li>蝦仙貝類，各地都有版本，鹹口味伴手禮萬用解。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>地區限定版</h4>
-            <p>比全國款更有送禮意義，對照行程各天：</p>
-            <ul class="seto-list" style="margin-top:.8rem">
-              <li>廣島（D1）：紅葉饅頭（現烤／盒裝兩種都買）。</li>
-              <li>愛媛（D2–D3）：坊っちゃん団子、一六蛋糕捲（タルト）。</li>
-              <li>香川（D3–D4）：和三盆糖、灸まん。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>7-ELEVEN</h4>
-            <ul class="seto-list">
-              <li>金の系列（金のハンバーグ、金のパン），超商裡的高單價線，品質穩定。</li>
-              <li>蕨餅（わらび餅）、生銅鑼燒；蘭姆葡萄夾心餅乾。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>LAWSON（台灣沒有分店，最值得專程試）</h4>
-            <ul class="seto-list">
-              <li>炸雞君（からあげクン），最經典，口味常換。</li>
-              <li>Uchi Café 生乳捲（プレミアムロールケーキ），長年招牌。</li>
-              <li>GODIVA 聯名甜點（不定期換）；燒鳥串、玉子燒、生火腿捲奶油乳酪，一支百圓出頭，回飯店小酌用。</li>
-              <li>MACHI café 咖啡，品質不輸連鎖咖啡店，價格便宜一半。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>FamilyMart 全家</h4>
-            <ul class="seto-list">
-              <li>炸雞排（ファミチキ），與炸雞君並列超商炸物雙雄。</li>
-              <li>SPAM 午餐肉洋芋片；各式限定泡麵（近期蔥花泡麵討論度高）。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>三家跨店通殺</h4>
-            <ul class="seto-list">
-              <li>OHAYO 牛奶布丁，被稱殿堂級布丁，用娟姍牛奶。</li>
-              <li>整顆橘子優格（一咬爆汁）；各家烤布蕾冰淇淋、季節限定雪見大福。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>超商・百圓店實用小物</h4>
-            <ul class="seto-list">
-              <li>冷感濕紙巾，9 月下旬爬金刀比羅宮石階時很有用。</li>
-              <li>蒸氣眼罩（花王 MEGURISM），飛機上與爬完階梯那晚。</li>
-              <li>休足時間貼片小包，超商即可買到應急版。</li>
-              <li>大創真空按壓分裝瓶，近期評價很好，適合分裝保養品。</li>
-              <li>摺疊購物袋，日本超商塑膠袋要收費，帶一個省事。</li>
-              <li>洗面乳／洗髮精旅行分裝包、隱形眼鏡藥水小瓶。</li>
-            </ul>
-          </section>
-          <section class="seto-card">
-            <h4>退稅與付款</h4>
-            <ul class="seto-list">
-              <li>9 月出發適用舊制：同店同日滿 5,000 円（未稅）憑護照當場免稅，消耗品會封袋，不可在日本境內拆封。</li>
-              <li>日本將於 2026/11/1 起改為「先付含稅、出境時退款」的新制，但在回國之後才上路，這趟不受影響。</li>
-              <li>唐吉訶德、松本清常有額外折價券可疊加，出發前在官網或旅遊平台先領，通常免稅再折 5–7%。</li>
-              <li>超商與多數藥妝店可用交通 IC 卡（ICOCA／Suica）與信用卡；超商多設有海外卡可領現的 ATM。</li>
-            </ul>
-          </section>
-        </div>
-      </section>
-
-    </div><!-- /.seto-track -->
-  </section><!-- /.seto-viewport -->
-
-</div><!-- /#seto-app -->
-
-<noscript>
-  <p>這個行程頁面需要啟用 JavaScript，才能使用左右滑動、清單勾選與分頁切換功能。</p>
-</noscript>
 <script>
   (function () {
-    /* ── 分頁切換 ── */
-    var tabs = [].slice.call(document.querySelectorAll('.seto-tab')),
-      track = document.getElementById('seto-track'),
-      indicator = document.getElementById('seto-indicator'),
-      PANEL_KEY = 'setouchiTripPanelV2',
-      active = parseInt(localStorage.getItem(PANEL_KEY), 10);
+    'use strict';
 
-    if (isNaN(active) || active < 0 || active >= tabs.length) {
-      active = 0;
-    }
+    var root = document.getElementById('seto-app');
+    if (!root) { return; }
 
-    function setActive(i) {
-      active = Math.max(0, Math.min(i, tabs.length - 1));
-      track.style.transform = 'translateX(-' + ((active / tabs.length) * 100) + '%)';
-      tabs.forEach(function (tab, idx) {
-        var on = idx === active;
-        tab.classList.toggle('active', on);
-        tab.setAttribute('aria-selected', on ? 'true' : 'false');
-        if (on) {
-          tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    var PANEL_KEY = 'setouchiTripPanelV3',
+      DAY_COLORS = ['#1C6E8C', '#2E8B6F', '#C08327', '#C4452F', '#5B4B8A'],
+      KIND_COLORS = { '景點': '#C4452F', '自由': '#2E8B6F', '住宿': '#5B4B8A', '交通': '#1C6E8C', '機場': '#0E2A3B' },
+      MAP_DATA = [[{"t": "05:10", "name": "桃園國際機場 第二航廈", "kind": "機場", "lat": 25.0801, "lng": 121.233, "note": "華航 8 號櫃檯｜CI112 07:10 起飛"}, {"t": "10:35", "name": "廣島機場 HIJ", "kind": "機場", "lat": 34.4373, "lng": 132.92062, "note": "抵達後通關約 40–50 分"}, {"t": "12:45", "name": "宮島口渡輪站", "kind": "交通", "lat": 34.31129, "lng": 132.3051, "note": "換搭渡輪往宮島，航程約 10 分"}, {"t": "13:10", "name": "宮島棧橋", "kind": "交通", "lat": 34.2996, "lng": 132.3237, "note": "上島後步行約 10 分至嚴島神社"}, {"t": "14:10", "name": "嚴島神社・海上大鳥居", "kind": "景點", "lat": 34.29599, "lng": 132.31983, "note": "世界文化遺產｜留意當日潮汐時間"}, {"t": "15:25", "name": "千疊閣（豐國神社）", "kind": "景點", "lat": 34.29732, "lng": 132.32028, "note": "豐臣秀吉大經堂，旁為五重塔"}, {"t": "15:55", "name": "宮島表參道商店街", "kind": "自由", "lat": 34.29897, "lng": 132.32184, "note": "自由活動 60 分｜現烤牡蠣、紅葉饅頭"}, {"t": "19:25", "name": "廣島麗嘉皇家酒店", "kind": "住宿", "lat": 34.39744, "lng": 132.45738, "note": "第 1 夜"}], [{"t": "08:30", "name": "廣島港（宇品）", "kind": "交通", "lat": 34.35251, "lng": 132.45503, "note": "搭瀨戶內海汽船前往吳、松山"}, {"t": "09:45", "name": "吳中央碼頭", "kind": "交通", "lat": 34.24066, "lng": 132.55625, "note": "中途停靠｜可眺望吳港軍艦"}, {"t": "11:40", "name": "松山觀光港", "kind": "交通", "lat": 33.88868, "lng": 132.70435, "note": "登陸四國，換遊覽車"}, {"t": "13:10", "name": "松山城", "kind": "景點", "lat": 33.84558, "lng": 132.76553, "note": "日本 12 現存天守｜東雲口站搭纜車上山"}, {"t": "15:15", "name": "道後溫泉本館", "kind": "景點", "lat": 33.85207, "lng": 132.78641, "note": "日本三大古湯｜放生園足湯、商店街"}, {"t": "17:55", "name": "今治國際飯店", "kind": "住宿", "lat": 34.06206, "lng": 133.00058, "note": "第 2 夜"}], [{"t": "09:15", "name": "今治毛巾美術館", "kind": "景點", "lat": 33.96929, "lng": 133.03267, "note": "全球首座毛巾主題美術館｜歐式庭園"}, {"t": "14:20", "name": "JR Hotel Clement 高松", "kind": "住宿", "lat": 34.35199, "lng": 134.0483, "note": "第 3 夜｜JR 高松站旁"}, {"t": "14:50", "name": "高松中央（丸龜町）商店街", "kind": "自由", "lat": 34.3436, "lng": 134.05001, "note": "自由活動 180 分｜晚餐代金 ¥5,000 自理"}], [{"t": "09:15", "name": "瀨戶大橋塔・紀念公園", "kind": "景點", "lat": 34.35219, "lng": 133.82534, "note": "360° 旋轉展望台，一輪約 10 分"}, {"t": "12:30", "name": "金刀比羅宮", "kind": "景點", "lat": 34.184, "lng": 133.80954, "note": "御本宮 785 階｜奧社需再加 60–90 分"}, {"t": "16:15", "name": "琴平溫泉 琴參閣", "kind": "住宿", "lat": 34.19022, "lng": 133.81689, "note": "第 4 夜｜溫泉會席晚宴"}], [{"t": "08:50", "name": "善通寺", "kind": "景點", "lat": 34.22596, "lng": 133.77677, "note": "四國八十八所第 75 番｜空海誕生地"}, {"t": "10:55", "name": "高松中央商店街", "kind": "自由", "lat": 34.3436, "lng": 134.05001, "note": "自由活動 180 分｜午餐自理"}, {"t": "14:10", "name": "栗林公園", "kind": "景點", "lat": 34.3299, "lng": 134.04577, "note": "米其林三星名園｜掬月亭抹茶體驗"}, {"t": "16:20", "name": "高松機場 TAK", "kind": "機場", "lat": 34.2149, "lng": 134.01472, "note": "CI179 19:05 起飛，20:55 抵桃園"}]],
+      DAY_LABELS = ["9/24（四）", "9/25（五）", "9/26（六）", "9/27（日）", "9/28（一）"];
+
+    function $(sel, ctx) { return (ctx || root).querySelector(sel); }
+    function $$(sel, ctx) { return [].slice.call((ctx || root).querySelectorAll(sel)); }
+
+    /* ────────────────────────────────────────────────
+       分頁切換。用 hidden 顯示／隱藏，不用 transform 平移，
+       因為 Leaflet 在被 transform 過的容器裡算不準尺寸。
+       ──────────────────────────────────────────────── */
+    var tabs = $$('.seto-pill[data-panel]'),
+      panels = $$('.seto-panel'),
+      ids = tabs.map(function (t) { return t.getAttribute('data-panel'); });
+
+    function showPanel(id, opts) {
+      opts = opts || {};
+      if (ids.indexOf(id) < 0) { id = ids[0]; }
+      panels.forEach(function (p) { p.hidden = p.id !== 'seto-panel-' + id; });
+      tabs.forEach(function (t) {
+        var on = t.getAttribute('data-panel') === id;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        if (on && opts.scrollTab !== false) {
+          t.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
       });
-      indicator.textContent = (active + 1) + ' / ' + tabs.length;
-      try { localStorage.setItem(PANEL_KEY, String(active)); } catch (err) {}
+      try { localStorage.setItem(PANEL_KEY, id); } catch (e) {}
+      if (id === 'map') { initMap(); }
+      if (opts.scrollTop) {
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        setActive(parseInt(tab.getAttribute('data-index'), 10));
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var id = t.getAttribute('data-panel');
+        showPanel(id);
+        if (history.replaceState) { history.replaceState(null, '', '#seto-' + id); }
       });
     });
 
-    document.getElementById('seto-prev').addEventListener('click', function () {
-      setActive(active - 1);
+    /* 鍵盤左右鍵在分頁列上移動 */
+    $('.seto-pills').addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') { return; }
+      var cur = ids.indexOf(document.activeElement.getAttribute('data-panel'));
+      if (cur < 0) { return; }
+      e.preventDefault();
+      var next = (cur + (e.key === 'ArrowRight' ? 1 : -1) + ids.length) % ids.length;
+      tabs[next].focus();
+      showPanel(ids[next]);
     });
 
-    document.getElementById('seto-next').addEventListener('click', function () {
-      setActive(active + 1);
+    /* 開頁時決定停在哪一頁：網址 hash 優先，其次上次看的那頁 */
+    var initial = (location.hash || '').replace('#seto-', '');
+    if (ids.indexOf(initial) < 0) {
+      try { initial = localStorage.getItem(PANEL_KEY) || ids[0]; } catch (e) { initial = ids[0]; }
+    }
+    showPanel(initial, { scrollTab: false });
+
+    /* 分日行程的「在地圖上看這天」 */
+    $$('[data-goto-day]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var d = parseInt(btn.getAttribute('data-goto-day'), 10);
+        showPanel('map', { scrollTop: true });
+        setDayFilter(d);
+      });
     });
 
-    /* ── 觸控左右滑動 ── */
-    var sx = 0, sy = 0,
-      viewport = document.getElementById('seto-viewport');
-
-    viewport.addEventListener('touchstart', function (e) {
-      sx = e.changedTouches[0].clientX;
-      sy = e.changedTouches[0].clientY;
-    }, { passive: true });
-
-    viewport.addEventListener('touchend', function (e) {
-      var dx = e.changedTouches[0].clientX - sx,
-        dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
-        setActive(active + (dx < 0 ? 1 : -1));
-      }
-    }, { passive: true });
-
-    /* ── 勾選清單（每份清單各自獨立儲存） ── */
-    [].slice.call(document.querySelectorAll('.seto-checklist')).forEach(function (root) {
-      var key = root.getAttribute('data-key'),
-        labels = [].slice.call(root.querySelectorAll('[data-id]')),
-        fill = root.querySelector('[data-fill]'),
-        count = root.querySelector('[data-count]'),
-        stats = [].slice.call(root.querySelectorAll('[data-stat]')),
+    /* ────────────────────────────────────────────────
+       勾選清單。每份清單各自一組 localStorage，
+       改版沿用舊 key 與舊 data-id，既有勾選不會被清掉。
+       ──────────────────────────────────────────────── */
+    $$('.seto-checklist').forEach(function (list) {
+      var key = list.getAttribute('data-key'),
+        labels = $$('[data-id]', list),
+        fill = $('[data-fill]', list),
+        count = $('[data-count]', list),
+        stats = $$('[data-stat]', list),
         state = {};
 
-      try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch (err) { state = {}; }
+      try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { state = {}; }
+
+      function save() {
+        try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) {}
+      }
 
       function refresh() {
-        var checked = 0, gc = {}, gt = {};
+        var done = 0, gDone = {}, gTotal = {};
         labels.forEach(function (lbl) {
           var id = lbl.getAttribute('data-id'),
             g = lbl.getAttribute('data-group'),
@@ -2187,37 +1340,203 @@
             on = !!state[id];
           box.checked = on;
           lbl.classList.toggle('done', on);
-          gt[g] = (gt[g] || 0) + 1;
-          if (on) { checked += 1; gc[g] = (gc[g] || 0) + 1; }
+          /* 藥妝表的勾選格塞在 <td> 裡，整列一起劃掉才看得出來 */
+          var tr = lbl.closest('tr');
+          if (tr) { tr.style.opacity = on ? '.5' : ''; }
+          gTotal[g] = (gTotal[g] || 0) + 1;
+          if (on) { done++; gDone[g] = (gDone[g] || 0) + 1; }
         });
-        count.textContent = checked + ' / ' + labels.length;
-        fill.style.width = ((checked / Math.max(labels.length, 1)) * 100) + '%';
-        stats.forEach(function (el) {
-          var g = el.getAttribute('data-stat');
-          if (g === 'all') {
-            el.textContent = checked + '/' + labels.length;
-          } else {
-            el.textContent = (gc[g] || 0) + '/' + (gt[g] || 0);
-          }
+        if (count) { count.textContent = done; }
+        if (fill) { fill.style.width = labels.length ? (done / labels.length * 100) + '%' : '0'; }
+        stats.forEach(function (s) {
+          var g = s.getAttribute('data-stat'),
+            d = gDone[g] || 0, t = gTotal[g] || 0;
+          s.querySelector('b').textContent = d + ' / ' + t;
+          s.classList.toggle('full', t > 0 && d === t);
         });
-        try { localStorage.setItem(key, JSON.stringify(state)); } catch (err) {}
       }
 
       labels.forEach(function (lbl) {
-        lbl.querySelector('input').addEventListener('change', function () {
-          state[lbl.getAttribute('data-id')] = this.checked;
+        lbl.querySelector('input').addEventListener('change', function (e) {
+          state[lbl.getAttribute('data-id')] = e.target.checked;
+          save();
           refresh();
         });
       });
 
-      root.querySelector('[data-reset]').addEventListener('click', function () {
-        state = {};
-        refresh();
-      });
+      var reset = $('[data-reset]', list);
+      if (reset) {
+        reset.addEventListener('click', function () {
+          state = {};
+          save();
+          refresh();
+        });
+      }
 
       refresh();
     });
 
-    setActive(active);
-  }());
+    /* ────────────────────────────────────────────────
+       互動地圖。Leaflet 只在第一次打開這頁時才抓，
+       其他分頁不必為了它多下載 150 KB。
+       ──────────────────────────────────────────────── */
+    var mapState = { loading: false, ready: false, map: null, layers: {}, markers: {}, day: 0 };
+
+    function loadOnce(tag, attrs) {
+      return new Promise(function (resolve, reject) {
+        var el = document.createElement(tag);
+        Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+        el.onload = resolve;
+        el.onerror = function () { reject(new Error('load failed')); };
+        document.head.appendChild(el);
+      });
+    }
+
+    function initMap() {
+      if (mapState.ready || mapState.loading) {
+        if (mapState.ready) { mapState.map.invalidateSize(); }
+        return;
+      }
+      mapState.loading = true;
+      Promise.all([
+        loadOnce('link', { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css' }),
+        loadOnce('script', { src: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' })
+      ]).then(buildMap).catch(function () {
+        var c = document.getElementById('seto-mapcanvas');
+        c.innerHTML = '<div class="seto-mapload">地圖載入失敗，請確認網路連線後重新整理。</div>';
+        mapState.loading = false;
+      });
+    }
+
+    function buildMap() {
+      var canvas = document.getElementById('seto-mapcanvas');
+      canvas.innerHTML = '';
+      /* scrollWheelZoom 關掉，桌機滾輪就只是捲頁、不會誤縮放。 */
+      var mobile = L.Browser.mobile,
+        map = L.map(canvas, {
+          scrollWheelZoom: false,
+          dragging: !mobile
+        }).setView([34.15, 133.2], 8);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      /* 手機：先擋著，點一下才開放拖曳。開了就不再關。 */
+      if (mobile) {
+        canvas.classList.add('gated');
+        var gate = document.createElement('div');
+        gate.className = 'seto-mapgate';
+        gate.innerHTML = '<span>點一下啟用地圖</span>';
+        gate.addEventListener('click', function () {
+          map.dragging.enable();
+          canvas.classList.remove('gated');
+        });
+        canvas.appendChild(gate);
+      }
+
+      MAP_DATA.forEach(function (day, di) {
+        var n = di + 1,
+          color = DAY_COLORS[di],
+          group = L.layerGroup();
+        L.polyline(day.map(function (p) { return [p.lat, p.lng]; }), {
+          color: color, weight: 3, opacity: 0.65, dashArray: '7,6'
+        }).addTo(group);
+        day.forEach(function (p, k) {
+          var c = KIND_COLORS[p.kind] || color,
+            q = p.lat + ',' + p.lng,
+            m = L.marker([p.lat, p.lng], {
+              icon: L.divIcon({
+                className: '', iconSize: [26, 26], iconAnchor: [13, 13],
+                html: '<span class="seto-pin" style="background:' + c + '">' + (k + 1) + '</span>'
+              })
+            });
+          m.bindPopup(
+            '<div class="seto-pop"><div class="h">' + p.name + '</div>' +
+            '<div class="m">Day ' + n + '　' + p.t + '　' + p.kind + '</div>' +
+            '<div class="x">' + p.note + '</div>' +
+            '<div class="btns">' +
+            '<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google 地圖</a>' +
+            '<a class="alt" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '">導航</a>' +
+            '</div></div>', { maxWidth: 280 });
+          m.addTo(group);
+          mapState.markers[n + '_' + k] = m;
+        });
+        mapState.layers[n] = group;
+        group.addTo(map);
+      });
+
+      mapState.map = map;
+      mapState.ready = true;
+      mapState.loading = false;
+      renderSide();
+      applyFilter();
+      setTimeout(function () { map.invalidateSize(); }, 60);
+    }
+
+    function renderSide() {
+      var side = document.getElementById('seto-mapside'), html = '';
+      MAP_DATA.forEach(function (day, di) {
+        var n = di + 1;
+        if (mapState.day !== 0 && mapState.day !== n) { return; }
+        html += '<div class="seto-mapday"><i style="background:' + DAY_COLORS[di] + '"></i>' +
+          '<b>Day ' + n + '　' + DAY_LABELS[di] + '</b></div>';
+        day.forEach(function (p, k) {
+          html += '<button class="seto-mapcard" type="button" data-marker="' + n + '_' + k + '">' +
+            '<span class="t" style="color:' + DAY_COLORS[di] + '">' + p.t + '</span>' +
+            '<span class="n">' + p.name + '</span>' +
+            '<span class="x">' + p.note + '</span></button>';
+        });
+      });
+      side.innerHTML = html;
+      $$('[data-marker]', side).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var m = mapState.markers[btn.getAttribute('data-marker')];
+          if (!m) { return; }
+          mapState.map.setView(m.getLatLng(), 13, { animate: true });
+          m.openPopup();
+        });
+      });
+    }
+
+    function applyFilter() {
+      if (!mapState.ready) { return; }
+      var bounds = [];
+      Object.keys(mapState.layers).forEach(function (n) {
+        var show = mapState.day === 0 || String(mapState.day) === n;
+        if (show) {
+          mapState.layers[n].addTo(mapState.map);
+          MAP_DATA[n - 1].forEach(function (p) { bounds.push([p.lat, p.lng]); });
+        } else {
+          mapState.map.removeLayer(mapState.layers[n]);
+        }
+      });
+      if (bounds.length) { mapState.map.fitBounds(bounds, { padding: [30, 30] }); }
+    }
+
+    function setDayFilter(d) {
+      mapState.day = d;
+      $$('#seto-mapchips [data-day]').forEach(function (c) {
+        var i = parseInt(c.getAttribute('data-day'), 10),
+          on = i === d,
+          tint = i > 0 ? DAY_COLORS[i - 1] : '';
+        c.setAttribute('aria-selected', on ? 'true' : 'false');
+        /* 選取＝該天的顏色填滿；未選＝同色描邊。「全部」沒有專屬色，
+           留空讓 CSS 的 aria-selected 規則接手。 */
+        c.style.background = on && tint ? tint : '';
+        c.style.borderColor = tint;
+        c.style.color = on ? (tint ? '#fff' : '') : tint;
+        c.style.fontWeight = on ? '700' : '';
+      });
+      initMap();
+      renderSide();
+      applyFilter();
+    }
+
+    $$('#seto-mapchips [data-day]').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        setDayFilter(parseInt(chip.getAttribute('data-day'), 10));
+      });
+    });
+  })();
 </script>
