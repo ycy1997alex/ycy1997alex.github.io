@@ -7,6 +7,10 @@ enableEmoji = true
 # 於是當天發的文在台灣時間早上 8 點之前都算未來日期，而 buildFuture 預設
 # 是 false，那篇會整篇不建置；CI 跑在 UTC，等於線上直接看不到那篇。
 timeZone = "Asia/Taipei"
+# 中文逐字計入字數。Hugo 預設按空白切詞，而中文不寫空格，於是一整段中文
+# 只會被算成一個詞，WordCount 嚴重低估（本站最長那頁實測 6187 字只算到
+# 1031），連帶讓 ReadingTime（= ceil(WordCount / 213)）失真。
+hasCJKLanguage = true
 
 [pagination]
 pagerSize = 20
