@@ -1218,10 +1218,17 @@ SCRIPT = r"""<script>
     if (!root) { return; }
 
     var PANEL_KEY = 'setouchiTripPanelV3',
+      /* 地圖上的線與圖釘畫在淺色的 OSM 圖磚上，深淺模式都用這組較深的顏色，
+         不跟著主題走——它要對比的是地圖底圖，不是頁面背景。
+         頁面上的 chip 與側欄則相反，一律用 var(--d1..--d5)，那組會跟著主題提亮。 */
       DAY_COLORS = ['#1C6E8C', '#2E8B6F', '#C08327', '#C4452F', '#5B4B8A'],
-      KIND_COLORS = { '景點': '#C4452F', '自由': '#2E8B6F', '住宿': '#5B4B8A', '交通': '#1C6E8C', '機場': '#0E2A3B' },
       MAP_DATA = __MAP_DATA__,
-      DAY_LABELS = __DAY_LABELS__;
+      DAY_LABELS = __DAY_LABELS__,
+      /* 必須在這裡就給值。下面的 showPanel(initial) 在開頁時就會執行，
+         如果初始分頁是地圖（網址帶 #seto-map，或上次停在地圖），
+         它會呼叫 initMap()；那時若 mapState 還沒賦值就是 undefined，
+         讀 .ready 會拋錯，整段 IIFE 後面全部不會執行，地圖就卡在「載入中」。 */
+      mapState = { loading: false, ready: false, map: null, layers: {}, markers: {}, day: 0 };
 
     function $(sel, ctx) { return (ctx || root).querySelector(sel); }
     function $$(sel, ctx) { return [].slice.call((ctx || root).querySelectorAll(sel)); }
@@ -1355,8 +1362,6 @@ SCRIPT = r"""<script>
        互動地圖。Leaflet 只在第一次打開這頁時才抓，
        其他分頁不必為了它多下載 150 KB。
        ──────────────────────────────────────────────── */
-    var mapState = { loading: false, ready: false, map: null, layers: {}, markers: {}, day: 0 };
-
     function loadOnce(tag, attrs) {
       return new Promise(function (resolve, reject) {
         var el = document.createElement(tag);
@@ -1418,7 +1423,10 @@ SCRIPT = r"""<script>
           color: color, weight: 3, opacity: 0.65, dashArray: '7,6'
         }).addTo(group);
         day.forEach(function (p, k) {
-          var c = KIND_COLORS[p.kind] || color,
+          /* 圖釘一律用「當天」的顏色。先前是按類別上色，但那組類別色
+             跟天別色是同一批 hex，於是 Day 2 的景點會顯示成 Day 4 的顏色。
+             類別本來就寫在 popup 的第二行，不需要再用顏色編碼一次。 */
+          var c = color,
             q = p.lat + ',' + p.lng,
             m = L.marker([p.lat, p.lng], {
               icon: L.divIcon({
@@ -1454,11 +1462,11 @@ SCRIPT = r"""<script>
       MAP_DATA.forEach(function (day, di) {
         var n = di + 1;
         if (mapState.day !== 0 && mapState.day !== n) { return; }
-        html += '<div class="seto-mapday"><i style="background:' + DAY_COLORS[di] + '"></i>' +
+        html += '<div class="seto-mapday"><i style="background:var(--d' + n + ')"></i>' +
           '<b>Day ' + n + '　' + DAY_LABELS[di] + '</b></div>';
         day.forEach(function (p, k) {
           html += '<button class="seto-mapcard" type="button" data-marker="' + n + '_' + k + '">' +
-            '<span class="t" style="color:' + DAY_COLORS[di] + '">' + p.t + '</span>' +
+            '<span class="t" style="color:var(--d' + n + ')">' + p.t + '</span>' +
             '<span class="n">' + p.name + '</span>' +
             '<span class="x">' + p.note + '</span></button>';
         });
@@ -1494,13 +1502,15 @@ SCRIPT = r"""<script>
       $$('#seto-mapchips [data-day]').forEach(function (c) {
         var i = parseInt(c.getAttribute('data-day'), 10),
           on = i === d,
-          tint = i > 0 ? DAY_COLORS[i - 1] : '';
+          /* 用 CSS 變數而不是寫死的 hex，否則一點下去就會把深色模式
+             提亮過的那組換成淺色模式的深色，chip 在深底上讀不出來。 */
+          tint = i > 0 ? 'var(--d' + i + ')' : '';
         c.setAttribute('aria-selected', on ? 'true' : 'false');
         /* 選取＝該天的顏色填滿；未選＝同色描邊。「全部」沒有專屬色，
            留空讓 CSS 的 aria-selected 規則接手。 */
         c.style.background = on && tint ? tint : '';
         c.style.borderColor = tint;
-        c.style.color = on ? (tint ? '#fff' : '') : tint;
+        c.style.color = on ? (tint ? 'var(--on-accent)' : '') : tint;
         c.style.fontWeight = on ? '700' : '';
       });
       initMap();

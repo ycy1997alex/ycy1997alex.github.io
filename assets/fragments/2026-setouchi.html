@@ -1243,10 +1243,17 @@
     if (!root) { return; }
 
     var PANEL_KEY = 'setouchiTripPanelV3',
+      /* 地圖上的線與圖釘畫在淺色的 OSM 圖磚上，深淺模式都用這組較深的顏色，
+         不跟著主題走——它要對比的是地圖底圖，不是頁面背景。
+         頁面上的 chip 與側欄則相反，一律用 var(--d1..--d5)，那組會跟著主題提亮。 */
       DAY_COLORS = ['#1C6E8C', '#2E8B6F', '#C08327', '#C4452F', '#5B4B8A'],
-      KIND_COLORS = { '景點': '#C4452F', '自由': '#2E8B6F', '住宿': '#5B4B8A', '交通': '#1C6E8C', '機場': '#0E2A3B' },
       MAP_DATA = [[{"t": "05:10", "name": "桃園國際機場 第二航廈", "kind": "機場", "lat": 25.0801, "lng": 121.233, "note": "華航 8 號櫃檯｜CI112 07:10 起飛"}, {"t": "10:35", "name": "廣島機場 HIJ", "kind": "機場", "lat": 34.4373, "lng": 132.92062, "note": "抵達後通關約 40–50 分"}, {"t": "12:45", "name": "宮島口渡輪站", "kind": "交通", "lat": 34.31129, "lng": 132.3051, "note": "換搭渡輪往宮島，航程約 10 分"}, {"t": "13:10", "name": "宮島棧橋", "kind": "交通", "lat": 34.2996, "lng": 132.3237, "note": "上島後步行約 10 分至嚴島神社"}, {"t": "14:10", "name": "嚴島神社・海上大鳥居", "kind": "景點", "lat": 34.29599, "lng": 132.31983, "note": "世界文化遺產｜留意當日潮汐時間"}, {"t": "15:25", "name": "千疊閣（豐國神社）", "kind": "景點", "lat": 34.29732, "lng": 132.32028, "note": "豐臣秀吉大經堂，旁為五重塔"}, {"t": "15:55", "name": "宮島表參道商店街", "kind": "自由", "lat": 34.29897, "lng": 132.32184, "note": "自由活動 60 分｜現烤牡蠣、紅葉饅頭"}, {"t": "19:25", "name": "廣島麗嘉皇家酒店", "kind": "住宿", "lat": 34.39744, "lng": 132.45738, "note": "第 1 夜"}], [{"t": "08:30", "name": "廣島港（宇品）", "kind": "交通", "lat": 34.35251, "lng": 132.45503, "note": "搭瀨戶內海汽船前往吳、松山"}, {"t": "09:45", "name": "吳中央碼頭", "kind": "交通", "lat": 34.24066, "lng": 132.55625, "note": "中途停靠｜可眺望吳港軍艦"}, {"t": "11:40", "name": "松山觀光港", "kind": "交通", "lat": 33.88868, "lng": 132.70435, "note": "登陸四國，換遊覽車"}, {"t": "13:10", "name": "松山城", "kind": "景點", "lat": 33.84558, "lng": 132.76553, "note": "日本 12 現存天守｜東雲口站搭纜車上山"}, {"t": "15:15", "name": "道後溫泉本館", "kind": "景點", "lat": 33.85207, "lng": 132.78641, "note": "日本三大古湯｜放生園足湯、商店街"}, {"t": "17:55", "name": "今治國際飯店", "kind": "住宿", "lat": 34.06206, "lng": 133.00058, "note": "第 2 夜"}], [{"t": "09:15", "name": "今治毛巾美術館", "kind": "景點", "lat": 33.96929, "lng": 133.03267, "note": "全球首座毛巾主題美術館｜歐式庭園"}, {"t": "14:20", "name": "JR Hotel Clement 高松", "kind": "住宿", "lat": 34.35199, "lng": 134.0483, "note": "第 3 夜｜JR 高松站旁"}, {"t": "14:50", "name": "高松中央（丸龜町）商店街", "kind": "自由", "lat": 34.3436, "lng": 134.05001, "note": "自由活動 180 分｜晚餐代金 ¥5,000 自理"}], [{"t": "09:15", "name": "瀨戶大橋塔・紀念公園", "kind": "景點", "lat": 34.35219, "lng": 133.82534, "note": "360° 旋轉展望台，一輪約 10 分"}, {"t": "12:30", "name": "金刀比羅宮", "kind": "景點", "lat": 34.184, "lng": 133.80954, "note": "御本宮 785 階｜奧社需再加 60–90 分"}, {"t": "16:15", "name": "琴平溫泉 琴參閣", "kind": "住宿", "lat": 34.19022, "lng": 133.81689, "note": "第 4 夜｜溫泉會席晚宴"}], [{"t": "08:50", "name": "善通寺", "kind": "景點", "lat": 34.22596, "lng": 133.77677, "note": "四國八十八所第 75 番｜空海誕生地"}, {"t": "10:55", "name": "高松中央商店街", "kind": "自由", "lat": 34.3436, "lng": 134.05001, "note": "自由活動 180 分｜午餐自理"}, {"t": "14:10", "name": "栗林公園", "kind": "景點", "lat": 34.3299, "lng": 134.04577, "note": "米其林三星名園｜掬月亭抹茶體驗"}, {"t": "16:20", "name": "高松機場 TAK", "kind": "機場", "lat": 34.2149, "lng": 134.01472, "note": "CI179 19:05 起飛，20:55 抵桃園"}]],
-      DAY_LABELS = ["9/24（四）", "9/25（五）", "9/26（六）", "9/27（日）", "9/28（一）"];
+      DAY_LABELS = ["9/24（四）", "9/25（五）", "9/26（六）", "9/27（日）", "9/28（一）"],
+      /* 必須在這裡就給值。下面的 showPanel(initial) 在開頁時就會執行，
+         如果初始分頁是地圖（網址帶 #seto-map，或上次停在地圖），
+         它會呼叫 initMap()；那時若 mapState 還沒賦值就是 undefined，
+         讀 .ready 會拋錯，整段 IIFE 後面全部不會執行，地圖就卡在「載入中」。 */
+      mapState = { loading: false, ready: false, map: null, layers: {}, markers: {}, day: 0 };
 
     function $(sel, ctx) { return (ctx || root).querySelector(sel); }
     function $$(sel, ctx) { return [].slice.call((ctx || root).querySelectorAll(sel)); }
@@ -1380,8 +1387,6 @@
        互動地圖。Leaflet 只在第一次打開這頁時才抓，
        其他分頁不必為了它多下載 150 KB。
        ──────────────────────────────────────────────── */
-    var mapState = { loading: false, ready: false, map: null, layers: {}, markers: {}, day: 0 };
-
     function loadOnce(tag, attrs) {
       return new Promise(function (resolve, reject) {
         var el = document.createElement(tag);
@@ -1443,7 +1448,10 @@
           color: color, weight: 3, opacity: 0.65, dashArray: '7,6'
         }).addTo(group);
         day.forEach(function (p, k) {
-          var c = KIND_COLORS[p.kind] || color,
+          /* 圖釘一律用「當天」的顏色。先前是按類別上色，但那組類別色
+             跟天別色是同一批 hex，於是 Day 2 的景點會顯示成 Day 4 的顏色。
+             類別本來就寫在 popup 的第二行，不需要再用顏色編碼一次。 */
+          var c = color,
             q = p.lat + ',' + p.lng,
             m = L.marker([p.lat, p.lng], {
               icon: L.divIcon({
@@ -1479,11 +1487,11 @@
       MAP_DATA.forEach(function (day, di) {
         var n = di + 1;
         if (mapState.day !== 0 && mapState.day !== n) { return; }
-        html += '<div class="seto-mapday"><i style="background:' + DAY_COLORS[di] + '"></i>' +
+        html += '<div class="seto-mapday"><i style="background:var(--d' + n + ')"></i>' +
           '<b>Day ' + n + '　' + DAY_LABELS[di] + '</b></div>';
         day.forEach(function (p, k) {
           html += '<button class="seto-mapcard" type="button" data-marker="' + n + '_' + k + '">' +
-            '<span class="t" style="color:' + DAY_COLORS[di] + '">' + p.t + '</span>' +
+            '<span class="t" style="color:var(--d' + n + ')">' + p.t + '</span>' +
             '<span class="n">' + p.name + '</span>' +
             '<span class="x">' + p.note + '</span></button>';
         });
@@ -1519,13 +1527,15 @@
       $$('#seto-mapchips [data-day]').forEach(function (c) {
         var i = parseInt(c.getAttribute('data-day'), 10),
           on = i === d,
-          tint = i > 0 ? DAY_COLORS[i - 1] : '';
+          /* 用 CSS 變數而不是寫死的 hex，否則一點下去就會把深色模式
+             提亮過的那組換成淺色模式的深色，chip 在深底上讀不出來。 */
+          tint = i > 0 ? 'var(--d' + i + ')' : '';
         c.setAttribute('aria-selected', on ? 'true' : 'false');
         /* 選取＝該天的顏色填滿；未選＝同色描邊。「全部」沒有專屬色，
            留空讓 CSS 的 aria-selected 規則接手。 */
         c.style.background = on && tint ? tint : '';
         c.style.borderColor = tint;
-        c.style.color = on ? (tint ? '#fff' : '') : tint;
+        c.style.color = on ? (tint ? 'var(--on-accent)' : '') : tint;
         c.style.fontWeight = on ? '700' : '';
       });
       initMap();
