@@ -1,9 +1,21 @@
 ---
 title: "Projects"
-description: "Research and engineering projects: sleep quality prediction, intracranial haemorrhage classification, pneumonia detection and 2D-SLAM object recognition."
+description: "Side, work and research projects: continuous glucose monitoring algorithms, sleep signal analysis, MMSE cognitive assessment models, intracranial haemorrhage classification and 2D-SLAM object recognition."
 ---
 
-## RECENT WORK
+<style>
+  /* 主題 CSS 有 .content article p { text-align: justify }，需用更高特異性覆蓋才會置中 */
+  .content article .project-nav p { text-align: center; }
+</style>
+<div class="project-nav">
+
+[Side Project](#side-project) · [Work Project](#work-project) · [Research Project](#research-project)
+
+</div>
+
+---
+
+## Side Project {#side-project}
 
 ### **2026/08 ~ present** `Writing / Open Source`
 
@@ -12,64 +24,64 @@ description: "Research and engineering projects: sleep quality prediction, intra
 - One article per day on using claude.ai, Claude Desktop and Claude Code across research, Office automation and data workflows
 - Supporting code, prompts and generated artifacts published to [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
-### **2026** `Demos`
+### **2020/12 ~ 2021/06** `Google DSC Program`
 
-Single-file interactive explainers (password required — it is published in the series' [Day 5 article](https://ithelp.ithome.com.tw/articles/10403858))
+NutAction (Android App) [Algorithm](https://github.com/ycy1997alex/Food-101-Recognition) [UI/UX](https://github.com/iamy8000/NutAction_ML)
 
-- [Flight take-off and landing simulation](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/flight-simulation/)
-- [Attention test battery](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/attention-battery/)
-- [Default mode network glass brain](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/dmn-glassbrain/)
-- Each one is a single self-contained HTML file — inline CSS and JS, no build step, no external dependencies
-
-### **2026** `Prompt Demo`
-
-[Taiwanese finance YouTube summarisation rulebook](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/prompt-yt-financial/) (password required — it is published in the series' [Day 4 article](https://ithelp.ithome.com.tw/articles/10403715))
-
-- A structured rulebook drives NotebookLM to turn several finance videos into one shareable deep-dive summary, with three independent runs shown for comparison
+- An app combining image recognition, diet tracking and delivery, with deep learning helping users track what they eat
 
 ---
 
-## PROJECT EXPERIENCE
+## Work Project {#work-project}
 
-### **2023/02 ~ 2023/06** `Project`
+### **2024/11 ~ 2027/04** `Ministry of Economic Affairs A+ Program`
 
-Identifying Key Features for Sleep Quality Prediction Before Sleeping
+High-Precision Non-Invasive Continuous Glucose Monitoring Wearable Development
 
-- Developed an algorithm and established a pipeline from signal extraction devices to analysis
+- Technology-transferred and extended algorithm tuning, fasting and dynamic blood-glucose algorithm development, and program report writing
+- Data-collection application development, system application software development, clinical-trial data collection, statistical analysis
+- System hardware testing, thermal-effect signal propagation analysis, firmware integration
 
-### **2022/07 ~ 2023/04** `Project`
+### **2023/08 ~ 2024/04** `A+ Program Preliminary Research`
 
-Sleep Enhancement Service Process Planning and Development
+High-Precision Non-Invasive Continuous Glucose Monitoring Wearable Development
 
-- Planned the sleep service process and developed auxiliary software tools
+- Developed optical algorithms for an integrated LED / photodiode module
+- Algorithm development, firmware tuning, signal-communication software, electrical characterisation, and clinical-study support
+
+### **2023/02 ~ 2023/06** `Work Project`
+
+Signal Analysis and Algorithm Development
+
+- Identified the key features of a health-management service and built the pipeline from the acquisition device through to signal analysis
+
+### **2022/07 ~ 2023/04** `Work Project`
+
+Service Integration and New Workflow Design
+
+- Planned and developed a health-management service workflow together with the supporting software and tools
 
 ---
 
-## RESEARCH PROJECT EXPERIENCE
+## Research Project {#research-project}
 
-### **2020/07 ~ 2021/12** `Side Project`
+### **2020/03 ~ 2021/12** `Graduate Research-Assistant Project`
 
-[Predicting Model of Pentagon Drawing of Mini-Mental State Examination](https://apps.apple.com/us/app/%e9%9b%99%e4%ba%94%e8%a7%92%e6%b8%ac%e9%a9%97/id1601522643)
+[MMSE Pentagon-Drawing Prediction Model](https://apps.apple.com/us/app/%e9%9b%99%e4%ba%94%e8%a7%92%e6%b8%ac%e9%a9%97/id1601522643)
 
-- Developed a model for cognitive ability testing, reducing clinical process time by 80%
+- Machine-learning and deep-learning models predicting MMSE scores, deployed in a cognitive-assessment app that cut clinical assessment time from 15–20 minutes to 2–3 minutes
 
 ### **2021/03 ~ 2021/06** `In-Class Project`
 
 [CT Intracranial Hemorrhage Classification and Visual Explanations from Deep Networks](https://github.com/ycy1997alex/Intracranial-Hemorrhage-Detection)
 
-- Developed a rapid differentiation method for ICH, reducing clinical process time
+- Deep neural networks differentiating haemorrhage types to shorten clinical assessment
 
 ### **2021/03 ~ 2021/06** `In-Class Project`
 
 [Pneumonia Detection from Lung X-rays from Deep Learning Algorithms](https://github.com/ycy1997alex/Pneumonia-Detection)
 
-- Developed a MATLAB App for distinguishing pneumonia severity from thermal maps
-
-### **2020/12 ~ 2021/06** `Google DSC Program`
-
-NutAction (Android App) [Algorithm](https://github.com/ycy1997alex/Food-101-Recognition) [UI/UX](https://github.com/iamy8000/NutAction_ML)
-
-- Integrated image recognition, diet tracking, and delivery service functionalities
+- A MATLAB app using deep learning to classify pneumonia and visualise its severity as a heatmap
 
 ### **2020/03 ~ 2020/06** `In-Class Project`
 
@@ -79,7 +91,7 @@ Machine Model of Pentagon Drawing of Mini-Mental State Examination
 
 ### **2019/07 ~ 2020/01** `College Research`
 
-Object Detection Technology using Machine Learning on 2D Point Clouds
+Object Detection Technology using Machine Learning on 2D Point Clouds ([2019–2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
 
 - Developed a function for 2D Simultaneous Localization and Mapping to recognize patterns
 

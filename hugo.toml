@@ -1,5 +1,5 @@
 baseURL = "https://ycy1997alex.github.io/"
-title = "Alex Yu"
+title = "Alex Yu 尤俊硯"
 theme = "hugo-coder"
 defaultContentLanguage = "en"
 enableEmoji = true
@@ -35,10 +35,13 @@ tag = "tags"
 author = "authors"
 
 [params]
-author = "Alex Yu"
+author = "Alex Yu 尤俊硯"
 description = "Alex Yu's personal website"
 keywords = "blog,developer,personal"
-info = ["Algorithm Development", "Software Engineer"]
+info = [
+  "Bio-Medical Algorithm RD & Data and Statistical Analysis",
+  "Senior R&D Engineer",
+]
 # 首頁頭像不走 avatarURL：改由 layouts/_partials/home/avatar.html 覆寫 theme 的
 # partial，從 assets/images/fuji-odd-eyed-meow.jpg 產出 400px 的 WebP + JPEG。
 # 原圖 1024px/173KB 只會被畫成 200px，直接輸出等於白下載 5 倍像素。
@@ -66,6 +69,14 @@ icon = "fa-brands fa-linkedin fa-2x"
 weight = 2
 url = "https://www.linkedin.com/in/chunyenyu1997/"
 
+# Font Awesome 6 Free 沒有 Gmail 的品牌 glyph（fa-brands 只到 fa-google），
+# 所以信箱用 fa-solid 的信封。
+[[params.social]]
+name = "Email"
+icon = "fa-solid fa-envelope fa-2x"
+weight = 3
+url = "mailto:ycy1997alex@gmail.com"
+
 [languages.en]
 label = "English"
 weight = 1
@@ -76,29 +87,34 @@ weight = 1
 url = "about/"
 
 [[languages.en.menu.main]]
-name = "Blog"
-weight = 2
-url = "posts/"
-
-[[languages.en.menu.main]]
 name = "Projects"
-weight = 3
+weight = 2
 url = "projects/"
 
 [[languages.en.menu.main]]
-name = "Contact"
+name = "Tech-Posts"
+weight = 3
+url = "technical-posts/"
+
+[[languages.en.menu.main]]
+name = "Casual-Posts"
 weight = 4
-url = "contact/"
+url = "casual-posts/"
+
+[[languages.en.menu.main]]
+name = "Analysis"
+weight = 5
+url = "analysis/"
 
 [languages.zh-tw]
 locale = "zh-TW"
 label = "繁體中文"
-title = "尤俊硯"
+title = "Alex Yu 尤俊硯"
 weight = 2
 
 [languages.zh-tw.params]
-author = "尤俊硯"
-info = ["演算法開發", "軟體工程師"]
+author = "Alex Yu 尤俊硯"
+info = ["生醫演算法開發 & 資料與統計分析", "資深研發工程師"]
 description = "尤俊硯個人網頁"
 keywords = "部落格,開發,個人"
 
@@ -108,16 +124,21 @@ weight = 1
 url = "about/"
 
 [[languages.zh-tw.menu.main]]
-name = "貼文"
-weight = 2
-url = "posts/"
-
-[[languages.zh-tw.menu.main]]
 name = "專案"
-weight = 3
+weight = 2
 url = "projects/"
 
 [[languages.zh-tw.menu.main]]
-name = "聯絡"
+name = "技術貼文"
+weight = 3
+url = "technical-posts/"
+
+[[languages.zh-tw.menu.main]]
+name = "日常貼文"
 weight = 4
-url = "contact/"
+url = "casual-posts/"
+
+[[languages.zh-tw.menu.main]]
+name = "分析"
+weight = 5
+url = "analysis/"

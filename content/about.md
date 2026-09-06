@@ -1,120 +1,170 @@
 ---
 title: "About"
-description: "Algorithm engineer in physiological signal analysis, medical AI and statistics. MSc Brain Science (NYCU); BS Aeronautics and Psychology (NCKU)."
+description: "Senior R&D engineer in bio-medical algorithm development, data and statistical analysis. MSc Brain Science (NYCU); BEng Aeronautics and Astronautics with a double major in Psychology (NCKU)."
 ---
 
-Hello, I'm Alex!
+<style>
+  /* 主題 CSS 有 .content article p { text-align: justify }，需用更高特異性覆蓋才會置中 */
+  .content article .profile-card p { text-align: center; }
+</style>
+<div class="profile-card">
 
-1. I was working as a R&D engineer in a medical service process startup, where I was responsible for biomedical signal algorithm development and handled some project management tasks.
+{{< scratch-photo
+  src="/images/尤俊硯大頭貼-24.jpg"
+  alt="Chun-Yen Yu (Alex Yu)"
+  w="402" h="555"
+  width="240px"
+  hint="Scratch to reveal"
+  reveal="Show the photo" >}}
 
-2. I have a master's degree in Brain Science from National Yang Ming Chiao Tung University. I have experience in brain science, intelligent healthcare big data, and specialize in physiological signal analysis, nonlinear science, medical AI.
+**Chun-Yen Yu (Alex Yu) ｜ 尤俊硯**
 
-3. I have dual bachelor's degrees in Aeronautics and Astronautics (AA) and Psychology from National Cheng Kung University. My AA thesis was related to SLAM, image recognition, and optimization. I also took elective courses in multivariate analysis in the Institute of Psychology, which led me to specialize in statistics.
+Target role: Algorithm Engineer · Data Analyst · Data Scientist
+
+Hsinchu, Taiwan
+
+[ycy1997alex@gmail.com](mailto:ycy1997alex@gmail.com) · [LinkedIn](https://www.linkedin.com/in/chunyenyu1997/) · [GitHub](https://github.com/ycy1997alex)
+
+`#cross-disciplinary integration` `#software and AI algorithms` `#physiological signal analysis`
+
+</div>
+
+---
+
+## PROFESSIONAL SUMMARY
+
+Hello, I'm Alex! I am outgoing, communicative, a willing team player, and careful in execution; I enjoy learning new things and adopting new tools; and I believe work should stay grounded in evidence and in what the market actually needs.
+
+1. Proficient in Python, MATLAB, R and C with over 10 years of programming experience; fluent with standard office software; developed algorithms and software for biomedical and medical-device applications, and previously worked as a firmware engineer in the memory industry.
+
+2. In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs — contributing to the business model for an internal EEG-related application, developing a rapid sleep-screening algorithm for an internal sleep-monitoring application, and leading clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program).
+
+3. M.S. in Brain Science (Neuroengineering and Informatics) from NYCU, with experience in intelligent-medicine algorithm development and big-data analysis; specialised in physiological signal analysis, nonlinear science and medical AI, studying the Hilbert-Huang Transform under Prof. Albert Chih-Chieh Yang and Academician Norden E. Huang. B.Eng. in Aeronautics and Astronautics from NCKU with a double major in Psychology (B.S.), with experience in optimisation algorithms and image recognition and a working knowledge of multivariate statistics and neural networks; undergraduate thesis advised by Prof. Chao-Chung Peng.
 
 ---
 
 ## WORK EXPERIENCE
 
+### **2024/11 ~ present**
+
+**Senior Engineer @ Aitronics Inc.** (Smart Module Management Center, Smart Module Development Division)
+
+- Hardware signal data analysis: statistical analysis, thermal-effect signal propagation analysis
+- Clinical-trial data collection: workflow planning, building a data-collection application, data organisation and analysis
+- Algorithms: signal analysis, and development of fasting and dynamic blood-glucose algorithms
+
+### **2024/04 ~ 2024/09**
+
+**Engineer @ Phison Electronics Corp.** (System Product R&D Division V)
+
+- SSD controller firmware, table task, including SPOR (sudden power-off recovery)
+
+### **2023/08 ~ 2024/04**
+
+**Senior Engineer @ TASC** (Optical Technology R&D Division)
+
+- Statistical analysis and algorithms: rat and human trials, data analysis, signal analysis, and AI/ML algorithm development for blood glucose sensing
+- Module and firmware testing: electrical and optical characterisation, firmware tuning, and experiment design
+
 ### **2022/06 ~ 2023/06**
 
-**R&D Engineer @ Hermes Advanced Therapy Systems (HATS)**
+**Engineer @ Hermes-Epitek Advanced Therapy System, Hermes-Epitek Group** (R&D Department)
 
-Sleep-related R&D & PM Assistant:
+- Algorithms: physiological signal pre-processing and analysis, AI/ML algorithm development for sleep
+- Project management, product and solutions: smart-hospital and smart-healthcare service planning, under ISO 13485 and QMS
 
-- Research & Development: physiological signal processing, Medical AI/ML algorithms
-- Product & Solutions: smart hospital planning, smart healthcare service planning
-- Project Management: contract negotiation, QMS, ISO13485, partner alignment, budget control
+### **Second year of M.S.**
+
+**Research Assistant (part-time) @ National Yang Ming Chiao Tung University** (Center for Digital Medicine and Smart Healthcare; Institute of Brain Science)
+
+- Teaching assistant for three courses
+- Researched deep-learning models for the MMSE pentagon-drawing task to assess cognitive ability
 
 ---
 
 ## EDUCATION
 
-### **February 2020 ~ January 2022**
+### **Graduated January 2022**
 
 **National Yang Ming Chiao Tung University (NYCU) @ Taipei, Taiwan**
 
-- **Master** of Science, Neural Engineering & Neuroinformatics, Institute of Brain Science
+- **Master** of Science, Neuroengineering and Informatics, Institute of Brain Science, College of Medicine (GPA 4.28 / 4.3)
 - Thesis: Phase Modulation of Resting-State fMRI Signal and Its Application to Schizophrenia
-- Advisor: Prof. **[Albert Chih-Chieh Yang](https://scholar.google.com/citations?user=ii3jdz0AAAAJ)**, MD, PhD (served at Taipei Veterans General Hospital)
+- Advisor: Prof. **[Albert Chih-Chieh Yang](https://scholar.google.com/citations?user=ii3jdz0AAAAJ)**, MD, PhD (Director, Center for Digital Medicine and Smart Healthcare, NYCU; Deputy Director, AI Center, Taipei Veterans General Hospital)
 
-### **September 2015 ~ January 2020**
+### **Graduated January 2020**
 
 **National Cheng Kung University (NCKU) @ Tainan, Taiwan**
 
-- **Bachelor** of Science, Department of Aeronautics and Astronautics
+- **Bachelor** of Engineering, Department of Aeronautics and Astronautics (GPA 3.80 / 4.3)
 - **Double Major**: Bachelor of Science, Department of Psychology
-- Advisor of Special Topic on Aeronautics and Astronautics: Prof. **[Chao-Chung Peng](https://scholar.google.com/citations?user=YzN8zoUAAAAJ)**, PhD
+- Undergraduate project: Object Recognition on 2D Point Clouds via Machine Learning ([2019–2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
+- Advisor: Prof. **[Chao-Chung Peng](https://scholar.google.com/citations?user=YzN8zoUAAAAJ)**, PhD (Aerospace Control Systems Group)
 
 ---
 
 ## SKILLS
 
-### Multivariate Statistical Analysis & Data Visualization `Proficient`
+### Big Data and Statistical Analysis
 
-- Category: behavioral science, big data, statistical charts, brain connectivity, questionnaires, flowcharts
-- Software: SPSS, Excel, PowerBI
-- Programming Language: MATLAB, Python, R
+- Data pipelines, visualisation, statistical modelling and statistical analysis
+- Python: Pandas, Statsmodels, Scikit-learn, Matplotlib, Seaborn, semopy
 
-### Brain, Physiological Signal, Medical Image Processing & Analysis `Proficient`
+### AI and Machine Learning
 
-- Type of signal: fMRI BOLD、ECG
-- Technique: HHT, AI/ML pattern recognition
-- Type of medical image: MRI, CT, X-ray
-- Programming Language: MATLAB, Python, R
+- Model building, explainable AI, feature-importance analysis and optimisation
+- Python: AutoGluon, Scikit-learn, Keras, TensorFlow, SHAP, LIME
 
-### AI/ML `Proficient`
+### Brain and Physiological Signals, Imaging
 
-- Category: object recognition (Mask R-CNN, OCR), healthcare big data, medical imaging, transfer learning
-- Proficient Packages: Scikit-Learn, Keras, TensorFlow
-- Programming Language: Python, MATLAB
+- Physiological signal algorithms (fMRI BOLD, ECG/EKG), imaging (MRI, CT, X-ray)
+- MATLAB / Python: HHT, AI/ML modelling, Mask R-CNN, Grad-CAM
 
-### Aeronautics and Astronautics `Proficient`
+### Firmware Integration and Algorithms
 
-- Category: mechanics, control system, configuration design, structural estimation, lift and drag calculation
-- Engineering Drawing: components, structure, surfaces
-- Programming Language: MATLAB, C/C++
+- Signal algorithm development, firmware-software integration, module and system integration
+- MATLAB, C; Python: bleak, tkinter.ttk
 
-### Brain Science, Psychology, Psychiatry `Proficient`
+### Neuroscience, Psychology and Psychiatry
 
-- Domain: abnormal psychology, mental disorders, brain imaging techniques, experimental design
-- Analytical Techniques: ANOVA/MANOVA, AI/ML
+- Cognitive neuroscience, neuroimaging, experimental design
+- Statistical inference, ANOVA and MANOVA using R, SPSS, MATLAB, Python
 
-### Project Management `Beginner`
+### Tooling and Languages
 
-- Tasks: project planning, team collaboration, customer handling and negotiation
-- Quality Systems: QMS, ISO 13485
+- AI / LLM tools: Claude, Gemini, ChatGPT
+- Programming languages: Python, MATLAB, C, R
+- Languages: Mandarin Chinese (native), English
 
 ---
 
-## AWARDS/SCHOLARSHIPS
+## PROJECTS
 
-### **2020 | National Yang Ming Chiao Tung University**
-
-- Mr. Samuel Yin Freshman Merit Scholarship
-
-### **2020 | Ministry of Science and Technology**
-
-- College Student Research Creativity Award (for 2019)
-
-### **2016 | National Cheng Kung University**
-
-- Academic Excellence Award (freshman year)
+Work, research and side projects are listed on the [Projects]({{< relref "projects.md" >}}) page.
 
 ---
 
-## CONFERENCE PAPER
+## CONFERENCE PUBLICATIONS
 
-1. _**Chun-Yen Yu**_, Shih-Jen Tsai, Albert Chih-Chieh Yang, "Phase modulation of resting-state fMRI BOLD signal in cases of schizophrenia with medication", 2021 Society of Neuroscience (SfN), Chicago, USA
+All presented orally in English.
+
+1. _**Chun-Yen Yu**_, Shih-Jen Tsai, Albert Chih-Chieh Yang, "Phase modulation of resting-state fMRI BOLD signal in cases of schizophrenia with medication", 2021 Society for Neuroscience (SfN), Chicago, USA
 
 2. Yu-Fu Lin, Lee-Jang Yang, _**Chun-Yen Yu**_, Chao-Chung Peng, Der-Chen Huang, "[Object Recognition and Classification of 2D-SLAM using Machine Learning and Deep Learning Techniques](https://ieeexplore.ieee.org/abstract/document/9394092)", 2020 International Symposium on Computer, Consumer and Control (IS3C), Taichung, Taiwan
 
-3. _**Chun-Yen Yu**_, Chao-Chung Peng, "[Machining Learning for 2D-SLAM Object Classification and Recognition](https://ieeexplore.ieee.org/abstract/document/9258112)", 2020 IEEE International Conference on Consumer Electronics-Taiwan (ICCE-TW), Taoyuan, Taiwan
-
-- _**Oral presenters at the above three academic conferences**_
+3. _**Chun-Yen Yu**_, Chao-Chung Peng, "[Machine Learning for 2D-SLAM Object Classification and Recognition](https://ieeexplore.ieee.org/abstract/document/9258112)", 2020 IEEE International Conference on Consumer Electronics-Taiwan (ICCE-TW), Taoyuan, Taiwan
 
 ---
 
-## EXPERIENCE IN CLUBS/STUDENT ORGANIZATIONS
+## CERTIFICATIONS & AWARDS
+
+- **2020 | National Yang Ming Chiao Tung University** — Mr. Samuel Yin Freshman Merit Scholarship, College of Medicine
+- **2020 | Ministry of Science and Technology, Taiwan** — College Student Research Creativity Award (for 2019)
+- **2016 | National Cheng Kung University** — Academic Excellence Award (freshman year)
+
+---
+
+## LEADERSHIP & ACTIVITIES
 
 ### **2017/08 ~ 2018/07**
 
@@ -126,7 +176,7 @@ Executive Secretary @ United Departmental Student Association of NCKU
 
 **Vice President** @ Departmental Student Association of Aeronautics and Astronautics of NCKU
 
-- Revised constitution
+- Revised the association constitution
 - Facilitated inter-association activities
 - Managed academic affairs & equipment
 
@@ -135,5 +185,5 @@ Executive Secretary @ United Departmental Student Association of NCKU
 **Vice Captain** @ Table Tennis Team of Aeronautics and Astronautics of NCKU
 
 - Assisted in managing team affairs
-- Organized friendly matches
+- Organised friendly matches
 - Assisted in handling tournaments

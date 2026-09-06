@@ -1,9 +1,21 @@
 ---
 title: "專案"
-description: "研究與工程專案：睡眠品質預測、顱內出血分類、肺炎偵測、2D-SLAM 物件辨識與無人機設計。"
+description: "個人、工作與學術專案：連續血糖檢測演算法、睡眠訊號分析、雙五角認知評估模型、顱內出血分類與 2D-SLAM 物件辨識。"
 ---
 
-## 近期作品
+<style>
+  /* 主題 CSS 有 .content article p { text-align: justify }，需用更高特異性覆蓋才會置中 */
+  .content article .project-nav p { text-align: center; }
+</style>
+<div class="project-nav">
+
+[個人專案](#side-project) · [工作專案](#work-project) · [學術專案](#research-project)
+
+</div>
+
+---
+
+## 個人專案（Side Project） {#side-project}
 
 ### **2026/08 ~ 進行中** `寫作／開源`
 
@@ -12,64 +24,64 @@ description: "研究與工程專案：睡眠品質預測、顱內出血分類、
 - 每天一篇，寫 claude.ai、Claude Desktop 與 Claude Code 在研究、Office 自動化與資料工作流上的實際使用
 - 相關程式碼、提示詞與產出物同步發布在 [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
-### **2026** `互動示範`
-
-單檔互動示範頁（需要密碼，密碼寫在鐵人賽 [Day 5 的文章](https://ithelp.ithome.com.tw/articles/10403858)裡）
-
-- [飛機起飛與降落模擬](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/flight-simulation/)
-- [注意力測驗組](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/attention-battery/)
-- [預設模式網路玻璃腦](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/dmn-glassbrain/)
-- 每一個都是單一 HTML 檔：CSS 與 JS 全部 inline，沒有建置步驟，也沒有外部相依
-
-### **2026** `提示詞示範`
-
-[台灣財經 YouTube 影片摘要規則書](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/demo/prompt-yt-financial/)（需要密碼，密碼寫在鐵人賽 [Day 4 的文章](https://ithelp.ithome.com.tw/articles/10403715)裡）
-
-- 用一份結構化規則書驅動 NotebookLM，把多支財經影片整理成一份可直接分享的深度摘要，並附上三次獨立執行的結果供比較
-
----
-
-## 專案經驗
-
-### **2023/02 ~ 2023/06** `專案`
-
-識別入睡前預測睡眠品質的關鍵特徵
-
-- 開發一演算法，並建立從訊號擷取裝置到訊號分析的流程
-
-### **2022/07 ~ 2023/04** `專案`
-
-睡眠促進服務流程的規劃與開發
-
-- 規劃睡眠促進服務流程，並開發了相關輔助軟體、工具
-
----
-
-## 學術專案經驗
-
-### **2020/07 ~ 2021/12** `個人專案`
-
-[建立雙五角測試深度學習模型以預測簡短智能測驗](https://apps.apple.com/us/app/%e9%9b%99%e4%ba%94%e8%a7%92%e6%b8%ac%e9%a9%97/id1601522643)
-
-- 發展模型供認知能力測試APP使用，臨床流程從15-20分鐘簡短至2-3分鐘
-
-### **2021/03 ~ 2021/06** `課堂專案`
-
-[以深度神經網絡進行CT腦出血分類模型與視覺化解釋](https://github.com/ycy1997alex/Intracranial-Hemorrhage-Detection)
-
-- 開發快速區分不同類型的腦出血方法以縮短臨床評估時間
-
-### **2021/03 ~ 2021/06** `課堂專案`
-
-[以深度學習演算法進行X光肺炎偵測](https://github.com/ycy1997alex/Pneumonia-Detection)
-
-- 開發MATLAB APP，提供一個可區分肺炎及呈現肺炎診測熱區圖模型
-
 ### **2020/12 ~ 2021/06** `Google DSC Program`
 
 NutAction (Android App) [Algorithm](https://github.com/ycy1997alex/Food-101-Recognition) [UI/UX](https://github.com/iamy8000/NutAction_ML)
 
-- 結合影像辨識、飲食追蹤與外送服務的APP
+- 結合影像辨識、飲食追蹤與外送服務的 App，以深度學習輔助使用者追蹤飲食
+
+---
+
+## 工作專案（Work Project） {#work-project}
+
+### **2024/11 ~ 2027/04** `經濟部 A+ 計畫`
+
+高精度非侵入式連續血糖檢測穿戴裝置技術開發
+
+- 技轉演算法與演算法應用延伸調校、空腹血糖演算法開發、血糖變化演算法開發、計畫報告撰寫
+- 資料蒐集應用程式開發、系統應用軟體開發、臨床試驗資料蒐集、統計分析
+- 系統硬體測試、硬體熱效應訊號傳遞分析、軟韌體串接
+
+### **2023/08 ~ 2024/04** `A+ 計畫前期研究`
+
+高精度非侵入式連續血糖檢測穿戴裝置技術開發
+
+- 以具發光與感光二極體元件整合的模組，研發相應的光學演算法
+- 開發演算法、調適韌體、撰寫訊號通訊軟體、執行電性檢測、協助臨床研究
+
+### **2023/02 ~ 2023/06** `工作專案`
+
+訊號分析暨演算法開發專案
+
+- 識別健康管理服務的關鍵特徵，並建立從訊號擷取裝置到訊號分析的完整流程
+
+### **2022/07 ~ 2023/04** `工作專案`
+
+整合暨創造新服務流程專案
+
+- 規劃與開發健康管理服務流程，並開發相關輔助軟體與工具
+
+---
+
+## 學術專案（Research Project） {#research-project}
+
+### **2020/03 ~ 2021/12** `研究所兼任助理專案`
+
+[建立雙五角測試深度學習模型以預測簡短智能測驗](https://apps.apple.com/us/app/%e9%9b%99%e4%ba%94%e8%a7%92%e6%b8%ac%e9%a9%97/id1601522643)
+
+- 建立機器學習與深度學習模型以預測簡短智能測驗（MMSE）分數，供認知能力測試 App 使用，臨床評估流程自 15–20 分鐘縮短至 2–3 分鐘
+
+### **2021/03 ~ 2021/06** `課堂專案`
+
+[以深度神經網絡進行 CT 腦出血分類模型與視覺化解釋](https://github.com/ycy1997alex/Intracranial-Hemorrhage-Detection)
+
+- 開發快速區分不同類型腦出血的方法，以縮短臨床評估時間
+
+### **2021/03 ~ 2021/06** `課堂專案`
+
+[以深度學習演算法進行 X 光肺炎偵測](https://github.com/ycy1997alex/Pneumonia-Detection)
+
+- 開發 MATLAB App，可區分肺炎並呈現肺炎偵測熱區圖
 
 ### **2020/03 ~ 2020/06** `課堂專案`
 
@@ -79,9 +91,9 @@ NutAction (Android App) [Algorithm](https://github.com/ycy1997alex/Food-101-Reco
 
 ### **2019/07 ~ 2020/01** `大學專題`
 
-機器學習於2D點雲之物件辨識技術研究
+機器學習於 2D 點雲之物件辨識技術研究（[108 學年度大專學生研究創作獎](https://en.ord.ncku.edu.tw/article-award-7.html)）
 
-- 開發一種2D同時定位與地圖建置 (SLAM) 功能，以識別2D點雲構成之圖案
+- 開發一種 2D 同時定位與地圖建置（SLAM）功能，以識別 2D 點雲構成之圖案
 
 ### **2019/04 ~ 2019/08** `課堂專案`
 
