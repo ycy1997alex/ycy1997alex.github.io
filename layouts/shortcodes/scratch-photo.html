@@ -1,0 +1,289 @@
+{{- /*
+  刮刮卡照片。作法與取捨的完整討論見 D:\Research\iThome2026\Day23_20260906\scratchcard.md。
+
+  重點：被蓋住的只有照片，履歷本文仍是 Markdown。遮罩由 JS 建立，
+  所以沒有 JS（或 prefers-reduced-motion: reduce）時使用者直接看到照片，
+  不會變成一個空的 <canvas>。
+
+  參數：
+    src     圖片路徑（站內絕對路徑）
+    alt     替代文字
+    w, h    原圖像素尺寸。寫出來瀏覽器才能在圖載完前就保留版位，
+            遮罩也才不會有一瞬間量到 0 高度
+    width   顯示寬度，預設 240px
+    hint    遮罩上的提示字
+    reveal  「直接看」按鈕的文字
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $w := .Get "w" -}}
+{{- $h := .Get "h" -}}
+{{- $width := .Get "width" | default "240px" -}}
+{{- $hint := .Get "hint" | default "Scratch to reveal" -}}
+{{- $reveal := .Get "reveal" | default "Reveal the photo" -}}
+<div class="scratch-photo" data-hint="{{ $hint }}" style="width: {{ $width }}">
+  <img class="scratch-photo__img" src="{{ $src | relURL }}" alt="{{ $alt }}"{{ with $w }} width="{{ . }}"{{ end }}{{ with $h }} height="{{ . }}"{{ end }} decoding="async">
+</div>
+<p class="scratch-photo__actions" hidden><button type="button" class="scratch-photo__reveal">{{ $reveal }}</button></p>
+{{- if not (.Page.Scratch.Get "scratchPhotoAssets") }}
+{{- .Page.Scratch.Set "scratchPhotoAssets" true }}
+<style>
+  .scratch-photo {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    line-height: 0;
+  }
+
+  .scratch-photo__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .scratch-photo__cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    /* 沒有這行的話，手機上的拖曳會被瀏覽器當成捲動，刮不動 */
+    touch-action: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .scratch-photo__actions {
+    margin-top: 0.8rem;
+  }
+
+  .scratch-photo__reveal {
+    font: inherit;
+    font-size: 1.4rem;
+    color: inherit;
+    background: none;
+    border: 1px solid currentColor;
+    border-radius: 0.4rem;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+    opacity: 0.75;
+  }
+
+  .scratch-photo__reveal:hover {
+    opacity: 1;
+  }
+
+  /* 列印或存 PDF 一定要拿到照片本身 */
+  @media print {
+    .scratch-photo__cover,
+    .scratch-photo__actions { display: none !important; }
+  }
+</style>
+<script>
+(function () {
+  'use strict';
+
+  // 使用者要求「減少動態」時就不蓋遮罩，直接給照片
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var BRUSH = 26;          // 筆刷直徑（CSS px）
+  var THRESHOLD = 0.5;     // 刮開這個比例就自動全開
+  var SAMPLE_EVERY = 250;  // getImageData 很貴，最多每 250ms 算一次進度
+
+  function darkNow() {
+    // 主題把亮暗寫在 body 的 class 上（見 themes/hugo-coder/assets/js/coder.js）
+    return document.body.classList.contains('colorscheme-dark');
+  }
+
+  function init(wrap) {
+    var img = wrap.querySelector('.scratch-photo__img');
+    var actions = wrap.nextElementSibling;
+    var button = actions && actions.querySelector('.scratch-photo__reveal');
+    if (!img) return;
+
+    var cv = document.createElement('canvas');
+    cv.className = 'scratch-photo__cover';
+    cv.setAttribute('aria-hidden', 'true');
+    var ctx = cv.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return;
+
+    // 刮痕另外記在一張離屏畫布上，重畫遮罩（換主題、改視窗大小）時才不會把進度洗掉
+    var mask = document.createElement('canvas');
+    var mctx = mask.getContext('2d');
+
+    var dpr = 1, cssW = 0, cssH = 0, done = false, drawing = false;
+    var last = null, lastCheck = 0;
+
+    wrap.appendChild(cv);
+    if (actions) actions.hidden = false;
+
+    function paintCover() {
+      var dark = darkNow();
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.restore();
+
+      ctx.fillStyle = dark ? '#3a3f47' : '#c9ccd1';
+      ctx.fillRect(0, 0, cssW, cssH);
+
+      // 一道斜向亮帶，讓它看起來像刮刮卡的銀漆而不是一塊灰
+      var sheen = ctx.createLinearGradient(0, 0, cssW, cssH);
+      sheen.addColorStop(0, dark ? 'rgba(255,255,255,.10)' : 'rgba(255,255,255,.55)');
+      sheen.addColorStop(0.5, 'rgba(255,255,255,0)');
+      sheen.addColorStop(1, dark ? 'rgba(0,0,0,.18)' : 'rgba(0,0,0,.10)');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(0, 0, cssW, cssH);
+
+      var hint = wrap.getAttribute('data-hint') || '';
+      if (hint) {
+        ctx.fillStyle = dark ? '#c3c8d0' : '#4a4f57';
+        ctx.font = '600 15px system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(hint, cssW / 2, cssH / 2, cssW - 16);
+      }
+
+      // 把已經刮掉的部分重新挖回去
+      if (mask.width && mask.height) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.drawImage(mask, 0, 0, cssW, cssH);
+        ctx.restore();
+      }
+    }
+
+    function resize() {
+      if (done) return;
+      var r = wrap.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      dpr = window.devicePixelRatio || 1;
+      cssW = r.width;
+      cssH = r.height;
+
+      // 舊刮痕按新尺寸縮放後搬進新的 mask，不然改視窗大小等於重來
+      var old = null;
+      if (mask.width && mask.height) {
+        old = document.createElement('canvas');
+        old.width = mask.width;
+        old.height = mask.height;
+        old.getContext('2d').drawImage(mask, 0, 0);
+      }
+      mask.width = Math.max(1, Math.round(cssW));
+      mask.height = Math.max(1, Math.round(cssH));
+      if (old) mctx.drawImage(old, 0, 0, mask.width, mask.height);
+      mctx.lineWidth = BRUSH;
+      mctx.lineCap = mctx.lineJoin = 'round';
+      mctx.strokeStyle = '#000';
+
+      cv.width = Math.max(1, Math.round(cssW * dpr));
+      cv.height = Math.max(1, Math.round(cssH * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);  // 之後一律用 CSS 像素座標
+      ctx.lineWidth = BRUSH;
+      ctx.lineCap = ctx.lineJoin = 'round';
+      paintCover();
+    }
+
+    function point(e) {
+      // 用 getBoundingClientRect，才不會被捲動或 CSS 縮放弄偏
+      var r = cv.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    function scratch(from, to) {
+      // 連到上一個點，快速拖曳時才不會刮出虛線
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+      ctx.restore();
+
+      mctx.beginPath();
+      mctx.moveTo(from.x, from.y);
+      mctx.lineTo(to.x, to.y);
+      mctx.stroke();
+    }
+
+    function cleared() {
+      var d = ctx.getImageData(0, 0, cv.width, cv.height).data;
+      var clear = 0, total = 0;
+      // 每 64 個像素抽一個 alpha 就夠了，逐像素掃太慢
+      for (var i = 3; i < d.length; i += 4 * 64) {
+        total++;
+        if (d[i] < 32) clear++;
+      }
+      return total ? clear / total : 0;
+    }
+
+    function revealAll() {
+      if (done) return;
+      done = true;
+      cv.style.opacity = '0';
+      if (actions) actions.hidden = true;
+      window.setTimeout(function () {
+        if (cv.parentNode) cv.parentNode.removeChild(cv);
+      }, 400);
+    }
+
+    cv.addEventListener('pointerdown', function (e) {
+      if (done) return;
+      drawing = true;
+      last = point(e);
+      // 拖到畫布外再放開也收得到 pointerup，狀態不會卡住
+      if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+      scratch(last, last);
+      e.preventDefault();
+    });
+
+    cv.addEventListener('pointermove', function (e) {
+      if (done || !drawing) return;
+      var cur = point(e);
+      scratch(last, cur);
+      last = cur;
+      var now = Date.now();
+      if (now - lastCheck > SAMPLE_EVERY) {
+        lastCheck = now;
+        if (cleared() > THRESHOLD) revealAll();
+      }
+    });
+
+    function stop(e) {
+      if (!drawing) return;
+      drawing = false;
+      last = null;
+      if (cv.releasePointerCapture && e.pointerId !== undefined) {
+        try { cv.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+      if (!done && cleared() > THRESHOLD) revealAll();
+    }
+    cv.addEventListener('pointerup', stop);
+    cv.addEventListener('pointercancel', stop);
+
+    if (button) button.addEventListener('click', revealAll);
+    document.addEventListener('themeChanged', function () { if (!done) paintCover(); });
+
+    if (window.ResizeObserver) {
+      // observe() 本身就會先觸發一次，圖片載完撐開版位時也會再觸發
+      new window.ResizeObserver(resize).observe(wrap);
+    } else {
+      window.addEventListener('resize', resize);
+      if (img.complete) resize(); else img.addEventListener('load', resize);
+      resize();
+    }
+  }
+
+  function start() {
+    var list = document.querySelectorAll('.scratch-photo');
+    for (var i = 0; i < list.length; i++) init(list[i]);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+}());
+</script>
+{{- end }}
