@@ -35,7 +35,11 @@ tag = "tags"
 author = "authors"
 
 [params]
+# author 同時餵首頁 <h1>、<meta name="author"> 與頭像 alt，中英兩版都要顯示
+# "Alex Yu 尤俊硯"，所以不分語言。頁尾的姓名要分語言，改由 copyrightName 提供
+# （見 layouts/_partials/footer.html）。
 author = "Alex Yu 尤俊硯"
+copyrightName = "Alex Yu"
 description = "Alex Yu's personal website"
 keywords = "blog,developer,personal"
 info = [
@@ -114,6 +118,7 @@ weight = 2
 
 [languages.zh-tw.params]
 author = "Alex Yu 尤俊硯"
+copyrightName = "尤俊硯"
 info = ["生醫演算法開發 & 資料與統計分析", "資深研發工程師"]
 description = "尤俊硯個人網頁"
 keywords = "部落格,開發,個人"

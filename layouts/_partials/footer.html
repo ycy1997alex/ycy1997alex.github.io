@@ -1,0 +1,29 @@
+{{- /*
+  覆寫 theme 的 footer partial。
+
+  原版頁尾的姓名直接讀 .Site.Params.author，但 author 同時餵給首頁的 <h1>
+  （themes/hugo-coder/layouts/_partials/home/author.html）、<meta name="author">
+  與首頁頭像的 alt。首頁 h1 中英兩版都要固定顯示 "Alex Yu 尤俊硯"，所以 author
+  不能分語言；頁尾則要分（英文 Alex Yu、中文 尤俊硯）。
+
+  於是頁尾改讀獨立的 params.copyrightName，沒設時退回 author，其餘與原版相同。
+*/ -}}
+<footer class="footer">
+  <section class="container">
+    ©
+    {{ if (and .Site.Params.since (lt .Site.Params.since now.Year)) }}
+      {{ .Site.Params.since }} -
+    {{ end }}
+    {{ now.Year }}
+    {{ with .Site.Params.copyrightName | default .Site.Params.author }} {{ . }} {{ end }}
+    ·
+    {{ if (and .Site.Params.license) }}
+      {{ i18n "licensed_under" }} {{ .Site.Params.license | safeHTML }}
+    ·
+    {{ end }}
+    {{ i18n "powered_by" }} <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    {{ if (and .Site.Params.commit .GitInfo) }}
+      [<a href="{{ .Site.Params.commit }}/{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ .GitInfo.AbbreviatedHash }}</a>]
+    {{ end }}
+  </section>
+</footer>
