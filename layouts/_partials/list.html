@@ -1,0 +1,35 @@
+{{- /*
+  覆寫 theme 的 list partial（分類、標籤、系列、作者等清單頁）。
+
+  與原版唯一的差別：改用 .Pages 而不是 .Paginator.Pages，並拿掉 pagination
+  partial。只要範本碰過 .Paginator，Hugo 就會額外產出一個 <list>/page/1/ 的
+  meta refresh 轉址頁（轉回清單本身），全站合計三十幾個；本站要求除了
+  static/demo/ 以外不留轉址頁，所以連 paginator 一起不要。
+
+  代價：清單不再分頁。pagerSize 是 20，而目前最長的清單只有 5 篇，本來就分不到
+  第二頁；日後若某個清單超過 20 篇，會變成一頁全部列出（不會壞，只是變長）。
+  要恢復分頁的話，把下面兩處改回 .Paginator.Pages 與 partial "pagination.html"，
+  page/1/ 轉址頁就會一起回來。
+*/ -}}
+<section class="container list">
+  <header>
+    <h1 class="title">
+      <a class="title-link" href="{{ .Permalink | safeURL }}">
+        {{- if eq .Kind "term" -}}
+          {{- i18n .Data.Plural 1 | title -}}
+          {{- print ": " -}}
+        {{- end -}}
+        {{- i18n (lower .Title) | default .Title | title -}}
+      </a>
+    </h1>
+  </header>
+  {{ .Content }}
+  <ul>
+    {{ range .Pages }}
+    <li>
+      <span class="date">{{ .Date | time.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}</span>
+      <a class="title" href="{{ .Params.externalLink | default .RelPermalink }}">{{ .Title }}</a>
+    </li>
+    {{ end }}
+  </ul>
+</section>

@@ -7,8 +7,6 @@ series: ["Web"]
 tags: ["hugo", "Github Pages", "個人網頁", "靜態網頁", "部落格"]
 summary: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
 description: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
-# 這篇原本在 /posts/ 底下，搬到新 section 後留一個轉址頁給舊連結
-aliases: ["/posts/how-to-build-hugo-pages/"]
 ---
 
 > **This post is in Traditional Chinese Only.**

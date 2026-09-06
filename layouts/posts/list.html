@@ -1,0 +1,27 @@
+{{- /*
+  覆寫 theme 的 posts 清單版型（technical-posts 與 casual-posts 兩個 section
+  的 _index.md 都設了 type = "posts"，所以走這一份）。
+
+  與原版唯一的差別：改用 .Pages 而不是 .Paginator.Pages，並拿掉 pagination
+  partial——理由與取捨同 layouts/_partials/list.html 的註解。
+*/ -}}
+{{ define "title" }}
+  {{ title (i18n (lower .Title)) | default .Title }} · {{ .Site.Title }}
+{{ end }}
+{{ define "content" }}
+  <section class="container list">
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="{{ .Permalink | safeURL }}">
+          {{ title (i18n (lower .Title)) | default .Title }}
+        </a>
+      </h1>
+    </header>
+    {{ .Content }}
+    <ul>
+      {{- range .Pages -}}
+        {{- .Render "li" -}}
+      {{- end -}}
+    </ul>
+  </section>
+{{ end }}

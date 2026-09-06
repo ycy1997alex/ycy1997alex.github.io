@@ -11,6 +11,12 @@ timeZone = "Asia/Taipei"
 # 只會被算成一個詞，WordCount 嚴重低估（本站最長那頁實測 6187 字只算到
 # 1031），連帶讓 ReadingTime（= ceil(WordCount / 213)）失真。
 hasCJKLanguage = true
+# 不產生 front matter aliases 的轉址頁。搬動文章網址時舊連結會直接 404，
+# 這是刻意的選擇。實測 disableAliases 只管 renderAliases()，管不到分頁的
+# <list>/page/1/（改由 layouts/ 底下不使用 .Paginator 的清單範本解決）
+# 與預設語言的 /en/（Hugo 內建，沒有對應開關，唯一留下的轉址頁）。
+# static/demo/ 底下那四個轉址頁是靜態檔，不受任何設定影響。
+disableAliases = true
 
 [pagination]
 pagerSize = 20
