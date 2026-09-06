@@ -11,13 +11,14 @@ automatically to GitHub Pages.
 
 ## What's on the site
 
-- **About** — background, education, skills, and publications
-- **Projects** — research and engineering projects
-- **Blog** — posts and interactive tools
-- **Contact**
+- **About** — the resume: background, work experience, education, skills, publications and contact details
+- **Projects** — side, work and research projects
+- **Technical-Posts** — technical writing
+- **Casual-Posts** — travel, checklists and other everyday posts, plus interactive tools
+- **Analysis** — analysis repositories
 
 **English** and **Traditional Chinese** are switchable from the navigation bar.
-About, Projects, Contact and most posts exist in both. A few posts written in
+About, Projects, Analysis and most posts exist in both. A few posts written in
 Chinese have not been translated; their English version carries a "This post is
 in Traditional Chinese Only" note at the top.
 
