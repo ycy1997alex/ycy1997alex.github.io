@@ -157,26 +157,37 @@ BACK_LIST = [
     ]),
 ]
 
-# ── 藥妝採買（可勾選）──
+# ── 藥妝採買（可勾選）。欄位：類別、品項、日本規格、日本建議購入價、想要的數量 ──
 DRUGSTORE = [
-    ("sv1", "常備藥", "EVE 止痛藥（藍／金盒）", "¥600–900", "成分強度不同，依需求選"),
-    ("sv2", "常備藥", "太田胃散／第一三共胃腸藥", "¥800–1,200", ""),
-    ("sv3", "常備藥", "龍角散喉糖／喉嚨噴劑", "¥400–800", ""),
-    ("sv4", "痠痛護理", "Salonpas 撒隆巴斯貼布", "¥500–800", "爬完金刀比羅宮那晚會用到"),
-    ("sv5", "痠痛護理", "休足時間貼片", "¥500–700", "同上，敷腿消疲勞"),
-    ("sv6", "保健食品", "合利他命 EX PLUS", "¥2,000–3,000", "B 群，長年熱銷"),
-    ("sv7", "眼睛口腔", "Sante FX／樂敦眼藥水", "¥600–1,200", "清涼度分級，怕刺激選低級數"),
-    ("sv8", "眼睛口腔", "NONIO／Ora2 牙膏、齒間刷", "¥300–600", ""),
-    ("sv9", "防曬保養", "Anessa 安耐曬金瓶", "¥1,800–2,500", ""),
-    ("sv10", "防曬保養", "肌研極潤化妝水／Curél 珂潤", "¥1,000–1,800", "敏感肌選 Curél"),
-    ("sv11", "防曬保養", "Melano CC 維他命 C 精華", "¥1,000–1,300", "淡斑"),
-    ("sv12", "防曬保養", "Imju 薏仁化妝水（大瓶）", "¥700–900", "可全身用，划算"),
-    ("sv13", "防曬保養", "尊馬油", "¥500–900", "乾裂修護，老品回購率高"),
-    ("sv14", "面膜", "LuLuLun 量販包", "¥1,500–2,000", "藍／紅／白對應不同需求"),
-    ("sv15", "面膜", "Saborino 早安面膜", "¥900–1,200", "60 秒洗臉 + 保養 + 妝前"),
-    ("sv16", "面膜", "QUALITY 集中毛孔面膜", "¥1,000–1,300", "近期銷售榜冠軍"),
-    ("sv17", "開架彩妝", "CANMAKE 腮紅／修容", "¥700–1,200", ""),
-    ("sv18", "開架彩妝", "KISS ME／dejavu／Love Liner", "¥1,000–1,500", "眼線、睫毛膏長年熱銷"),
+    ("sv1", "保健食品", "DHC持續型維他命B群", "60日", "¥710", 1),
+    ("sv2", "保健食品", "DHC持續型維他命C", "60日", "¥700", 1),
+    ("sv3", "保健食品", "DHC維生素D", "60日", "¥462", 5),
+    ("sv4", "保健食品", "DHC金盞花萃取物葉黃素", "60日", "¥1880", 2),
+    ("sv5", "保健食品", "DHC 鋅", "60日", "¥465", 5),
+    ("sv6", "保健食品", "DHC紅藻萃取物蝦紅素", "30日", "¥1110", 8),
+    ("sv7", "外用藥", "液體OK蹦", "10g", "¥650", 1),
+    ("sv8", "貼布", "Salonpas 撒隆巴斯貼布", "240枚", "¥1500", 1),
+    ("sv9", "貼布", "休足時間貼片", "18枚", "¥600", 1),
+    ("sv10", "眼藥水", "參天製藥 Soft Santear", "5ml × 4本", "¥535", 2),
+    ("sv11", "洗面乳", "Melano CC 維他命 C 精華", "130g", "¥650", 1),
+    ("sv12", "洗面乳", "SUISAI 黑炭泥磨砂去角質", "120g", "¥1980", 1),
+    ("sv13", "洗面乳", "SUISAI 淨透亮采洗顏膏", "120g", "¥1430", 2),
+    ("sv14", "化妝水", "肌研極潤化妝水", "170ml", "¥750", 1),
+    ("sv15", "乳液", "yuskin 紫蘇水乳液 瓶裝", "170ml", "¥980", 1),
+    ("sv16", "面霜", "AQUALABEL 藍", "90g", "¥1600", 1),
+    ("sv17", "面霜", "AQUALABEL 紅", "90g", "¥1600", 1),
+    ("sv18", "面霜", "AQUALABEL 金", "90g", "¥1800", 1),
+    ("sv19", "牙膏", "SUNSTAR Ora2 me 極緻淨白牙膏", "100g", "¥400", 1),
+    ("sv20", "牙膏", "獅王 齒科用美白牙膏", "90g", "¥950", 1),
+]
+
+# ── 超市採買（可勾選）。欄位：勾選欄、品項、日本規格、日本建議購入價、想要的數量 ──
+MARKET = [
+    ("mk1", "伊藤園 お〜いお茶 宇治抹茶", "30g", "¥400", 3),
+    ("mk2", "S&B 七味唐辛子", "14g", "¥130", 2),
+    ("mk3", "龜田製菓 歪曲醬油仙貝", "16枚", "¥200", 5),
+    ("mk4", "Pokka Lemon 100% 檸檬原汁", "450ml", "¥550", 1),
+    ("mk5", "桃屋鰹魚高湯醬油", "400ml", "¥300", 1),
 ]
 
 
@@ -1101,14 +1112,15 @@ def p_back():
 
 def p_souvenir():
     rows = []
-    for cid, cat, item, price, note in DRUGSTORE:
+    for cid, cat, item, spec, price, qty in DRUGSTORE:
         rows.append(
             '        <tr><td><label class="seto-check" data-id="%s" data-group="drug" '
             'style="border:0;background:transparent;min-height:0;padding:0">'
             '<input type="checkbox"><span class="sr"></span></label></td>'
             '<td style="color:var(--muted)">%s</td><td>%s</td>'
             '<td class="seto-num" style="color:var(--muted)">%s</td>'
-            '<td style="color:var(--muted)">%s</td></tr>' % (cid, cat, item, price, note))
+            '<td class="seto-num" style="color:var(--muted)">%s</td>'
+            '<td class="seto-num" style="color:var(--muted)">%s</td></tr>' % (cid, cat, item, spec, price, qty))
     drug = ('<div class="seto-checklist" data-key="setouchi2026Shop">\n'
             '  <div class="seto-progress">\n'
             '    <div class="seto-bar"><i data-fill style="width:0"></i></div>\n'
@@ -1118,8 +1130,31 @@ def p_souvenir():
             '  <div class="seto-tw" style="margin-top:1rem">\n'
             '    <table class="seto-table">\n'
             '      <thead><tr><th style="width:3.4rem"></th><th style="width:7.6rem">類別</th><th>品項</th>'
-            '<th style="width:10.4rem">預估價格</th><th style="width:17rem">備註</th></tr></thead>\n'
+            '<th style="width:8.4rem">日本規格</th><th style="width:9.6rem">日本建議購入價</th>'
+            '<th style="width:7.6rem">想要的數量</th></tr></thead>\n'
             '      <tbody>\n%s\n      </tbody>\n    </table>\n  </div>\n</div>' % (len(DRUGSTORE), "\n".join(rows)))
+    mrows = []
+    for cid, item, spec, price, qty in MARKET:
+        mrows.append(
+            '        <tr><td><label class="seto-check" data-id="%s" data-group="market" '
+            'style="border:0;background:transparent;min-height:0;padding:0">'
+            '<input type="checkbox"><span class="sr"></span></label></td>'
+            '<td>%s</td>'
+            '<td class="seto-num" style="color:var(--muted)">%s</td>'
+            '<td class="seto-num" style="color:var(--muted)">%s</td>'
+            '<td class="seto-num" style="color:var(--muted)">%s</td></tr>' % (cid, item, spec, price, qty))
+    market = ('<div class="seto-checklist" data-key="setouchi2026Market">\n'
+              '  <div class="seto-progress">\n'
+              '    <div class="seto-bar"><i data-fill style="width:0"></i></div>\n'
+              '    <strong class="seto-count"><span data-count>0</span> / %d</strong>\n'
+              '    <button class="seto-reset" type="button" data-reset>清空</button>\n'
+              '  </div>\n'
+              '  <div class="seto-tw" style="margin-top:1rem">\n'
+              '    <table class="seto-table">\n'
+              '      <thead><tr><th style="width:6rem">勾選欄</th><th>品項</th>'
+              '<th style="width:8.4rem">日本規格</th><th style="width:9.6rem">日本建議購入價</th>'
+              '<th style="width:7.6rem">想要的數量</th></tr></thead>\n'
+              '      <tbody>\n%s\n      </tbody>\n    </table>\n  </div>\n</div>' % (len(MARKET), "\n".join(mrows)))
     return panel("souvenir", """<h3>伴手禮採買</h3>
 <p>適合認真採買的時段有三個：D1 晚上的廣島本通商店街、D3 傍晚與 D5 中午的高松中央商店街。
 琴平、今治、宮島都不是藥妝戰場，機場品項也少，建議把清單集中在這兩天用掉。</p>
@@ -1142,6 +1177,9 @@ def p_souvenir():
 
 <h4 class="seto-h4">藥妝 <em>可勾選</em></h4>
 """ + drug + """
+
+<h4 class="seto-h4">超市 <em>可勾選</em></h4>
+""" + market + """
 
 <h4 class="seto-h4">零食伴手禮 <em>分送朋友的安全牌</em></h4>
 <div class="seto-g2">
@@ -1187,20 +1225,6 @@ def p_souvenir():
 </div>
 <div class="seto-note">
   三家跨店通殺：OHAYO 牛奶布丁（娟姍牛奶，被稱殿堂級）、整顆橘子優格、各家烤布蕾冰淇淋與季節限定雪見大福。
-</div>
-
-<h4 class="seto-h4">超商・百圓店實用小物</h4>
-<div class="seto-tw">
-  <table class="seto-table">
-    <thead><tr><th style="width:19rem">品項</th><th>什麼時候會用到</th></tr></thead>
-    <tbody>
-      <tr><td style="font-weight:700">冷感濕紙巾</td><td>D4 爬金刀比羅宮石階時</td></tr>
-      <tr><td style="font-weight:700">蒸氣眼罩（花王 MEGURISM）</td><td>飛機上與爬完階梯那晚</td></tr>
-      <tr><td style="font-weight:700">休足時間貼片小包</td><td>超商即可買到的應急版</td></tr>
-      <tr><td style="font-weight:700">摺疊購物袋</td><td>日本超商塑膠袋要收費，帶一個省事</td></tr>
-      <tr><td style="font-weight:700">洗面乳／洗髮精分裝包、隱形眼鏡藥水小瓶</td><td>忘了帶的時候</td></tr>
-    </tbody>
-  </table>
 </div>
 
 <div class="seto-note">
@@ -1585,5 +1609,5 @@ if __name__ == "__main__":
     print("size     : %.1f KB" % (len(html.encode("utf-8")) / 1024.0))
     print("panels   : %d" % len([t for t in TABS if t]))
     print("map pts  : %d" % len(POINTS))
-    print("checkbox : outbound %d / return %d / drugstore %d" % (n_out, n_back, len(DRUGSTORE)))
+    print("checkbox : outbound %d / return %d / drugstore %d / market %d" % (n_out, n_back, len(DRUGSTORE), len(MARKET)))
 
