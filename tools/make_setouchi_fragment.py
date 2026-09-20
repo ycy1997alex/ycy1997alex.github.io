@@ -1129,7 +1129,7 @@ def p_souvenir():
             '  </div>\n'
             '  <div class="seto-tw" style="margin-top:1rem">\n'
             '    <table class="seto-table">\n'
-            '      <thead><tr><th style="width:3.4rem"></th><th style="width:7.6rem">類別</th><th>品項</th>'
+            '      <thead><tr><th style="width:3.4rem"></th><th style="width:8.8rem">類別</th><th>品項</th>'
             '<th style="width:8.4rem">日本規格</th><th style="width:9.6rem">日本建議購入價</th>'
             '<th style="width:7.6rem">想要的數量</th></tr></thead>\n'
             '      <tbody>\n%s\n      </tbody>\n    </table>\n  </div>\n</div>' % (len(DRUGSTORE), "\n".join(rows)))
