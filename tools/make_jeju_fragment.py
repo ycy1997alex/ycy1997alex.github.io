@@ -966,7 +966,7 @@ def p_map():
                      'style="border-color:var(--d%d);color:var(--d%d)">%s　%s</button>'
                      % (i, i, i, code, title.split("・")[0]))
     return panel("map", """<h3>互動地圖</h3>
-<p>%d 個點位、五條當日路線，底圖是 CARTO（OpenStreetMap 資料），深色模式會換成暗色底圖。點左側卡片或地圖圖釘看細節，每個點都附 Google 地圖與導航連結。
+<p>%d 個點位、五條當日路線，底圖是 OpenStreetMap。點左側卡片或地圖圖釘看細節，每個點都附 Google 地圖與導航連結。
 地圖只在第一次打開這頁時才載入，不會拖慢其他分頁。</p>
 
 <div class="jeju-mapchips" id="jeju-mapchips">
@@ -1470,26 +1470,12 @@ SCRIPT = r"""<script>
           scrollWheelZoom: false,
           dragging: !mobile
         }).setView([33.38, 126.56], 10);
-      /* 底圖換成 CARTO：淺色模式用 Voyager（色調偏暖、道路較淡，彩色圖釘比較跳），
-         深色模式用 Dark Matter。瀨戶內海那頁用的是 OSM 標準圖磚，這裡刻意不同。
-         主題可以在頁面上即時切換，所以監看 body 的 class，變了就換一組圖磚。 */
-      var TILE = {
-          light: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        },
-        isDark = function () { return document.body.classList.contains('colorscheme-dark'); },
-        tiles = L.tileLayer(isDark() ? TILE.dark : TILE.light, {
-          maxZoom: 19,
-          subdomains: 'abcd',
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
-            '&copy; <a href="https://carto.com/attributions">CARTO</a>'
-        }).addTo(map);
-      if (window.MutationObserver) {
-        new MutationObserver(function () {
-          var want = isDark() ? TILE.dark : TILE.light;
-          if (tiles._url !== want) { tiles.setUrl(want); }
-        }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-      }
+      /* 底圖用 OSM 標準圖磚，跟瀨戶內海那頁一樣。CARTO 的底圖現在要 API key，
+         沒帶 key 會回 200 加一張「API KEY REQUIRED」浮水印圖，不會報錯。 */
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
 
       /* 手機：先擋著，點一下才開放拖曳。開了就不再關。 */
       if (mobile) {
