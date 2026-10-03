@@ -1,0 +1,6 @@
+# 右下角滿版寬度切換鈕的提示文字（layouts/_partials/float.html）
+[widthToggleWide]
+other = "切換為滿版寬度"
+
+[widthToggleNormal]
+other = "切換為閱讀寬度"

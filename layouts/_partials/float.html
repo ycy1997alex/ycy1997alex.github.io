@@ -1,0 +1,50 @@
+{{- /*
+  覆寫 theme 的 float partial：在深淺色切換鈕左邊加一顆「滿版寬度」切換鈕。
+
+  預設是 assets/css/custom.css 的 82rem 閱讀寬度；按下後在 <html> 加上
+  .layout-wide，container 不設上限，並記在 localStorage（layoutwidth）。
+  頁面載入時的初始狀態由 layouts/_partials/head/extensions.html 在 <head>
+  先套上，避免畫面先窄後寬。只在電腦版顯示（手機版由 custom.css 藏起來）。
+
+  用 <a> 是為了吃到 theme 對 .float-container a 的樣式（含深色模式），
+  所以要自己補 role、tabindex 與鍵盤操作。
+*/ -}}
+<div class="float-container">
+    <a id="width-toggle" class="width-toggle" role="button" tabindex="0" aria-pressed="false"
+       data-label-wide="{{ i18n "widthToggleWide" }}" data-label-normal="{{ i18n "widthToggleNormal" }}">
+        <i class="fa-solid fa-arrows-left-right-to-line fa-fw" aria-hidden="true"></i>
+    </a>
+    {{- /* 兩顆按鈕之間不留空白，間距只由 custom.css 的 margin 決定（正式版 minify 本來就會吃掉空白） */ -}}
+    {{- if not .Site.Params.hideColorSchemeToggle -}}
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+    {{- end }}
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('width-toggle');
+
+  function sync() {
+    var wide = root.classList.contains('layout-wide');
+    var label = btn.getAttribute(wide ? 'data-label-normal' : 'data-label-wide');
+    btn.setAttribute('aria-pressed', wide ? 'true' : 'false');
+    btn.setAttribute('title', label);
+    btn.setAttribute('aria-label', label);
+  }
+
+  function toggle(e) {
+    e.preventDefault();
+    var wide = root.classList.toggle('layout-wide');
+    try { localStorage.setItem('layoutwidth', wide ? 'wide' : 'normal'); } catch (err) {}
+    sync();
+  }
+
+  btn.addEventListener('click', toggle);
+  btn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') toggle(e);
+  });
+  sync();
+}());
+</script>

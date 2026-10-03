@@ -5,3 +5,5 @@
 {{- end }}
 <link rel="alternate" hreflang="x-default" href="{{ (index .AllTranslations 0).Permalink }}">
 {{- end }}
+{{- /* 滿版寬度（切換鈕見 layouts/_partials/float.html）：記住的設定要在 <head> 就套上，否則畫面會先以 82rem 畫出再跳寬 */}}
+<script>try{if(localStorage.getItem("layoutwidth")==="wide")document.documentElement.classList.add("layout-wide")}catch(e){}</script>

@@ -27,3 +27,30 @@
 .container {
   max-width: 82rem;
 }
+
+/* --------------------------------------------------------------------------
+   滿版寬度切換（按鈕在 layouts/_partials/float.html）。<html> 有 .layout-wide
+   時 container 不設上限，導覽列、文章、footer 一起變寬。只在電腦版生效：
+   手機版的 container 本來就比 82rem 窄，按鈕也一併藏起來。
+   -------------------------------------------------------------------------- */
+@media only screen and (min-width: 768.1px) {
+  html.layout-wide .container {
+    max-width: none;
+  }
+}
+
+.float-container .width-toggle {
+  cursor: pointer;
+  margin-right: 0.4rem;
+}
+
+/* 開啟中的狀態：theme 的按鈕平常是半透明，這裡改成不透明當作「按下」 */
+html.layout-wide .float-container .width-toggle {
+  opacity: 1;
+}
+
+@media only screen and (max-width: 768px) {
+  .float-container .width-toggle {
+    display: none;
+  }
+}
