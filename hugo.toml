@@ -56,9 +56,11 @@ info = [
 # partial，從 assets/images/fuji-odd-eyed-meow.jpg 產出 400px 的 WebP + JPEG。
 # 原圖 1024px/173KB 只會被畫成 200px，直接輸出等於白下載 5 倍像素。
 #
-# 社群分享預覽圖 (og:image / twitter:image)：人像 + 姓名 + 專長的名片卡，
-# 由 tools/make_og_card.py 產生。首頁頭像仍是那隻貓，兩者刻意不同。
-images = ["images/og-card.jpg"]
+# 社群分享預覽圖 (og:image / twitter:image)：刻意不設全站預設的 images。
+# Hugo 內建範本在頁面沒圖時會退回 params.images，設了就會讓每篇文章都顯示
+# 名片卡。名片卡（人像 + 姓名 + 專長，由 tools/make_og_card.py 產生）只寫在
+# 首頁（content/_index*.md）與 about 頁的 front matter；文章要代表圖就在該篇
+# front matter 自己寫 images，沒寫就不出圖。首頁頭像仍是那隻貓，與名片卡刻意不同。
 dateFormat = "January 2, 2006"
 since = 2023
 colorScheme = "auto"
