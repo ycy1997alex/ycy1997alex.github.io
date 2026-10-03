@@ -11,9 +11,8 @@ images: ["images/og-card.jpg"]
 <div class="profile-card">
 
 {{< scratch-photo
-  src="/images/尤俊硯大頭貼-24.jpg"
+  src="images/尤俊硯大頭貼-24.jpg"
   alt="尤俊硯 Alex Yu"
-  w="402" h="555"
   width="240px"
   hint="刮開看照片"
   reveal="直接顯示照片" >}}

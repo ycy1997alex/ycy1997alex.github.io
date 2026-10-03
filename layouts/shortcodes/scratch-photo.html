@@ -5,24 +5,32 @@
   所以沒有 JS（或 prefers-reduced-motion: reduce）時使用者直接看到照片，
   不會變成一個空的 <canvas>。
 
+  圖片從 assets/ 讀，由 Hugo 轉出 WebP，另留一份重新壓縮的 JPEG 給不支援
+  WebP 的瀏覽器（同 layouts/_partials/home/avatar.html）。不縮圖：顯示 240px
+  寬的 2x 是 480px，原圖 402px 已經不夠，再縮只會更糊。width/height 直接取
+  原圖尺寸，瀏覽器才能在圖載完前就保留版位，遮罩也才不會有一瞬間量到 0 高度。
+
   參數：
-    src     圖片路徑（站內絕對路徑）
+    src     assets/ 底下的圖片路徑，例如 images/photo.jpg
     alt     替代文字
-    w, h    原圖像素尺寸。寫出來瀏覽器才能在圖載完前就保留版位，
-            遮罩也才不會有一瞬間量到 0 高度
     width   顯示寬度，預設 240px
     hint    遮罩上的提示字
     reveal  「直接看」按鈕的文字
 */ -}}
 {{- $src := .Get "src" -}}
+{{- $img := resources.Get $src -}}
+{{- if not $img }}{{ errorf "scratch-photo shortcode: 找不到 assets/%s" $src }}{{ end -}}
+{{- $jpg := $img.Process "jpg q85" -}}
+{{- $webp := $img.Process "webp q80" -}}
 {{- $alt := .Get "alt" | default "" -}}
-{{- $w := .Get "w" -}}
-{{- $h := .Get "h" -}}
 {{- $width := .Get "width" | default "240px" -}}
 {{- $hint := .Get "hint" | default "Scratch to reveal" -}}
 {{- $reveal := .Get "reveal" | default "Reveal the photo" -}}
 <div class="scratch-photo" data-hint="{{ $hint }}" style="width: {{ $width }}">
-  <img class="scratch-photo__img" src="{{ $src | relURL }}" alt="{{ $alt }}"{{ with $w }} width="{{ . }}"{{ end }}{{ with $h }} height="{{ . }}"{{ end }} decoding="async">
+  <picture>
+    <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+    <img class="scratch-photo__img" src="{{ $jpg.RelPermalink }}" alt="{{ $alt }}" width="{{ $jpg.Width }}" height="{{ $jpg.Height }}" decoding="async">
+  </picture>
 </div>
 <p class="scratch-photo__actions" hidden><button type="button" class="scratch-photo__reveal">{{ $reveal }}</button></p>
 {{- if not (.Page.Scratch.Get "scratchPhotoAssets") }}
@@ -36,6 +44,7 @@
     line-height: 0;
   }
 
+  .scratch-photo picture,
   .scratch-photo__img {
     display: block;
     width: 100%;

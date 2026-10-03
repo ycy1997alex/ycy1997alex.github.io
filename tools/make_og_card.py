@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H = 1200, 630
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "images", "og-card.jpg")
-PORTRAIT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "images", "尤俊硯大頭貼-24.jpg")
+PORTRAIT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "images", "尤俊硯大頭貼-24.jpg")
 
 BG      = (22, 25, 29)
 BG2     = (31, 37, 44)
