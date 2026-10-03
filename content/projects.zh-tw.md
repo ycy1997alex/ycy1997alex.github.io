@@ -17,12 +17,13 @@ description: "個人、工作與學術專案：連續血糖檢測演算法、睡
 
 ## 個人專案（Side Project） {#side-project}
 
-### **2026/08 ~ 進行中** `寫作／開源`
+### **2026/08 ~ 2026/09** `寫作／開源`
 
-[iThome 2026 鐵人賽 — 三個介面，一套工作流？30 天 Claude 跨領域實戰](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)
+[iThome 2026 鐵人賽：三個介面，一套工作流？30 天 Claude 跨領域實戰](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)（鐵人鍊成，30 篇完賽）
 
-- 每天一篇，寫 claude.ai、Claude Desktop 與 Claude Code 在研究、Office 自動化與資料工作流上的實際使用
-- 相關程式碼、提示詞與產出物同步發布在 [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
+- 連續 30 天每天一篇，比較 claude.ai、Claude Desktop 與 Claude Code 各自適合做什麼，再把提示詞、記憶、Skill 與 CLAUDE.md 規範整理成一套能重複使用的工作流
+- 用這套工作流做了五個專案：暖身小工具、統計分析程式、小米手環藍牙串接、這個個人網站的改版，以及每天自動更新的股票分析管線（24 項總經指標）
+- 程式碼、提示詞與產出物都放在 [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
 ### **2020/12 ~ 2021/06** `Google DSC Program`
 

@@ -17,12 +17,13 @@ description: "Side, work and research projects: continuous glucose monitoring al
 
 ## Side Project {#side-project}
 
-### **2026/08 ~ present** `Writing / Open Source`
+### **2026/08 ~ 2026/09** `Writing / Open Source`
 
-[iThome 2026 Ironman Contest — 30 days of cross-domain work with Claude](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)
+[iThome 2026 Ironman Contest: 30 days of cross-domain work with Claude](https://ithelp.ithome.com.tw/users/20161310/ironman/9237) (completed all 30 days)
 
-- One article per day on using claude.ai, Claude Desktop and Claude Code across research, Office automation and data workflows
-- Supporting code, prompts and generated artifacts published to [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
+- Wrote one article a day for 30 days on what claude.ai, Claude Desktop and Claude Code are each good at, and turned prompts, memory, Skills and CLAUDE.md rules into one reusable workflow
+- Built five projects with that workflow: warm-up utilities, a statistical analysis program, Bluetooth integration with a Xiaomi Smart Band, a rebuild of this website, and a stock analysis pipeline that updates daily from 24 macroeconomic indicators
+- Code, prompts and generated artifacts are in [ycy1997alex-oss-projects](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman)
 
 ### **2020/12 ~ 2021/06** `Google DSC Program`
 
