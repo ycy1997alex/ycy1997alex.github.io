@@ -4,6 +4,8 @@ date: 2026-09-13T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "系列完結：回頭檢查 Day 02 的三條假說，三十天實際用了哪個介面，最後把結論收斂成三個問題。"
+description: "系列完結：回頭檢查 Day 02 的三條假說，三十天實際用了哪個介面，最後把結論收斂成三個問題。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10409816)。

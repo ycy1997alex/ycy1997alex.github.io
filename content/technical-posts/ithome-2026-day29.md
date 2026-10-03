@@ -4,6 +4,8 @@ date: 2026-09-12T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "試著把 AI 講給爸媽聽：AI 與 LLM 的差別、怎麼挑工具、怎麼問問題、怎麼直接生出 Office 檔案，以及這份簡報的製作過程。"
+description: "試著把 AI 講給爸媽聽：AI 與 LLM 的差別、怎麼挑工具、怎麼問問題、怎麼直接生出 Office 檔案，以及這份簡報的製作過程。"
 ---
 
 > **This post is in Traditional Chinese Only.**

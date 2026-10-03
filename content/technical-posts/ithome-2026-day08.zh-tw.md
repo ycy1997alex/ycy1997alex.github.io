@@ -4,6 +4,8 @@ date: 2026-08-22T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "同一份素材、同一段需求，交給 claude.ai 與 Claude Desktop 的 Cowork 各做一次 Word 範本、Excel 與 PPT，比較兩個介面的產出差在哪。"
+description: "同一份素材、同一段需求，交給 claude.ai 與 Claude Desktop 的 Cowork 各做一次 Word 範本、Excel 與 PPT，比較兩個介面的產出差在哪。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10404489)。

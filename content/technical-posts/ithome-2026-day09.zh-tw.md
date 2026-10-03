@@ -4,6 +4,8 @@ date: 2026-08-23T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "盤點 Claude 的 Skill 機制：Skill 是什麼、各介面預設帶了哪些、怎麼加入自己的 Skill，以及撰寫時的實務原則與常見誤解。"
+description: "盤點 Claude 的 Skill 機制：Skill 是什麼、各介面預設帶了哪些、怎麼加入自己的 Skill，以及撰寫時的實務原則與常見誤解。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10404684)。

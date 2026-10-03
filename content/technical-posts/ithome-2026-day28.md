@@ -4,6 +4,8 @@ date: 2026-09-11T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "股票分析管線連跑五天後的回顧：哪些資料能事後回補、哪些只能當天記錄，以及失敗通知、金鑰分級、額度與加密的界線。"
+description: "股票分析管線連跑五天後的回顧：哪些資料能事後回補、哪些只能當天記錄，以及失敗通知、金鑰分級、額度與加密的界線。"
 ---
 
 > **This post is in Traditional Chinese Only.**

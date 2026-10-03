@@ -4,6 +4,8 @@ date: 2026-08-31T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "能不能用筆電藍牙讀小米手環 6？BLE 的基本概念、bleak 網路範例為什麼跑不動、先評估讀得到什麼，以及只讀不寫的開工規矩。"
+description: "能不能用筆電藍牙讀小米手環 6？BLE 的基本概念、bleak 網路範例為什麼跑不動、先評估讀得到什麼，以及只讀不寫的開工規矩。"
 ---
 
 > **This post is in Traditional Chinese Only.**

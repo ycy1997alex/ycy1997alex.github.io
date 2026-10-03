@@ -4,6 +4,8 @@ date: 2026-08-29T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "把 Day 14 的 prompt 交給 Claude Code：程式、圖表、Excel 與 Word 報告都順利產出，也看到 prompt 漏寫的那一條：α 怎麼挑。"
+description: "把 Day 14 的 prompt 交給 Claude Code：程式、圖表、Excel 與 Word 報告都順利產出，也看到 prompt 漏寫的那一條：α 怎麼挑。"
 ---
 
 > **This post is in Traditional Chinese Only.**

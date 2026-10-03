@@ -4,6 +4,8 @@ date: 2026-09-10T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "把股票分析管線做成可發布的工具：分層架構與 MVP、SQLite、桌面程式、CI/CD、版本管理與打包，並把每條規矩寫成測試。"
+description: "把股票分析管線做成可發布的工具：分層架構與 MVP、SQLite、桌面程式、CI/CD、版本管理與打包，並把每條規矩寫成測試。"
 ---
 
 > **This post is in Traditional Chinese Only.**

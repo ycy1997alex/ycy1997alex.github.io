@@ -4,6 +4,8 @@ date: 2026-09-07T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "股票分析專案開工：標的怎麼收斂、選哪些總經指標、Shioaji 與 yfinance 的資料怎麼對，原則是叫 Claude 去查、去跑，不要憑記憶回答。"
+description: "股票分析專案開工：標的怎麼收斂、選哪些總經指標、Shioaji 與 yfinance 的資料怎麼對，原則是叫 Claude 去查、去跑，不要憑記憶回答。"
 ---
 
 > **This post is in Traditional Chinese Only.**

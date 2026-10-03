@@ -4,6 +4,8 @@ date: 2026-08-25T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "拆開 ~/.claude：settings.json 是唯一真正擋得住操作的圍欄，Skills、Rules、Agents 則是依需要才載入的 context，各自該放什麼。"
+description: "拆開 ~/.claude：settings.json 是唯一真正擋得住操作的圍欄，Skills、Rules、Agents 則是依需要才載入的 context，各自該放什麼。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10405148)。

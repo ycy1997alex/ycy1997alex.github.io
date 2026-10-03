@@ -4,6 +4,8 @@ date: 2026-08-21T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "用 Claude Desktop 診斷自己的電腦：Wi-Fi、電腦變慢與當機紀錄，我的假設怎麼被數據推翻，真正的原因又在哪裡。"
+description: "用 Claude Desktop 診斷自己的電腦：Wi-Fi、電腦變慢與當機紀錄，我的假設怎麼被數據推翻，真正的原因又在哪裡。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10404285)。

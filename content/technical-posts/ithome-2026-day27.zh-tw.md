@@ -4,6 +4,8 @@ date: 2026-09-10T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "把股票分析管線做成可發布的工具：分層架構與 MVP、SQLite、桌面程式、CI/CD、版本管理與打包，並把每條規矩寫成測試。"
+description: "把股票分析管線做成可發布的工具：分層架構與 MVP、SQLite、桌面程式、CI/CD、版本管理與打包，並把每條規矩寫成測試。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10409227)。

@@ -4,6 +4,8 @@ date: 2026-09-01T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "小米手環串接的實作：只會發問的命令列工具、把位元組轉成可讀資料的解碼器、不需要手環也能跑的測試，以及圖形介面的設計與骨架。"
+description: "小米手環串接的實作：只會發問的命令列工具、把位元組轉成可讀資料的解碼器、不需要手環也能跑的測試，以及圖形介面的設計與骨架。"
 ---
 
 > **This post is in Traditional Chinese Only.**

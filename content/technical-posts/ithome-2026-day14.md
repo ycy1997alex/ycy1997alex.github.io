@@ -4,6 +4,8 @@ date: 2026-08-28T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "統計分析程式動工前，先決定要算什麼：可重跑的資料樣板、用 /dataviz 看資料、以 Bolasso 挑變項、迴歸模型與驗收指標，最後產出一份 prompt。"
+description: "統計分析程式動工前，先決定要算什麼：可重跑的資料樣板、用 /dataviz 看資料、以 Bolasso 挑變項、迴歸模型與驗收指標，最後產出一份 prompt。"
 ---
 
 > **This post is in Traditional Chinese Only.**

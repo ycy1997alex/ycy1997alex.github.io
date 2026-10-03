@@ -4,6 +4,8 @@ date: 2026-08-27T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "用 Claude Code 做三個自己會用的小工具（image2ico、webp2image、PDF 壓縮），先少講需求讓問題浮出來，再把踩過的坑寫成下一版的規則。"
+description: "用 Claude Code 做三個自己會用的小工具（image2ico、webp2image、PDF 壓縮），先少講需求讓問題浮出來，再把踩過的坑寫成下一版的規則。"
 ---
 
 > **This post is in Traditional Chinese Only.**

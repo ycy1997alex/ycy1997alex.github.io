@@ -4,6 +4,8 @@ date: 2026-09-08T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "24 項總經指標抓回來之後，先卡在「資料到底是哪一天的」：頻率混雜逼出的設計、只顯示不評分的七項，以及評分機制的侷限。"
+description: "24 項總經指標抓回來之後，先卡在「資料到底是哪一天的」：頻率混雜逼出的設計、只顯示不評分的七項，以及評分機制的侷限。"
 ---
 
 > **This post is in Traditional Chinese Only.**

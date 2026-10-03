@@ -4,6 +4,8 @@ date: 2026-09-05T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "把日本旅行的行程交給 Claude：從 Word 整理出 Excel 時間表、PowerPoint 簡報與互動地圖，拿掉不能公開的內容後整合成網站上的一頁。"
+description: "把日本旅行的行程交給 Claude：從 Word 整理出 Excel 時間表、PowerPoint 簡報與互動地圖，拿掉不能公開的內容後整合成網站上的一頁。"
 ---
 
 > **This post is in Traditional Chinese Only.**

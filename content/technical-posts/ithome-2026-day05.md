@@ -4,6 +4,8 @@ date: 2026-08-19T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "講不清楚的概念，請 Claude 做成單頁 HTML：飛機起降模擬、注意力測驗組與預設模式網路玻璃腦三個互動示範。"
+description: "講不清楚的概念，請 Claude 做成單頁 HTML：飛機起降模擬、注意力測驗組與預設模式網路玻璃腦三個互動示範。"
 ---
 
 > **This post is in Traditional Chinese Only.**

@@ -4,6 +4,8 @@ date: 2026-08-20T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "一句提示詞換回一套行星登陸艇選點系統：Claude 自己補出的 ICP／NDT 管線、和教科書不符的實測結果，以及三個不在提示詞裡的坑。"
+description: "一句提示詞換回一套行星登陸艇選點系統：Claude 自己補出的 ICP／NDT 管線、和教科書不符的實測結果，以及三個不在提示詞裡的坑。"
 ---
 
 > **This post is in Traditional Chinese Only.**

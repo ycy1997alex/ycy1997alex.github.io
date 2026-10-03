@@ -4,6 +4,8 @@ date: 2026-08-21T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "用 Claude Desktop 診斷自己的電腦：Wi-Fi、電腦變慢與當機紀錄，我的假設怎麼被數據推翻，真正的原因又在哪裡。"
+description: "用 Claude Desktop 診斷自己的電腦：Wi-Fi、電腦變慢與當機紀錄，我的假設怎麼被數據推翻，真正的原因又在哪裡。"
 ---
 
 > **This post is in Traditional Chinese Only.**

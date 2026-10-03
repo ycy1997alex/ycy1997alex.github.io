@@ -4,6 +4,8 @@ date: 2026-09-03T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "請 Claude Code 健檢三年前架的個人網站：清單由它列，取捨由我決定，包括閱讀寬度與搬家後舊連結的處理。"
+description: "請 Claude Code 健檢三年前架的個人網站：清單由它列，取捨由我決定，包括閱讀寬度與搬家後舊連結的處理。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10407372)。

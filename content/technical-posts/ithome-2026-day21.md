@@ -4,6 +4,8 @@ date: 2026-09-04T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "教召前用猜的 Word 攜帶清單、教召後附推薦指數的 Excel，請 Claude Code 搬上個人網站，變成可以打勾的網頁。"
+description: "教召前用猜的 Word 攜帶清單、教召後附推薦指數的 Excel，請 Claude Code 搬上個人網站，變成可以打勾的網頁。"
 ---
 
 > **This post is in Traditional Chinese Only.**

@@ -4,6 +4,8 @@ date: 2026-08-17T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "用 claude.ai 改寫給 Gemini Notebook 用的財經影片摘要提示詞，從 v1 到 v3 的五個變動，以及 v3 意外退步的地方。"
+description: "用 claude.ai 改寫給 Gemini Notebook 用的財經影片摘要提示詞，從 v1 到 v3 的五個變動，以及 v3 意外退步的地方。"
 ---
 
 > **This post is in Traditional Chinese Only.**

@@ -4,6 +4,8 @@ date: 2026-08-15T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "系列開場：claude.ai、Claude Desktop、Claude Code 三個入口各適合做什麼，以及這 30 天要用哪些專案回答哪三個問題。"
+description: "系列開場：claude.ai、Claude Desktop、Claude Code 三個入口各適合做什麼，以及這 30 天要用哪些專案回答哪三個問題。"
 ---
 
 > **This post is in Traditional Chinese Only.**

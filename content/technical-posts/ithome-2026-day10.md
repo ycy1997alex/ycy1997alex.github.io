@@ -4,6 +4,8 @@ date: 2026-08-24T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "安裝 Claude Code 之後，用全域 CLAUDE.md 寫下每次都要重講的規範，並在 session 結束前留一封交接信給下一個 session。"
+description: "安裝 Claude Code 之後，用全域 CLAUDE.md 寫下每次都要重講的規範，並在 session 結束前留一封交接信給下一個 session。"
 ---
 
 > **This post is in Traditional Chinese Only.**

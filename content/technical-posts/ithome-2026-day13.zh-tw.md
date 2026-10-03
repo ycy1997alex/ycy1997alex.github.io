@@ -4,6 +4,8 @@ date: 2026-08-27T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "用 Claude Code 做三個自己會用的小工具（image2ico、webp2image、PDF 壓縮），先少講需求讓問題浮出來，再把踩過的坑寫成下一版的規則。"
+description: "用 Claude Code 做三個自己會用的小工具（image2ico、webp2image、PDF 壓縮），先少講需求讓問題浮出來，再把踩過的坑寫成下一版的規則。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10405513)。

@@ -4,6 +4,8 @@ date: 2026-08-25T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "拆開 ~/.claude：settings.json 是唯一真正擋得住操作的圍欄，Skills、Rules、Agents 則是依需要才載入的 context，各自該放什麼。"
+description: "拆開 ~/.claude：settings.json 是唯一真正擋得住操作的圍欄，Skills、Rules、Agents 則是依需要才載入的 context，各自該放什麼。"
 ---
 
 > **This post is in Traditional Chinese Only.**

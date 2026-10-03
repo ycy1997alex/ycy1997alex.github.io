@@ -4,6 +4,8 @@ date: 2026-09-06T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "重整個人網站的導覽與履歷，加上刮開才看得到的照片，並說明 hugo.toml 的設定與部署流程。"
+description: "重整個人網站的導覽與履歷，加上刮開才看得到的照片，並說明 hugo.toml 的設定與部署流程。"
 ---
 
 > **This post is in Traditional Chinese Only.**

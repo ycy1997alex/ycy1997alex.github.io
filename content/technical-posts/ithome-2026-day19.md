@@ -4,6 +4,8 @@ date: 2026-09-02T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "實際連上小米手環，對照 Day 17 的預測表：讀到的比預期多，但除錯時間幾乎都花在視窗、執行緒與關閉流程，不在藍牙。"
+description: "實際連上小米手環，對照 Day 17 的預測表：讀到的比預期多，但除錯時間幾乎都花在視窗、執行緒與關閉流程，不在藍牙。"
 ---
 
 > **This post is in Traditional Chinese Only.**

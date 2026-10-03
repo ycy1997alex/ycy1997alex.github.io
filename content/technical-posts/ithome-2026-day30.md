@@ -4,6 +4,8 @@ date: 2026-09-13T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "系列完結：回頭檢查 Day 02 的三條假說，三十天實際用了哪個介面，最後把結論收斂成三個問題。"
+description: "系列完結：回頭檢查 Day 02 的三條假說，三十天實際用了哪個介面，最後把結論收斂成三個問題。"
 ---
 
 > **This post is in Traditional Chinese Only.**

@@ -4,6 +4,8 @@ date: 2026-08-30T00:00:00+08:00
 authors: ["尤俊硯"]
 series: ["iThome 2026 鐵人賽"]
 tags: ["Claude", "iThome"]
+summary: "模板固定、資料會變：用程式把數字與圖填進現成的 Word 模板、把 bootstrap 攤在 Excel 儲存格，再把讀過的內容做成 PPT 簡報。"
+description: "模板固定、資料會變：用程式把數字與圖填進現成的 Word 模板、把 bootstrap 攤在 Excel 儲存格，再把讀過的內容做成 PPT 簡報。"
 ---
 
 > 本文首發於 [iThome 2026 鐵人賽](https://ithelp.ithome.com.tw/articles/10406251)。

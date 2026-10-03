@@ -4,6 +4,8 @@ date: 2026-08-26T00:00:00+08:00
 authors: ["Alex Yu"]
 series: ["iThome 2026 Ironman"]
 tags: ["Claude", "iThome"]
+summary: "股票專案開工前的準備：永豐金 Shioaji 證券戶、FRED API Key、yfinance 與 GitHub 帳號，哪些要提早申請、哪些不用。"
+description: "股票專案開工前的準備：永豐金 Shioaji 證券戶、FRED API Key、yfinance 與 GitHub 帳號，哪些要提早申請、哪些不用。"
 ---
 
 > **This post is in Traditional Chinese Only.**
