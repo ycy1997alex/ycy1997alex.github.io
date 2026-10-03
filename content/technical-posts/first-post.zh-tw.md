@@ -7,4 +7,4 @@ series: ["測試"]
 tags: ["hugo", "html", "css", "markdown", "coder"]
 ---
 
-這是我第一篇以hugo建立之靜態網頁，其主題為[coder](https://themes.gohugo.io/themes/hugo-coder/).
+這是我第一篇用 Hugo 建立的靜態網頁，主題是 [coder](https://themes.gohugo.io/themes/hugo-coder/)。

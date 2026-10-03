@@ -39,7 +39,7 @@ NutAction (Android App) [Algorithm](https://github.com/ycy1997alex/Food-101-Reco
 
 High-Precision Non-Invasive Continuous Glucose Monitoring Wearable Development
 
-- Technology-transferred and extended algorithm tuning, fasting and dynamic blood-glucose algorithm development, and program report writing
+- Tuning the technology-transferred algorithm and its extended applications, developing fasting and dynamic blood-glucose algorithms, and writing program reports
 - Data-collection application development, system application software development, clinical-trial data collection, statistical analysis
 - System hardware testing, thermal-effect signal propagation analysis, firmware integration
 
@@ -70,7 +70,7 @@ Service Integration and New Workflow Design
 
 [MMSE Pentagon-Drawing Prediction Model](https://apps.apple.com/us/app/%e9%9b%99%e4%ba%94%e8%a7%92%e6%b8%ac%e9%a9%97/id1601522643)
 
-- Machine-learning and deep-learning models predicting MMSE scores, deployed in a cognitive-assessment app that cut clinical assessment time from 15–20 minutes to 2–3 minutes
+- Machine-learning and deep-learning models predicting MMSE scores, deployed in a cognitive-assessment app that cut clinical assessment time from 15-20 minutes to 2-3 minutes
 
 ### **2021/03 ~ 2021/06** `In-Class Project`
 
@@ -92,7 +92,7 @@ Machine Model of Pentagon Drawing of Mini-Mental State Examination
 
 ### **2019/07 ~ 2020/01** `College Research`
 
-Object Detection Technology using Machine Learning on 2D Point Clouds ([2019–2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
+Object Detection Technology using Machine Learning on 2D Point Clouds ([2019-2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
 
 - Developed a function for 2D Simultaneous Localization and Mapping to recognize patterns
 
@@ -112,10 +112,10 @@ Capstone Project on Aerospace Engineering: Unmanned Aerial Vehicle (UAV) Design
 
 Aircraft Design: Private - The Medical Equipment Delivery Plane / Group - The Air Hospital
 
-- Designed a transport aircraft from various factors based on theory and empirical principles
+- Designed a transport aircraft using theory and rules of thumb, taking various factors into account
 
 ### **2016/09 ~ 2017/01** `In-Class Project`
 
 Computer Aided Design (CAD, using CATIA): Design a Glider
 
-- Referenced existing gliders and utilized CAD to create an aircraft model
+- Used CAD to model an aircraft based on existing gliders

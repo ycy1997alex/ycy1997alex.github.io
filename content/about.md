@@ -33,11 +33,11 @@ Hsinchu, Taiwan
 
 ## PROFESSIONAL SUMMARY
 
-Hello, I'm Alex! I am outgoing, communicative, a willing team player, and careful in execution; I enjoy learning new things and adopting new tools; and I believe work should stay grounded in evidence and in what the market actually needs.
+Hello, I'm Alex! I'm outgoing, easy to talk to, good to work with and careful in how I get things done. I like learning new things and picking up new tools, and I think work should rest on evidence and on what the market actually needs.
 
 1. Proficient in Python, MATLAB, R and C with over 10 years of programming experience; fluent with standard office software; developed algorithms and software for biomedical and medical-device applications, and previously worked as a firmware engineer in the memory industry.
 
-2. In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs — contributing to the business model for an internal EEG-related application, developing a rapid sleep-screening algorithm for an internal sleep-monitoring application, and leading clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program).
+2. In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs. Contributed to the business model for an internal EEG-related application, developed a rapid sleep-screening algorithm for an internal sleep-monitoring application, and led clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program).
 
 3. M.S. in Brain Science (Neuroengineering and Informatics) from NYCU, with experience in intelligent-medicine algorithm development and big-data analysis; specialised in physiological signal analysis, nonlinear science and medical AI, studying the Hilbert-Huang Transform under Prof. Albert Chih-Chieh Yang and Academician Norden E. Huang. B.Eng. in Aeronautics and Astronautics from NCKU with a double major in Psychology (B.S.), with experience in optimisation algorithms and image recognition and a working knowledge of multivariate statistics and neural networks; undergraduate thesis advised by Prof. Chao-Chung Peng.
 
@@ -98,7 +98,7 @@ Hello, I'm Alex! I am outgoing, communicative, a willing team player, and carefu
 
 - **Bachelor** of Engineering, Department of Aeronautics and Astronautics (GPA 3.80 / 4.3)
 - **Double Major**: Bachelor of Science, Department of Psychology
-- Undergraduate project: Object Recognition on 2D Point Clouds via Machine Learning ([2019–2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
+- Undergraduate project: Object Recognition on 2D Point Clouds via Machine Learning ([2019-2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))
 - Advisor: Prof. **[Chao-Chung Peng](https://scholar.google.com/citations?user=YzN8zoUAAAAJ)**, PhD (Aerospace Control Systems Group)
 
 ---
@@ -158,9 +158,9 @@ All presented orally in English.
 
 ## CERTIFICATIONS & AWARDS
 
-- **2020 | National Yang Ming Chiao Tung University** — Mr. Samuel Yin Freshman Merit Scholarship, College of Medicine
-- **2020 | Ministry of Science and Technology, Taiwan** — College Student Research Creativity Award (for 2019)
-- **2016 | National Cheng Kung University** — Academic Excellence Award (freshman year)
+- **2020 | National Yang Ming Chiao Tung University**: Mr. Samuel Yin Freshman Merit Scholarship, College of Medicine
+- **2020 | Ministry of Science and Technology, Taiwan**: College Student Research Creativity Award (for 2019)
+- **2016 | National Cheng Kung University**: Academic Excellence Award (freshman year)
 
 ---
 

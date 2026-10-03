@@ -7,4 +7,4 @@ series: ["demo"]
 tags: ["hugo", "html", "css", "markdown", "coder"]
 ---
 
-This is my first post via applying hugo to build static pages, and the theme is [coder](https://themes.gohugo.io/themes/hugo-coder/).
+This is my first post on a static site built with Hugo, using the [coder](https://themes.gohugo.io/themes/hugo-coder/) theme.
