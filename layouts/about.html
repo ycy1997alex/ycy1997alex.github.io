@@ -1,0 +1,239 @@
+{{- /*
+  About 頁版型：front matter 寫 layout: about 的頁面使用（content/about.md、about.zh-tw.md）。
+
+  內容依頁面語言讀 data/about/<語言>.yaml，樣式在 assets/css/about.css
+  （由 layouts/_partials/head/extensions.html 只在這個版型載入）。
+  章節順序寫死在這裡，某語言的資料少一段就整段不出現；章節編號由 CSS counter 產生，會自動接續。
+  資料裡的字串可寫 Markdown 行內語法，需要的欄位一律經過 markdownify。
+*/ -}}
+{{ define "title" }}
+  {{ .Title }} · {{ .Site.Title }}
+{{ end }}
+{{ define "content" }}
+{{- $d := index hugo.Data.about .Lang -}}
+{{- if not $d }}{{ errorf "about 版型：找不到 data/about/%s.yaml" .Lang }}{{ end -}}
+<section class="container page">
+  <article class="about-page">
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="{{ .Permalink | safeURL }}">{{ .Title }}</a>
+      </h1>
+    </header>
+
+    {{- with $d.profile }}
+    <section class="about-hero">
+      <div class="about-photo">
+        {{ partial "scratch-photo.html" (dict "src" .photo "alt" .photo_alt "width" "200px" "hint" .scratch_hint "reveal" .scratch_reveal) }}
+      </div>
+      <div class="about-id">
+        <div class="about-loc"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>{{ .location }}</span></div>
+        <div>
+          <h2 class="about-name">{{ .name }}</h2>
+          <div class="about-altname">{{ .alt_name }}</div>
+        </div>
+        <div>
+          {{- with .role_label }}<div class="about-label">{{ . }}</div>{{ end }}
+          <div class="about-roles">{{ delimit .roles " · " }}</div>
+        </div>
+        <div class="about-links">
+          <a class="about-btn" href="mailto:{{ .email }}"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span>{{ .email }}</span></a>
+          <a class="about-btn" href="{{ .linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+          <a class="about-btn" href="{{ .github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i><span>GitHub</span></a>
+        </div>
+        <div class="about-tags">
+          {{- range .tags }}<span class="about-chip">{{ . }}</span>{{ end -}}
+        </div>
+      </div>
+    </section>
+    {{- end }}
+
+    {{- with $d.facts }}
+    <section class="about-facts">
+      {{- range . }}
+      <div class="about-fact">
+        <div class="about-label">{{ .label }}</div>
+        <div class="about-fact-title">{{ .title }}</div>
+        <div class="about-fact-detail">{{ .detail }}</div>
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.summary }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      <div class="about-body">
+        <p class="about-lead">{{ .intro | markdownify }}</p>
+        <ol class="about-points">
+          {{- range .points }}
+          <li><div>{{ . | markdownify }}</div></li>
+          {{- end }}
+        </ol>
+      </div>
+    </section>
+    {{- end }}
+
+    {{- with $d.experience }}
+    {{- $current := .current_label }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      {{- range .items }}
+      <div class="about-row">
+        <div class="about-when">
+          <span>{{ .date }}</span>
+          {{- if .current }}<span class="about-badge">{{ $current }}</span>{{ end }}
+        </div>
+        <div class="about-what">
+          <div class="about-title">{{ .role }}<span class="about-at"> @ </span>{{ .org }}</div>
+          {{- with .unit }}<div class="about-sub">{{ . }}</div>{{ end }}
+          <ul class="about-list">
+            {{- range .bullets }}
+            <li>{{ . | markdownify }}</li>
+            {{- end }}
+          </ul>
+        </div>
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.education }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      {{- range .items }}
+      <div class="about-row">
+        <div class="about-when">
+          <span>{{ .date }}</span>
+          {{- with .note }}<small>{{ . }}</small>{{ end }}
+        </div>
+        <div class="about-what">
+          <div class="about-title">{{ .school }}</div>
+          {{- with .place }}<div class="about-sub">{{ . }}</div>{{ end }}
+          <ul class="about-list">
+            {{- range .bullets }}
+            {{- /* 字串直接輸出；{text, note} 時把 note（GPA）放在文字後面 */}}
+            <li>{{ if reflect.IsMap . }}{{ .text | markdownify }} <span class="about-note">{{ .note }}</span>{{ else }}{{ . | markdownify }}{{ end }}</li>
+            {{- end }}
+          </ul>
+        </div>
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.skills }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      <div class="about-body about-skills">
+        {{- range .items }}
+        <div class="about-card">
+          <h3>{{ .title }}</h3>
+          {{- range .lines }}
+          <p>{{ . }}</p>
+          {{- end }}
+          {{- with .tools }}
+          <div class="about-tools">
+            {{- range . }}
+            {{- with .label }}<span class="about-tools-label">{{ . }}</span>{{ end }}
+            {{- range .chips }}<span class="about-chip">{{ . }}</span>{{ end }}
+            {{- end }}
+          </div>
+          {{- end }}
+          {{- with .rows }}
+          <dl class="about-rows">
+            {{- range . }}
+            <dt>{{ .label }}</dt><dd>{{ .value }}</dd>
+            {{- end }}
+          </dl>
+          {{- end }}
+        </div>
+        {{- end }}
+      </div>
+    </section>
+    {{- end }}
+
+    {{- with $d.projects }}
+    {{- $p := site.GetPage .page }}
+    {{- if not $p }}{{ errorf "about 版型：找不到專案頁 %s" .page }}{{ end }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      <div class="about-body about-callout">
+        <p>{{ .text }}</p>
+        <a class="about-btn about-btn--primary" href="{{ $p.RelPermalink }}"><span>{{ .button }}</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </section>
+    {{- end }}
+
+    {{- with $d.publications }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2>{{ with .note }}<span class="about-head-note">{{ . }}</span>{{ end }}</div>
+      <ol class="about-pubs">
+        {{- range .items }}
+        <li>
+          <div>
+            <div class="about-pub-title">
+              {{- if .url }}<a class="external-link" href="{{ .url }}" target="_blank" rel="noopener">{{ .title }}</a>{{ else }}{{ .title }}{{ end -}}
+            </div>
+            <div class="about-pub-authors">{{ .authors | markdownify }}</div>
+            <div class="about-pub-venue">{{ .venue }}</div>
+          </div>
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+    {{- end }}
+
+    {{- with $d.awards }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      {{- range .items }}
+      <div class="about-row about-row--compact">
+        <div class="about-when"><span>{{ .year }}</span></div>
+        <div class="about-what">
+          <div class="about-title">{{ .title }}</div>
+          <div class="about-sub">{{ .issuer }}</div>
+        </div>
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.activities }}
+    {{- $sep := .sep }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      {{- range .items }}
+      <div class="about-row about-row--compact">
+        <div class="about-when"><span>{{ .date }}</span></div>
+        <div class="about-what">
+          <div class="about-title">{{ .role }}<span class="about-at">{{ $sep }}</span><span class="about-org">{{ .org }}</span></div>
+          <ul class="about-list about-list--small">
+            {{- range .bullets }}
+            <li>{{ . | markdownify }}</li>
+            {{- end }}
+          </ul>
+        </div>
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.autobiography }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2></div>
+      <div class="about-prose">
+        {{- range .items }}
+        <div class="about-prose-item">
+          {{- with .eyebrow }}<div class="about-eyebrow">{{ . }}</div>{{ end }}
+          <h3>{{ .title }}</h3>
+          {{- range .paragraphs }}
+          <p>{{ . }}</p>
+          {{- end }}
+        </div>
+        {{- end }}
+      </div>
+    </section>
+    {{- end }}
+  </article>
+</section>
+{{ end }}

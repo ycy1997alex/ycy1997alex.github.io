@@ -1,0 +1,550 @@
+/* ==========================================================================
+   About 頁樣式（版型 layouts/about.html）。只在 layout: about 的頁面載入，
+   見 layouts/_partials/head/extensions.html。
+
+   1rem = 10px（主題把 html 設成 font-size: 62.5%）。
+   根元素用 .about-page 而不是 .about：主題首頁已經有 .centered .about 的樣式。
+
+   深色模式跟主題同一套判斷：coder.js 載入後 body 一定是 .colorscheme-dark 或
+   -light；沒有 JS 時是 .colorscheme-auto，交給 prefers-color-scheme 決定。
+   ========================================================================== */
+
+.about-page {
+  --about-bg: #fafafa;
+  --about-muted: #5c6066;
+  --about-line: #e0e0e0;
+  --about-soft: #f0f0f0;
+  --about-link: #1565c0;
+  --about-badge-bg: #e3edf9;
+  --about-badge-fg: #0d47a1;
+  --about-mono: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  counter-reset: about-sec;
+}
+
+body.colorscheme-dark .about-page {
+  --about-bg: #212121;
+  --about-muted: #a6a6a6;
+  --about-line: #424242;
+  --about-soft: #2c2c2c;
+  --about-link: #42a5f5;
+  --about-badge-bg: #1e3a5c;
+  --about-badge-fg: #cfe6fb;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.colorscheme-auto .about-page {
+    --about-bg: #212121;
+    --about-muted: #a6a6a6;
+    --about-line: #424242;
+    --about-soft: #2c2c2c;
+    --about-link: #42a5f5;
+    --about-badge-bg: #1e3a5c;
+    --about-badge-fg: #cfe6fb;
+  }
+}
+
+/* ---------- 共用小元件 ---------- */
+
+.about-label {
+  font-family: var(--about-mono);
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: var(--about-muted);
+}
+
+.about-chip {
+  display: inline-block;
+  font-family: var(--about-mono);
+  font-size: 1.3rem;
+  line-height: 2rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.4rem;
+  background: var(--about-soft);
+  border: 1px solid var(--about-line);
+}
+
+/* 選擇器要壓過主題的 a 與 body.colorscheme-dark a（0,1,2） */
+.about-page a.about-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 4.4rem;
+  padding: 0 1.6rem;
+  border: 1px solid var(--about-line);
+  border-radius: 2.2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.about-page a.about-btn:hover,
+.about-page a.about-btn:focus {
+  border-color: var(--about-link);
+  color: var(--about-link);
+  text-decoration: none;
+}
+
+.about-page a.about-btn--primary {
+  border-color: var(--about-link);
+  color: var(--about-link);
+}
+
+/* ---------- 名片區 ---------- */
+
+.about-hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2.8rem 3.6rem;
+}
+
+.about-photo {
+  flex: 0 0 auto;
+}
+
+.about-photo .scratch-photo {
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+/* 主題把 article 裡的 p 設成 justify，按鈕要另外置中 */
+.content .about-page .scratch-photo__actions {
+  margin: 0.8rem 0 0;
+  text-align: center;
+}
+
+.about-id {
+  flex: 999 1 34rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.about-loc {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: var(--about-muted);
+}
+
+.about-page h2.about-name {
+  margin: 0;
+  font-size: 3.6rem;
+  line-height: 4.2rem;
+  font-weight: 700;
+}
+
+.about-altname {
+  margin-top: 0.4rem;
+  font-size: 2rem;
+  line-height: 2.8rem;
+  color: var(--about-muted);
+}
+
+.about-roles {
+  font-size: 1.8rem;
+  line-height: 2.8rem;
+}
+
+.about-links,
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.about-tags {
+  gap: 0.8rem;
+}
+
+/* ---------- 三格摘要 ---------- */
+
+.about-facts {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1px;
+  background: var(--about-line);
+  border: 1px solid var(--about-line);
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+.about-fact {
+  background: var(--about-bg);
+  padding: 1.6rem 2rem;
+}
+
+.about-fact-title {
+  margin-top: 0.4rem;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  font-weight: 600;
+}
+
+.about-fact-detail {
+  font-size: 1.5rem;
+  line-height: 2.2rem;
+}
+
+/* ---------- 章節 ---------- */
+
+.about-section {
+  margin-top: 6.4rem;
+}
+
+.about-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.4rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--about-line);
+}
+
+.about-head::before {
+  counter-increment: about-sec;
+  content: counter(about-sec, decimal-leading-zero);
+  font-family: var(--about-mono);
+  font-size: 1.3rem;
+  color: var(--about-muted);
+}
+
+.about-page .about-head h2 {
+  margin: 0;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  font-weight: 600;
+}
+
+.about-head-note {
+  font-size: 1.4rem;
+  color: var(--about-muted);
+}
+
+.about-body {
+  margin-top: 2rem;
+}
+
+/* ---------- 個人簡介 ---------- */
+
+.about-page p.about-lead {
+  margin: 0 0 2rem;
+  font-size: 1.9rem;
+  line-height: 3.4rem;
+}
+
+.about-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: about-point;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+/* li 用 flex 排編號與內文，內文包在 div 裡，粗體與連結才不會被拆成獨立的 flex item */
+.about-points li {
+  display: flex;
+  gap: 1.6rem;
+  font-size: 1.7rem;
+  line-height: 3rem;
+}
+
+.about-points li::before {
+  counter-increment: about-point;
+  content: counter(about-point, decimal-leading-zero);
+  flex: 0 0 2.8rem;
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  color: var(--about-link);
+}
+
+.about-points li > div {
+  min-width: 0;
+  text-align: justify;
+}
+
+/* ---------- 時間軸列（工作、學歷、獲獎、社團） ---------- */
+
+.about-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2.4rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--about-line);
+}
+
+.about-head + .about-row {
+  border-top: 0;
+}
+
+.about-row--compact {
+  padding: 1.6rem 0;
+}
+
+.about-when {
+  flex: 1 1 15rem;
+  max-width: 17rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  line-height: 2.8rem;
+  color: var(--about-muted);
+}
+
+.about-when small {
+  margin-top: -0.6rem;
+  font-family: inherit;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+}
+
+.about-badge {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  padding: 0.1rem 0.8rem;
+  border-radius: 0.4rem;
+  background: var(--about-badge-bg);
+  color: var(--about-badge-fg);
+}
+
+.about-what {
+  flex: 999 1 42rem;
+  min-width: 0;
+}
+
+.about-title {
+  font-size: 1.8rem;
+  line-height: 2.8rem;
+  font-weight: 600;
+}
+
+.about-at {
+  font-weight: 400;
+  color: var(--about-muted);
+}
+
+.about-org {
+  font-weight: 400;
+}
+
+.about-sub {
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+  color: var(--about-muted);
+}
+
+.about-list {
+  margin: 0.8rem 0 0;
+  padding-left: 2rem;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+}
+
+.about-list li {
+  margin: 0.4rem 0;
+}
+
+.about-list--small {
+  margin-top: 0.4rem;
+  font-size: 1.5rem;
+  line-height: 2.6rem;
+}
+
+.about-note {
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  color: var(--about-muted);
+  white-space: nowrap;
+}
+
+/* ---------- 專業技能卡片 ---------- */
+
+.about-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 1.6rem;
+}
+
+.about-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--about-line);
+  border-radius: 0.8rem;
+}
+
+.about-page .about-card h3 {
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 2.4rem;
+  font-weight: 600;
+}
+
+/* 主題給 article 裡的 p 設了 justify + hyphens: auto，卡片欄寬窄，會斷成 experimen-tal */
+.about-page .about-card p {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+  text-align: left;
+  hyphens: manual;
+}
+
+.about-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.about-tools-label {
+  font-family: var(--about-mono);
+  font-size: 1.2rem;
+  color: var(--about-muted);
+}
+
+.about-rows {
+  display: grid;
+  grid-template-columns: 9.6rem minmax(0, 1fr);
+  gap: 0.8rem 1.2rem;
+  align-items: baseline;
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+}
+
+.about-rows dt {
+  font-family: var(--about-mono);
+  font-size: 1.2rem;
+  color: var(--about-muted);
+}
+
+.about-rows dd {
+  margin: 0;
+}
+
+/* ---------- 專案連結 ---------- */
+
+.about-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem 2.4rem;
+  padding: 2rem 2.4rem;
+  border-radius: 0.8rem;
+  background: var(--about-soft);
+}
+
+.about-page .about-callout p {
+  flex: 999 1 32rem;
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+}
+
+.about-callout .about-btn {
+  flex: 0 0 auto;
+}
+
+/* ---------- 研討會論文 ---------- */
+
+.about-pubs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: about-pub;
+}
+
+.about-pubs > li {
+  display: flex;
+  gap: 1.6rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--about-line);
+}
+
+.about-pubs > li:first-child {
+  border-top: 0;
+}
+
+.about-pubs > li::before {
+  counter-increment: about-pub;
+  content: "[" counter(about-pub) "]";
+  flex: 0 0 2.8rem;
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  line-height: 2.8rem;
+  color: var(--about-muted);
+}
+
+.about-pubs > li > div {
+  min-width: 0;
+}
+
+.about-pub-title {
+  font-size: 1.7rem;
+  line-height: 2.8rem;
+  font-weight: 600;
+}
+
+.about-pub-title a {
+  font-weight: 600;
+}
+
+.about-pub-authors {
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+}
+
+.about-pub-venue {
+  margin-top: 0.2rem;
+  font-family: var(--about-mono);
+  font-size: 1.3rem;
+  line-height: 2rem;
+  color: var(--about-muted);
+}
+
+/* ---------- 自傳（只有中文版有資料） ---------- */
+
+.about-prose-item {
+  padding: 2.4rem 0 0.8rem;
+}
+
+.about-eyebrow {
+  font-size: 1.3rem;
+  line-height: 2rem;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  color: var(--about-link);
+}
+
+.about-page .about-prose h3 {
+  margin: 0.4rem 0 1.2rem;
+  font-size: 1.9rem;
+  line-height: 2.8rem;
+  font-weight: 600;
+}
+
+.about-page .about-prose p {
+  margin: 0 0 1.6rem;
+  font-size: 1.7rem;
+  line-height: 3.2rem;
+}
+
+.about-page .about-prose p:last-child {
+  margin-bottom: 0;
+}

@@ -1,0 +1,196 @@
+# About 頁內容（英文版）。版型：layouts/about.html；樣式：assets/css/about.css。
+# 字串可寫 Markdown 行內語法（粗體、連結），版型會用 markdownify 轉成 HTML。
+# 英文版刻意沒有 autobiography（自傳）段落，見 AGENTS.md。
+
+profile:
+  photo: "images/尤俊硯大頭貼-24.jpg"
+  photo_alt: "Chun-Yen Yu (Alex Yu)"
+  scratch_hint: "Scratch to reveal"
+  scratch_reveal: "Show the photo"
+  location: "Hsinchu, Taiwan"
+  name: "Chun-Yen Yu"
+  alt_name: "Alex Yu ｜ 尤俊硯"
+  roles: ["Algorithm Engineer", "Data Analyst", "Data Scientist"]
+  email: "ycy1997alex@gmail.com"
+  linkedin: "https://www.linkedin.com/in/chunyenyu1997/"
+  github: "https://github.com/ycy1997alex"
+  tags: ["#cross-disciplinary integration", "#software and AI algorithms", "#physiological signal analysis"]
+
+facts:
+  - label: "Now"
+    title: "Senior Engineer"
+    detail: "Aitronics Inc."
+  - label: "Education"
+    title: "MSc Brain Science, NYCU"
+    detail: "BEng Aero & Astro + BS Psychology, NCKU"
+  - label: "Focus"
+    title: "Bio-medical algorithms"
+    detail: "Data and statistical analysis"
+
+summary:
+  title: "Professional Summary"
+  intro: "Hello, I'm Alex! I'm outgoing, easy to talk to, good to work with and careful in how I get things done. I like learning new things and picking up new tools, and I think work should rest on evidence and on what the market actually needs."
+  points:
+    - "Proficient in Python, MATLAB, R and C with over 10 years of programming experience; fluent with standard office software; developed algorithms and software for biomedical and medical-device applications, and previously worked as a firmware engineer in the memory industry."
+    - "In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs. Contributed to the business model for an internal EEG-related application, developed a rapid sleep-screening algorithm for an internal sleep-monitoring application, and led clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program)."
+    - "M.S. in Brain Science (Neuroengineering and Informatics) from NYCU, with experience in intelligent-medicine algorithm development and big-data analysis; specialised in physiological signal analysis, nonlinear science and medical AI, studying the Hilbert-Huang Transform under Prof. Albert Chih-Chieh Yang and Academician Norden E. Huang. B.Eng. in Aeronautics and Astronautics from NCKU with a double major in Psychology (B.S.), with experience in optimisation algorithms and image recognition and a working knowledge of multivariate statistics and neural networks; undergraduate thesis advised by Prof. Chao-Chung Peng."
+
+experience:
+  title: "Work Experience"
+  current_label: "Current"
+  items:
+    - date: "2024/11 – present"
+      current: true
+      role: "Senior Engineer"
+      org: "Aitronics Inc."
+      unit: "Smart Module Management Center, Smart Module Development Division"
+      bullets:
+        - "**Hardware signal data analysis:** statistical analysis, thermal-effect signal propagation analysis"
+        - "**Clinical-trial data collection:** workflow planning, building a data-collection application, data organisation and analysis"
+        - "**Algorithms:** signal analysis, and development of fasting and dynamic blood-glucose algorithms"
+    - date: "2024/04 – 2024/09"
+      role: "Engineer"
+      org: "Phison Electronics Corp."
+      unit: "System Product R&D Division V"
+      bullets:
+        - "SSD controller firmware, table task, including SPOR (sudden power-off recovery)"
+    - date: "2023/08 – 2024/04"
+      role: "Senior Engineer"
+      org: "TASC"
+      unit: "Optical Technology R&D Division"
+      bullets:
+        - "**Statistical analysis and algorithms:** rat and human trials, data analysis, signal analysis, and AI/ML algorithm development for blood glucose sensing"
+        - "**Module and firmware testing:** electrical and optical characterisation, firmware tuning, and experiment design"
+    - date: "2022/06 – 2023/06"
+      role: "Engineer"
+      org: "Hermes-Epitek Advanced Therapy System, Hermes-Epitek Group"
+      unit: "R&D Department"
+      bullets:
+        - "**Algorithms:** physiological signal pre-processing and analysis, AI/ML algorithm development for sleep"
+        - "**Project management, product and solutions:** smart-hospital and smart-healthcare service planning, under ISO 13485 and QMS"
+    - date: "Second year of M.S."
+      role: "Research Assistant (part-time)"
+      org: "National Yang Ming Chiao Tung University"
+      unit: "Center for Digital Medicine and Smart Healthcare; Institute of Brain Science"
+      bullets:
+        - "Teaching assistant for three courses"
+        - "Researched deep-learning models for the MMSE pentagon-drawing task to assess cognitive ability"
+
+education:
+  title: "Education"
+  items:
+    - date: "2022/01"
+      note: "Graduated"
+      school: "National Yang Ming Chiao Tung University (NYCU)"
+      place: "Taipei, Taiwan"
+      bullets:
+        - text: "**Master** of Science, Neuroengineering and Informatics, Institute of Brain Science, College of Medicine"
+          note: "GPA 4.28 / 4.3"
+        - "Thesis: Phase Modulation of Resting-State fMRI Signal and Its Application to Schizophrenia"
+        - "Advisor: Prof. **[Albert Chih-Chieh Yang](https://scholar.google.com/citations?user=ii3jdz0AAAAJ)**, MD, PhD (Director, Center for Digital Medicine and Smart Healthcare, NYCU; Deputy Director, AI Center, Taipei Veterans General Hospital)"
+    - date: "2020/01"
+      note: "Graduated"
+      school: "National Cheng Kung University (NCKU)"
+      place: "Tainan, Taiwan"
+      bullets:
+        - text: "**Bachelor** of Engineering, Department of Aeronautics and Astronautics"
+          note: "GPA 3.80 / 4.3"
+        - "**Double Major**: Bachelor of Science, Department of Psychology"
+        - "Undergraduate project: Object Recognition on 2D Point Clouds via Machine Learning ([2019-2020 College Student Research Creativity Award](https://en.ord.ncku.edu.tw/article-award-7.html))"
+        - "Advisor: Prof. **[Chao-Chung Peng](https://scholar.google.com/citations?user=YzN8zoUAAAAJ)**, PhD (Aerospace Control Systems Group)"
+
+skills:
+  title: "Skills"
+  items:
+    - title: "Big Data and Statistical Analysis"
+      lines: ["Data pipelines, visualisation, statistical modelling and statistical analysis"]
+      tools:
+        - label: "Python"
+          chips: ["Pandas", "Statsmodels", "Scikit-learn", "Matplotlib", "Seaborn", "semopy"]
+    - title: "AI and Machine Learning"
+      lines: ["Model building, explainable AI, feature-importance analysis and optimisation"]
+      tools:
+        - label: "Python"
+          chips: ["AutoGluon", "Scikit-learn", "Keras", "TensorFlow", "SHAP", "LIME"]
+    - title: "Brain and Physiological Signals, Imaging"
+      lines: ["Physiological signal algorithms (fMRI BOLD, ECG/EKG), imaging (MRI, CT, X-ray)"]
+      tools:
+        - label: "MATLAB / Python"
+          chips: ["HHT", "AI/ML modelling", "Mask R-CNN", "Grad-CAM"]
+    - title: "Firmware Integration and Algorithms"
+      lines: ["Signal algorithm development, firmware-software integration, module and system integration"]
+      tools:
+        - chips: ["MATLAB", "C"]
+        - label: "Python"
+          chips: ["bleak", "tkinter.ttk"]
+    - title: "Neuroscience, Psychology and Psychiatry"
+      lines: ["Cognitive neuroscience, neuroimaging, experimental design", "Statistical inference, ANOVA and MANOVA using"]
+      tools:
+        - chips: ["R", "SPSS", "MATLAB", "Python"]
+    - title: "Tooling and Languages"
+      rows:
+        - label: "AI / LLM"
+          value: "Claude, Gemini, ChatGPT"
+        - label: "Programming"
+          value: "Python, MATLAB, C, R"
+        - label: "Languages"
+          value: "Mandarin Chinese (native), English"
+
+projects:
+  title: "Projects"
+  text: "Work, research and side projects are listed on the Projects page."
+  button: "View projects"
+  page: "/projects"
+
+publications:
+  title: "Conference Publications"
+  note: "All presented orally in English."
+  items:
+    - title: "Phase modulation of resting-state fMRI BOLD signal in cases of schizophrenia with medication"
+      authors: "**_Chun-Yen Yu_**, Shih-Jen Tsai, Albert Chih-Chieh Yang"
+      venue: "2021 · Society for Neuroscience (SfN) · Chicago, USA"
+    - title: "Object Recognition and Classification of 2D-SLAM using Machine Learning and Deep Learning Techniques"
+      url: "https://ieeexplore.ieee.org/abstract/document/9394092"
+      authors: "Yu-Fu Lin, Lee-Jang Yang, **_Chun-Yen Yu_**, Chao-Chung Peng, Der-Chen Huang"
+      venue: "2020 · International Symposium on Computer, Consumer and Control (IS3C) · Taichung, Taiwan"
+    - title: "Machine Learning for 2D-SLAM Object Classification and Recognition"
+      url: "https://ieeexplore.ieee.org/abstract/document/9258112"
+      authors: "**_Chun-Yen Yu_**, Chao-Chung Peng"
+      venue: "2020 · IEEE International Conference on Consumer Electronics-Taiwan (ICCE-TW) · Taoyuan, Taiwan"
+
+awards:
+  title: "Certifications & Awards"
+  items:
+    - year: "2020"
+      title: "Mr. Samuel Yin Freshman Merit Scholarship, College of Medicine"
+      issuer: "National Yang Ming Chiao Tung University"
+    - year: "2020"
+      title: "College Student Research Creativity Award (for 2019)"
+      issuer: "Ministry of Science and Technology, Taiwan"
+    - year: "2016"
+      title: "Academic Excellence Award (freshman year)"
+      issuer: "National Cheng Kung University"
+
+activities:
+  title: "Leadership & Activities"
+  sep: " @ "
+  items:
+    - date: "2017/08 – 2018/07"
+      role: "Executive Secretary"
+      org: "United Departmental Student Association of NCKU"
+      bullets:
+        - "Administrative support"
+    - date: "2016/08 – 2017/07"
+      role: "Vice President"
+      org: "Departmental Student Association of Aeronautics and Astronautics of NCKU"
+      bullets:
+        - "Revised the association constitution"
+        - "Facilitated inter-association activities"
+        - "Managed academic affairs & equipment"
+    - date: "2016/08 – 2018/07"
+      role: "Vice Captain"
+      org: "Table Tennis Team of Aeronautics and Astronautics of NCKU"
+      bullets:
+        - "Assisted in managing team affairs"
+        - "Organised friendly matches"
+        - "Assisted in handling tournaments"

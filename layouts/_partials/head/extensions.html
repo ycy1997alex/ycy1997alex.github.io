@@ -7,3 +7,13 @@
 {{- end }}
 {{- /* 滿版寬度（切換鈕見 layouts/_partials/float.html）：記住的設定要在 <head> 就套上，否則畫面會先以 82rem 畫出再跳寬 */}}
 <script>try{if(localStorage.getItem("layoutwidth")==="wide")document.documentElement.classList.add("layout-wide")}catch(e){}</script>
+{{- /* About 頁專用樣式：只有 layout: about 的頁面載入（版型見 layouts/about.html），載入方式比照 theme 的 customCSS */}}
+{{- if eq .Layout "about" }}
+{{- $css := resources.Get "css/about.css" }}
+{{- if hugo.IsServer }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" media="screen">
+{{- else }}
+{{- $css = $css | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" media="screen">
+{{- end }}
+{{- end }}
