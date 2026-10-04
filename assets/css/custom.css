@@ -29,6 +29,25 @@
 }
 
 /* --------------------------------------------------------------------------
+   中文字型。主題的字型清單把 "游ゴシック"（Yu Gothic，日文）和簡中字型排在
+   任何繁中字型之前，Windows 又沒有 -apple-system / PingFang，結果中文字全部
+   用 Yu Gothic 顯示（2026-10 用 canvas 逐像素比對實測確認）。
+
+   這裡把繁中字型插在拉丁字型之後、其餘 CJK 字型之前，拉丁字母仍由 Segoe UI
+   等字型負責。選擇器對齊主題所有寫死 font-family: $font-family 的地方
+   （_base 的 body 與 h1–h6、_navigation、_pagination、_content 的 .list .title），
+   特異性相同，靠本檔在 coder.css 之後載入而勝出。
+   -------------------------------------------------------------------------- */
+body,
+h1, h2, h3, h4, h5, h6,
+.navigation a,
+.navigation span,
+.pagination,
+.list ul li .title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", "游ゴシック", "PingFang SC", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+}
+
+/* --------------------------------------------------------------------------
    滿版寬度切換（按鈕在 layouts/_partials/float.html）。<html> 有 .layout-wide
    時 container 不設上限，導覽列、文章、footer 一起變寬。只在電腦版生效：
    手機版的 container 本來就比 82rem 窄，按鈕也一併藏起來。
