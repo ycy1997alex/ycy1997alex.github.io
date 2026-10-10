@@ -35,46 +35,85 @@ summary:
     - "In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs. Contributed to the business model for an internal EEG-related application, developed a rapid sleep-screening algorithm for an internal sleep-monitoring application, and led clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program)."
     - "M.S. in Brain Science (Neuroengineering and Informatics) from NYCU, with experience in intelligent-medicine algorithm development and big-data analysis; specialised in physiological signal analysis, nonlinear science and medical AI, studying the Hilbert-Huang Transform under Prof. Albert Chih-Chieh Yang and Academician Norden E. Huang. B.Eng. in Aeronautics and Astronautics from NCKU with a double major in Psychology (B.S.), with experience in optimisation algorithms and image recognition and a working knowledge of multivariate statistics and neural networks; undergraduate thesis advised by Prof. Chao-Chung Peng."
 
+# Work experience is grouped by career track. Job dates appear only on the swimlane timeline: the
+# layout derives bar positions and date labels from start / end (YYYY-MM; empty end = present), so the
+# role rows carry no dates. Roles without start (the research assistantship) stay off the timeline and
+# use the track's period instead. key selects the track colour in about.css (glucose / service / memory).
 experience:
   title: "Work Experience"
   current_label: "Current"
-  items:
-    - date: "2024/11 – present"
-      current: true
-      role: "Senior Engineer"
-      org: "Aitronics Inc."
-      unit: "Smart Module Management Center, Smart Module Development Division"
-      bullets:
-        - "**Hardware signal data analysis:** statistical analysis, thermal-effect signal propagation analysis"
-        - "**Clinical-trial data collection:** workflow planning, building a data-collection application, data organisation and analysis"
-        - "**Algorithms:** signal analysis, and development of fasting and dynamic blood-glucose algorithms"
-    - date: "2024/04 – 2024/09"
-      role: "Engineer"
-      org: "Phison Electronics Corp."
-      unit: "System Product R&D Division V"
-      bullets:
-        - "SSD controller firmware, table task, including SPOR (sudden power-off recovery)"
-    - date: "2023/08 – 2024/04"
-      role: "Senior Engineer"
-      org: "TASC"
-      unit: "Optical Technology R&D Division"
-      bullets:
-        - "**Statistical analysis and algorithms:** rat and human trials, data analysis, signal analysis, and AI/ML algorithm development for blood glucose sensing"
-        - "**Module and firmware testing:** electrical and optical characterisation, firmware tuning, and experiment design"
-    - date: "2022/06 – 2023/06"
-      role: "Engineer"
-      org: "Hermes-Epitek Advanced Therapy System, Hermes-Epitek Group"
-      unit: "R&D Department"
-      bullets:
-        - "**Algorithms:** physiological signal pre-processing and analysis, AI/ML algorithm development for sleep"
-        - "**Project management, product and solutions:** smart-hospital and smart-healthcare service planning, under ISO 13485 and QMS"
-    - date: "Second year of M.S."
-      role: "Research Assistant (part-time)"
-      org: "National Yang Ming Chiao Tung University"
-      unit: "Center for Digital Medicine and Smart Healthcare; Institute of Brain Science"
-      bullets:
-        - "Teaching assistant for three courses"
-        - "Researched deep-learning models for the MMSE pentagon-drawing task to assess cognitive ability"
+  present_label: "present"
+  timeline_start: "2022-06"
+  timeline_caption: "Bars show each role's tenure, grouped by career track."
+  tracks:
+    - num: "01"
+      key: "glucose"
+      title: "Non-Invasive Glucose Monitoring"
+      subtitle: "Biomedical Signal Algorithms"
+      note: "Developing non-invasive glucose monitoring with optical sensing and wearable devices; responsible for glucose algorithms and clinical-trial data."
+      items:
+        - role: "Senior Engineer"
+          org: "Aitronics Inc."
+          short: "Aitronics"
+          unit: "Smart Module Management Center, Smart Module Development Division"
+          start: "2024-11"
+          current: true
+          project: "Ministry of Economic Affairs A+ Program: High-Precision Non-Invasive Continuous Glucose Monitoring Wearable Development (2024/11 – 2027/04)"
+          bullets:
+            - "**Algorithms:** signal analysis, fasting and dynamic blood-glucose algorithm development, extended tuning of technology-transferred algorithms, and program report writing"
+            - "**Clinical-trial data collection:** workflow planning, data-collection application and system software development, data organisation and statistical analysis"
+            - "**Hardware signal data analysis:** statistical analysis, thermal-effect signal propagation analysis, system hardware testing, and firmware integration"
+        - role: "Senior Engineer"
+          org: "TASC"
+          short: "TASC"
+          unit: "Optical Technology R&D Division"
+          start: "2023-08"
+          end: "2024-04"
+          project: "A+ Program Preliminary Research"
+          bullets:
+            - "**Statistical analysis and algorithms:** rat and human trials, data analysis, signal analysis, and AI/ML algorithm development for blood glucose sensing"
+            - "**Optical algorithms:** developed optical algorithms for an integrated LED / photodiode module"
+            - "**Module and firmware testing:** electrical and optical characterisation, firmware tuning, signal-communication software, experiment design, and clinical-study support"
+    - num: "02"
+      key: "service"
+      title: "Innovative Healthcare Services"
+      subtitle: "Healthcare Services and Regulation"
+      note: "A medical-device and brain-health service startup, working from physiological-signal algorithms through service workflows and medical-device regulation."
+      items:
+        - role: "Engineer"
+          org: "Hermes-Epitek Advanced Therapy System, Hermes-Epitek Group"
+          short: "Hermes-Epitek"
+          unit: "R&D Department"
+          start: "2022-06"
+          end: "2023-06"
+          bullets:
+            - "**Algorithms:** physiological signal pre-processing and analysis, AI/ML algorithm development for sleep"
+            - "**Signal Analysis and Algorithm Development project** (2023/02 – 2023/06): identified the key features of a health-management service and built the pipeline from the acquisition device through to signal analysis"
+            - "**Service Integration and New Workflow Design project** (2022/07 – 2023/04): planned and developed a health-management service workflow together with the supporting software and tools"
+            - "**Project management, product and solutions:** smart-hospital and smart-healthcare service planning, under ISO 13485 and QMS"
+    - num: "03"
+      key: "memory"
+      title: "Memory Controllers"
+      subtitle: "Firmware and Systems"
+      note: "SSD controller firmware, building low-level system and firmware-software integration skills."
+      items:
+        - role: "Engineer"
+          org: "Phison Electronics Corp."
+          short: "Phison"
+          unit: "System Product R&D Division V"
+          start: "2024-04"
+          end: "2024-09"
+          bullets:
+            - "SSD controller firmware, table task, including SPOR (sudden power-off recovery)"
+    - title: "Research Experience"
+      period: "Second year of M.S."
+      items:
+        - role: "Research Assistant (part-time)"
+          org: "National Yang Ming Chiao Tung University"
+          unit: "Center for Digital Medicine and Smart Healthcare; Institute of Brain Science"
+          bullets:
+            - "Teaching assistant for three courses"
+            - "Researched deep-learning models for the MMSE pentagon-drawing task to assess cognitive ability"
 
 education:
   title: "Education"

@@ -371,6 +371,181 @@ body.colorscheme-dark .about-page {
   white-space: nowrap;
 }
 
+/* ---------- 工作經驗：泳道圖與職涯主軸 ----------
+   主軸色以 --track-bar（色條底色，上面是白字）與 --track-ink（標題文字）兩個變數提供，
+   深色模式改用較亮的版本，維持白字對比與文字可讀性。 */
+
+.about-track--glucose { --track-bar: #1f4e79; --track-ink: #1f4e79; }
+.about-track--service { --track-bar: #9a4a12; --track-ink: #9a4a12; }
+.about-track--memory  { --track-bar: #555e69; --track-ink: #555e69; }
+
+body.colorscheme-dark .about-track--glucose { --track-bar: #2f6ea8; --track-ink: #8dbbe8; }
+body.colorscheme-dark .about-track--service { --track-bar: #a8551b; --track-ink: #eba574; }
+body.colorscheme-dark .about-track--memory  { --track-bar: #68717c; --track-ink: #b7bec7; }
+
+@media (prefers-color-scheme: dark) {
+  body.colorscheme-auto .about-track--glucose { --track-bar: #2f6ea8; --track-ink: #8dbbe8; }
+  body.colorscheme-auto .about-track--service { --track-bar: #a8551b; --track-ink: #eba574; }
+  body.colorscheme-auto .about-track--memory  { --track-bar: #68717c; --track-ink: #b7bec7; }
+}
+
+/* 主題有 figure { text-align: center }，並在 .content 裡把 figure 的 margin / padding 歸零，
+   所以這裡用 .about-page figure.about-timeline 提高特異性 */
+.about-page figure.about-timeline {
+  margin: 2rem 0 0;
+  padding: 2rem 2rem 1.4rem;
+  text-align: left;
+  border-radius: 0.8rem;
+  background: var(--about-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.about-lane-label {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: var(--track-ink);
+}
+
+/* 色條高 2.4rem，下方留 1.8rem 給起訖文字 */
+.about-lane-bars {
+  position: relative;
+  height: 4.8rem;
+  margin-top: 0.6rem;
+}
+
+.about-lane-bars::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2.8rem;
+  border-top: 1px solid var(--about-line);
+}
+
+.about-bar {
+  position: absolute;
+  top: 0.2rem;
+  height: 2.4rem;
+  border-radius: 0.4rem;
+  background: var(--track-bar);
+}
+
+.about-bar-name {
+  display: block;
+  overflow: hidden;
+  padding: 0 0.4rem;
+  font-size: 1.3rem;
+  line-height: 2.4rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 起訖文字靠色條左緣對齊，短色條（如群聯）在手機上也不會超出畫面左側 */
+.about-bar-dates {
+  position: absolute;
+  top: 2.8rem;
+  left: 0;
+  font-family: var(--about-mono);
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: var(--about-muted);
+  white-space: nowrap;
+}
+
+/* 窄螢幕：起訖拆成兩行（「2023/08」換行接「– 2024/04」），色條下方的文字區跟著加高 */
+@media (max-width: 600px) {
+  .about-lane-bars {
+    height: 6.6rem;
+  }
+
+  .about-bar-from {
+    display: block;
+  }
+}
+
+.about-axis {
+  position: relative;
+  height: 2.2rem;
+  border-top: 1px solid var(--about-line);
+}
+
+.about-axis span {
+  position: absolute;
+  top: 0;
+  height: 1.8rem;
+  padding: 0.4rem 0 0 0.6rem;
+  border-left: 1px solid var(--about-line);
+  font-family: var(--about-mono);
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  color: var(--about-muted);
+}
+
+.about-page .about-timeline figcaption {
+  font-size: 1.3rem;
+  line-height: 2rem;
+  color: var(--about-muted);
+}
+
+.about-track {
+  margin-top: 3.2rem;
+}
+
+.about-track-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+}
+
+.about-track-num {
+  padding: 0 0.8rem;
+  border-radius: 0.4rem;
+  background: var(--track-bar);
+  font-family: var(--about-mono);
+  font-size: 1.3rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.about-page .about-track-head h3 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 2.8rem;
+  font-weight: 600;
+  color: var(--track-ink, inherit);
+}
+
+.about-track-sub {
+  font-weight: 400;
+  color: var(--about-muted);
+}
+
+.about-track-period {
+  margin-left: auto;
+  font-family: var(--about-mono);
+  font-size: 1.4rem;
+  color: var(--about-muted);
+}
+
+.about-page p.about-track-note {
+  margin: 0.6rem 0 0;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+  color: var(--about-muted);
+  text-align: left;
+}
+
+.about-project {
+  font-style: italic;
+}
+
 /* ---------- 專業技能卡片 ---------- */
 
 .about-skills {

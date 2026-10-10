@@ -75,23 +75,71 @@
 
     {{- with $d.experience }}
     {{- $current := .current_label }}
+    {{- $present := .present_label }}
+    {{- /*
+      泳道圖：月份索引以 timeline_start 為 0，最後一格是建置當月（「迄今」的色條延伸到這裡）。
+      月份用 Format "1"（無前導零）再轉 int；"08" 這種字串會被當成八進位而轉換失敗。
+    */}}
+    {{- $t0 := time.AsTime (printf "%s-01" .timeline_start) }}
+    {{- $m0 := add (mul $t0.Year 12) (int ($t0.Format "1")) }}
+    {{- $total := add (sub (add (mul now.Year 12) (int (now.Format "1"))) $m0) 1 }}
     <section class="about-section">
       <div class="about-head"><h2>{{ .title }}</h2></div>
-      {{- range .items }}
-      <div class="about-row">
-        <div class="about-when">
-          <span>{{ .date }}</span>
-          {{- if .current }}<span class="about-badge">{{ $current }}</span>{{ end }}
-        </div>
-        <div class="about-what">
-          <div class="about-title">{{ .role }}<span class="about-at"> @ </span>{{ .org }}</div>
-          {{- with .unit }}<div class="about-sub">{{ . }}</div>{{ end }}
-          <ul class="about-list">
-            {{- range .bullets }}
-            <li>{{ . | markdownify }}</li>
+      <figure class="about-timeline">
+        {{- range .tracks }}
+        {{- $bars := where .items "start" "!=" nil }}
+        {{- if $bars }}
+        <div class="about-lane about-track--{{ .key }}">
+          <div class="about-lane-label">{{ .title }}</div>
+          <div class="about-lane-bars">
+            {{- range $bars }}
+            {{- $s := time.AsTime (printf "%s-01" .start) }}
+            {{- $e := now }}
+            {{- with .end }}{{ $e = time.AsTime (printf "%s-01" .) }}{{ end }}
+            {{- $si := sub (add (mul $s.Year 12) (int ($s.Format "1"))) $m0 }}
+            {{- $ei := sub (add (mul $e.Year 12) (int ($e.Format "1"))) $m0 }}
+            {{- $left := div (mul (float $si) 100) $total }}
+            {{- $width := div (mul (float (add (sub $ei $si) 1)) 100) $total }}
+            <div class="about-bar" style="{{ printf "left:%.3f%%;width:%.3f%%" $left $width | safeCSS }}">
+              <span class="about-bar-name">{{ .short }}</span>
+              {{- /* 起、迄分兩個 span：窄螢幕時 CSS 讓起訖換成兩行，避免相鄰色條的文字重疊 */}}
+              <span class="about-bar-dates"><span class="about-bar-from">{{ $s.Format "2006/01" }}</span> – {{ cond (isset . "end") ($e.Format "2006/01") $present }}</span>
+            </div>
             {{- end }}
-          </ul>
+          </div>
         </div>
+        {{- end }}
+        {{- end }}
+        <div class="about-axis" aria-hidden="true">
+          {{- range seq $t0.Year now.Year }}
+          {{- $yi := math.Max 0 (sub (mul . 12) (sub $m0 1)) }}
+          <span style="{{ printf "left:%.3f%%" (div (mul (float $yi) 100) $total) | safeCSS }}">{{ . }}</span>
+          {{- end }}
+        </div>
+        {{- with .timeline_caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+      </figure>
+      {{- range .tracks }}
+      <div class="about-track{{ with .key }} about-track--{{ . }}{{ end }}">
+        <div class="about-track-head">
+          {{- with .num }}<span class="about-track-num">{{ . }}</span>{{ end }}
+          <h3>{{ .title }}{{ with .subtitle }}<span class="about-track-sub">｜{{ . }}</span>{{ end }}</h3>
+          {{- with .period }}<span class="about-track-period">{{ . }}</span>{{ end }}
+        </div>
+        {{- with .note }}<p class="about-track-note">{{ . }}</p>{{ end }}
+        {{- range .items }}
+        <div class="about-row">
+          <div class="about-what">
+            <div class="about-title">{{ .role }}<span class="about-at"> @ </span>{{ .org }}{{ if .current }} <span class="about-badge">{{ $current }}</span>{{ end }}</div>
+            {{- with .unit }}<div class="about-sub">{{ . }}</div>{{ end }}
+            {{- with .project }}<div class="about-sub about-project">{{ . }}</div>{{ end }}
+            <ul class="about-list">
+              {{- range .bullets }}
+              <li>{{ . | markdownify }}</li>
+              {{- end }}
+            </ul>
+          </div>
+        </div>
+        {{- end }}
       </div>
       {{- end }}
     </section>
