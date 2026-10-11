@@ -445,6 +445,10 @@ body.colorscheme-dark .about-track--memory  { --track-bar: #68717c; --track-ink:
   white-space: nowrap;
 }
 
+.about-bar-mini {
+  display: none;
+}
+
 /* 起訖文字靠色條左緣對齊，短色條（如群聯）在手機上也不會超出畫面左側 */
 .about-bar-dates {
   position: absolute;
@@ -465,6 +469,19 @@ body.colorscheme-dark .about-track--memory  { --track-bar: #68717c; --track-ink:
 
   .about-bar-from {
     display: block;
+  }
+
+  /* 窄螢幕：色條改顯示簡稱（mini），左右留白縮小，讓最短的色條也放得下兩個字 */
+  .about-bar-name {
+    padding: 0 0.2rem;
+  }
+
+  .about-bar-full {
+    display: none;
+  }
+
+  .about-bar-mini {
+    display: inline;
   }
 }
 

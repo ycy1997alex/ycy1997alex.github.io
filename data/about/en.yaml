@@ -7,14 +7,14 @@ profile:
   photo_alt: "Chun-Yen Yu (Alex Yu)"
   scratch_hint: "Scratch to reveal"
   scratch_reveal: "Show the photo"
-  location: "Hsinchu, Taiwan"
+  location: "Taiwan"
   name: "Chun-Yen Yu"
   alt_name: "Alex Yu ｜ 尤俊硯"
   roles: ["Algorithm Engineer", "Data Analyst", "Data Scientist"]
   email: "ycy1997alex@gmail.com"
   linkedin: "https://www.linkedin.com/in/chunyenyu1997/"
   github: "https://github.com/ycy1997alex"
-  tags: ["#cross-disciplinary integration", "#software and AI algorithms", "#physiological signal analysis"]
+  tags: ["#software and AI algorithms", "#physiological signal analysis", "#cross-disciplinary integration"]
 
 facts:
   - label: "Now"
@@ -38,7 +38,8 @@ summary:
 # Work experience is grouped by career track. Job dates appear only on the swimlane timeline: the
 # layout derives bar positions and date labels from start / end (YYYY-MM; empty end = present), so the
 # role rows carry no dates. Roles without start (the research assistantship) stay off the timeline and
-# use the track's period instead. key selects the track colour in about.css (glucose / service / memory).
+# use the track's period instead. short is the bar label; the optional mini replaces it on narrow
+# screens (≤ 600px). key selects the track colour in about.css (glucose / service / memory).
 experience:
   title: "Work Experience"
   current_label: "Current"
@@ -83,6 +84,7 @@ experience:
         - role: "Engineer"
           org: "Hermes-Epitek Advanced Therapy System, Hermes-Epitek Group"
           short: "Hermes-Epitek"
+          mini: "Hermes"
           unit: "R&D Department"
           start: "2022-06"
           end: "2023-06"
@@ -198,7 +200,7 @@ publications:
       venue: "2020 · IEEE International Conference on Consumer Electronics-Taiwan (ICCE-TW) · Taoyuan, Taiwan"
 
 awards:
-  title: "Certifications & Awards"
+  title: "Awards"
   items:
     - year: "2020"
       title: "Mr. Samuel Yin Freshman Merit Scholarship, College of Medicine"

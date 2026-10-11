@@ -101,7 +101,12 @@
             {{- $left := div (mul (float $si) 100) $total }}
             {{- $width := div (mul (float (add (sub $ei $si) 1)) 100) $total }}
             <div class="about-bar" style="{{ printf "left:%.3f%%;width:%.3f%%" $left $width | safeCSS }}">
-              <span class="about-bar-name">{{ .short }}</span>
+              {{- /* 有 mini 時，窄螢幕改顯示 mini：色條太短，放不下 short 全名 */}}
+              {{- $short := .short }}
+              <span class="about-bar-name">
+                {{- with .mini }}<span class="about-bar-full">{{ $short }}</span><span class="about-bar-mini">{{ . }}</span>
+                {{- else }}{{ .short }}{{ end -}}
+              </span>
               {{- /* 起、迄分兩個 span：窄螢幕時 CSS 讓起訖換成兩行，避免相鄰色條的文字重疊 */}}
               <span class="about-bar-dates"><span class="about-bar-from">{{ $s.Format "2006/01" }}</span> – {{ cond (isset . "end") ($e.Format "2006/01") $present }}</span>
             </div>
