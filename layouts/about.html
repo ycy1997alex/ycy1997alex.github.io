@@ -98,7 +98,10 @@
             {{- $s := time.AsTime (printf "%s-01" .start) }}
             {{- $e := now }}
             {{- with .end }}{{ $e = time.AsTime (printf "%s-01" .) }}{{ end }}
-            {{- $si := sub (add (mul $s.Year 12) (int ($s.Format "1"))) $m0 }}
+            {{- /* bar_start 只移動色條起點（日期文字仍用 start），用在前一份工作的最後一個月與這份的第一個月重疊時 */}}
+            {{- $bs := $s }}
+            {{- with .bar_start }}{{ $bs = time.AsTime (printf "%s-01" .) }}{{ end }}
+            {{- $si := sub (add (mul $bs.Year 12) (int ($bs.Format "1"))) $m0 }}
             {{- $ei := sub (add (mul $e.Year 12) (int ($e.Format "1"))) $m0 }}
             {{- $left := div (mul (float $si) 100) $total }}
             {{- $width := div (mul (float (add (sub $ei $si) 1)) 100) $total }}

@@ -39,6 +39,8 @@ summary:
 # 算出色條位置與日期文字，職務列本身不再顯示日期。沒有 start 的職務（研究助理）不上泳道圖，
 # 改由主軸的 period 標示期間。short 是色條上的名稱；選填的 mini 是窄螢幕（≤ 600px）改用的簡稱。
 # key 對應 about.css 的主軸色（glucose / service / memory）。
+# 選填的 bar_start 只移動色條起點（日期文字仍用 start）：群聯的第一個月就是台亞的最後一個月，
+# 比照履歷，重疊的那個月畫在台亞的色條上。
 experience:
   title: "工作經驗"
   current_label: "現職"
@@ -105,6 +107,7 @@ experience:
           mini: "群聯"
           unit: "系統產品研發五處 系統產品研發五部"
           start: "2024-04"
+          bar_start: "2024-05"
           end: "2024-09"
           bullets:
             - "**SSD Controller**：Table Task（含 SPOR 突然斷電回復機制）"

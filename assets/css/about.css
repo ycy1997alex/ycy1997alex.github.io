@@ -451,11 +451,13 @@ body.colorscheme-dark .about-track--memory  { --track-bar: #68717c; --track-ink:
   display: none;
 }
 
-/* 起訖文字靠色條左緣對齊，短色條（如群聯）在手機上也不會超出畫面左側 */
+/* 起訖文字置中在色條下方（同履歷）；比色條寬時（如群聯）往兩側等量超出 */
 .about-bar-dates {
   position: absolute;
   top: 2.8rem;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
   font-family: var(--about-mono);
   font-size: 1.2rem;
   line-height: 1.8rem;
@@ -473,9 +475,10 @@ body.colorscheme-dark .about-track--memory  { --track-bar: #68717c; --track-ink:
     display: block;
   }
 
-  /* 窄螢幕：色條改顯示簡稱（mini），左右留白縮小，讓最短的色條也放得下兩個字 */
+  /* 窄螢幕：色條改顯示簡稱（mini），不留左右留白、字級縮小，最短的群聯色條在 360px 寬也放得下兩個字 */
   .about-bar-name {
-    padding: 0 0.2rem;
+    padding: 0;
+    font-size: 1.2rem;
   }
 
   .about-bar-full {

@@ -37,6 +37,8 @@ summary:
 # role rows carry no dates. Roles without start (the research assistantship) stay off the timeline and
 # use the track's period instead. short is the bar label; the optional mini replaces it on narrow
 # screens (≤ 600px). key selects the track colour in about.css (glucose / service / memory).
+# The optional bar_start moves only the bar's left edge (the date label still uses start): Phison starts
+# in the month TASC ends, and as in the resume that shared month is drawn on TASC's bar.
 experience:
   title: "Work Experience"
   current_label: "Current"
@@ -98,6 +100,7 @@ experience:
           short: "Phison"
           unit: "System Product R&D Division V"
           start: "2024-04"
+          bar_start: "2024-05"
           end: "2024-09"
           bullets:
             - "Worked on SSD controller firmware in the Table Task, including sudden power-off recovery (SPOR)."
