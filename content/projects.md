@@ -17,6 +17,14 @@ description: "Side, work and research projects: continuous glucose monitoring al
 
 ## Side Project {#side-project}
 
+### **2026/10 ~ present** `AI Automation`
+
+[finance-digest: daily summaries of Taiwanese finance YouTube shows](https://github.com/ycy1997alex/finance-digest)
+
+- A nightly Claude Desktop scheduled task follows a runbook: it uses Claude in Chrome to find new videos from 19 finance YouTube channels, applies the filtering rules, and has a Gemini Notebook write the day's consolidated report
+- Wrote the Python publishing pipeline: format checks, name corrections, AES-GCM encryption compatible with browser WebCrypto, and only the encrypted site in the public repo; covered by pytest
+- The site has three pages, Today, Archive and Tracking: bull/bear consensus and key disagreements, a calendar archive, and 30-day statistics by stock and analyst (password required)
+
 ### **2026/08 ~ 2026/09** `Writing / Open Source`
 
 [iThome 2026 Ironman Contest: 30 days of cross-domain work with Claude](https://ithelp.ithome.com.tw/users/20161310/ironman/9237) (completed all 30 days)

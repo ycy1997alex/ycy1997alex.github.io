@@ -17,6 +17,14 @@ description: "個人、工作與學術專案：連續血糖檢測演算法、睡
 
 ## 個人專案（Side Project） {#side-project}
 
+### **2026/10 ~ 迄今** `AI 自動化`
+
+[finance-digest：台灣財經 YouTube 節目每日摘要](https://github.com/ycy1997alex/finance-digest)
+
+- 每晚由 Claude Desktop 排程任務照 Runbook 執行：透過 Claude in Chrome 找出 19 個財經 YouTube 頻道的新影片、套用篩選規則，再交給 Gemini Notebook 產生當日綜合報告
+- 以 Python 撰寫發布流程：格式檢查、人名校正、與瀏覽器 WebCrypto 相容的 AES-GCM 加密，公開 repo 只放密文網站；以 pytest 測試
+- 網站分今日、封存、追蹤三頁：多空共識與主要分歧、月曆封存、最近 30 天的個股與分析師統計（需輸入密碼）
+
 ### **2026/08 ~ 2026/09** `寫作／開源`
 
 [iThome 2026 鐵人賽：三個介面，一套工作流？30 天 Claude 跨領域實戰](https://ithelp.ithome.com.tw/users/20161310/ironman/9237)（鐵人鍊成，30 篇完賽）
