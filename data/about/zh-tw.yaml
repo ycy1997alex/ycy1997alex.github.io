@@ -10,7 +10,7 @@ profile:
   location: "臺灣"
   name: "尤俊硯"
   alt_name: "Alex Yu"
-  roles: ["演算法工程師", "資料分析師", "資料科學家"]
+  roles: ["AI 駕馭工程", "資料探勘與分析", "資料驅動產品整合"]
   email: "ycy1997alex@gmail.com"
   linkedin: "https://www.linkedin.com/in/chunyenyu1997/"
   github: "https://github.com/ycy1997alex"
@@ -117,6 +117,38 @@ experience:
           bullets:
             - "擔任三門課程之助教"
             - "研究以深度學習模型建構簡短智能量表雙五角測驗，用於評估認知能力"
+
+# links 的 label 是連結文字，多個連結以「 · 」分隔
+ai_projects:
+  title: "AI 專案與技術寫作"
+  note: "個人專案"
+  items:
+    - title: "統計分析桌面應用程式"
+      links:
+        - label: "技術文章"
+          url: "https://ithelp.ithome.com.tw/articles/10406015"
+      bullets:
+        - "以 Claude Code 開發 Python 桌面分析工具，採 MVP 架構，包含 Bolasso 特徵選擇、統計建模、視覺化，並自動產生 Excel／Word 報告。"
+        - "檢視正則化參數的選擇方式與評估結果，並記錄實作上的取捨與應用程式打包需求。"
+    - title: "市場與總體經濟分析自動化"
+      links:
+        - label: "技術文章"
+          url: "https://ithelp.ithome.com.tw/articles/10409227"
+      bullets:
+        - "開發市場與總經資料分析的自動化流程，以 SQLite 儲存資料、搭配桌面工具，並用測試守住架構分層。"
+    - title: "30 天 Claude 開發系列（iThome 2026 鐵人賽）"
+      links:
+        - label: "系列文章"
+          url: "https://ithelp.ithome.com.tw/users/20161310/ironman/9237"
+      bullets:
+        - "完成 30 篇技術文章，涵蓋 claude.ai、Claude Desktop 與 Claude Code 的實務工作流，記錄專案需求、驗證方式與實作心得。"
+    - title: "財經 YouTube 節目每日摘要（finance-digest）"
+      links:
+        - label: "專案介紹"
+          url: "https://github.com/ycy1997alex/finance-digest"
+      bullets:
+        - "每晚由 Claude Desktop 排程任務透過 Claude in Chrome 找出 19 個財經頻道的新影片，交給 Gemini Notebook 產生當日綜合報告，再發布到需輸入密碼的靜態網站。"
+        - "以 Python 撰寫發布流程：格式檢查、人名校正、與瀏覽器 WebCrypto 相容的 AES-GCM 加密，並確認公開 repo 只有密文；以 pytest 測試。"
 
 education:
   title: "學歷"

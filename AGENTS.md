@@ -25,6 +25,7 @@
 
 - 內容在 `data/about/en.yaml` 與 `data/about/zh-tw.yaml`，版型是 `layouts/about.html`（由 front matter 的 `layout: about` 指定），樣式是 `assets/css/about.css`（只有這個版型會載入，見 `layouts/_partials/head/extensions.html`）。`content/about.md` 與 `content/about.zh-tw.md` 只剩 front matter。要改履歷內容就改 YAML，兩個語言檔的結構要保持一致。
 - **英文版刻意不放「自傳」**（`autobiography` 只出現在 `zh-tw.yaml`）。這是使用者的決定，理由是英文讀者比較不需要這段，所以不要翻譯補上。
+- **英文版的文字以英文履歷（短版）為準**：`summary` 只有 `intro`、沒有 `points`，工作經驗的 bullet 照英文履歷，也不放「學生社團組織經驗」（`activities` 只出現在 `zh-tw.yaml`）。這同樣是使用者的決定，不要從中文版翻譯補回。
 - YAML 字串可以寫 Markdown 行內語法，版型會用 `markdownify` 轉換。中文粗體標籤要寫成 `**標籤**：內文`，冒號放在粗體外面：寫成 `**標籤：**內文` 時，依 CommonMark 規則結尾的 `**` 不會被當成粗體結束符號。
 - 刮刮卡照片的實作在 `layouts/_partials/scratch-photo.html`，`layouts/shortcodes/scratch-photo.html` 只是轉交參數的包裝。不要用 `.Page.Scratch` / `.Store` 做「同一頁只輸出一次」的判斷：`hugo server` 重建時那個值不會清掉，第二次渲染就會少掉 CSS / JS。
 - 章節編號由 CSS counter 產生，某個語言少一段時編號會自動接續。

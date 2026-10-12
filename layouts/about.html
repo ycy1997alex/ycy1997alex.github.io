@@ -64,11 +64,13 @@
       <div class="about-head"><h2>{{ .title }}</h2></div>
       <div class="about-body">
         <p class="about-lead">{{ .intro | markdownify }}</p>
+        {{- with .points }}
         <ol class="about-points">
-          {{- range .points }}
+          {{- range . }}
           <li><div>{{ . | markdownify }}</div></li>
           {{- end }}
         </ol>
+        {{- end }}
       </div>
     </section>
     {{- end }}
@@ -145,6 +147,29 @@
           </div>
         </div>
         {{- end }}
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    {{- with $d.ai_projects }}
+    <section class="about-section">
+      <div class="about-head"><h2>{{ .title }}</h2>{{ with .note }}<span class="about-head-note">{{ . }}</span>{{ end }}</div>
+      {{- range .items }}
+      <div class="about-row">
+        <div class="about-what">
+          <div class="about-title">{{ .title }}</div>
+          {{- with .links }}
+          <div class="about-sub">
+            {{- range $i, $l := . }}{{ if $i }} · {{ end }}<a class="external-link" href="{{ $l.url }}" target="_blank" rel="noopener">{{ $l.label }}</a>{{ end -}}
+          </div>
+          {{- end }}
+          <ul class="about-list">
+            {{- range .bullets }}
+            <li>{{ . | markdownify }}</li>
+            {{- end }}
+          </ul>
+        </div>
       </div>
       {{- end }}
     </section>

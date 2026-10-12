@@ -162,6 +162,8 @@ body.colorscheme-dark .about-page {
 }
 
 .about-tags {
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.8rem;
 }
 

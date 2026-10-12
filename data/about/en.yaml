@@ -1,6 +1,6 @@
 # About 頁內容（英文版）。版型：layouts/about.html；樣式：assets/css/about.css。
 # 字串可寫 Markdown 行內語法（粗體、連結），版型會用 markdownify 轉成 HTML。
-# 英文版刻意沒有 autobiography（自傳）段落，見 AGENTS.md。
+# 英文版刻意沒有 autobiography（自傳）與 activities（社團）段落，見 AGENTS.md。
 
 profile:
   photo: "images/尤俊硯大頭貼-24.jpg"
@@ -10,7 +10,7 @@ profile:
   location: "Taiwan"
   name: "Chun-Yen Yu"
   alt_name: "Alex Yu ｜ 尤俊硯"
-  roles: ["Algorithm Engineer", "Data Analyst", "Data Scientist"]
+  roles: ["AI Harness Engineering", "Data Mining & Analytics", "Data-Driven Product Integration"]
   email: "ycy1997alex@gmail.com"
   linkedin: "https://www.linkedin.com/in/chunyenyu1997/"
   github: "https://github.com/ycy1997alex"
@@ -29,11 +29,8 @@ facts:
 
 summary:
   title: "Professional Summary"
-  intro: "Hello, I'm Alex! I'm outgoing, easy to talk to, good to work with and careful in how I get things done. I like learning new things and picking up new tools, and I think work should rest on evidence and on what the market actually needs."
-  points:
-    - "Proficient in Python, MATLAB, R and C with over 10 years of programming experience; fluent with standard office software; developed algorithms and software for biomedical and medical-device applications, and previously worked as a firmware engineer in the memory industry."
-    - "In industry, focused on innovative healthcare service development, algorithms for new medical devices, and biomedical market and regulatory affairs. Contributed to the business model for an internal EEG-related application, developed a rapid sleep-screening algorithm for an internal sleep-monitoring application, and led clinical-trial data collection to support fasting and dynamic blood-glucose algorithms for a high-precision non-invasive continuous glucose monitoring wearable (Ministry of Economic Affairs A+ Program)."
-    - "M.S. in Brain Science (Neuroengineering and Informatics) from NYCU, with experience in intelligent-medicine algorithm development and big-data analysis; specialised in physiological signal analysis, nonlinear science and medical AI, studying the Hilbert-Huang Transform under Prof. Albert Chih-Chieh Yang and Academician Norden E. Huang. B.Eng. in Aeronautics and Astronautics from NCKU with a double major in Psychology (B.S.), with experience in optimisation algorithms and image recognition and a working knowledge of multivariate statistics and neural networks; undergraduate thesis advised by Prof. Chao-Chung Peng."
+  # 與英文履歷同一段摘要；英文版沒有 points
+  intro: "Algorithm engineer with experience in physiological signal processing, statistical modeling, machine learning, and software integration. Leads glucose-model development, clinical data-collection workflows, and internal software for non-invasive sensing research. Combines Python, MATLAB, and R with training in engineering, psychology, and brain science; applies AI-assisted development to analytical tools and automated workflows."
 
 # Work experience is grouped by career track. Job dates appear only on the swimlane timeline: the
 # layout derives bar positions and date labels from start / end (YYYY-MM; empty end = present), so the
@@ -61,9 +58,9 @@ experience:
           current: true
           project: "Ministry of Economic Affairs A+ Program: High-Precision Non-Invasive Continuous Glucose Monitoring Wearable Development (2024/11 – 2027/04)"
           bullets:
-            - "**Algorithms:** signal analysis, fasting and dynamic blood-glucose algorithm development, extended tuning of technology-transferred algorithms, and program report writing"
-            - "**Clinical-trial data collection:** workflow planning, data-collection application and system software development, data organisation and statistical analysis"
-            - "**Hardware signal data analysis:** statistical analysis, thermal-effect signal propagation analysis, system hardware testing, and firmware integration"
+            - "Lead development of fasting-glucose and glucose-change algorithms, including physiological signal analysis and adaptation of technology-transferred models."
+            - "Lead clinical data-collection workflow design and development of internal acquisition applications and system software, connecting measurement procedures with data organization and statistical analysis."
+            - "Lead system integration across sensing hardware, firmware, and analysis software; investigate signal behavior and thermal effects through hardware testing and data analysis."
         - role: "Senior Engineer"
           org: "TASC"
           short: "TASC"
@@ -72,9 +69,8 @@ experience:
           end: "2024-04"
           project: "A+ Program Preliminary Research"
           bullets:
-            - "**Statistical analysis and algorithms:** rat and human trials, data analysis, signal analysis, and AI/ML algorithm development for blood glucose sensing"
-            - "**Optical algorithms:** developed optical algorithms for an integrated LED / photodiode module"
-            - "**Module and firmware testing:** electrical and optical characterisation, firmware tuning, signal-communication software, experiment design, and clinical-study support"
+            - "Established the preliminary glucose-algorithm architecture for non-invasive optical sensing research; analyzed animal and human study data to support model development."
+            - "Developed signal-communication software and supported integrated LED/photodiode module characterization, firmware tuning, experimental design, and system testing."
     - num: "02"
       key: "service"
       title: "Innovative Healthcare Services"
@@ -89,10 +85,8 @@ experience:
           start: "2022-06"
           end: "2023-06"
           bullets:
-            - "**Algorithms:** physiological signal pre-processing and analysis, AI/ML algorithm development for sleep"
-            - "**Signal Analysis and Algorithm Development project** (2023/02 – 2023/06): identified the key features of a health-management service and built the pipeline from the acquisition device through to signal analysis"
-            - "**Service Integration and New Workflow Design project** (2022/07 – 2023/04): planned and developed a health-management service workflow together with the supporting software and tools"
-            - "**Project management, product and solutions:** smart-hospital and smart-healthcare service planning, under ISO 13485 and QMS"
+            - "Contributed to an industry-academia collaboration on rapid sleep screening, developing physiological signal preprocessing, analysis, and AI/ML algorithms."
+            - "Developed health-management service workflows and supporting software, connecting signal acquisition with analysis; participated in healthcare-service planning and medical-device quality-system activities."
     - num: "03"
       key: "memory"
       title: "Memory Controllers"
@@ -106,7 +100,7 @@ experience:
           start: "2024-04"
           end: "2024-09"
           bullets:
-            - "SSD controller firmware, table task, including SPOR (sudden power-off recovery)"
+            - "Worked on SSD controller firmware in the Table Task, including sudden power-off recovery (SPOR)."
     - title: "Research Experience"
       period: "Second year of M.S."
       items:
@@ -116,6 +110,38 @@ experience:
           bullets:
             - "Teaching assistant for three courses"
             - "Researched deep-learning models for the MMSE pentagon-drawing task to assess cognitive ability"
+
+# links 的 label 是連結文字，多個連結以「 · 」分隔
+ai_projects:
+  title: "AI Projects & Technical Writing"
+  note: "Independent projects"
+  items:
+    - title: "Statistical Analysis Desktop Application"
+      links:
+        - label: "Technical article"
+          url: "https://ithelp.ithome.com.tw/articles/10406015"
+      bullets:
+        - "Built a Python desktop analysis tool with Claude Code using an MVP architecture, Bolasso feature selection, statistical modeling, visualizations, and Excel/Word report generation."
+        - "Reviewed regularization-selection choices and evaluation outputs, and documented implementation trade-offs and application-packaging requirements."
+    - title: "Market and Macroeconomic Analysis Automation"
+      links:
+        - label: "Technical article"
+          url: "https://ithelp.ithome.com.tw/articles/10409227"
+      bullets:
+        - "Developed an automated workflow for market and macroeconomic data analysis, with SQLite storage, desktop tooling, and tests to maintain architectural boundaries."
+    - title: "30-Day Claude Development Series (2026 iThome Ironman Challenge)"
+      links:
+        - label: "Series"
+          url: "https://ithelp.ithome.com.tw/users/20161310/ironman/9237"
+      bullets:
+        - "Completed 30 technical articles on practical workflows across claude.ai, Claude Desktop, and Claude Code, documenting project requirements, verification, and lessons from implementation."
+    - title: "Finance Digest: Daily Summaries of Taiwanese Finance YouTube Shows"
+      links:
+        - label: "Project overview"
+          url: "https://github.com/ycy1997alex/finance-digest"
+      bullets:
+        - "Runs a nightly Claude Desktop scheduled task that finds new videos from 19 finance YouTube channels, generates a consolidated report in a Gemini Notebook through Claude in Chrome, and publishes it to a password-protected static site."
+        - "Built the Python publishing pipeline with format checks, name corrections, AES-GCM encryption compatible with browser WebCrypto, and a guard that keeps only ciphertext in the public repository; covered by pytest."
 
 education:
   title: "Education"
@@ -211,27 +237,3 @@ awards:
     - year: "2016"
       title: "Academic Excellence Award (freshman year)"
       issuer: "National Cheng Kung University"
-
-activities:
-  title: "Leadership & Activities"
-  sep: " @ "
-  items:
-    - date: "2017/08 – 2018/07"
-      role: "Executive Secretary"
-      org: "United Departmental Student Association of NCKU"
-      bullets:
-        - "Administrative support"
-    - date: "2016/08 – 2017/07"
-      role: "Vice President"
-      org: "Departmental Student Association of Aeronautics and Astronautics of NCKU"
-      bullets:
-        - "Revised the association constitution"
-        - "Facilitated inter-association activities"
-        - "Managed academic affairs & equipment"
-    - date: "2016/08 – 2018/07"
-      role: "Vice Captain"
-      org: "Table Tennis Team of Aeronautics and Astronautics of NCKU"
-      bullets:
-        - "Assisted in managing team affairs"
-        - "Organised friendly matches"
-        - "Assisted in handling tournaments"
