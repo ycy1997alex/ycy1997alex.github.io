@@ -17,6 +17,7 @@ seto- 換成 jeju-、配色換成濟州的玄武岩海藍＋柑橘，內容改�
 """
 
 import io, json, os
+from urllib.parse import quote
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "assets", "fragments", "2026-jeju.html")
@@ -39,7 +40,6 @@ TABS = [
     ("taiwan", "入境台灣"),
     None,
     ("out", "去程清單"),
-    ("back", "回程清單"),
     ("souvenir", "伴手禮採買"),
 ]
 
@@ -114,63 +114,87 @@ OUT_LIST = [
     ]),
 ]
 
-BACK_LIST = [
-    ("身上", "每日必檢查", "body", [
-        ("", [("rb1", "眼鏡"), ("rb2", "手機"), ("rb3", "手錶")]),
-        ("穿著", [("rw1", "長袖上衣"), ("rw2", "長褲"), ("rw3", "防風外套"), ("rw4", "運動鞋")]),
-        ("護照＆錢包", [("rp1", "護照"), ("rp2", "身分證"), ("rp3", "健保卡"),
-                        ("rp4", "信用卡（錢包）"), ("rp5", "韓幣零錢（機場花掉）"), ("rp6", "台幣現金（錢包）")]),
-    ]),
-    ("隨身後背包", "手提限 1 件 10 kg；每容器 &lt; 100 ml、總液體 &lt; 1 L，塑膠袋裝", "bag", [
-        ("電器類", [("re1", "行動電源（≤ 100 Wh、孔貼絕緣）"), ("re2", "充電線"), ("re3", "充電器"),
-                    ("re4", "Sim 卡／eSIM"), ("re5", "藍芽耳機"), ("re6", "有線耳機（+ 轉接頭）")]),
-        ("衛生用品類", [("rh1", "濕紙巾"), ("rh2", "衛生紙"), ("rh3", "面紙"),
-                        ("rh4", "餐具"), ("rh5", "免洗餐具"), ("rh6", "酒精（&lt; 100 ml）")]),
-        ("醫藥用品類", [("rm1", "常備口服藥"), ("rm2", "暈車藥"), ("rm3", "口內膏"),
-                        ("rm4", "酸痛貼布"), ("rm5", "OK 蹦"), ("rm6", "透氣膠帶／優肌絆"),
-                        ("rm7", "眼藥水"), ("rm8", "外傷藥膏"), ("rm9", "蚊蟲藥")]),
-        ("睡覺用品類", [("rs1", "人工淚液"), ("rs2", "耳塞"), ("rs3", "眼罩")]),
-        ("日常用品類", [("rd1", "眼鏡盒（墨鏡）"), ("rd2", "筆"), ("rd3", "筆記本／便條紙"),
-                        ("rd4", "保溫瓶"), ("rd5", "機上的水與點心（安檢後買）"), ("rd6", "易口舒／口香糖"),
-                        ("rd7", "保健食品"), ("rd8", "口罩"), ("rd9", "行李秤"),
-                        ("rd10", "頸枕（看個人需求）"), ("rd11", "摺疊傘"), ("rd12", "第二錢包"),
-                        ("rd13", "鑰匙")]),
-    ]),
-    ("登機包・託運（伴手禮）", "回程多出來的那些", "shop", [
-        ("登機包", [("rg1", "免稅商品"), ("rg2", "非液體物品"), ("rg3", "零食")]),
-        ("託運", [("rl1", "酒（&gt; 1.5 公升要申報）"), ("rl2", "果醬、柑橘茶等玻璃罐"),
-                  ("rl3", "食品（確認不含肉）"), ("rl4", "藥妝"), ("rl5", "伴手禮"), ("rl6", "保健食品")]),
-    ]),
-    ("託運行李", "不限件數，合計 ≤ 20 kg；總液體 &lt; 5 L", "checked", [
-        ("衣物", [("rc1", "長袖上衣 ×4"), ("rc2", "長褲 ×4"), ("rc3", "內衣褲 ×4"),
-                  ("rc4", "襪子 ×4"), ("rc5", "睡衣 ×2"), ("rc6", "薄毛衣／針織衫 ×1"),
-                  ("rc7", "護膝"), ("rc8", "帽子 ×1")]),
-        ("萬豪泳池", [("rw5", "泳衣（晾乾或裝防水袋）"), ("rw6", "泳帽")]),
-        ("外出用品", [("ro1", "止汗劑"), ("ro2", "防曬乳"), ("ro3", "衛生紙備品"),
-                      ("ro4", "濕紙巾備品"), ("ro5", "衛生用品")]),
-        ("房間用品", [("rr1", "拖鞋"), ("rr2", "毛巾"), ("rr3", "衣架 &amp; 曬衣夾 ×4")]),
-        ("保養用品", [("rk1", "護手霜"), ("rk2", "面霜"), ("rk3", "乳液")]),
-        ("盥洗與清潔用品", [("rq1", "洗面乳"), ("rq2", "沐浴乳"), ("rq3", "洗髮精"),
-                            ("rq4", "洗碗精"), ("rq5", "梳子"), ("rq6", "牙刷"),
-                            ("rq7", "牙膏"), ("rq8", "牙線棒"), ("rq9", "刮鬍刀"),
-                            ("rq10", "指甲剪"), ("rq11", "小鏡子")]),
-        ("電器", [("rt1", "韓國轉接頭"), ("rt2", "手錶充電器"), ("rt3", "自拍棒")]),
-    ]),
+# ── 伴手禮。來源是行前整理的 Excel 採買清單，備註改寫成同事也看得懂的版本。
+#    欄位：id、類別、標記（濟州特有／濟州主題；空字串是韓國通用）、品項、韓文／品牌、哪裡買、
+#    行程、可否帶回台灣（可／當地吃／當地喝／不可）、預估價格、Naver 圖片搜尋字、參考文章網址。
+#    可否帶回不是「可」的，只列在「在當地吃的」；其餘依類別列在「可選的清單」。──
+SHOP = [
+    ('s1', '零食', '濟州特有', '橘子巧克力', '감귤 초콜릿', '東門市場、機場', 'D1、D5', '小包裝，分送同事最方便', '可', '₩3,000–10,000', '제주 감귤 초콜릿', ''),
+    ('s2', '零食', '濟州特有', '漢拿峰／柑橘餅乾', '한라봉 쿠키', '市場、機場', 'D1、D2、D5', '適合分送', '可', '₩5,000–12,000', '제주 한라봉 쿠키', ''),
+    ('s3', '零食', '濟州特有', '漢拿山造型奶油酥餅', '한라산과자점', '機場樂天免稅店', 'D5', '原味、巧克力、柑橘、抹茶四種口味；盒子設計好看，適合送人', '可', '₩10,000–18,000', '한라산과자점 버터쇼트브레드', 'https://www.funliday.com/posts/?p=107588'),
+    ('s4', '零食', '濟州特有', 'Mongle 雲朵餅乾', '몽그레', '機場樂天免稅店', 'D5', '雲朵造型、盒子可愛', '可', '₩10,000–18,000', '몽그레 구름과자 제주', 'https://www.funliday.com/posts/?p=107588'),
+    ('s5', '零食', '濟州特有', 'JEJU BASALT 火山石麵包', 'JEJU BASALT', '機場樂天免稅店', 'D5', '外型像玄武岩；麵包，保存期限短', '可', '₩3,000–5,000／個', '제주 현무암빵', 'https://www.funliday.com/posts/?p=107588'),
+    ('s6', '零食', '濟州特有', 'Paris Baguette 濟州心意夾心餅', '제주마음샌드', '機場出境後', 'D5', '花生、漢拿峰兩款；據說市區買不到，熱門款，看到就買', '可', '₩15,000–20,000／10 入', '제주마음샌드', 'https://www.funliday.com/posts/?p=107588'),
+    ('s7', '零食', '濟州特有', '青春 Oranda 手作米果', '청춘오란다', '東門市場本店（塔洞）', 'D1', '柚子、牛島花生、海苔等五種口味，可試吃', '可', '₩5,000–15,000', '청춘오란다 동문시장', 'https://www.trvlogue.com/zh-Hant/jeju-dongmun-market-oranda-review'),
+    ('s8', '零食', '濟州特有', '牛島花生零食', '우도 땅콩', '市場、機場', 'D1、D2、D5', '牛島以花生聞名', '可', '₩3,000–10,000', '우도 땅콩 과자', ''),
+    ('s9', '零食', '濟州特有', "O'sulloc 綠茶抹醬", '오설록', '雪綠茶園', 'D2', '含乳製品，注意保存期限', '可', '₩8,000–13,000', '오설록 녹차 밀크 스프레드', ''),
+    ('s10', '零食', '濟州特有', 'Yum Yum Jeju 青橘果醬', 'Yum Yum Jeju', '機場樂天免稅店', 'D5', '玻璃罐，放託運', '可', '₩8,000–15,000', '얌얌제주 청귤잼', 'https://www.funliday.com/posts/?p=107588'),
+    ('s11', '零食', '濟州特有', '柑橘果醬／柚子茶類', '감귤잼', '東門市場、偶來市場', 'D1、D2', '玻璃罐，放託運', '可', '₩5,000–15,000', '제주 감귤잼', ''),
+    ('s12', '零食', '濟州特有', 'Omegi 年糕', '할머니떡집 오메기떡', '偶來市場 奶奶的年糕店（할머니떡집）', 'D2', '元祖奶奶年糕，好吃；很快壞，建議在當地吃', '當地吃', '₩1,500–3,000／個', '서귀포 올레시장 할머니떡집 오메기떡', ''),
+    ('s13', '零食', '', '韓國海苔', '양반、비비고', '超市、便利商店', 'D1–D2 晚上', '輕、便宜，超市最划算', '可', '₩3,000–8,000', '양반김 비비고 김', ''),
+    ('s14', '零食', '', 'HBAF 杏仁', 'HBAF', '超市（₩4,400）、便利商店、機場', '全程', '超市比便利商店便宜；口味多：蜂蜜奶油、芥末、大蒜麵包、辣炒年糕、火辣雞、焦糖；台灣網購一包 120 g 約 NT$139', '可', '₩4,400', 'HBAF 허니버터 아몬드', ''),
+    ('s15', '零食', '', '烏龜餅乾（玉米口味）', '꼬북칩', '超市（₩1,190）、便利商店', '全程', '韓國國民零食；台灣也買得到，但韓國超市很便宜', '可', '₩1,190', '꼬북칩 콘스프맛', ''),
+    ('s16', '零食', '', 'Orion 水果剝皮軟糖', '오리온', '超市', 'D1–D2 晚上', '近年熱門', '可', '₩1,500–3,000', '오리온 까먹는 젤리', 'https://www.beauty321.com/post/67956'),
+    ('s17', '零食', '', 'Market O 布朗尼、CW 巧克力麻糬餅乾', '마켓오、CW', '超市（Market O ₩4,580）', 'D1–D2 晚上', '適合分送', '可', '₩4,580', '마켓오 리얼브라우니', 'https://www.beauty321.com/post/67956'),
+    ('s18', '零食', '', 'PEPERO 巧克力棒', '빼빼로', '超市（₩1,440）', 'D1–D2 晚上', '便宜、口味多，適合分送', '可', '₩1,440', '빼빼로', ''),
+    ('s19', '零食', '', '抹茶布朗尼', '말차 브라우니', '超市', 'D1–D2 晚上', '超市推薦品', '可', '₩3,000–6,000', '말차 브라우니 마트', ''),
+    ('s20', '零食', '', '鹽可頌（零食包裝）', '소금빵', '超市', 'D1–D2 晚上', '超市推薦品；若是麵包類保存期限短', '可', '₩2,000–5,000', '소금빵 과자', ''),
+    ('s21', '零食', '', 'LOTTE Zero 零糖系列', '롯데 제로', '超市、便利商店', '全程', '蛋糕、薄荷糖等', '可', '₩1,500–4,000', '롯데 제로 초코파이', 'https://www.beauty321.com/post/67956'),
+    ('s22', '零食', '', 'Cooling Candy 咖啡涼糖（Espresso／Americano）', '에스프레소·아메리카노 쿨링캔디', 'CU 便利商店', '全程', '約 ₩3,800／盒；台灣蝦皮約 NT$110，韓國買略便宜；木糖醇多別一次吃太多', '可', '₩3,800', '에스프레소 쿨링캔디', 'https://geniet.co.kr/review/842718'),
+    ('s23', '零食', '', '其他咖啡涼糖系列', 'IMINT、Coffee Town、MGC、Coffee Bean、AMOS', 'CU、GS25、Olive Young', '全程', 'IMINT 抹茶拿鐵、Coffee Town 柑橘咖啡口味比較特別；MGC 款標示中國代工', '可', '₩3,000–5,000', '아이민트 자일리톨 커피캔디', ''),
+    ('s24', '零食', '濟州特有', '乾燥濟州橘片巧克力', '보석귤 초코에퐁당', '偶來市場（4 包 ₩10,000）、紀念品店、機場', '全程', '100% 濟州橘子＋黑巧克力，35 g 小包；加工品可帶回', '可', '₩10,000／4 包', '보석귤 초코에퐁당', ''),
+    ('s25', '零食', '濟州特有', '濟州柑橘軟糖', '제주 감귤 젤리 말삭말삭하G', '超市、紀念品店', '全程', '含濟州柑橘濃縮汁，90 g；輕、適合分送', '可', '₩3,000–6,000', '제주 감귤 젤리 말삭말삭하G', ''),
+    ('s26', '喝的', '濟州特有', "O'sulloc 茶包禮盒", '오설록', '雪綠茶園', 'D2', '送長輩很適合', '可', '₩15,000–50,000', '오설록 티 선물세트', ''),
+    ('s27', '喝的', '濟州特有', '漢拏山燒酒', '한라산 소주', '超市、便利商店', '全程', '濟州在地燒酒；酒類回台 >1.5 L 要申報', '可', '₩1,800–3,000／瓶', '한라산 소주', ''),
+    ('s28', '喝的', '濟州特有', 'GYULMEDAL 100% 柑橘汁', '귤메달', '機場樂天免稅店', 'D5', '冷壓果汁，需冷藏者在當地喝', '當地喝', '₩3,000–6,000', '귤메달 착즙주스', 'https://www.funliday.com/posts/?p=107588'),
+    ('s29', '喝的', '濟州特有', 'JEJU BASALT 柑橘濾掛咖啡', 'JEJU BASALT', '機場樂天免稅店', 'D5', '輕、不怕壓', '可', '₩10,000–20,000／盒', '제주 감귤 드립백 커피', 'https://www.funliday.com/posts/?p=107588'),
+    ('s30', '喝的', '', '柚子茶', '유자차', '超市', 'D1–D2 晚上', '玻璃罐放託運', '可', '₩6,000–12,000', '유자차', ''),
+    ('s31', '喝的', '', 'Maxim 即溶咖啡', '맥심', '超市', 'D1–D2 晚上', '便宜好分送', '可', '₩5,000–15,000', '맥심 모카골드', ''),
+    ('s32', '保養', '濟州特有', 'innisfree 濟州小屋限定商品', '이니스프리', 'innisfree 濟州小屋', 'D2', '其他門市買不到', '可', '₩10,000–40,000', '이니스프리 제주하우스 한정', ''),
+    ('s33', '保養', '濟州主題', 'innisfree 綠茶、火山泥系列', '이니스프리', 'innisfree、Olive Young', 'D2、蓮洞', '原料來自濟州，全國都有賣', '可', '₩10,000–35,000', '이니스프리 그린티 화산송이', ''),
+    ('s34', '保養', '濟州特有', '濟州馬油霜', '제주 마유', '市場、紀念品店', 'D1、D2', '濟州傳統保養品', '可', '₩10,000–30,000', '제주 마유크림', ''),
+    ('s35', '保養', '濟州主題', '山茶花系列保養品', '동백', '紀念品店、機場', '全程', '濟州代表花', '可', '₩10,000–30,000', '제주 동백 화장품', ''),
+    ('s36', '保養', '濟州特有', 'UGLY PROOF 濟州限定香水', 'UGLY PROOF', '機場樂天免稅店', 'D5', '熱門款 Zesty Infusion', '可', '₩40,000–80,000', '어글리프루프 향수 제주', 'https://www.funliday.com/posts/?p=107588'),
+    ('s37', '保養', '濟州特有', 'Mandarin Jeju 橘子香氛', 'Mandarin Jeju', '蓮洞', 'D1–D3', '濟州品牌', '可', '₩15,000–50,000', '만다린제주 향수', 'https://www.lemon8-app.com/@ashlynnchongg/7588548226635022866?region=sg'),
+    ('s38', '保養', '濟州特有', 'UMU 手工皂', 'UMU', '濟州機場', 'D5', '薄荷柑橘、綠茶等香型；放託運', '可', '₩8,000–15,000', '우무 비누 제주', 'https://www.funliday.com/posts/?p=107588'),
+    ('s39', '保養', '', '面膜、防曬、精華、護手霜', '올리브영、다이소', 'Olive Young、Daiso', 'D1–D2 晚上', '先看排行榜與 1+1；Daiso 平價版', '可', 'Olive Young ₩10,000–30,000；Daiso ₩1,000–5,000', '올리브영 랭킹', ''),
+    ('s40', '保養', '', 'OBGE 男士自然遮瑕粉底棒', '오브제', 'Olive Young', 'D1–D2 晚上', '男士用，素顏感遮瑕', '可', '₩20,000–32,000', '오브제 내추럴 커버 파운데이션', ''),
+    ('s69', '保養', '', 'innisfree 控油礦物蜜粉（No-Sebum）', '이니스프리 노세범 미네랄 파우더', 'innisfree 門市（含濟州小屋）', 'D2、蓮洞', '5 g 小罐控油散粉；粉狀不算液體，可放隨身', '可', '約 ₩9,000', '이니스프리 노세범 미네랄 파우더', ''),
+    ('s70', '保養', '', 'OBGE 去黑頭粉刺產品', '오브제 블랙헤드', 'Olive Young', 'D1–D2 晚上', '男士保養品牌，例如黑頭磨砂膏，現場比較', '可', '以店內標價為準', '오브제 블랙헤드', ''),
+    ('s41', '保養', '', 'W.DRESSROOM 衣物香氛噴霧', '더블유드레스룸', 'Olive Young', 'D1–D2 晚上', '液體放託運；選非壓力瓶的按壓款', '可', '₩8,000–20,000', '더블유드레스룸 드레스퍼퓸', ''),
+    ('s42', '保養', '', 'FORMENT 香水（Cotton Hug 皂香）', '포맨트', 'Olive Young', 'D1–D2 晚上', '乾淨皂香，男女都適合', '可', '₩20,000–45,000', '포맨트 코튼허그 향수', ''),
+    ('s43', '保養', '', 'TAMBURINS／NONFICTION 香水', '탬버린즈、논픽션', '品牌門市、免稅店', 'D1–D3', '韓系小眾香，價位較高，自用或送重要的人', '可', '11 ml 約 ₩30,000–35,000；50 ml 約 ₩100,000–160,000', '탬버린즈 퍼퓸', 'https://fruitsfamily.com/brand/Tamburins'),
+    ('s44', '小物・服飾', '濟州特有', '石頭爺爺小物（磁鐵、鑰匙圈、公仔）', '돌하르방', '市場、機場', '全程', '最有濟州代表性', '可', '₩3,000–15,000', '돌하르방 기념품', ''),
+    ('s45', '小物・服飾', '濟州特有', '橘子帽、橘子髮夾', '귤 모자', '市場、景點', '全程', '拍照應景', '可', '₩10,000–20,000', '제주 귤모자', ''),
+    ('s46', '小物・服飾', '濟州特有', '阿珠媽橘子背心、海女商品', '해녀', '東門市場、偶來市場', 'D1、D2', '送朋友效果好', '可', '₩10,000–25,000', '제주 귤 조끼 기념품', 'https://uptogo.com.tw/旅遊/濟州島好買衣服嗎？/'),
+    ('s47', '小物・服飾', '濟州特有', '星巴克濟州限定隨行杯、馬克杯', '스타벅스 제주', '松堂星巴克 R 店', 'D4', '有濟州城市杯（漢拿峰主題）與松堂門市限定款；台灣 eBay 轉賣價很高', '可', '₩20,000–45,000', '스타벅스 제주 한정 머그', ''),
+    ('s48', '小物・服飾', '濟州特有', '濟州限定 Miffy 周邊', 'My Jeju Gift', '蓮洞', 'D1–D3', '只有濟州有', '可', '₩5,000–30,000', '마이제주기프트 미피', 'https://www.lemon8-app.com/@ashlynnchongg/7588548226635022866?region=sg'),
+    ('s49', '小物・服飾', '濟州特有', 'Island Project「Finding Jeju」選物', '아일랜드 프로젝트', '新羅免稅店（蓮洞）', 'D1–D3', '文創質感', '可', '₩5,000–30,000', '아일랜드프로젝트 제주', 'https://uptogo.com.tw/旅遊/濟州島好買衣服嗎？/'),
+    ('s50', '小物・服飾', '濟州特有', 'Ceekee 插畫 T 恤', '씨키', '涯月一帶分店', 'D3', '濟州插畫風格', '可', '₩25,000–40,000', '씨키 제주 티셔츠', 'https://uptogo.com.tw/旅遊/濟州島好買衣服嗎？/'),
+    ('s51', '小物・服飾', '', '韓系服飾、帽子', '', '七星路、蓮洞', 'D1–D3', '款式多、價格好', '可', '₩15,000–60,000', '제주 칠성로 쇼핑', ''),
+    ('s52', '小物・服飾', '', 'SPAO 基本款與 IP 聯名', '스파오', '蓮洞、七星路', 'D1–D3', '大學 T、寬版長褲、針織衫；常有寶可夢、蠟筆小新聯名', '可', '₩10,000–40,000', '스파오 콜라보', ''),
+    ('s53', '小物・服飾', '', 'ABC-MART Grand Stage 樂福鞋', 'ABC마트 그랜드스테이지', '蓮洞', 'D1–D3', '皮鞋、厚底樂福鞋款式比一般門市齊全', '可', '₩60,000–150,000', 'ABC마트 그랜드스테이지 로퍼', ''),
+    ('s54', '當地吃喝', '濟州特有', '黑豬肉串燒', '흑돼지 꼬치구이', '東門市場、偶來市場', 'D1、D2', '市場人氣小吃；肉類不能帶回', '當地吃', '₩5,000–10,000', '동문시장 흑돼지 꼬치', ''),
+    ('s55', '當地吃喝', '濟州特有', '石頭爺爺造型瓶柑橘汁', '돌하르방 감귤주스', '東門市場、偶來市場', 'D1、D2', '現榨漢拿峰／柑橘汁；喝完空瓶可留作紀念', '當地喝', '₩3,000–15,000', '돌하르방 감귤주스', ''),
+    ('s56', '當地吃喝', '濟州特有', '老奶奶橘子麻糬', '할머니 귤 찹쌀떡', '偶來市場', 'D2', '偶來市場吃的比東門市場多；26 號攤位很多試吃＋贈品', '當地吃', '₩2,000–5,000', '올레시장 귤 찹쌀떡', ''),
+    ('s57', '當地吃喝', '', '老奶奶糖餅', '호떡', '東門市場 1 號門', 'D1', '只收現金', '當地吃', '₩1,500–3,000', '동문시장 호떡', ''),
+    ('s58', '當地吃喝', '', '鹽麵包冰淇淋（솔브레）', '솔브레', '東門市場 3 號門入口', 'D1', '店家位置見下方 Naver 地圖連結', '當地吃', '₩5,000', '솔브레 동문시장 소금빵 아이스크림', 'https://m.place.naver.com/place/1043390483/home'),
+    ('s59', '當地吃喝', '濟州特有', '橘子炸雞（아방 닭강정）', '아방 닭강정', '東門夜市攤販', 'D1', '含雞肉，不能帶回', '當地吃', '₩5,000–15,000', '아방 닭강정 동문시장', ''),
+    ('s60', '當地吃喝', '濟州特有', '橘子雞蛋糕', '귤빵', '市場、景點', 'D1、D2', '橘子造型，內餡柑橘卡士達', '當地吃', '₩3,000–5,000', '제주 귤빵', ''),
+    ('s61', '當地吃喝', '', '辣炒年糕、魚板', '떡볶이、어묵', '東門市場', 'D1', '市場必吃', '當地吃', '₩3,000–6,000', '동문시장 떡볶이', ''),
+    ('s62', '當地吃喝', '', '便利商店玫瑰辣炒年糕', '로제 떡볶이', 'CU、GS25', '全程', '冷藏區微波即食，飯店宵夜', '當地吃', '₩3,500–5,000', '편의점 로제 떡볶이', ''),
+    ('s63', '當地吃喝', '', '生檸檬／葡萄柚 Highball 罐', '생레몬 하이볼', 'CU、GS25', '全程', '開罐後果片會浮上來；酒精約 5–8%', '當地喝', '₩3,000–5,000', '생레몬 하이볼', ''),
+    ('s64', '當地吃喝', '', '水果馬格利（栗子、青葡萄、香蕉）', '막걸리', 'CU、GS25', '全程', '冷藏酒，在當地喝', '當地喝', '₩2,000–4,000', '밤 막걸리', ''),
+    ('s65', '當地吃喝', '', '漢拿峰冰搖茶等濟州限定飲品', '스타벅스 제주 음료', '松堂星巴克 R 店', 'D4', '只在濟州門市點得到', '當地喝', '₩6,500–8,500', '스타벅스 제주 한정 음료', ''),
+    ('s66', '不能帶回', '濟州特有', '新鮮橘子、漢拏峰', '감귤、한라봉', '東門市場', 'D1', '生鮮水果禁止帶回台灣', '不可', '₩5,000–20,000／袋', '제주 감귤 한라봉', ''),
+    ('s67', '不能帶回', '濟州特有', 'UMU 布丁', 'UMU', '濟州機場', 'D5', '含蛋與乳製品又要冷藏，在當地吃', '不可', '₩5,000–8,000', '우무 푸딩', 'https://www.funliday.com/posts/?p=107588'),
+    ('s68', '不能帶回', '', '韓國泡麵（多數）', '라면', '超市、便利商店', '全程', '調味粉多含肉類，入境台灣禁止；買前看成分', '不可', '₩1,000–2,000／包', '라면', ''),
 ]
 
-# ── 伴手禮（可勾選）。欄位：id、類別、品項、行程中哪裡買、備註（warn=True 的備註標紅）──
-SHOP = [
-    ("sj1", "柑橘", "橘子巧克力", "D1 東門市場、D5 機場", "分送同事最方便", False),
-    ("sj2", "柑橘", "漢拏峰果醬／柑橘茶", "D1 東門市場、D2 偶來市場", "玻璃罐放託運", False),
-    ("sj3", "柑橘", "新鮮橘子、漢拏峰", "D1 東門市場", "在韓國吃完，不能帶回台灣", True),
-    ("sj4", "綠茶", "O'sulloc 茶包禮盒", "D2 雪綠茶博物館", "", False),
-    ("sj5", "綠茶", "O'sulloc 綠茶抹醬", "D2 雪綠茶博物館", "乳製品，留意保存期限", False),
-    ("sj6", "保養", "innisfree 保養品", "D2 innisfree 濟州小屋", "", False),
-    ("sj7", "零食", "韓國海苔", "便利商店、機場", "", False),
-    ("sj8", "零食", "HBAF 蜂蜜奶油杏仁", "便利商店、機場", "", False),
-    ("sj9", "紀念品", "石頭爺爺小物", "市場、機場", "", False),
-    ("sj10", "泡麵", "韓國泡麵", "便利商店", "多數含肉類調味粉，入境台灣禁止", True),
-]
+# 我自己要買的，照這個順序列。這些品項也照常出現在「可選的清單」。
+MINE = ["s1", "s19", "s22", "s24", "s69", "s40", "s70", "s44"]
+
+SHOP_CATS = ["零食", "喝的", "保養", "小物・服飾"]
 
 def esc_attr(s):
     return s.replace('"', "&quot;")
@@ -567,6 +591,46 @@ STYLE = """<style>
   .jeju-check input { accent-color: var(--accent); flex: 0 0 1.5rem; height: 1.5rem; margin: 0; width: 1.5rem; }
   .jeju-check.done { background: var(--sunk); color: var(--muted); }
   .jeju-check.done span { text-decoration: line-through; }
+
+  /* ── 伴手禮：三份清單切換＋可展開的品項卡 ── */
+  .jeju-seg { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.4rem; }
+  .jeju-seg button {
+    background: transparent; border: 1px solid var(--border); border-radius: 999px; color: var(--muted);
+    cursor: pointer; font-family: inherit; font-size: 1.3rem; font-weight: 500; min-height: 3.6rem; padding: .5rem 1.3rem;
+  }
+  .jeju-seg button b { font-variant-numeric: tabular-nums; font-weight: 500; margin-left: .5rem; opacity: .75; }
+  .jeju-seg button:hover { border-color: var(--accent); color: var(--accent); }
+  .jeju-seg button[aria-pressed="true"] { background: var(--soft); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+  .jeju-lead { color: var(--muted); font-size: 1.3rem; line-height: 1.7; margin: 0 0 1.2rem; }
+  .jeju-lead .jeju-tag { margin: 0 .2rem; }
+  .jeju-tag.plain { background: var(--sunk); color: var(--muted); }
+  .jeju-items { display: flex; flex-direction: column; gap: .6rem; }
+  .jeju-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .jeju-item > summary { align-items: center; cursor: pointer; display: flex; gap: 1rem; list-style: none; padding: 1rem 1.2rem; }
+  .jeju-item > summary::-webkit-details-marker { display: none; }
+  .jeju-item > summary:hover { background: var(--stripe); }
+  .jeju-item[open] > summary { background: var(--sunk); }
+  .jeju-item > summary .b { flex: 1 1 auto; min-width: 0; }
+  .jeju-item .n { display: block; font-size: 1.5rem; font-weight: 700; line-height: 1.45; }
+  .jeju-item .n .jeju-tag { margin-left: .3rem; }
+  .jeju-item .m { color: var(--muted); display: block; font-size: 1.3rem; line-height: 1.5; margin-top: .2rem; }
+  .jeju-item .chev { color: var(--muted); flex: 0 0 1.6rem; transition: transform .2s; }
+  .jeju-item[open] .chev { transform: rotate(180deg); }
+  .jeju-itembody { border-top: 1px solid var(--border); padding: 1rem 1.2rem 1.3rem; }
+  .jeju-kv { display: grid; font-size: 1.3rem; gap: .4rem 1.2rem; grid-template-columns: 7.2rem minmax(0, 1fr); line-height: 1.6; margin: 0; }
+  .jeju-kv dt { color: var(--muted); }
+  .jeju-kv dd { margin: 0; }
+  .jeju-links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.1rem; }
+  .jeju-links a {
+    border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-size: 1.3rem;
+    font-weight: 700; padding: .5rem 1.2rem; text-decoration: none;
+  }
+  .jeju-links a:hover { background: var(--soft); }
+  /* 勾選框是卡片左邊獨立的一格，不放進 <summary>，點勾選才不會順便展開卡片 */
+  .jeju-buy { align-items: stretch; display: flex; gap: .6rem; }
+  .jeju-buy > .jeju-check { align-items: flex-start; flex: 0 0 4.6rem; justify-content: center; padding: 2rem 0 0; }
+  .jeju-buy.done .jeju-item { opacity: .55; }
+  .jeju-buy.done .jeju-item .n { text-decoration: line-through; }
 
 
   /* ── 說明條 ── */
@@ -1211,7 +1275,7 @@ def p_taiwan():
 
 def p_out():
     return panel("out", """<h3>去程行李清單</h3>
-<p>勾選狀態存在這台裝置的瀏覽器裡，關掉再打開還在。去程與回程各自獨立計數。</p>
+<p>勾選狀態存在這台裝置的瀏覽器裡，關掉再打開還在。</p>
 """ + render_checklist("jeju2026Out", OUT_LIST) + """
 <div class="jeju-note">
   <b>行動電源只能放隨身包，標示要看得到 Wh，而且要 100 Wh 以內。</b>充電孔貼絕緣膠帶、每顆各自裝袋。
@@ -1219,67 +1283,106 @@ def p_out():
 </div>""")
 
 
-def p_back():
-    return panel("back", """<h3>回程行李清單</h3>
-<p>比去程多了一塊「伴手禮」，那是買回來的東西要放的地方。託運仍是合計 20 公斤，買之前先想好重量。</p>
-""" + render_checklist("jeju2026Back", BACK_LIST) + """
-<div class="jeju-note">
-  <b>液體規則兩層都要顧。</b>隨身每容器 &lt; 100 ml、總量 &lt; 1 L；託運總液體 &lt; 5 L，
-  酒單獨還有 1.5 公升的申報線。果醬、柑橘茶這類玻璃罐一律放託運。
-</div>""")
+BRING = {"可": "可以", "當地吃": "在當地吃完", "當地喝": "在當地喝完", "不可": "不行"}
+
+
+def shop_item(it, check=False):
+    """一個品項＝一張可展開的卡。收合時只有品名、標記與「哪裡買・行程」，
+    點開才看韓文、價格、能不能帶回台灣、備註與參考連結，手機上一屏才放得下夠多項。"""
+    cid, cat, mark, name, ko, where, days, note, ok, price, q, art = it
+    tags = ""
+    if mark:
+        tags += ' <span class="jeju-tag %s">%s</span>' % ("info" if mark == "濟州特有" else "plain", mark)
+    if ok == "不可":
+        tags += ' <span class="jeju-tag warn">不能帶回</span>'
+    kv = [("韓文／品牌", ko), ("哪裡買", where), ("行程", days), ("預估價格", price),
+          ("帶回台灣", ('<span class="jeju-tag warn">不行</span>' if ok == "不可" else BRING[ok])),
+          ("備註", note)]
+    links = []
+    if q:
+        links.append('<a href="https://search.naver.com/search.naver?where=image&amp;query=%s" '
+                     'target="_blank" rel="noopener">參考圖片</a>' % quote(q))
+    if art:
+        links.append('<a href="%s" target="_blank" rel="noopener">%s</a>' % (
+            esc_attr(art), "Naver 地圖" if "place.naver.com" in art else "參考文章"))
+    body = ('<dl class="jeju-kv">%s</dl>' % "".join(
+        "<dt>%s</dt><dd>%s</dd>" % (k, v) for k, v in kv if v))
+    if links:
+        body += '<div class="jeju-links">%s</div>' % "".join(links)
+    det = ('<details class="jeju-item"><summary><span class="b"><span class="n">%s%s</span>'
+           '<span class="m">%s・%s</span></span>%s</summary>'
+           '<div class="jeju-itembody">%s</div></details>' % (name, tags, where, days, CHEV, body))
+    if not check:
+        return "  " + det
+    # 勾選框放在 <summary> 外面，點勾選不會順便把卡片展開
+    return ('  <div class="jeju-buy"><label class="jeju-check" data-id="%s" data-group="buy">'
+            '<input type="checkbox" aria-label="%s"></label>%s</div>' % (cid, esc_attr(name), det))
 
 
 def p_souvenir():
-    rows = []
-    for cid, cat, item, where, note, warn in SHOP:
-        note_html = ('<span class="jeju-tag warn">%s</span>' % note) if (note and warn) else note
-        rows.append(
-            '        <tr><td><label class="jeju-check" data-id="%s" data-group="shop" '
-            'style="border:0;background:transparent;min-height:0;padding:0">'
-            '<input type="checkbox"><span class="sr"></span></label></td>'
-            '<td style="color:var(--muted)">%s</td><td>%s</td>'
-            '<td style="color:var(--muted)">%s</td>'
-            '<td style="color:var(--muted)">%s</td></tr>' % (cid, cat, item, where, note_html))
-    shop = ('<div class="jeju-checklist" data-key="jeju2026Shop">\n'
-            '  <div class="jeju-progress">\n'
-            '    <div class="jeju-bar"><i data-fill style="width:0"></i></div>\n'
-            '    <strong class="jeju-count"><span data-count>0</span> / %d</strong>\n'
-            '    <button class="jeju-reset" type="button" data-reset>清空</button>\n'
-            '  </div>\n'
-            '  <div class="jeju-tw" style="margin-top:1rem">\n'
-            '    <table class="jeju-table">\n'
-            '      <thead><tr><th style="width:3.4rem"></th><th style="width:7.2rem">類別</th><th>品項</th>'
-            '<th style="width:16rem">行程中哪裡買</th><th style="width:17rem">備註</th></tr></thead>\n'
-            '      <tbody>\n%s\n      </tbody>\n    </table>\n  </div>\n</div>' % (len(SHOP), "\n".join(rows)))
+    by_id = dict((it[0], it) for it in SHOP)
+    local = [it for it in SHOP if it[8] != "可"]
+    mine = [by_id[i] for i in MINE]
+    n_opt = len([it for it in SHOP if it[8] == "可"])
+
+    buy = ('<div class="jeju-checklist" data-key="jeju2026Buy">\n'
+           '  <div class="jeju-progress">\n'
+           '    <div class="jeju-bar"><i data-fill style="width:0"></i></div>\n'
+           '    <strong class="jeju-count"><span data-count>0</span> / %d</strong>\n'
+           '    <button class="jeju-reset" type="button" data-reset>清空</button>\n'
+           '  </div>\n'
+           '  <div class="jeju-items" style="margin-top:1rem">\n%s\n  </div>\n</div>'
+           % (len(mine), "\n".join(shop_item(it, True) for it in mine)))
+
+    opt = []
+    for cat in SHOP_CATS:
+        items = [it for it in SHOP if it[8] == "可" and it[1] == cat]
+        opt.append('<h4 class="jeju-h4">%s <em>%d 項</em></h4>' % (cat, len(items)))
+        opt.append('<div class="jeju-items">\n%s\n</div>' % "\n".join(shop_item(it) for it in items))
+
+    seg = [("local", "在當地吃的", len(local)), ("buy", "要買的清單", len(mine)), ("all", "可選的清單", n_opt)]
     return panel("souvenir", """<h3>伴手禮採買</h3>
 <p>跟團行程沒有安排大型超市，能買東西的時段是 D1 東門市場、D2 雪綠茶園與偶來市場、D3 蓮洞與神話世界，
-最後是 D5 的濟州機場。柑橘類與綠茶類在前兩天就能買齊。</p>
+最後是 D5 的濟州機場。點品項可以展開看韓文名稱、價格與參考圖片，拿給店員看最快。</p>
 
-<h4 class="jeju-h4">按地點買什麼</h4>
-<div class="jeju-g3">
-  <div class="jeju-card" style="border-top:3px solid var(--d1)">
-    <div class="k">濟州市　D1 東門市場／D3 蓮洞</div>
-    <div class="d" style="color:var(--text)">橘子巧克力、柑橘果醬與柑橘茶、石頭爺爺小物；蓮洞有藥妝與韓系服飾</div>
-  </div>
-  <div class="jeju-card" style="border-top:3px solid var(--d2)">
-    <div class="k">西歸浦　D2 雪綠茶園／偶來市場</div>
-    <div class="d" style="color:var(--text)">O'sulloc 茶包禮盒、綠茶抹醬、innisfree 保養品、市場裡的柑橘加工品</div>
-  </div>
-  <div class="jeju-card" style="border-top:3px solid var(--d5)">
-    <div class="k">收尾　D5 濟州機場</div>
-    <div class="d" style="color:var(--text)">漏買的橘子巧克力、海苔、零食；剩下的韓元零錢在這裡用掉</div>
-  </div>
+<div class="jeju-seg">
+""" + "\n".join('  <button type="button" data-shop="%s" aria-pressed="false">%s<b>%d</b></button>' % s for s in seg) + """
 </div>
 
-<h4 class="jeju-h4">採買清單 <em>可勾選</em></h4>
-""" + shop + """
+<div data-shopview="local">
+<p class="jeju-lead">只能在韓國吃喝、不能或不適合帶回台灣的：現做小吃、冷藏飲料、生鮮水果，還有含肉的泡麵。</p>
+<div class="jeju-items">
+""" + "\n".join(shop_item(it) for it in local) + """
+</div>
+</div>
+
+<div data-shopview="buy" hidden>
+<p class="jeju-lead">我自己要買的。勾選狀態只存在你這台裝置的瀏覽器裡，同事打開來是空的，可以拿來當自己的清單。</p>
+""" + buy + """
+</div>
+
+<div data-shopview="all" hidden>
+<p class="jeju-lead">能帶回台灣的品項都在這裡，包含「要買的清單」那幾樣。
+<span class="jeju-tag info">濟州特有</span> 是濟州特產或主要只在濟州賣；
+<span class="jeju-tag plain">濟州主題</span> 跟濟州有關，但首爾或網路也買得到；沒標的是韓國到處都有。</p>
+""" + "\n".join(opt) + """
+</div>
 
 <div class="jeju-note">
-  <b>退稅。</b>貼有 Tax Free／Tax Refund 標誌的店家，結帳時出示護照就能辦理；部分店家可當場扣稅，
-  其餘在機場辦理。實際門檻以店家與現場公告為準。
+  <b>價格是估計範圍，</b>只供預算參考，實際以店內標價為準。偶來市場吃的比東門市場多，但伴手禮價格比東門市場高；
+  東門市場的老奶奶糖餅只收現金。
 </div>
 <div class="jeju-note">
-  <b>回台免稅額每人 NT$20,000。</b>肉製品、新鮮柑橘、含肉泡麵都不能帶回台灣，詳見「入境台灣」分頁。
+  <b>退稅。</b>貼有 Tax Free／Tax Refund 標誌的店家，同店同日滿 ₩15,000 可退稅，結帳時出示實體護照；
+  部分店家可當場扣稅（單筆上限 ₩1,000,000），其餘在機場辦理。
+</div>
+<div class="jeju-note">
+  <b>打包。</b>託運合計 20 公斤，買之前先想好重量。果醬、柚子茶這類玻璃罐與瓶裝保養品放託運；
+  隨身行李每容器 &lt; 100 ml、總量 &lt; 1 L。酒類超過 1.5 公升要申報。
+</div>
+<div class="jeju-note">
+  <b>回台免稅額每人 NT$20,000，一般食品總重 6 公斤以內。</b>生鮮水果、肉製品、含肉調味粉的泡麵都不能帶回台灣，
+  詳見「入境台灣」分頁。
 </div>""")
 
 
@@ -1395,9 +1498,9 @@ SCRIPT = r"""<script>
             on = !!state[id];
           box.checked = on;
           lbl.classList.toggle('done', on);
-          /* 藥妝表的勾選格塞在 <td> 裡，整列一起劃掉才看得出來 */
-          var tr = lbl.closest('tr');
-          if (tr) { tr.style.opacity = on ? '.5' : ''; }
+          /* 伴手禮的勾選框在卡片旁邊，整列一起變淡、劃掉才看得出來 */
+          var row = lbl.closest('.jeju-buy');
+          if (row) { row.classList.toggle('done', on); }
           gTotal[g] = (gTotal[g] || 0) + 1;
           if (on) { done++; gDone[g] = (gDone[g] || 0) + 1; }
         });
@@ -1430,6 +1533,31 @@ SCRIPT = r"""<script>
 
       refresh();
     });
+
+    /* 伴手禮分頁裡的三份清單，一次只顯示一份，記住上次看的那份 */
+    var SHOP_KEY = 'jejuShopViewV1',
+      shopBtns = $$('[data-shop]'),
+      shopViews = $$('[data-shopview]');
+
+    function showShop(v) {
+      if (!shopViews.some(function (el) { return el.getAttribute('data-shopview') === v; })) {
+        v = shopBtns[0].getAttribute('data-shop');
+      }
+      shopViews.forEach(function (el) { el.hidden = el.getAttribute('data-shopview') !== v; });
+      shopBtns.forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-shop') === v ? 'true' : 'false');
+      });
+      try { localStorage.setItem(SHOP_KEY, v); } catch (e) {}
+    }
+
+    shopBtns.forEach(function (b) {
+      b.addEventListener('click', function () { showShop(b.getAttribute('data-shop')); });
+    });
+    if (shopBtns.length) {
+      var shopInit = null;
+      try { shopInit = localStorage.getItem(SHOP_KEY); } catch (e) {}
+      showShop(shopInit);
+    }
 
     /* ────────────────────────────────────────────────
        互動地圖。Leaflet 只在第一次打開這頁時才抓，
@@ -1643,7 +1771,6 @@ def build():
         p_korea(), "",
         p_taiwan(), "",
         p_out(), "",
-        p_back(), "",
         p_souvenir(),
         "</div>",
         "",
@@ -1662,9 +1789,10 @@ if __name__ == "__main__":
     html = build()
     # 這台機器的 stdout 走 cp950，印中文會變亂碼，所以摘要一律用 ASCII。
     n_out = sum(len(x) for _, _, _, subs in OUT_LIST for _, x in subs)
-    n_back = sum(len(x) for _, _, _, subs in BACK_LIST for _, x in subs)
     print("out      : %s" % OUT)
     print("size     : %.1f KB" % (len(html.encode("utf-8")) / 1024.0))
     print("panels   : %d" % len([t for t in TABS if t]))
     print("map pts  : %d" % len([p for p in POINTS if p[7] != TPE1[2]]))
-    print("checkbox : outbound %d / return %d / shop %d" % (n_out, n_back, len(SHOP)))
+    print("checkbox : outbound %d / buy %d" % (n_out, len(MINE)))
+    print("shop     : local %d / optional %d" % (
+        len([it for it in SHOP if it[8] != "可"]), len([it for it in SHOP if it[8] == "可"])))
