@@ -631,6 +631,26 @@ STYLE = """<style>
   .jeju-buy > .jeju-check { align-items: flex-start; flex: 0 0 4.6rem; justify-content: center; padding: 2rem 0 0; }
   .jeju-buy.done .jeju-item { opacity: .55; }
   .jeju-buy.done .jeju-item .n { text-decoration: line-through; }
+  /* 在當地吃的／可選的清單：「要買」星號＋「買了」勾選兩欄。沒標星號時「買了」不能勾 */
+  .jeju-pickhead { color: var(--muted); display: flex; font-size: 1.3rem; font-weight: 700; gap: .5rem; margin-bottom: .5rem; }
+  .jeju-pickhead span { flex: 0 0 4.2rem; text-align: center; }
+  .jeju-pickhead span:last-child { flex: 1 1 auto; padding-left: 1.2rem; text-align: left; }
+  .jeju-pick { align-items: stretch; display: flex; gap: .5rem; }
+  .jeju-pickcell {
+    align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; display: flex; flex: 0 0 4.2rem; justify-content: center; padding-top: 2rem; position: relative;
+  }
+  .jeju-pickcell:hover { border-color: var(--accent); }
+  .jeju-pickcell:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .jeju-pickcell input { accent-color: var(--accent); height: 1.5rem; margin: 0; width: 1.5rem; }
+  .jeju-pickcell .vh { height: 1px; opacity: 0; position: absolute; width: 1px; }
+  .jeju-star { color: var(--muted); display: block; fill: none; height: 1.9rem; margin-top: -.2rem; stroke: currentColor; width: 1.9rem; }
+  .jeju-pick.want .jeju-star { color: var(--accent2); fill: currentColor; }
+  .jeju-pick:not(.want) .jeju-pickcell.got { background: var(--sunk); cursor: default; opacity: .45; }
+  .jeju-pick:not(.want) .jeju-pickcell.got:hover { border-color: var(--border); }
+  .jeju-pick.want .jeju-item { border-color: var(--accent2); }
+  .jeju-pick.done .jeju-item { opacity: .55; }
+  .jeju-pick.done .jeju-item .n { text-decoration: line-through; }
 
 
   /* ── 說明條 ── */
@@ -1286,9 +1306,14 @@ def p_out():
 BRING = {"可": "可以", "當地吃": "在當地吃完", "當地喝": "在當地喝完", "不可": "不行"}
 
 
-def shop_item(it, check=False):
+STAR = ('<svg class="jeju-star" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" aria-hidden="true">'
+        '<polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"></polygon></svg>')
+
+
+def shop_item(it, mode=None):
     """一個品項＝一張可展開的卡。收合時只有品名、標記與「哪裡買・行程」，
-    點開才看韓文、價格、能不能帶回台灣、備註與參考連結，手機上一屏才放得下夠多項。"""
+    點開才看韓文、價格、能不能帶回台灣、備註與參考連結，手機上一屏才放得下夠多項。
+    mode="buy" 左邊加一格勾選（要買的清單）；mode="pick" 左邊加兩格：星號標記要買、買到再勾「買了」。"""
     cid, cat, mark, name, ko, where, days, note, ok, price, q, art = it
     tags = ""
     if mark:
@@ -1312,11 +1337,30 @@ def shop_item(it, check=False):
     det = ('<details class="jeju-item"><summary><span class="b"><span class="n">%s%s</span>'
            '<span class="m">%s・%s</span></span>%s</summary>'
            '<div class="jeju-itembody">%s</div></details>' % (name, tags, where, days, CHEV, body))
-    if not check:
-        return "  " + det
-    # 勾選框放在 <summary> 外面，點勾選不會順便把卡片展開
-    return ('  <div class="jeju-buy"><label class="jeju-check" data-id="%s" data-group="buy">'
-            '<input type="checkbox" aria-label="%s"></label>%s</div>' % (cid, esc_attr(name), det))
+    # 勾選框都放在 <summary> 外面，點勾選不會順便把卡片展開
+    if mode == "buy":
+        return ('  <div class="jeju-buy"><label class="jeju-check" data-id="%s" data-group="buy">'
+                '<input type="checkbox" aria-label="%s"></label>%s</div>' % (cid, esc_attr(name), det))
+    if mode == "pick":
+        return ('  <div class="jeju-pick" data-pick="%s">'
+                '<label class="jeju-pickcell"><input class="vh" type="checkbox" data-want aria-label="要買：%s">%s</label>'
+                '<label class="jeju-pickcell got"><input type="checkbox" data-got aria-label="買了：%s" disabled></label>'
+                '%s</div>' % (cid, esc_attr(name), STAR, esc_attr(name), det))
+    return "  " + det
+
+
+def pick_list(items):
+    """在當地吃的／可選的清單用：欄位標題＋品項，品項左邊是「要買」「買了」兩欄。"""
+    return ('<div class="jeju-pickhead" aria-hidden="true"><span>要買</span><span>買了</span><span>品項</span></div>\n'
+            '<div class="jeju-items">\n%s\n</div>' % "\n".join(shop_item(it, "pick") for it in items))
+
+
+# 「已買 / 要買」進度條，每份清單一條；清空只清這份清單裡的品項
+PICK_PROGRESS = ('<div class="jeju-progress" data-pickstat>\n'
+                 '  <div class="jeju-bar"><i data-fill style="width:0"></i></div>\n'
+                 '  <strong class="jeju-count">已買 <span data-pgot>0</span> / 要買 <span data-pwant>0</span></strong>\n'
+                 '  <button class="jeju-reset" type="button" data-pickreset>清空</button>\n'
+                 '</div>')
 
 
 def p_souvenir():
@@ -1332,13 +1376,13 @@ def p_souvenir():
            '    <button class="jeju-reset" type="button" data-reset>清空</button>\n'
            '  </div>\n'
            '  <div class="jeju-items" style="margin-top:1rem">\n%s\n  </div>\n</div>'
-           % (len(mine), "\n".join(shop_item(it, True) for it in mine)))
+           % (len(mine), "\n".join(shop_item(it, "buy") for it in mine)))
 
     opt = []
     for cat in SHOP_CATS:
         items = [it for it in SHOP if it[8] == "可" and it[1] == cat]
         opt.append('<h4 class="jeju-h4">%s <em>%d 項</em></h4>' % (cat, len(items)))
-        opt.append('<div class="jeju-items">\n%s\n</div>' % "\n".join(shop_item(it) for it in items))
+        opt.append(pick_list(items))
 
     seg = [("local", "在當地吃的", len(local)), ("buy", "要買的清單", len(mine)), ("all", "可選的清單", n_opt)]
     return panel("souvenir", """<h3>伴手禮採買</h3>
@@ -1350,9 +1394,11 @@ def p_souvenir():
 </div>
 
 <div data-shopview="local">
-<p class="jeju-lead">只能在韓國吃喝、不能或不適合帶回台灣的：現做小吃、冷藏飲料、生鮮水果，還有含肉的泡麵。</p>
-<div class="jeju-items">
-""" + "\n".join(shop_item(it) for it in local) + """
+<p class="jeju-lead">只能在韓國吃喝、不能或不適合帶回台灣的：現做小吃、冷藏飲料、生鮮水果，還有含肉的泡麵。
+點星號標記要買，買到再勾「買了」；標記只存在你這台裝置的瀏覽器裡。</p>
+""" + PICK_PROGRESS + """
+<div style="margin-top:1.2rem">
+""" + pick_list(local) + """
 </div>
 </div>
 
@@ -1364,7 +1410,9 @@ def p_souvenir():
 <div data-shopview="all" hidden>
 <p class="jeju-lead">能帶回台灣的品項都在這裡，包含「要買的清單」那幾樣。
 <span class="jeju-tag info">濟州特有</span> 是濟州特產或主要只在濟州賣；
-<span class="jeju-tag plain">濟州主題</span> 跟濟州有關，但首爾或網路也買得到；沒標的是韓國到處都有。</p>
+<span class="jeju-tag plain">濟州主題</span> 跟濟州有關，但首爾或網路也買得到；沒標的是韓國到處都有。
+點星號標記要買，買到再勾「買了」；標記只存在你這台裝置的瀏覽器裡。</p>
+""" + PICK_PROGRESS + """
 """ + "\n".join(opt) + """
 </div>
 
@@ -1533,6 +1581,65 @@ SCRIPT = r"""<script>
 
       refresh();
     });
+
+    /* 在當地吃的／可選的清單：每項有「要買」（w）和「買了」（g）兩個狀態，
+       兩份清單共用一組 localStorage（品項 id 不重複）。取消「要買」時一併清掉「買了」。 */
+    var PICK_KEY = 'jeju2026Pick',
+      pickRows = $$('[data-pick]'),
+      pickState = {};
+
+    try { pickState = JSON.parse(localStorage.getItem(PICK_KEY) || '{}'); } catch (e) { pickState = {}; }
+
+    function pickSave() {
+      try { localStorage.setItem(PICK_KEY, JSON.stringify(pickState)); } catch (e) {}
+    }
+
+    function pickRefresh() {
+      pickRows.forEach(function (row) {
+        var s = pickState[row.getAttribute('data-pick')] || {},
+          want = !!s.w, got = want && !!s.g,
+          gotBox = $('[data-got]', row);
+        $('[data-want]', row).checked = want;
+        gotBox.checked = got;
+        gotBox.disabled = !want;
+        row.classList.toggle('want', want);
+        row.classList.toggle('done', got);
+      });
+      $$('[data-pickstat]').forEach(function (bar) {
+        var rows = $$('[data-pick]', bar.closest('[data-shopview]')),
+          w = rows.filter(function (r) { return r.classList.contains('want'); }).length,
+          g = rows.filter(function (r) { return r.classList.contains('done'); }).length;
+        $('[data-pwant]', bar).textContent = w;
+        $('[data-pgot]', bar).textContent = g;
+        $('[data-fill]', bar).style.width = w ? (g / w * 100) + '%' : '0';
+      });
+    }
+
+    pickRows.forEach(function (row) {
+      var id = row.getAttribute('data-pick');
+      $('[data-want]', row).addEventListener('change', function (e) {
+        if (e.target.checked) { pickState[id] = { w: true, g: false }; } else { delete pickState[id]; }
+        pickSave();
+        pickRefresh();
+      });
+      $('[data-got]', row).addEventListener('change', function (e) {
+        if (pickState[id]) { pickState[id].g = e.target.checked; }
+        pickSave();
+        pickRefresh();
+      });
+    });
+
+    $$('[data-pickreset]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        $$('[data-pick]', btn.closest('[data-shopview]')).forEach(function (r) {
+          delete pickState[r.getAttribute('data-pick')];
+        });
+        pickSave();
+        pickRefresh();
+      });
+    });
+
+    pickRefresh();
 
     /* 伴手禮分頁裡的三份清單，一次只顯示一份，記住上次看的那份 */
     var SHOP_KEY = 'jejuShopViewV1',
