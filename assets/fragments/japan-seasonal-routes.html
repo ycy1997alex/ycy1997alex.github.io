@@ -1,0 +1,1185 @@
+<style>
+  /* ──────────────────────────────────────────────────────────────
+     日本四季行程庫（2026-10，手寫 fragment）
+     英文版是 japan-seasonal-routes.en.html，資料逐筆對應，修改方案或景點時兩個檔要一起改。
+
+     字級只有五級，而且每一處都明寫，不留任何繼承主題 1.8rem 的文字：
+       2.2rem / 22px  主標、分頁小節標題
+       1.8rem / 18px  卡片標題
+       1.6rem / 16px  分頁標籤、季節印章
+       1.5rem / 15px  內文
+       1.3rem / 13px  註記、標籤、篩選按鈕
+
+     主題把 html 設成 font-size: 62.5%，所以 1rem = 10px。
+     配色：藍染（accent）＋ 春夏秋冬四色印章（全年用紫）。
+     卡片預設單欄；只有 html.layout-wide（滿版切換）時才排成 2–3 欄。
+     ────────────────────────────────────────────────────────────── */
+  .jpsea {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --sunk: #eaeef4;
+    --border: rgba(26, 42, 72, .14);
+    --text: #1a2232;
+    --muted: #586174;
+    --accent: #2c4a7e;
+    --accent-ink: #ffffff;
+    --soft: rgba(44, 74, 126, .10);
+    --spring: #c04e72;
+    --summer: #23866a;
+    --autumn: #be5320;
+    --winter: #3f72a6;
+    --year: #6a5ca4;
+    --shadow: 0 18px 44px rgba(20, 34, 60, .09);
+    --serif: "Noto Serif TC", "PMingLiU", "Songti TC", serif;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-size: 1.5rem;
+    margin-top: 2.4rem;
+    overflow: clip;
+  }
+
+  .colorscheme-dark .jpsea {
+    --bg: #0e131b;
+    --surface: #161d29;
+    --sunk: #1f2838;
+    --border: rgba(160, 185, 225, .14);
+    --text: #e5e9f0;
+    --muted: #9ba4b5;
+    --accent: #8daee3;
+    --accent-ink: #0e131b;
+    --soft: rgba(141, 174, 227, .14);
+    --spring: #ec8daa;
+    --summer: #5cc6a1;
+    --autumn: #f08e5a;
+    --winter: #83b0df;
+    --year: #a99de0;
+    --shadow: 0 18px 44px rgba(0, 0, 0, .38);
+  }
+
+  .jpsea *,
+  .jpsea *::before,
+  .jpsea *::after {
+    box-sizing: border-box;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .jpsea {
+      border-radius: 28px;
+    }
+  }
+
+  /* ── Hero ── */
+  .jpsea-hero {
+    padding: 2.4rem 1.6rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .jpsea-eyebrow {
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .jpsea-hero h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    line-height: 1.25;
+    margin: .8rem 0 .6rem;
+    text-wrap: balance;
+  }
+
+  .jpsea-hero > p {
+    color: var(--muted);
+    font-size: 1.5rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── Tabs ── */
+  .jpsea-tabs {
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .6rem;
+    overflow-x: auto;
+    padding: 0 1.6rem;
+    scrollbar-width: none;
+  }
+
+  .jpsea-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jpsea-tab {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: -1px;
+    padding: 1rem 1.2rem;
+  }
+
+  .jpsea-tab[aria-selected="true"] {
+    border-bottom-color: var(--accent);
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .jpsea button:focus-visible,
+  .jpsea select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .jpsea-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.6rem;
+  }
+
+  .jpsea [hidden] {
+    display: none !important;
+  }
+
+  /* ── Filters ── */
+  .jpsea-filters {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.4rem;
+  }
+
+  .jpsea-frow {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    min-width: 0;
+  }
+
+  .jpsea-flabel {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+  }
+
+  .jpsea-fhead {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1rem;
+    justify-content: space-between;
+  }
+
+  .jpsea-mode {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .jpsea-mode button {
+    appearance: none;
+    background: none;
+    border: 0;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.3rem;
+    padding: .3rem 1rem;
+  }
+
+  .jpsea-mode button[aria-pressed="true"] {
+    background: var(--soft);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .jpsea-chips {
+    display: flex;
+    gap: .6rem;
+    overflow-x: auto;
+    padding-bottom: .2rem;
+    scrollbar-width: thin;
+  }
+
+  .jpsea-chip {
+    appearance: none;
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: .5rem 1.2rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-chip small {
+    color: var(--muted);
+    font-size: 1.3rem;
+    margin-left: .3rem;
+  }
+
+  .jpsea-chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .jpsea-chip[aria-pressed="true"] small {
+    color: inherit;
+    opacity: .8;
+  }
+
+  .jpsea-fgrid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .jpsea select {
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1.5rem;
+    padding: .7rem .8rem;
+    width: 100%;
+  }
+
+  .jpsea-bar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .jpsea-count {
+    color: var(--muted);
+    font-size: 1.5rem;
+  }
+
+  .jpsea-count b {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .jpsea-reset {
+    appearance: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.3rem;
+    padding: .4rem 1rem;
+  }
+
+  /* ── Cards ── */
+  .jpsea-list {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jpsea-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    min-width: 0;
+    padding: 1.4rem 1.6rem;
+    scroll-margin-top: 1.6rem;
+    transition: outline-color .3s;
+  }
+
+  .jpsea-card.flash {
+    outline: 2px solid var(--accent);
+  }
+
+  .jpsea-chead {
+    align-items: flex-start;
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .jpsea-seal {
+    border: 1.5px solid currentColor;
+    border-radius: 4px;
+    display: grid;
+    flex: 0 0 auto;
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    height: 3.6rem;
+    place-items: center;
+    transform: rotate(-4deg);
+    width: 3.6rem;
+  }
+
+  .jpsea-seal.s-春 { color: var(--spring); }
+  .jpsea-seal.s-夏 { color: var(--summer); }
+  .jpsea-seal.s-秋 { color: var(--autumn); }
+  .jpsea-seal.s-冬 { color: var(--winter); }
+  .jpsea-seal.s-年 { color: var(--year); }
+
+  .jpsea-ctitle {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .jpsea-no {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  .jpsea-card h3 {
+    font-size: 1.8rem;
+    line-height: 1.35;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .jpsea-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+
+  .jpsea-pill {
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 1.3rem;
+    padding: .2rem .9rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-pill.kind {
+    background: none;
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .jpsea-kv {
+    display: grid;
+    font-size: 1.5rem;
+    gap: .4rem 1rem;
+    grid-template-columns: 4.6em minmax(0, 1fr);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .jpsea-kv dt {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding-top: .2rem;
+  }
+
+  .jpsea-kv dd {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .jpsea-combo button {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 1px dotted var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.5rem;
+    padding: 0;
+    text-align: left;
+  }
+
+  .jpsea-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .8rem;
+  }
+
+  .jpsea-tag {
+    color: var(--muted);
+    font-size: 1.3rem;
+  }
+
+  .jpsea-tag::before {
+    content: "#";
+  }
+
+  .jpsea-empty {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    color: var(--muted);
+    font-size: 1.5rem;
+    padding: 2.8rem;
+    text-align: center;
+  }
+
+  /* ── 各區必看、航點 ── */
+  .jpsea-sect-title {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+
+  .jpsea-must {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jpsea-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+
+  .jpsea-mbox {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    min-width: 0;
+    padding: 1.4rem 1.6rem;
+    scroll-margin-top: 1.6rem;
+    transition: outline-color .3s;
+  }
+
+  .jpsea-mbox.flash {
+    outline: 2px solid var(--accent);
+  }
+
+  .jpsea-mbox h3 {
+    font-size: 1.8rem;
+    margin: 0 0 .8rem;
+  }
+
+  .jpsea-mbox ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: .2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .jpsea-mbox li {
+    margin: 0;
+  }
+
+  .jpsea-spot summary {
+    align-items: baseline;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: .4rem 0;
+  }
+
+  .jpsea-spot summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .jpsea-spot summary::before {
+    color: var(--accent);
+    content: "▸";
+    flex: 0 0 auto;
+    font-size: 1.3rem;
+    transition: transform .2s;
+  }
+
+  .jpsea-spot[open] > summary::before {
+    transform: rotate(90deg);
+  }
+
+  .jpsea-spot-name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .jpsea-spot-area {
+    color: var(--muted);
+    font-size: 1.3rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-spot-body {
+    border-left: 2px solid var(--soft);
+    margin: .2rem 0 .8rem .5rem;
+    padding: .2rem 0 .2rem 1.2rem;
+  }
+
+  .jpsea-spot-body p {
+    font-size: 1.5rem;
+    line-height: 1.65;
+    margin: 0 0 .6rem;
+  }
+
+  .jpsea-spot-body a {
+    color: var(--accent);
+    font-size: 1.3rem;
+  }
+
+  .jpsea-fl {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .jpsea-flrow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: grid;
+    font-size: 1.5rem;
+    gap: 1rem;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    padding: 1.2rem 1.6rem;
+  }
+
+  .jpsea-notes {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.8rem;
+  }
+
+  .jpsea-notes ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: .6rem;
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .jpsea-src {
+    color: var(--muted);
+    font-size: 1.3rem;
+    margin: 0;
+  }
+
+  .jpsea-src a {
+    color: var(--accent);
+  }
+
+  @media only screen and (max-width: 640px) {
+    .jpsea-fgrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .jpsea-hero h2 {
+      font-size: 2rem;
+    }
+  }
+
+  /* 預設內容欄 768px 放單欄；滿版切換開啟後才排多欄（見 assets/css/custom.css） */
+  @media only screen and (min-width: 1024px) {
+    html.layout-wide .jpsea-list,
+    html.layout-wide .jpsea-must {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media only screen and (min-width: 1440px) {
+    html.layout-wide .jpsea-list,
+    html.layout-wide .jpsea-must {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jpsea-card,
+    .jpsea-mbox,
+    .jpsea-spot summary::before {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="jpsea" id="jpsea-app">
+
+  <!-- Hero -->
+  <section class="jpsea-hero">
+    <div class="jpsea-eyebrow">Japan · Seasons × Regions</div>
+    <h2>日本四季行程庫</h2>
+    <p>依季節與目的挑區域，再依天數挑短程、長程或組合玩法。花期與紅葉日期為往年平均，每年約有 1–2 週差異。</p>
+  </section>
+
+  <!-- Tabs -->
+  <nav class="jpsea-tabs" role="tablist">
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="true" data-view="plans">方案</button>
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="false" data-view="musts">各區必看</button>
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="false" data-view="flights">直飛航點與提醒</button>
+  </nav>
+
+  <!-- 方案 -->
+  <section class="jpsea-view" data-panel="plans">
+    <div class="jpsea-filters">
+      <div class="jpsea-frow">
+        <span class="jpsea-flabel">出發月份</span>
+        <div class="jpsea-chips" data-filter="month"></div>
+      </div>
+      <div class="jpsea-frow">
+        <span class="jpsea-flabel">區域</span>
+        <div class="jpsea-chips" data-filter="area"></div>
+      </div>
+      <div class="jpsea-frow">
+        <div class="jpsea-fhead">
+          <span class="jpsea-flabel">目的</span>
+          <div class="jpsea-mode" role="group" aria-label="複選目的時的比對方式">
+            <button type="button" data-mode="any">符合任一</button>
+            <button type="button" data-mode="all">全部符合</button>
+          </div>
+        </div>
+        <div class="jpsea-chips" data-filter="tag"></div>
+      </div>
+      <div class="jpsea-fgrid">
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-days">天數</label>
+          <select id="jpsea-days" data-select="days">
+            <option value="all">全部</option>
+            <option value="5-7">5–7 天</option>
+            <option value="8-10">8–10 天</option>
+            <option value="11-14">11–14 天</option>
+          </select>
+        </div>
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-move">交通</label>
+          <select id="jpsea-move" data-select="move">
+            <option value="all">全部</option>
+            <option value="大眾">大眾</option>
+            <option value="自駕">自駕</option>
+            <option value="混合">混合</option>
+          </select>
+        </div>
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-kind">類型</label>
+          <select id="jpsea-kind" data-select="kind">
+            <option value="all">全部</option>
+            <option value="短">短程</option>
+            <option value="長">長程</option>
+            <option value="組合">組合（串接方案）</option>
+          </select>
+        </div>
+      </div>
+      <div class="jpsea-bar">
+        <span class="jpsea-count" data-count></span>
+        <button class="jpsea-reset" type="button" data-reset>清除篩選</button>
+      </div>
+    </div>
+    <div class="jpsea-list" data-list></div>
+  </section>
+
+  <!-- 各區必看 -->
+  <section class="jpsea-view" data-panel="musts" hidden>
+    <h3 class="jpsea-sect-title">各區必看</h3>
+    <div class="jpsea-jump" data-jump></div>
+    <div class="jpsea-must" data-must></div>
+  </section>
+
+  <!-- 直飛航點與提醒 -->
+  <section class="jpsea-view" data-panel="flights" hidden>
+    <h3 class="jpsea-sect-title">台灣直飛航點</h3>
+    <div class="jpsea-fl" data-flights></div>
+    <h3 class="jpsea-sect-title">規劃提醒</h3>
+    <div class="jpsea-notes">
+      <ul>
+        <li>櫻花預報約 1–2 月公布、紅葉預報約 9 月公布，預報出來再鎖定日期。</li>
+        <li>10 月底起換冬季班表，部分航點減班（例如青森改週三班），旭川屬季節性航班；訂票前請到航空公司官網確認。</li>
+        <li>自駕要帶台灣駕照正本＋監理站申請的日文譯本。12–3 月的北海道、東北、北陸、信州建議改搭大眾運輸。</li>
+        <li>避開日本連假：黃金週（4 月底–5 月初）、盂蘭盆節（8 月中）、新年（12/29–1/3）。</li>
+        <li>需要預約：吉卜力公園、直島地中美術館、河內藤園、白川鄉點燈日、哈利波特影城、寶可夢樂園、迪士尼與 USJ 熱門時段。</li>
+        <li>跨島組合（例如沖繩本島接石垣）需另搭日本國內線。</li>
+      </ul>
+    </div>
+    <p class="jpsea-src">航點依日本觀光局 JNTO〈航空情報〉2026/7/7 版整理：<a href="https://www.japan.travel/tw/tw/airline/" target="_blank" rel="noopener">japan.travel/tw/tw/airline</a></p>
+  </section>
+</div>
+
+<noscript>
+  <p>這個行程庫需要啟用 JavaScript，才能使用篩選與分頁切換功能。</p>
+</noscript>
+<script>
+  (function () {
+    var root = document.getElementById('jpsea-app');
+    if (!root) { return; }
+
+    /* ── 方案資料 ── */
+    var ALL=[1,2,3,4,5,6,7,8,9,10,11,12];
+    var P=[
+    /* ===== 北海道 ===== */
+    {k:'hk-flower',a:'北海道',s:'夏',t:'道央花田',p:'7 月上–中旬',m:[7],g:['花海','纜車夜景'],d:[6,7],ty:'短',f:'新千歲進出',v:'混合',vn:'前 4 天自駕美瑛、富良野；後 2 天札幌、小樽搭 JR 與地鐵',r:'札幌 → 富良野（富田農場薰衣草）→ 美瑛（四季彩之丘、白金青池、拼布之路）→ 旭川（旭山動物園）→ 小樽運河 → 札幌',x:'藻岩山纜車夜景、北海道神宮'},
+    {k:'hk-summer',a:'北海道',s:'夏',t:'北海道夏季大環線',p:'7 月中–8 月上旬',m:[7,8],g:['花海','自然健行','溫泉'],d:[11,13],ty:'長',f:'新千歲進出',v:'自駕',vn:'全程自駕，最後一天在札幌還車',r:'札幌 → 美瑛、富良野 → 北龍向日葵之里（7 月下–8 月中）→ 層雲峽 → 網走 → 知床（知床五湖、觀光船）→ 摩周湖、屈斜路湖 → 阿寒湖 → 釧路濕原 → 十勝帶廣 → 札幌',x:'知床五湖高架木道、阿寒湖愛奴村、十勝豚丼'},
+    {k:'hk-shiba',a:'北海道',s:'春',t:'道東芝櫻',p:'5 月中–6 月上旬',m:[5,6],g:['花海','自然健行'],d:[7,8],ty:'短',f:'新千歲進出',v:'自駕',vn:'全程自駕',r:'札幌 → 層雲峽 → 瀧上芝櫻公園 → 東藻琴芝櫻公園 → 網走 → 知床橫斷道路（殘雪雪壁）→ 阿寒湖 → 札幌',x:'整片山坡的粉紅芝櫻；知床此時遊客少'},
+    {k:'hk-sakura',a:'北海道',s:'春',t:'道南道央晚櫻',p:'4 月下–5 月上旬',m:[4,5],g:['賞櫻','城郭','纜車夜景','溫泉'],d:[6,6],ty:'短',f:'函館進、新千歲出',v:'大眾',vn:'JR 特急串連，市區搭電車與地鐵',r:'函館（五稜郭櫻、函館山）→ 松前城（北海道唯一日式城郭櫻）→ 大沼 → 登別溫泉 → 札幌（圓山公園）',x:'函館山纜車夜景、登別地獄谷；日本黃金週人多'},
+    {k:'hk-koyo',a:'北海道',s:'秋',t:'大雪山與道央賞楓',p:'9 月下–10 月中旬',m:[9,10],g:['賞楓','纜車夜景','溫泉'],d:[5,6],ty:'短',f:'新千歲進出',v:'自駕',vn:'全程自駕',r:'旭岳纜車（日本最早紅葉）→ 黑岳纜車 → 層雲峽 → 美瑛白金青池 → 定山溪溫泉 → 札幌',x:'旭岳、黑岳纜車；全日本最先變紅的山'},
+    {k:'hk-winter',a:'北海道',s:'冬',t:'函館札幌雪景夜景',p:'12 月–2 月',m:[12,1,2],g:['雪景','纜車夜景','溫泉'],d:[6,6],ty:'短',f:'函館進、新千歲出',v:'大眾',vn:'JR 特急，不建議雪地自駕',r:'函館（函館山、金森紅磚倉庫、五稜郭冬季點燈）→ 大沼 → 登別溫泉 → 洞爺湖 → 小樽運河 → 札幌',x:'函館山纜車夜景、12 月金森倉庫聖誕樹'},
+    {k:'hk-yuki',a:'北海道',s:'冬',t:'札幌雪祭與冰瀑',p:'2 月上–中旬',m:[2],g:['祭典','雪景','溫泉'],d:[7,7],ty:'短',f:'新千歲進出',v:'大眾',vn:'JR 加觀光巴士',r:'札幌雪祭（2 月上旬約一週）→ 小樽雪燈之路（約 2 月中）→ 旭川（旭山動物園企鵝散步）→ 層雲峽冰瀑祭 → 支笏湖冰濤祭',x:'雪祭大雪雕、企鵝散步'},
+    {k:'hk-ski',a:'北海道',s:'冬',t:'北海道粉雪滑雪',p:'12 月中–3 月上旬',m:[12,1,2,3],g:['滑雪','溫泉'],d:[5,7],ty:'短',f:'新千歲進出',v:'大眾',vn:'機場接駁巴士直達雪場',r:'新雪谷、留壽都、Kiroro 擇一住滿 → 最後一晚札幌',x:'1–2 月粉雪最好'},
+    {k:'hk-drift',a:'北海道',s:'冬',t:'道東流冰與丹頂鶴',p:'2 月上旬–3 月上旬',m:[2,3],g:['雪景','自然健行','溫泉'],d:[9,10],ty:'長',f:'新千歲進出',v:'大眾',vn:'JR 特急、流冰物語號、觀光巴士',r:'札幌 → 旭川 → 網走（極光號破冰船）→ 知床宇登呂（流冰漫步）→ 川湯溫泉、屈斜路湖天鵝 → 釧路（鶴居村丹頂鶴、SL 冬之濕原號）→ 札幌',x:'穿乾式潛水衣在流冰上漫步'},
+    {k:'hk-winter-all',a:'北海道',s:'冬',t:'冬季北海道全周',p:'2 月上–中旬',m:[2],g:['雪景','祭典','纜車夜景','溫泉'],d:[13,14],ty:'組合',c:['hk-winter','hk-drift'],f:'函館進、新千歲出',v:'大眾',vn:'全程 JR 與觀光巴士',r:'函館 → 登別 → 小樽 → 札幌（若遇雪祭多留 1 天）→ 旭川 → 網走 → 知床 → 釧路 → 札幌',x:'一次看完夜景、雪祭、流冰、丹頂鶴'},
+
+    /* ===== 東北 ===== */
+    {k:'th-sakura',a:'東北',s:'春',t:'東北賞櫻縱貫',p:'4 月中–下旬',m:[4],g:['賞櫻','城郭','神社寺院'],d:[6,7],ty:'短',f:'仙台進、青森出',v:'大眾',vn:'JR East Pass 東北版',r:'白石川一目千本櫻 → 平泉中尊寺 → 北上展勝地 → 角館武家屋敷 → 弘前城（4 月下–5 月初）→ 青森',x:'弘前城護城河花筏、中尊寺金色堂'},
+    {k:'th-sakura-long',a:'東北',s:'春',t:'東北櫻花與雪之回廊',p:'4 月下–5 月上旬',m:[4,5],g:['賞櫻','雪景','溫泉'],d:[9,10],ty:'長',f:'仙台進、青森出',v:'混合',vn:'南段 JR；八幡平、八甲田段自駕',r:'仙台 → 平泉 → 角館 → 八幡平雪之回廊 → 田澤湖 → 弘前城 → 八甲田雪之回廊＋酸湯溫泉 → 青森',x:'櫻花與數公尺高雪壁同一趟看'},
+    {k:'fk-spring',a:'東北',s:'春',t:'福島花見山與瀧櫻',p:'4 月上–中旬',m:[4],g:['賞櫻','城郭'],d:[5,5],ty:'短',f:'福島進出',v:'自駕',vn:'全程自駕',r:'花見山公園 → 三春瀧櫻（樹齡千年）→ 會津若松鶴之城 → 大內宿 → 豬苗代湖',x:'日本三大櫻之一的三春瀧櫻'},
+    {k:'th-koyo',a:'東北',s:'秋',t:'北東北賞楓',p:'10 月中–下旬',m:[10],g:['賞楓','溫泉','纜車夜景'],d:[6,7],ty:'短',f:'青森進、仙台出（或花卷出）',v:'自駕',vn:'全程自駕',r:'八甲田纜車 → 奧入瀨溪流 → 十和田湖 → 八幡平 → 乳頭溫泉鄉 → 角館抱返溪谷 → 鳴子峽 → 仙台',x:'奧入瀨溪流步道、乳頭溫泉鶴之湯'},
+    {k:'th-koyo-long',a:'東北',s:'秋',t:'東北全線賞楓',p:'10 月中–11 月上旬',m:[10,11],g:['賞楓','神社寺院','溫泉'],d:[11,12],ty:'長',f:'青森進、仙台出',v:'混合',vn:'北東北自駕，南東北換 JR',r:'八甲田 → 奧入瀨 → 十和田湖 → 八幡平 → 角館 → 鳴子峽 → 山寺立石寺 → 藏王御釜 → 銀山溫泉 → 松島 → 會津若松 → 大內宿 → 仙台',x:'山寺千段石階、銀山溫泉夜景'},
+    {k:'th-hakodate',a:'東北',s:'秋',t:'函館接北東北楓',p:'10 月中–下旬',m:[10],g:['賞楓','纜車夜景','溫泉'],d:[9,10],ty:'組合',c:['th-koyo'],f:'函館進、仙台出',v:'混合',vn:'函館 2 天搭電車，北海道新幹線到新青森後租車',r:'函館（五稜郭、函館山、大沼楓）→ 北海道新幹線 → 新青森 → 接北東北賞楓路線 → 仙台',x:'跨北海道與東北，一趟兩區'},
+    {k:'th-juhyo',a:'東北',s:'冬',t:'藏王樹冰與銀山溫泉',p:'1 月中–2 月下旬',m:[1,2],g:['雪景','溫泉','纜車夜景','神社寺院'],d:[5,6],ty:'短',f:'仙台進出',v:'大眾',vn:'JR 加巴士',r:'仙台 → 藏王纜車樹冰（有夜間點燈）→ 山形山寺雪景 → 銀山溫泉 → 松島 → 仙台',x:'樹冰怪獸、銀山溫泉雪夜'},
+    {k:'th-snow',a:'東北',s:'冬',t:'北東北雪國溫泉',p:'1 月下–2 月中旬',m:[1,2],g:['雪景','溫泉','祭典'],d:[6,7],ty:'短',f:'青森進、秋田出（或花卷出）',v:'大眾',vn:'JR 加溫泉旅館接駁',r:'青森 → 八甲田樹冰＋酸湯溫泉 → 弘前城雪燈籠祭（2 月上中）→ 五能線 → 乳頭溫泉鄉 → 角館 → 橫手雪屋祭（2/15–16）→ 秋田',x:'秘湯鶴之湯雪見露天'},
+    {k:'th-winter-all',a:'東北',s:'冬',t:'東北冬季縱走',p:'2 月上–中旬',m:[2],g:['雪景','溫泉','祭典','纜車夜景'],d:[11,12],ty:'組合',c:['th-juhyo','th-snow'],f:'仙台進、青森出',v:'大眾',vn:'全程 JR 與接駁',r:'仙台 → 藏王 → 山寺 → 銀山溫泉 → 秋田 → 橫手 → 角館 → 乳頭溫泉 → 弘前 → 八甲田 → 青森',x:'樹冰、雪屋、雪燈籠一次收'},
+    {k:'th-matsuri',a:'東北',s:'夏',t:'東北夏祭',p:'8 月 1–8 日',m:[8],g:['祭典'],d:[6,7],ty:'短',f:'青森進、仙台出',v:'大眾',vn:'JR',r:'青森睡魔祭（8/2–7）→ 弘前睡魔 → 盛岡三颯舞（8/1–4）→ 秋田竿燈（8/3–6）→ 仙台七夕（8/6–8）',x:'住宿需半年前訂'},
+    {k:'th-summer-long',a:'東北',s:'夏',t:'東北夏祭與避暑',p:'8 月上旬',m:[8],g:['祭典','自然健行','神社寺院','溫泉'],d:[10,11],ty:'長',f:'青森進、仙台出',v:'混合',vn:'北段自駕，祭典城市搭 JR',r:'青森睡魔 → 恐山（開山 5/1–10/31）→ 奧入瀨綠蔭 → 十和田湖 → 秋田竿燈 → 角館 → 平泉中尊寺 → 松島 → 仙台七夕',x:'日本三大靈場恐山'},
+
+    /* ===== 關東 ===== */
+    {k:'kt-classic',a:'關東',s:'年',t:'東京經典五日',p:'全年（避開黃金週、盂蘭盆節）',m:ALL,g:['神社寺院','纜車夜景','樂園'],d:[5,5],ty:'短',f:'羽田進出',v:'大眾',vn:'地鐵',r:'皇居外苑二重橋＋東御苑 → 淺草寺 → 晴空塔 → 明治神宮 → 澀谷、表參道 → 麻布台之丘 teamLab → 豐洲、築地 → 鎌倉一日',x:'皇居、淺草寺雷門、明治神宮'},
+    {k:'kt-parks',a:'關東',s:'年',t:'東京樂園週',p:'全年（萬聖節 9 月中–10 月底、聖誕 11 月中–12/25）',m:ALL,g:['樂園'],d:[6,7],ty:'短',f:'成田或羽田進出',v:'大眾',vn:'地鐵與 JR',r:'迪士尼海洋（夢幻泉鄉）＋迪士尼樂園 2 天 → 寶可夢樂園 PokéPark KANTO（讀賣樂園，2026/2 開幕）→ 哈利波特影城 → 三麗鷗彩虹樂園 → 台場',x:'迪士尼海洋 2026 年起開園 25 週年慶'},
+    {k:'kt-sakura',a:'關東',s:'春',t:'東京賞櫻',p:'3 月下–4 月上旬',m:[3,4],g:['賞櫻','神社寺院'],d:[5,6],ty:'短',f:'羽田進出',v:'大眾',vn:'地鐵',r:'千鳥之淵（皇居護城河）→ 目黑川 → 上野恩賜公園 → 新宿御苑 → 六義園夜櫻 → 川越或鎌倉一日',x:'千鳥之淵划船看櫻'},
+    {k:'kt-ginkgo',a:'關東',s:'秋',t:'東京銀杏與紅葉',p:'11 月下–12 月上旬',m:[11,12],g:['賞楓','纜車夜景'],d:[5,5],ty:'短',f:'羽田進出',v:'大眾',vn:'地鐵與 JR',r:'明治神宮外苑銀杏大道 → 六義園紅葉點燈 → 昭和紀念公園 → 高尾山纜車 → 鎌倉長谷寺 → 丸之內聖誕燈飾',x:'外苑銀杏黃金隧道'},
+    {k:'kt-fuji-koyo',a:'關東',s:'秋',t:'富士五湖與箱根楓',p:'11 月上–中旬',m:[11],g:['賞楓','溫泉','纜車夜景','神社寺院'],d:[6,7],ty:'短',f:'羽田進出',v:'混合',vn:'富士五湖自駕 2–3 天 → 箱根用周遊券 2 天 → 東京地鐵 2 天',r:'河口湖紅葉迴廊 → 新倉山淺間公園忠靈塔 → 忍野八海 → 河口湖天上山纜車 → 箱根（強羅、大涌谷空中纜車、海賊船、箱根神社平和鳥居）→ 小涌園 Yunessun → 東京',x:'Yunessun 清酒湯（2026/10/20–2027/1/4）、紅酒湯（2026/9 翻新）'},
+    {k:'kt-fuji-spring',a:'關東',s:'春',t:'富士芝櫻與湖畔櫻',p:'4 月中旬–5 月上旬',m:[4,5],g:['花海','賞櫻','溫泉'],d:[6,6],ty:'短',f:'羽田進出',v:'混合',vn:'富士五湖自駕，箱根與東京搭大眾運輸',r:'新倉山淺間公園櫻（4 月中上）→ 河口湖北岸櫻 → 富士芝櫻祭（本栖湖）→ 忍野八海 → 箱根 → 東京',x:'五重塔＋櫻花＋富士山同框'},
+    {k:'kt-fuji-winter',a:'關東',s:'冬',t:'冬季富士與溫泉',p:'12 月–2 月',m:[12,1,2],g:['雪景','溫泉','祭典'],d:[5,6],ty:'短',f:'羽田進出',v:'大眾',vn:'巴士與周遊券，冬季山路易結冰',r:'河口湖（冬季富士最清楚）→ 西湖樹冰祭（1 月下–2 月上）→ 河口湖冬花火（1–2 月週末）→ 山中湖鑽石富士 → 箱根溫泉 → 東京',x:'Yunessun 清酒湯至 1/4'},
+    {k:'kt-fuji-summer',a:'關東',s:'夏',t:'富士薰衣草與樂園',p:'6 月下–7 月中旬',m:[6,7],g:['花海','樂園','自然健行'],d:[5,6],ty:'短',f:'羽田進出',v:'混合',vn:'富士五湖自駕，箱根搭登山鐵道',r:'河口湖大石公園薰衣草 → 富士急樂園 → 富士山五合目（7–9 月上旬登山季需預約）→ 箱根登山鐵道紫陽花 → 東京',x:'富士急雲霄飛車、紫陽花電車'},
+    {k:'kt-flower',a:'關東',s:'春',t:'關東花海北線',p:'4 月中旬–5 月上旬',m:[4,5],g:['花海','神社寺院'],d:[6,7],ty:'短',f:'成田進出',v:'混合',vn:'JR 加巴士；常陸到足利段可自駕',r:'國營常陸海濱公園粉蝶花 → 足利花卉公園大紫藤（夜間點燈）→ 日光東照宮 → 秩父羊山公園芝櫻＋三峯神社 → 東京',x:'整片藍色粉蝶花丘、紫藤夜景'},
+    {k:'kt-kochia',a:'關東',s:'秋',t:'掃帚草與奧日光楓',p:'10 月上–中旬',m:[10],g:['賞楓','花海','溫泉','神社寺院'],d:[6,6],ty:'短',f:'成田進出',v:'大眾',vn:'JR 與東武周遊券',r:'常陸海濱公園掃帚草轉紅 → 日光東照宮 → 伊呂波山道、華嚴瀑布、中禪寺湖、戰場之原 → 鬼怒川溫泉 → 東京',x:'紅色掃帚草山丘'},
+    {k:'kt-kusatsu',a:'關東',s:'秋',t:'草津與輕井澤秋',p:'10 月下–11 月上旬',m:[10,11],g:['賞楓','溫泉'],d:[5,6],ty:'短',f:'羽田進出',v:'大眾',vn:'新幹線加巴士',r:'東京 → 輕井澤雲場池、白絲瀑布 → 草津湯畑、西之河原露天、湯揉秀 → 伊香保石段街 → 東京',x:'草津湯畑夜間點燈'},
+    {k:'kt-izu',a:'關東',s:'冬',t:'伊豆河津櫻與熱海',p:'2 月中–3 月上旬',m:[2,3],g:['賞櫻','溫泉','花海'],d:[5,6],ty:'短',f:'羽田進出',v:'大眾',vn:'特急踊子號',r:'熱海梅園 → 河津櫻祭 → 修善寺 → 城崎海岸吊橋 → 伊豆高原 → 東京',x:'日本最早的櫻花之一'},
+    {k:'kt-ajisai',a:'關東',s:'夏',t:'鎌倉箱根紫陽花',p:'6 月上–下旬（梅雨季）',m:[6],g:['花海','神社寺院','溫泉'],d:[5,5],ty:'短',f:'羽田進出',v:'大眾',vn:'江之電、箱根周遊券',r:'明月院、長谷寺紫陽花 → 鶴岡八幡宮 → 江之島 → 箱根登山鐵道紫陽花 → Yunessun → 東京',x:'鎌倉大佛、明月院藍'},
+    {k:'kt-combo-autumn',a:'關東',s:'秋',t:'東京樂園接富士箱根楓',p:'11 月上–中旬',m:[11],g:['樂園','賞楓','溫泉'],d:[11,13],ty:'組合',c:['kt-parks','kt-fuji-koyo'],f:'成田進、羽田出',v:'混合',vn:'前半東京大眾運輸，富士段自駕',r:'東京樂園 6 天 → 河口湖 → 箱根 → 東京',x:'迪士尼聖誕活動剛開始'},
+    {k:'kt-combo-spring',a:'關東',s:'春',t:'關東花季全收',p:'4 月中旬–5 月上旬',m:[4,5],g:['花海','賞櫻','神社寺院'],d:[11,12],ty:'組合',c:['kt-flower','kt-fuji-spring'],f:'成田進、羽田出',v:'混合',vn:'北線 JR＋局部自駕，富士段自駕',r:'常陸 → 足利 → 日光 → 秩父 → 河口湖 → 本栖湖 → 箱根 → 東京',x:'粉蝶花、紫藤、芝櫻、富士櫻'},
+
+    /* ===== 中部・北陸・信州 ===== */
+    {k:'cb-tateyama',a:'中部北陸',s:'春',t:'立山黑部雪之大谷',p:'4 月中旬–5 月下旬',m:[4,5],g:['雪景','纜車夜景'],d:[5,6],ty:'短',f:'富山進出（或小松進出）',v:'大眾',vn:'阿爾卑斯路線禁止私家車，全程大眾運輸',r:'富山 → 立山纜車 → 高原巴士 → 雪之大谷（室堂）→ 折返 → 金澤兼六園 → 白川鄉 → 富山',x:'高達十多公尺的雪壁'},
+    {k:'cb-alps',a:'中部北陸',s:'秋',t:'阿爾卑斯秋楓縱走',p:'10 月上–中旬',m:[10],g:['賞楓','纜車夜景','城郭'],d:[9,10],ty:'長',f:'富山進、名古屋出',v:'大眾',vn:'阿爾卑斯路線、上高地都禁止私家車',r:'富山 → 立山室堂 → 黑部水壩 → 扇澤 → 松本城 → 上高地河童橋 → 新穗高雙層纜車 → 高山 → 白川鄉 → 名古屋',x:'一路從高山紅葉看到平地'},
+    {k:'cb-summer',a:'中部北陸',s:'夏',t:'中部山岳避暑',p:'7 月中–8 月下旬',m:[7,8],g:['自然健行','纜車夜景'],d:[6,7],ty:'短',f:'富山進、名古屋出',v:'大眾',vn:'登山巴士與纜車',r:'立山室堂（高山植物、雷鳥）→ 黑部水壩洩洪（6 月下–10 月中）→ 上高地 → 乘鞍岳 → 新穗高纜車 → 高山 → 名古屋',x:'平地 35 度時，室堂約 15 度'},
+    {k:'cb-takayama',a:'中部北陸',s:'秋',t:'高山秋祭與北陸',p:'10 月 9–10 日前後',m:[10],g:['祭典','溫泉','神社寺院'],d:[6,6],ty:'短',f:'名古屋進、小松出',v:'大眾',vn:'JR 與濃飛巴士',r:'名古屋 → 下呂溫泉 → 高山秋祭（屋台、夜祭）→ 白川鄉 → 金澤 → 小松',x:'日本三大美祭之一'},
+    {k:'cb-hokuriku-winter',a:'中部北陸',s:'冬',t:'北陸雪國與越前蟹',p:'1–2 月',m:[1,2],g:['雪景','溫泉'],d:[5,6],ty:'短',f:'小松進出',v:'大眾',vn:'JR 與巴士',r:'金澤兼六園雪吊、東茶屋街 → 白川鄉合掌村點燈（特定日、需預約）→ 五箇山 → 山代／山中溫泉 → 福井東尋坊、恐龍博物館',x:'11–3 月是越前蟹季'},
+    {k:'cb-nagoya',a:'中部北陸',s:'年',t:'名古屋樂園與名城',p:'全年',m:ALL,g:['樂園','城郭','神社寺院'],d:[5,6],ty:'短',f:'名古屋進出',v:'大眾',vn:'地鐵與名鐵',r:'吉卜力公園（需預約）→ 樂高樂園 → 名古屋城 → 熱田神宮 → 犬山城 → 長島 Spa Land＋なばなの里燈光（約 10 月中–5 月）',x:'吉卜力公園、なばなの里燈光隧道'},
+    {k:'cb-ise',a:'中部北陸',s:'年',t:'伊勢神宮與志摩',p:'全年（推薦 3–5 月、10–11 月）',m:ALL,g:['神社寺院','溫泉'],d:[5,6],ty:'短',f:'名古屋進出',v:'混合',vn:'近鐵伊勢志摩周遊券，志摩段可自駕',r:'熱田神宮 → 伊勢神宮外宮 → 內宮＋托福橫丁 → 二見興玉神社夫婦岩 → 鳥羽水族館 → 志摩西班牙村 → VISON',x:'日本神社的總本宮'},
+    {k:'cb-koyo',a:'中部北陸',s:'秋',t:'名古屋周邊賞楓',p:'11 月中–下旬',m:[11],g:['賞楓','纜車夜景','樂園'],d:[6,6],ty:'短',f:'名古屋進出',v:'混合',vn:'香嵐溪段自駕或巴士（賞楓季很塞），其餘鐵道',r:'香嵐溪 → 御在所纜車 → なばなの里 → 伊勢神宮 → 名古屋城',x:'香嵐溪夜楓點燈'},
+    {k:'cb-combo',a:'中部北陸',s:'年',t:'名古屋樂園接伊勢',p:'全年',m:ALL,g:['樂園','神社寺院','城郭'],d:[8,9],ty:'組合',c:['cb-nagoya','cb-ise'],f:'名古屋進出',v:'大眾',vn:'名鐵、近鐵',r:'名古屋 4 天 → 長島 → 伊勢 → 鳥羽 → 名古屋',x:'適合帶家人'},
+    {k:'sn-monkey',a:'中部北陸',s:'冬',t:'信州雪猴與滑雪',p:'1–2 月',m:[1,2],g:['雪景','滑雪','溫泉','神社寺院','城郭'],d:[6,7],ty:'短',f:'成田進出（東京轉北陸新幹線）',v:'大眾',vn:'新幹線加長電鐵',r:'東京 → 長野善光寺 → 地獄谷野猿公苑（雪猴泡湯）→ 澀溫泉九湯巡禮 → 野澤溫泉或白馬滑雪 → 松本城 → 東京',x:'雪猴泡溫泉'},
+    {k:'ng-yuzawa',a:'中部北陸',s:'冬',t:'越後湯澤雪國與酒湯',p:'12 月下–3 月上旬',m:[12,1,2,3],g:['滑雪','溫泉','雪景'],d:[5,5],ty:'短',f:'新潟進出',v:'大眾',vn:'上越新幹線',r:'新潟市 → 越後湯澤（GALA 湯澤滑雪、車站內ぽんしゅ館清酒試飲＋酒風呂）→ 苗場 → 新潟',x:'川端康成《雪國》舞台；新潟清酒'},
+
+    /* ===== 關西 ===== */
+    {k:'ks-sakura',a:'關西',s:'春',t:'京阪神賞櫻',p:'3 月下–4 月上旬',m:[3,4],g:['賞櫻','神社寺院','城郭'],d:[6,6],ty:'短',f:'關西或神戶進出',v:'大眾',vn:'電車',r:'京都（哲學之道、醍醐寺、平安神宮、清水寺夜間拜觀、嵐山）→ 奈良（東大寺、春日大社）→ 大阪城 → 姬路城',x:'清水寺、伏見稻荷、姬路城'},
+    {k:'ks-sakura-long',a:'關西',s:'春',t:'關西追櫻前線',p:'3 月下–4 月中旬',m:[3,4],g:['賞櫻','神社寺院','城郭'],d:[11,12],ty:'長',f:'關西進出',v:'大眾',vn:'電車與巴士',r:'京都 → 奈良 → 吉野山千本櫻（4 月上中）→ 高野山 → 大阪城 → 姬路城 → 彥根城 → 琵琶湖海津大崎（4 月中）→ 京都原谷苑',x:'跟著櫻花從平地追到山上'},
+    {k:'ks-koyo',a:'關西',s:'秋',t:'京阪神賞楓',p:'11 月中旬–12 月上旬',m:[11,12],g:['賞楓','神社寺院','纜車夜景'],d:[6,6],ty:'短',f:'關西或神戶進出',v:'大眾',vn:'電車',r:'清水寺、永觀堂、東福寺、南禪寺、嵐山 → 貴船鞍馬（叡山電車紅葉隧道）→ 奈良 → 大阪箕面 → 神戶摩耶山夜景',x:'寺院夜間點燈'},
+    {k:'ks-usj',a:'關西',s:'年',t:'USJ 與大阪神戶',p:'全年（萬聖節 9–11 月初、聖誕 11 月中–1 月上旬）',m:ALL,g:['樂園','纜車夜景','溫泉'],d:[5,6],ty:'短',f:'關西或神戶進出',v:'大眾',vn:'地鐵與 JR',r:'USJ 超級任天堂世界（含大金剛國度）→ 大阪城 → 海遊館 → 神戶港 → 摩耶山纜車千萬夜景 → 有馬溫泉（金泉、銀泉）',x:'日本三大夜景之一的摩耶山'},
+    {k:'ks-kumano',a:'關西',s:'秋',t:'高野山熊野古道白濱',p:'10 月下–11 月中旬',m:[10,11],g:['神社寺院','自然健行','溫泉','賞楓'],d:[7,7],ty:'短',f:'關西進出',v:'混合',vn:'高野山搭南海電車＋纜車；熊野段自駕',r:'高野山宿坊＋奧之院夜間導覽 → 熊野古道中邊路健行 → 熊野本宮大社、大齋原大鳥居 → 那智大社、那智瀑布 → 白濱溫泉崎之湯、Adventure World → 大阪',x:'世界遺產朝聖之路'},
+    {k:'ks-winter',a:'關西',s:'冬',t:'海之京都與城崎溫泉',p:'1–2 月',m:[1,2],g:['雪景','溫泉','神社寺院','纜車夜景'],d:[6,6],ty:'短',f:'關西進出',v:'大眾',vn:'JR 與丹鐵',r:'京都（雪景看運氣）→ 美山雪燈廊（1 月底）→ 天橋立（傘松公園纜車）→ 伊根舟屋 → 城崎溫泉外湯巡禮＋松葉蟹 → 姬路 → 大阪',x:'城崎 7 個外湯穿浴衣巡湯'},
+    {k:'ks-gion',a:'關西',s:'夏',t:'祇園祭與京都夏',p:'7 月中旬（山鉾巡行 7/17、7/24）',m:[7],g:['祭典','神社寺院'],d:[5,5],ty:'短',f:'關西進出',v:'大眾',vn:'電車',r:'祇園祭宵山、山鉾巡行 → 貴船川床料理 → 宇治平等院 → 伏見稻荷 → 大阪天神祭（7/24–25）',x:'日本三大祭中的兩個'},
+    {k:'ks-golden-sakura',a:'關西',s:'春',t:'東京進大阪出賞櫻',p:'3 月下–4 月上旬',m:[3,4],g:['賞櫻','神社寺院','城郭'],d:[10,11],ty:'組合',c:['kt-sakura','ks-sakura'],f:'羽田進、關西出',v:'大眾',vn:'東海道新幹線串連',r:'東京 4–5 天 → 新幹線 → 京都 → 奈良 → 大阪 → 姬路',x:'日本黃金路線'},
+    {k:'ks-golden-koyo',a:'關西',s:'秋',t:'京都楓接東京銀杏',p:'11 月下–12 月上旬',m:[11,12],g:['賞楓','神社寺院'],d:[10,11],ty:'組合',c:['ks-koyo','kt-ginkgo'],f:'關西進、羽田出',v:'大眾',vn:'新幹線',r:'大阪 → 京都 → 奈良 → 新幹線 → 東京外苑銀杏 → 鎌倉 → 東京',x:'京都紅、東京黃'},
+    {k:'ks-usj-koyo',a:'關西',s:'秋',t:'USJ 接京都楓',p:'11 月中–下旬',m:[11],g:['樂園','賞楓','溫泉'],d:[9,10],ty:'組合',c:['ks-usj','ks-koyo'],f:'關西進出',v:'大眾',vn:'電車',r:'USJ → 大阪 → 有馬溫泉 → 京都 → 貴船鞍馬 → 奈良',x:'USJ 聖誕活動剛上場'},
+
+    /* ===== 中國・四國 ===== */
+    {k:'sy-miyajima',a:'中國四國',s:'秋',t:'宮島廣島岡山賞楓',p:'11 月中–下旬',m:[11],g:['賞楓','神社寺院','纜車夜景','城郭'],d:[5,6],ty:'短',f:'廣島進、岡山出',v:'大眾',vn:'JR West 周遊券',r:'嚴島神社大鳥居＋紅葉谷公園＋宮島纜車彌山 → 原爆圓頂 → 尾道 → 倉敷美觀地區 → 岡山後樂園秋季點燈',x:'海上大鳥居'},
+    {k:'sk-art',a:'中國四國',s:'年',t:'瀨戶內藝術島',p:'全年（推薦 3–5 月、10–11 月）',m:ALL,g:['藝術','神社寺院','城郭','纜車夜景'],d:[5,6],ty:'短',f:'高松或岡山進出',v:'大眾',vn:'電車加渡輪',r:'直島（地中美術館需預約）→ 豐島美術館 → 小豆島（寒霞溪纜車）→ 栗林公園 → 金刀比羅宮（785 階）→ 丸龜城 → 屋島',x:'草間彌生南瓜、金刀比羅宮'},
+    {k:'sk-loop',a:'中國四國',s:'秋',t:'四國環島賞楓',p:'11 月上–中旬',m:[11],g:['賞楓','城郭','溫泉','纜車夜景','自然健行'],d:[10,12],ty:'長',f:'高松進、松山出',v:'自駕',vn:'全程自駕',r:'金刀比羅宮 → 祖谷葛橋、大步危遊船 → 高知城、桂濱 → 四萬十川 → 足摺岬 → 宇和島 → 內子 → 松山城（纜車）＋道後溫泉本館 → しまなみ海道單車',x:'祖谷溪紅葉、道後溫泉本館'},
+    {k:'sk-spring',a:'中國四國',s:'春',t:'四國春櫻與島波',p:'3 月下–4 月上旬',m:[3,4],g:['賞櫻','城郭','溫泉','自然健行'],d:[6,6],ty:'短',f:'松山進出（或高知進出）',v:'混合',vn:'松山市區搭電車，郊外自駕',r:'松山城櫻＋道後溫泉 → しまなみ海道騎車 → 內子 → 高知城櫻 → 仁淀川（仁淀藍）',x:'松山城纜車＋天守'},
+    {k:'sy-sanin',a:'中國四國',s:'秋',t:'山陰神話與庭園',p:'10 月下–11 月下旬',m:[10,11],g:['神社寺院','賞楓','城郭','溫泉'],d:[5,6],ty:'短',f:'米子進出',v:'自駕',vn:'全程自駕（山陰 JR 班次少）',r:'足立美術館（紅葉 11 月上中）→ 出雲大社（神在月：舊曆十月，約 11 月中下）→ 日御碕神社 → 松江城＋堀川遊船 → 八重垣神社 → 大山 → 鳥取砂丘',x:'全日本神明聚會的神在月'},
+    {k:'sy-sanin-winter',a:'中國四國',s:'冬',t:'山陰蟹季與溫泉',p:'12 月–2 月',m:[12,1,2],g:['溫泉','雪景'],d:[5,5],ty:'短',f:'米子進出',v:'大眾',vn:'JR 加溫泉巴士',r:'皆生溫泉 → 境港水木茂之路 → 松葉蟹 → 玉造溫泉 → 松江城 → 大山雪景 → 鳥取砂丘',x:'松葉蟹季'},
+    {k:'sy-combo',a:'中國四國',s:'秋',t:'山陰接山陽環線',p:'11 月中–下旬',m:[11],g:['神社寺院','賞楓','城郭'],d:[10,11],ty:'組合',c:['sy-sanin','sy-miyajima'],f:'米子進、廣島出',v:'混合',vn:'山陰段自駕，出雲還車後換 JR',r:'米子 → 足立美術館 → 松江 → 出雲大社 → 石見銀山 → 廣島 → 宮島 → 尾道 → 倉敷 → 岡山 → 廣島',x:'出雲大社＋嚴島神社'},
+    {k:'sk-combo',a:'中國四國',s:'秋',t:'瀨戶內接四國環島',p:'11 月上–中旬',m:[11],g:['藝術','賞楓','城郭','溫泉'],d:[13,14],ty:'組合',c:['sk-art','sk-loop'],f:'高松進、松山出',v:'混合',vn:'島上大眾運輸，四國本島自駕',r:'直島 → 豐島 → 小豆島 → 高松 → 祖谷 → 高知 → 四萬十 → 松山 → しまなみ海道',x:'藝術、溪谷、名城、溫泉'},
+
+    /* ===== 九州 ===== */
+    {k:'ky-sakura',a:'九州',s:'春',t:'九州賞櫻',p:'3 月下–4 月上旬',m:[3,4],g:['賞櫻','城郭','神社寺院'],d:[5,6],ty:'短',f:'福岡進出',v:'大眾',vn:'JR 九州周遊券',r:'舞鶴公園（福岡城）→ 太宰府天滿宮 → 秋月城跡 → 柳川遊船 → 熊本城 → 福岡',x:'比關東早約一週'},
+    {k:'ky-fuji',a:'九州',s:'春',t:'北九州紫藤與夜景',p:'4 月下–5 月上旬',m:[4,5],g:['花海','纜車夜景','城郭'],d:[5,5],ty:'短',f:'福岡進出（台中出發可飛北九州）',v:'大眾',vn:'JR 加計程車',r:'河內藤園紫藤隧道（需預約）→ 小倉城 → 門司港 → 皿倉山纜車夜景 → 海之中道粉蝶花 → 太宰府',x:'日本新三大夜景之一的皿倉山'},
+    {k:'ky-koyo',a:'九州',s:'秋',t:'九州中部賞楓',p:'10 月下–11 月中旬',m:[10,11],g:['賞楓','神社寺院','溫泉','自然健行'],d:[6,7],ty:'短',f:'熊本進、大分出（或福岡進出）',v:'自駕',vn:'全程自駕（阿蘇、高千穗沒車難串）',r:'熊本城 → 阿蘇大觀峰、草千里 → 菊池溪谷 → 高千穗峽、高千穗神社夜神樂、天岩戶神社 → 九重夢大吊橋 → 耶馬溪 → 宇佐神宮 → 由布院 → 別府地獄巡禮',x:'高千穗夜神樂每晚演出'},
+    {k:'ky-winter',a:'九州',s:'冬',t:'北九州溫泉與燈光',p:'11 月–2 月',m:[11,12,1,2],g:['溫泉','樂園','纜車夜景'],d:[5,6],ty:'短',f:'福岡進出（或佐賀進出）',v:'大眾',vn:'JR 與 SUNQ 巴士券',r:'由布院（金鱗湖晨霧）→ 別府地獄＋鐵輪溫泉 → 長崎稻佐山纜車夜景 → 豪斯登堡燈光王國＋米飛兔園區 → 武雄、嬉野溫泉',x:'世界新三大夜景之一的長崎'},
+    {k:'ky-south',a:'九州',s:'冬',t:'南九州避寒與神宮',p:'12 月–2 月',m:[12,1,2],g:['神社寺院','溫泉','自然健行'],d:[6,7],ty:'短',f:'鹿兒島進、宮崎出',v:'自駕',vn:'全程自駕',r:'仙巖園＋櫻島 → 指宿砂浴 → 霧島神宮＋霧島溫泉 → 飫肥城 → 鵜戶神宮 → 青島神社＋鬼之洗衣板 → 宮崎',x:'冬天也有約 15 度'},
+    {k:'ky-yakushima',a:'九州',s:'春',t:'屋久島與鹿兒島',p:'4 月–5 月上旬（梅雨前）',m:[4,5],g:['自然健行','溫泉'],d:[7,7],ty:'短',f:'鹿兒島進出',v:'混合',vn:'高速船上島，島上自駕',r:'鹿兒島 → 屋久島白谷雲水峽 → 繩文杉健行（來回約 10 小時）→ 平內海中溫泉 → 鹿兒島',x:'《魔法公主》森林原型'},
+    {k:'ky-balloon',a:'九州',s:'秋',t:'佐賀熱氣球節與溫泉',p:'10 月底–11 月上旬',m:[10,11],g:['祭典','溫泉','神社寺院'],d:[5,5],ty:'短',f:'佐賀進出',v:'大眾',vn:'JR',r:'佐賀國際熱氣球節（約 5 天）→ 祐德稻荷神社 → 嬉野溫泉 → 有田陶瓷 → 唐津城 → 吉野里遺跡',x:'上百顆熱氣球同時升空'},
+    {k:'ky-combo-autumn',a:'九州',s:'秋',t:'熱氣球節接九州楓',p:'11 月上旬',m:[11],g:['祭典','賞楓','溫泉','神社寺院'],d:[11,12],ty:'組合',c:['ky-balloon','ky-koyo'],f:'佐賀進、大分出',v:'混合',vn:'佐賀段 JR，熊本起自駕',r:'佐賀 → 嬉野 → 熊本 → 阿蘇 → 高千穗 → 九重 → 耶馬溪 → 由布院 → 別府',x:'北九州到中九州一路往東'},
+    {k:'ky-combo-winter',a:'九州',s:'冬',t:'冬季九州縱走',p:'12 月–2 月',m:[12,1,2],g:['溫泉','神社寺院','纜車夜景','樂園'],d:[12,13],ty:'組合',c:['ky-winter','ky-south'],f:'福岡進、鹿兒島出',v:'混合',vn:'北段 JR，宮崎起自駕',r:'福岡 → 由布院 → 別府 → 長崎 → 豪斯登堡 → 宮崎 → 青島神社 → 鵜戶神宮 → 霧島 → 指宿 → 鹿兒島',x:'九州溫泉與神宮一路南下'},
+
+    /* ===== 沖繩 ===== */
+    {k:'ok-spring',a:'沖繩',s:'春',t:'沖繩本島春',p:'3 月下–5 月上旬（梅雨前）',m:[3,4,5],g:['海島','樂園','神社寺院'],d:[5,5],ty:'短',f:'那霸進出',v:'自駕',vn:'自駕必備，那霸市區可搭單軌',r:'美麗海水族館 → 古宇利島 → Junglia 叢林樂園 → 萬座毛 → 齋場御嶽 → 首里城（正殿重建中，出發前確認）→ 國際通',x:'琉球最高聖地齋場御嶽'},
+    {k:'ok-autumn',a:'沖繩',s:'秋',t:'沖繩本島秋',p:'10 月–11 月',m:[10,11],g:['海島','祭典','樂園'],d:[5,5],ty:'短',f:'那霸進出',v:'自駕',vn:'自駕',r:'那霸大拔河（10 月）→ 美麗海水族館 → 瀨底海灘 → Junglia → 波上宮 → 國際通',x:'颱風季結束、海水仍暖'},
+    {k:'ok-winter',a:'沖繩',s:'冬',t:'寒緋櫻與賞鯨',p:'1 月下–2 月中旬',m:[1,2],g:['賞櫻','海島'],d:[5,5],ty:'短',f:'那霸進出',v:'自駕',vn:'自駕',r:'八重岳櫻祭 → 今歸仁城櫻 → 名護櫻祭 → 慶良間賞鯨（1–3 月）→ 美麗海水族館',x:'日本最早的櫻花'},
+    {k:'ok-ishigaki',a:'沖繩',s:'春',t:'石垣竹富西表',p:'4 月–5 月上旬',m:[4,5],g:['海島','自然健行'],d:[5,5],ty:'短',f:'石垣進出',v:'混合',vn:'石垣島自駕，離島搭船',r:'川平灣玻璃船 → 竹富島水牛車 → 西表島紅樹林獨木舟 → 石垣星空',x:'日本第一個星空保護區'},
+    {k:'ok-miyako',a:'沖繩',s:'秋',t:'宮古島',p:'9 月下–10 月',m:[9,10],g:['海島'],d:[5,5],ty:'短',f:'下地島進出',v:'自駕',vn:'自駕',r:'伊良部大橋 → 與那霸前濱 → 17END → 砂山海灘 → 浮潛',x:'宮古藍'},
+    {k:'ok-combo',a:'沖繩',s:'春',t:'沖繩本島接石垣',p:'4 月',m:[4],g:['海島','樂園','自然健行'],d:[9,10],ty:'組合',c:['ok-spring','ok-ishigaki'],f:'那霸進、石垣出',v:'自駕',vn:'兩島各自租車，中間搭日本國內線',r:'那霸 → 北部 → 南部 → 國內線 → 石垣 → 竹富 → 西表',x:'需另訂那霸—石垣國內線'}
+    ];
+
+    /* 每個景點：[名稱, 地點, 簡介]；圖片連結由名稱＋地點組成 Google 圖片搜尋 */
+    var MUST=[
+     {a:'北海道',i:[
+      ['函館山纜車夜景','函館','標高 334 公尺，搭纜車約 3 分鐘登頂。兩側海灣夾出的扇形市街夜景，是日本三大夜景之一。'],
+      ['五稜郭','函館','江戶末期的星形西式城郭，從五稜郭塔往下看最清楚；春天約 1,500 棵櫻花沿護城河盛開。'],
+      ['小樽運河','小樽','運河旁保留石造倉庫群，傍晚煤氣燈亮起時最有氣氛；附近堺町通有玻璃工藝店與音樂盒堂。'],
+      ['藻岩山夜景','札幌','搭纜車再轉迷你纜車到 531 公尺山頂，札幌市區夜景是日本新三大夜景之一。'],
+      ['北海道神宮','札幌','北海道的總鎮守，位在圓山公園旁，春天是賞櫻名所，6 月有札幌祭。'],
+      ['旭山動物園','旭川','以「行動展示」聞名，可從水中隧道看企鵝游泳，冬季有企鵝散步。'],
+      ['白金青池','美瑛','池水因含鋁成分呈鈷藍色，枯木直立水中；冬季有夜間點燈。'],
+      ['富田農場','富良野','富良野薰衣草的代表農場，7 月中前後最紫，旁邊還有彩虹條紋般的多色花田。'],
+      ['洞爺湖','道央','中央有島的火山口湖，4 月底到 10 月每晚都有湖上煙火。'],
+      ['登別地獄谷','道央','火山噴氣與硫磺泉形成的谷地，沿木棧道可走到大湯沼；登別溫泉的泉質種類很多。'],
+      ['知床五湖','道東','世界自然遺產知床的五座湖。高架木道可直接走到一湖，地上步道依季節須先聽講習或跟導覽。'],
+      ['摩周湖','道東','透明度曾經是世界第一的火山口湖，經常起霧，有「霧之摩周湖」之稱。']]},
+     {a:'東北',i:[
+      ['弘前城','青森','現存十二天守之一，約有 2,600 棵櫻花，花瓣落滿護城河的「花筏」最有名。'],
+      ['奧入瀨溪流','青森','從十和田湖流出、長約 14 公里的溪流，沿溪步道經過多座瀑布，新綠與紅葉季最美。'],
+      ['十和田湖','青森','橫跨青森與秋田的二重火山口湖，可搭遊覽船，湖畔有高村光太郎的「少女像」。'],
+      ['中尊寺金色堂','岩手','平安時代奧州藤原氏所建，整座佛堂貼滿金箔，屬於世界遺產「平泉」。'],
+      ['角館武家屋敷','秋田','保留江戶時代武士宅邸的街區，有「陸奧小京都」之稱；春天枝垂櫻從黑色板牆上垂下。'],
+      ['乳頭溫泉鄉','秋田','散布在十和田八幡平國立公園山林裡的七間溫泉旅館，最有名的是茅草屋頂的鶴之湯。'],
+      ['山寺立石寺','山形','爬約千階石階到五大堂，可俯瞰整座山谷；松尾芭蕉名句「閑さや」就寫在這裡。'],
+      ['銀山溫泉','山形','大正浪漫風格的木造旅館沿銀山川排列，入夜後煤氣燈點亮，雪夜景色最有名。'],
+      ['藏王御釜、樹冰','山形宮城','夏秋可看翡翠色的火山口湖「御釜」；冬季山頂樹木被冰雪包覆成「樹冰」，晚上有點燈。'],
+      ['松島','宮城','日本三景之一，260 多座小島散布在灣內，可搭遊覽船，岸邊有瑞巖寺與五大堂。'],
+      ['恐山','青森','日本三大靈場之一，荒涼的火山岩地與湛藍的宇曽利湖形成強烈對比，每年 5–10 月開放。'],
+      ['大內宿','福島','江戶時代的驛站，30 多棟茅草屋頂民家沿街排列，招牌是用整根蔥當筷子吃的蔥蕎麥麵。']]},
+     {a:'關東',i:[
+      ['皇居二重橋、東御苑','東京','二重橋是皇居最具代表性的景觀；東御苑是舊江戶城本丸遺跡，免費開放（週一、週五休園）。'],
+      ['淺草寺雷門','東京','東京最古老的寺院，雷門大燈籠後面接著仲見世商店街，晚上點燈後人潮比較少。'],
+      ['明治神宮','東京','供奉明治天皇的神社，位在原宿旁約 70 公頃的人造森林裡，入口是巨大的木造鳥居。'],
+      ['晴空塔','東京','高 634 公尺的電波塔，450 公尺的天望迴廊可眺望東京全景，天氣好時看得到富士山。'],
+      ['日光東照宮','栃木','供奉德川家康，雕刻華麗的陽明門、「三猿」與「眠貓」都在這裡，屬世界遺產。'],
+      ['鎌倉大佛、鶴岡八幡宮','神奈川','高德院的青銅大佛高約 11 公尺，可以進到佛像內部；鶴岡八幡宮是鎌倉幕府的守護神社。'],
+      ['箱根神社平和鳥居','箱根','立在蘆之湖水中的紅色鳥居，排隊拍照的人很多，早上去比較不用等。'],
+      ['大涌谷','箱根','約 3,000 年前火山爆發形成的噴氣地帶，空中纜車從上方經過；名產黑蛋據說吃一顆延壽七年。'],
+      ['新倉山淺間神社忠靈塔','富士','爬約 400 階到展望台，五重塔、櫻花與富士山同框，是日本最具代表性的構圖之一。'],
+      ['忍野八海','富士','富士山雪水在地下滲流多年後湧出的八座泉池，水清見底，屬世界遺產富士山的構成資產。'],
+      ['草津湯畑','群馬','草津溫泉中央的源泉，熱氣蒸騰的溫泉流過木槽，晚上有點燈；旁邊的熱乃湯有湯揉秀。'],
+      ['川越老街','埼玉','保留江戶時代的藏造街屋與「時之鐘」，有「小江戶」之稱，菓子屋橫丁很好逛。']]},
+     {a:'中部北陸',i:[
+      ['兼六園','金澤','日本三名園之一，冬天用繩索撐住松枝的「雪吊」是金澤冬季的象徵。'],
+      ['東茶屋街','金澤','保存江戶時代茶屋建築的街區，木格子町家裡有金箔工藝店與咖啡店。'],
+      ['白川鄉合掌村','岐阜','世界遺產合掌造聚落，陡峭的茅草屋頂是為了承受大雪；冬季特定日點燈需事先預約。'],
+      ['高山老街','岐阜','「飛驒小京都」，三町老街保留江戶時代町家、酒藏與早市，春秋兩季有高山祭。'],
+      ['上高地河童橋','長野','位在海拔約 1,500 公尺的山谷，從河童橋可看穗高連峰與梓川；禁止私家車進入，冬季封閉。'],
+      ['松本城','長野','國寶，現存五重六階天守中最古老的一座，黑色外牆讓它有「烏城」之稱。'],
+      ['善光寺','長野','創建約 1,400 年、不分宗派的古剎，可以在本堂地下摸黑走一趟「戒壇巡禮」。'],
+      ['立山室堂','富山','立山黑部阿爾卑斯路線的最高點，海拔 2,450 公尺；春天有雪之大谷，夏天有御庫裏池與雷鳥。'],
+      ['伊勢神宮','三重','由外宮、內宮等 125 座宮社組成，內宮供奉天照大神，是日本神社中地位最高的一座。'],
+      ['熱田神宮','名古屋','供奉三神器之一草薙劍的古老神社，就在名古屋市區。'],
+      ['名古屋城','名古屋','天守屋頂的金鯱是名古屋的象徵；天守目前不開放入內，重建的本丸御殿裝飾華麗。'],
+      ['犬山城','愛知','國寶，現存天守之一，可以繞天守頂層的外廊俯瞰木曾川。']]},
+     {a:'關西',i:[
+      ['清水寺','京都','懸空架在山崖上的「清水舞台」最有名，春秋兩季有夜間特別拜觀與點燈。'],
+      ['伏見稻荷千本鳥居','京都','全國稻荷神社的總本宮，上萬座朱紅鳥居沿山連綿，24 小時開放。'],
+      ['金閣寺','京都','正式名稱是鹿苑寺，外層貼滿金箔的舍利殿倒映在鏡湖池上。'],
+      ['嵐山竹林','京都','野宮神社到大河內山莊之間的竹林小徑，清晨人最少，附近有渡月橋與天龍寺。'],
+      ['東大寺、奈良公園鹿','奈良','大佛殿是世界最大級的木造建築，內有約 15 公尺高的盧舍那佛；公園裡有上千頭鹿。'],
+      ['春日大社','奈良','朱紅色社殿配上約 3,000 座石燈籠與釣燈籠，屬世界遺產「古都奈良的文化財」。'],
+      ['姬路城','兵庫','白色外牆讓它有「白鷺城」之稱，是日本第一批世界遺產，也是規模最大的現存天守。'],
+      ['大阪城','大阪','豐臣秀吉所建，現在的天守是博物館，周邊公園有梅林與約 3,000 棵櫻花。'],
+      ['道頓堀','大阪','固力果跑跑人招牌與巨大螃蟹看板所在的美食街，章魚燒、大阪燒都集中在這裡。'],
+      ['有馬溫泉','神戶','日本最古老的溫泉之一，有紅褐色的「金泉」與無色透明的「銀泉」兩種泉質。'],
+      ['高野山奧之院','和歌山','弘法大師御廟所在，約 2 公里參道兩側是 20 多萬座墓碑與參天杉木，可入住宿坊。'],
+      ['熊野本宮大社','和歌山','熊野三山之一，也是熊野古道的主要目的地；附近大齋原有日本最大級的鳥居。']]},
+     {a:'中國四國',i:[
+      ['嚴島神社大鳥居','廣島','建在海上的神社，漲潮時鳥居像浮在水面，退潮時可以走到鳥居下方。'],
+      ['原爆圓頂','廣島','1945 年原子彈爆炸後保留至今的建築殘骸，與和平紀念公園、資料館相鄰，屬世界遺產。'],
+      ['松山城','愛媛','現存十二天守之一，位在市中心的山上，可搭纜車或吊椅上山。'],
+      ['道後溫泉本館','愛媛','日本最古老的溫泉之一，明治時代的三層木造公共浴場，常被認為是《神隱少女》湯屋的原型之一。'],
+      ['金刀比羅宮','香川','暱稱「金比羅さん」，到本宮要爬 785 階石階，到奧社共 1,368 階。'],
+      ['栗林公園','香川','以紫雲山為背景的江戶時代大名庭園，有六座池與十三座假山，可搭和船遊園。'],
+      ['直島','香川','瀨戶內的藝術島，有地中美術館、草間彌生的南瓜與家計畫；地中美術館需預約。'],
+      ['出雲大社','島根','供奉結緣之神大國主，神樂殿的巨大注連繩長約 13 公尺。'],
+      ['足立美術館','島根','日本庭園連續多年在美國的日本庭園專業雜誌排名第一，館藏也有橫山大觀的作品。'],
+      ['鳥取砂丘','鳥取','日本最大級的海岸砂丘，可以騎駱駝或滑沙，旁邊有砂之美術館。'],
+      ['倉敷美觀地區','岡山','柳樹沿運河排列，白壁土藏倉庫改成商店與美術館，大原美術館也在這裡。'],
+      ['祖谷葛橋','德島','用軟棗獼猴桃藤蔓編成的吊橋，腳下木板間隔很大、看得到溪水，是日本三大奇橋之一。']]},
+     {a:'九州',i:[
+      ['太宰府天滿宮','福岡','供奉學問之神菅原道真，是考生參拜的聖地，參道名物是梅枝餅。'],
+      ['熊本城','熊本','日本三名城之一，2016 年地震受損，天守已修復開放，其他部分仍在修復中。'],
+      ['阿蘇火山','熊本','世界最大級的破火山口，中岳火口可以近看（依火山活動管制），草千里是一片放牧草原。'],
+      ['高千穗峽','宮崎','阿蘇火山熔岩形成的峽谷，可以划小船到真名井瀑布下方。'],
+      ['青島神社','宮崎','位在小島上的神社，四周是波浪狀的岩層「鬼之洗衣板」。'],
+      ['鵜戶神宮','宮崎','本殿建在海崖洞窟裡，把運玉丟進龜石上的凹洞就能許願。'],
+      ['霧島神宮','鹿兒島','供奉天孫降臨神話中的瓊瓊杵尊，朱紅色社殿藏在杉林裡。'],
+      ['櫻島','鹿兒島','至今仍在噴發的活火山，從鹿兒島市搭渡輪約 15 分鐘，島上有足湯與展望所。'],
+      ['由布院','大分','以由布岳為背景的溫泉小鎮，湯之坪街道很好逛，金鱗湖清晨常有霧氣。'],
+      ['別府地獄巡禮','大分','七座顏色與型態各異的溫泉源泉，例如海地獄、血池地獄、龍卷地獄。'],
+      ['稻佐山夜景','長崎','搭纜車到 333 公尺山頂，長崎港夜景與摩納哥、香港並列世界新三大夜景。'],
+      ['宇佐神宮','大分','全國八幡宮的總本宮，朱紅色的本殿是國寶。']]},
+     {a:'沖繩',i:[
+      ['美麗海水族館','本島','大水槽「黑潮之海」裡有鯨鯊與鬼蝠魟，旁邊的海洋博公園有海豚表演。'],
+      ['首里城（重建中）','那霸','琉球王國的王城，正殿 2019 年燒毀，重建期間可參觀施工過程，完工時程出發前請確認。'],
+      ['齋場御嶽','本島','琉球最高聖地，巨石間的三角形縫隙可遠望久高島，屬世界遺產。'],
+      ['古宇利大橋','本島','長約 2 公里的跨海大橋，兩側是清澈的淺藍色海水，島上有心形岩。'],
+      ['川平灣','石垣','石垣島最有名的海灣，禁止游泳，可搭玻璃船看珊瑚與熱帶魚。'],
+      ['竹富島','八重山','紅瓦屋頂、白沙路與石牆保留傳統聚落景觀，可以搭水牛車巡遊。'],
+      ['與那霸前濱','宮古','長約 7 公里的白沙灘，常被稱為「東洋第一美麗海灘」。'],
+      ['伊良部大橋','宮古','連接宮古島與伊良部島，全長 3,540 公尺，是日本免費通行的橋中最長的一座。']]}
+    ];
+
+    var FL=[
+     ['北海道','新千歲（桃園、高雄、台中）、函館；旭川為季節性'],
+     ['東北','青森、秋田、花卷、仙台（桃園、高雄）、福島'],
+     ['關東','成田（桃園、高雄、台中）、羽田（桃園、松山）'],
+     ['中部北陸','名古屋中部（桃園、台中、高雄）、新潟、富山、小松'],
+     ['關西','關西機場（桃園、高雄）、神戶（桃園、台中）'],
+     ['中國四國','廣島、岡山（桃園、高雄）、米子、高松（桃園、台中、高雄）、松山、高知'],
+     ['九州','福岡（桃園、高雄）、北九州（台中）、佐賀、大分、熊本（桃園、台中、台南、高雄）、宮崎、鹿兒島'],
+     ['沖繩','那霸（桃園、台中、台南、高雄）、石垣、下地島（桃園、台中）'],
+     ['無直飛','靜岡、茨城、長崎、釧路、女滿別：從鄰近機場轉鐵路或國內線']
+    ];
+
+    var MONTHS = ['睦月', '如月', '彌生', '卯月', '皐月', '水無月', '文月', '葉月', '長月', '神無月', '霜月', '師走'];
+    var AREAS = ['北海道', '東北', '關東', '中部北陸', '關西', '中國四國', '九州', '沖繩'];
+    var TAGS = ['賞櫻', '賞楓', '花海', '雪景', '滑雪', '祭典', '溫泉', '樂園', '神社寺院', '城郭', '纜車夜景', '自然健行', '海島', '藝術'];
+    /* 月份、區域、目的可複選（空陣列 = 全部）；目的另有 any / all 兩種比對方式 */
+    var FILTER_KEY = 'japanSeasonsFilterV2',
+      VIEW_KEY = 'japanSeasonsViewV1',
+      DEFAULTS = { month: [], area: [], tag: [], tagMode: 'any', days: 'all', move: 'all', kind: 'all' },
+      OPTIONS = {
+        month: ALL, area: AREAS, tag: TAGS, tagMode: ['any', 'all'],
+        days: ['all', '5-7', '8-10', '11-14'], move: ['all', '大眾', '自駕', '混合'], kind: ['all', '短', '長', '組合']
+      },
+      IDX = {},
+      st = {},
+      k;
+
+    function setDefaults() {
+      for (k in DEFAULTS) { st[k] = Array.isArray(DEFAULTS[k]) ? [] : DEFAULTS[k]; }
+    }
+
+    P.forEach(function (p, i) { p.no = i + 1; IDX[p.k] = p; });
+    setDefaults();
+    try {
+      var saved = JSON.parse(localStorage.getItem(FILTER_KEY) || 'null');
+      if (saved) {
+        for (k in DEFAULTS) {
+          if (Array.isArray(DEFAULTS[k])) {
+            if (Array.isArray(saved[k])) { st[k] = saved[k].filter(function (v) { return OPTIONS[k].indexOf(v) >= 0; }); }
+          } else if (OPTIONS[k].indexOf(saved[k]) >= 0) {
+            st[k] = saved[k];
+          }
+        }
+      }
+    } catch (err) {}
+
+    function save() {
+      try { localStorage.setItem(FILTER_KEY, JSON.stringify(st)); } catch (err) {}
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+
+    function no(n) {
+      return 'No.' + (n < 10 ? '0' + n : String(n));
+    }
+
+    /* ── 篩選 ── */
+    /* 第一顆「全部」清空該列；其餘按鈕各自切換選取 */
+    function chipRow(key, allLabel, items) {
+      var el = root.querySelector('[data-filter="' + key + '"]');
+      el.innerHTML = '';
+      [[null, allLabel, '']].concat(items).forEach(function (it) {
+        var b = document.createElement('button'),
+          on = it[0] === null ? !st[key].length : st[key].indexOf(it[0]) >= 0;
+        b.type = 'button';
+        b.className = 'jpsea-chip';
+        b.innerHTML = esc(it[1]) + (it[2] ? '<small>' + esc(it[2]) + '</small>' : '');
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.addEventListener('click', function () {
+          if (it[0] === null) {
+            st[key] = [];
+          } else {
+            var i = st[key].indexOf(it[0]);
+            if (i < 0) { st[key].push(it[0]); } else { st[key].splice(i, 1); }
+          }
+          save();
+          renderFilters();
+          renderList();
+        });
+        el.appendChild(b);
+      });
+    }
+
+    function renderFilters() {
+      chipRow('month', '全年', MONTHS.map(function (n, i) { return [i + 1, (i + 1) + ' 月', n]; }));
+      chipRow('area', '全部', AREAS.map(function (a) { return [a, a, '']; }));
+      chipRow('tag', '全部', TAGS.map(function (t) { return [t, t, '']; }));
+      [].slice.call(root.querySelectorAll('[data-mode]')).forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-mode') === st.tagMode ? 'true' : 'false');
+      });
+      [].slice.call(root.querySelectorAll('[data-select]')).forEach(function (sel) {
+        sel.value = st[sel.getAttribute('data-select')];
+      });
+    }
+
+    function hasTag(p) {
+      return function (t) { return p.g.indexOf(t) >= 0; };
+    }
+
+    function match(p) {
+      if (st.month.length && !st.month.some(function (m) { return p.m.indexOf(m) >= 0; })) { return false; }
+      if (st.area.length && st.area.indexOf(p.a) < 0) { return false; }
+      if (st.tag.length && !(st.tagMode === 'all' ? st.tag.every(hasTag(p)) : st.tag.some(hasTag(p)))) { return false; }
+      if (st.move !== 'all' && p.v !== st.move) { return false; }
+      if (st.kind !== 'all' && p.ty !== st.kind) { return false; }
+      if (st.days !== 'all') {
+        var r = st.days.split('-'), lo = +r[0], hi = +r[1];
+        if (p.d[1] < lo || p.d[0] > hi) { return false; }
+      }
+      return true;
+    }
+
+    /* ── 方案卡片 ── */
+    function card(p) {
+      var kind = p.ty === '組合' ? '組合方案' : (p.ty === '長' ? '長程' : '短程'),
+        days = p.d[0] === p.d[1] ? p.d[0] + ' 天' : p.d[0] + '–' + p.d[1] + ' 天',
+        combo = '';
+      if (p.c) {
+        combo = '<dt>組成</dt><dd class="jpsea-combo">' + p.c.map(function (key) {
+          return '<button type="button" data-go="' + key + '">' + no(IDX[key].no) + ' ' + esc(IDX[key].t) + '</button>';
+        }).join('　＋　') + '</dd>';
+      }
+      return '<article class="jpsea-card" id="jpsea-' + p.k + '">' +
+        '<div class="jpsea-chead"><div class="jpsea-seal s-' + p.s + '" aria-label="' + (p.s === '年' ? '全年' : p.s + '季') + '">' + p.s + '</div>' +
+        '<div class="jpsea-ctitle"><div class="jpsea-no">項次 ' + no(p.no) + '　' + esc(p.a) + '</div><h3>' + esc(p.t) + '</h3></div></div>' +
+        '<div class="jpsea-meta"><span class="jpsea-pill kind">' + kind + '</span><span class="jpsea-pill">' + esc(p.p) + '</span>' +
+        '<span class="jpsea-pill">' + days + '</span><span class="jpsea-pill">' + p.v + '為主</span></div>' +
+        '<dl class="jpsea-kv">' + combo +
+        '<dt>進出</dt><dd>' + esc(p.f) + '</dd>' +
+        '<dt>交通</dt><dd>' + esc(p.vn) + '</dd>' +
+        '<dt>路線</dt><dd>' + esc(p.r) + '</dd>' +
+        '<dt>亮點</dt><dd>' + esc(p.x) + '</dd></dl>' +
+        '<div class="jpsea-tags">' + p.g.map(function (t) { return '<span class="jpsea-tag">' + t + '</span>'; }).join('') + '</div>' +
+        '</article>';
+    }
+
+    function renderList() {
+      var list = root.querySelector('[data-list]'),
+        rows = P.filter(match);
+      root.querySelector('[data-count]').innerHTML = '共 <b>' + rows.length + '</b> 個方案（全部 ' + P.length + ' 個）';
+      if (!rows.length) {
+        list.innerHTML = '<div class="jpsea-empty">沒有符合的方案。試著放寬天數或改選「全年」。</div>';
+        return;
+      }
+      list.innerHTML = rows.map(card).join('');
+      [].slice.call(list.querySelectorAll('[data-go]')).forEach(function (b) {
+        b.addEventListener('click', function () { goTo(b.getAttribute('data-go')); });
+      });
+    }
+
+    function resetFilters() {
+      setDefaults();
+      save();
+      renderFilters();
+      renderList();
+    }
+
+    function reveal(el) {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      el.classList.add('flash');
+      setTimeout(function () { el.classList.remove('flash'); }, 1600);
+    }
+
+    function goTo(key) {
+      var el = document.getElementById('jpsea-' + key);
+      if (!el) {
+        resetFilters();
+        el = document.getElementById('jpsea-' + key);
+      }
+      if (el) { reveal(el); }
+    }
+
+    [].slice.call(root.querySelectorAll('[data-mode]')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        st.tagMode = b.getAttribute('data-mode');
+        save();
+        renderFilters();
+        renderList();
+      });
+    });
+    [].slice.call(root.querySelectorAll('[data-select]')).forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        st[sel.getAttribute('data-select')] = sel.value;
+        save();
+        renderList();
+      });
+    });
+    root.querySelector('[data-reset]').addEventListener('click', resetFilters);
+
+    /* ── 各區必看、航點 ── */
+    function spot(it) {
+      var q = it[0].replace(/（[^）]*）/g, '') + ' ' + it[1];
+      return '<li><details class="jpsea-spot"><summary><span class="jpsea-spot-name">' + esc(it[0]) + '</span>' +
+        '<span class="jpsea-spot-area">' + esc(it[1]) + '</span></summary>' +
+        '<div class="jpsea-spot-body"><p>' + esc(it[2]) + '</p>' +
+        '<a href="https://www.google.com/search?tbm=isch&amp;q=' + encodeURIComponent(q) + '" target="_blank" rel="noopener">在 Google 圖片看照片 ↗</a></div>' +
+        '</details></li>';
+    }
+
+    root.querySelector('[data-jump]').innerHTML = MUST.map(function (m, i) {
+      return '<button class="jpsea-chip" type="button" data-jump-to="' + i + '">' + esc(m.a) + '</button>';
+    }).join('');
+    root.querySelector('[data-must]').innerHTML = MUST.map(function (m, i) {
+      return '<div class="jpsea-mbox" id="jpsea-must-' + i + '"><h3>' + esc(m.a) + '</h3><ul>' + m.i.map(spot).join('') + '</ul></div>';
+    }).join('');
+    [].slice.call(root.querySelectorAll('[data-jump-to]')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        reveal(document.getElementById('jpsea-must-' + b.getAttribute('data-jump-to')));
+      });
+    });
+    root.querySelector('[data-flights]').innerHTML = FL.map(function (f) {
+      return '<div class="jpsea-flrow"><b>' + f[0] + '</b><span>' + f[1] + '</span></div>';
+    }).join('');
+
+    /* ── 分頁切換 ── */
+    var tabs = [].slice.call(root.querySelectorAll('.jpsea-tab')),
+      panels = [].slice.call(root.querySelectorAll('[data-panel]'));
+
+    function show(view) {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-view') === view ? 'true' : 'false'); });
+      panels.forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== view; });
+      try { localStorage.setItem(VIEW_KEY, view); } catch (err) {}
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { show(t.getAttribute('data-view')); });
+    });
+
+    var view = 'plans';
+    try { view = localStorage.getItem(VIEW_KEY) || 'plans'; } catch (err) {}
+    if (['plans', 'musts', 'flights'].indexOf(view) < 0) { view = 'plans'; }
+
+    renderFilters();
+    renderList();
+    show(view);
+  }());
+</script>

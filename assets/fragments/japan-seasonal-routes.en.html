@@ -1,0 +1,1191 @@
+<style>
+  /* ──────────────────────────────────────────────────────────────
+     日本四季行程庫英文版（2026-10，手寫 fragment）
+     樣式沿用中文版 japan-seasonal-routes.html，只放寬標籤欄寬；資料要和中文版逐筆對應。
+
+     字級只有五級，而且每一處都明寫，不留任何繼承主題 1.8rem 的文字：
+       2.2rem / 22px  主標、分頁小節標題
+       1.8rem / 18px  卡片標題
+       1.6rem / 16px  分頁標籤、季節印章
+       1.5rem / 15px  內文
+       1.3rem / 13px  註記、標籤、篩選按鈕
+
+     主題把 html 設成 font-size: 62.5%，所以 1rem = 10px。
+     配色：藍染（accent）＋ 春夏秋冬四色印章（全年用紫）。
+     卡片預設單欄；只有 html.layout-wide（滿版切換）時才排成 2–3 欄。
+     ────────────────────────────────────────────────────────────── */
+  .jpsea {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --sunk: #eaeef4;
+    --border: rgba(26, 42, 72, .14);
+    --text: #1a2232;
+    --muted: #586174;
+    --accent: #2c4a7e;
+    --accent-ink: #ffffff;
+    --soft: rgba(44, 74, 126, .10);
+    --spring: #c04e72;
+    --summer: #23866a;
+    --autumn: #be5320;
+    --winter: #3f72a6;
+    --year: #6a5ca4;
+    --shadow: 0 18px 44px rgba(20, 34, 60, .09);
+    --serif: "Noto Serif TC", "PMingLiU", "Songti TC", serif;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-size: 1.5rem;
+    margin-top: 2.4rem;
+    overflow: clip;
+  }
+
+  .colorscheme-dark .jpsea {
+    --bg: #0e131b;
+    --surface: #161d29;
+    --sunk: #1f2838;
+    --border: rgba(160, 185, 225, .14);
+    --text: #e5e9f0;
+    --muted: #9ba4b5;
+    --accent: #8daee3;
+    --accent-ink: #0e131b;
+    --soft: rgba(141, 174, 227, .14);
+    --spring: #ec8daa;
+    --summer: #5cc6a1;
+    --autumn: #f08e5a;
+    --winter: #83b0df;
+    --year: #a99de0;
+    --shadow: 0 18px 44px rgba(0, 0, 0, .38);
+  }
+
+  .jpsea *,
+  .jpsea *::before,
+  .jpsea *::after {
+    box-sizing: border-box;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .jpsea {
+      border-radius: 28px;
+    }
+  }
+
+  /* ── Hero ── */
+  .jpsea-hero {
+    padding: 2.4rem 1.6rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .jpsea-eyebrow {
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .jpsea-hero h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    line-height: 1.25;
+    margin: .8rem 0 .6rem;
+    text-wrap: balance;
+  }
+
+  .jpsea-hero > p {
+    color: var(--muted);
+    font-size: 1.5rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── Tabs ── */
+  .jpsea-tabs {
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .6rem;
+    overflow-x: auto;
+    padding: 0 1.6rem;
+    scrollbar-width: none;
+  }
+
+  .jpsea-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jpsea-tab {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: -1px;
+    padding: 1rem 1.2rem;
+  }
+
+  .jpsea-tab[aria-selected="true"] {
+    border-bottom-color: var(--accent);
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .jpsea button:focus-visible,
+  .jpsea select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .jpsea-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.6rem;
+  }
+
+  .jpsea [hidden] {
+    display: none !important;
+  }
+
+  /* ── Filters ── */
+  .jpsea-filters {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.4rem;
+  }
+
+  .jpsea-frow {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    min-width: 0;
+  }
+
+  .jpsea-flabel {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+  }
+
+  .jpsea-fhead {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1rem;
+    justify-content: space-between;
+  }
+
+  .jpsea-mode {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .jpsea-mode button {
+    appearance: none;
+    background: none;
+    border: 0;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.3rem;
+    padding: .3rem 1rem;
+  }
+
+  .jpsea-mode button[aria-pressed="true"] {
+    background: var(--soft);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .jpsea-chips {
+    display: flex;
+    gap: .6rem;
+    overflow-x: auto;
+    padding-bottom: .2rem;
+    scrollbar-width: thin;
+  }
+
+  .jpsea-chip {
+    appearance: none;
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: .5rem 1.2rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-chip small {
+    color: var(--muted);
+    font-size: 1.3rem;
+    margin-left: .3rem;
+  }
+
+  .jpsea-chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .jpsea-chip[aria-pressed="true"] small {
+    color: inherit;
+    opacity: .8;
+  }
+
+  .jpsea-fgrid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .jpsea select {
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1.5rem;
+    padding: .7rem .8rem;
+    width: 100%;
+  }
+
+  .jpsea-bar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .jpsea-count {
+    color: var(--muted);
+    font-size: 1.5rem;
+  }
+
+  .jpsea-count b {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .jpsea-reset {
+    appearance: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.3rem;
+    padding: .4rem 1rem;
+  }
+
+  /* ── Cards ── */
+  .jpsea-list {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jpsea-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    min-width: 0;
+    padding: 1.4rem 1.6rem;
+    scroll-margin-top: 1.6rem;
+    transition: outline-color .3s;
+  }
+
+  .jpsea-card.flash {
+    outline: 2px solid var(--accent);
+  }
+
+  .jpsea-chead {
+    align-items: flex-start;
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .jpsea-seal {
+    border: 1.5px solid currentColor;
+    border-radius: 4px;
+    display: grid;
+    flex: 0 0 auto;
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    height: 3.6rem;
+    place-items: center;
+    transform: rotate(-4deg);
+    width: 3.6rem;
+  }
+
+  .jpsea-seal.s-春 { color: var(--spring); }
+  .jpsea-seal.s-夏 { color: var(--summer); }
+  .jpsea-seal.s-秋 { color: var(--autumn); }
+  .jpsea-seal.s-冬 { color: var(--winter); }
+  .jpsea-seal.s-年 { color: var(--year); }
+
+  .jpsea-ctitle {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .jpsea-no {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  .jpsea-card h3 {
+    font-size: 1.8rem;
+    line-height: 1.35;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .jpsea-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+
+  .jpsea-pill {
+    background: var(--sunk);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 1.3rem;
+    padding: .2rem .9rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-pill.kind {
+    background: none;
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .jpsea-kv {
+    display: grid;
+    font-size: 1.5rem;
+    gap: .4rem 1rem;
+    grid-template-columns: 6.4em minmax(0, 1fr);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .jpsea-kv dt {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding-top: .2rem;
+  }
+
+  .jpsea-kv dd {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .jpsea-combo button {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 1px dotted var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.5rem;
+    padding: 0;
+    text-align: left;
+  }
+
+  .jpsea-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .8rem;
+  }
+
+  .jpsea-tag {
+    color: var(--muted);
+    font-size: 1.3rem;
+  }
+
+  .jpsea-tag::before {
+    content: "#";
+  }
+
+  .jpsea-empty {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    color: var(--muted);
+    font-size: 1.5rem;
+    padding: 2.8rem;
+    text-align: center;
+  }
+
+  /* ── 各區必看、航點 ── */
+  .jpsea-sect-title {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+
+  .jpsea-must {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jpsea-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+
+  .jpsea-mbox {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    min-width: 0;
+    padding: 1.4rem 1.6rem;
+    scroll-margin-top: 1.6rem;
+    transition: outline-color .3s;
+  }
+
+  .jpsea-mbox.flash {
+    outline: 2px solid var(--accent);
+  }
+
+  .jpsea-mbox h3 {
+    font-size: 1.8rem;
+    margin: 0 0 .8rem;
+  }
+
+  .jpsea-mbox ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: .2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .jpsea-mbox li {
+    margin: 0;
+  }
+
+  .jpsea-spot summary {
+    align-items: baseline;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: .4rem 0;
+  }
+
+  .jpsea-spot summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .jpsea-spot summary::before {
+    color: var(--accent);
+    content: "▸";
+    flex: 0 0 auto;
+    font-size: 1.3rem;
+    transition: transform .2s;
+  }
+
+  .jpsea-spot[open] > summary::before {
+    transform: rotate(90deg);
+  }
+
+  .jpsea-spot-name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .jpsea-spot-area {
+    color: var(--muted);
+    font-size: 1.3rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-spot-body {
+    border-left: 2px solid var(--soft);
+    margin: .2rem 0 .8rem .5rem;
+    padding: .2rem 0 .2rem 1.2rem;
+  }
+
+  .jpsea-spot-body p {
+    font-size: 1.5rem;
+    line-height: 1.65;
+    margin: 0 0 .6rem;
+  }
+
+  .jpsea-spot-body a {
+    color: var(--accent);
+    font-size: 1.3rem;
+  }
+
+  .jpsea-fl {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .jpsea-flrow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: grid;
+    font-size: 1.5rem;
+    gap: 1rem;
+    grid-template-columns: 8.5em minmax(0, 1fr);
+    padding: 1.2rem 1.6rem;
+  }
+
+  .jpsea-notes {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.8rem;
+  }
+
+  .jpsea-notes ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: .6rem;
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .jpsea-src {
+    color: var(--muted);
+    font-size: 1.3rem;
+    margin: 0;
+  }
+
+  .jpsea-src a {
+    color: var(--accent);
+  }
+
+  @media only screen and (max-width: 640px) {
+    .jpsea-fgrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .jpsea-hero h2 {
+      font-size: 2rem;
+    }
+  }
+
+  /* 預設內容欄 768px 放單欄；滿版切換開啟後才排多欄（見 assets/css/custom.css） */
+  @media only screen and (min-width: 1024px) {
+    html.layout-wide .jpsea-list,
+    html.layout-wide .jpsea-must {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media only screen and (min-width: 1440px) {
+    html.layout-wide .jpsea-list,
+    html.layout-wide .jpsea-must {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jpsea-card,
+    .jpsea-mbox,
+    .jpsea-spot summary::before {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="jpsea" id="jpsea-app">
+
+  <!-- Hero -->
+  <section class="jpsea-hero">
+    <div class="jpsea-eyebrow">Japan · Seasons × Regions</div>
+    <h2>Japan Seasonal Routes</h2>
+    <p>Pick a region by season and purpose, then a short, long or combo plan by trip length. Blossom and foliage dates are past averages and shift by 1–2 weeks from year to year.</p>
+  </section>
+
+  <!-- Tabs -->
+  <nav class="jpsea-tabs" role="tablist">
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="true" data-view="plans">Plans</button>
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="false" data-view="musts">Must-sees</button>
+    <button class="jpsea-tab" type="button" role="tab" aria-selected="false" data-view="flights">Flights &amp; tips</button>
+  </nav>
+
+  <!-- Plans -->
+  <section class="jpsea-view" data-panel="plans">
+    <div class="jpsea-filters">
+      <div class="jpsea-frow">
+        <span class="jpsea-flabel">MONTH</span>
+        <div class="jpsea-chips" data-filter="month"></div>
+      </div>
+      <div class="jpsea-frow">
+        <span class="jpsea-flabel">REGION</span>
+        <div class="jpsea-chips" data-filter="area"></div>
+      </div>
+      <div class="jpsea-frow">
+        <div class="jpsea-fhead">
+          <span class="jpsea-flabel">PURPOSE</span>
+          <div class="jpsea-mode" role="group" aria-label="How to match multiple purposes">
+            <button type="button" data-mode="any">Match any</button>
+            <button type="button" data-mode="all">Match all</button>
+          </div>
+        </div>
+        <div class="jpsea-chips" data-filter="tag"></div>
+      </div>
+      <div class="jpsea-fgrid">
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-days">DAYS</label>
+          <select id="jpsea-days" data-select="days">
+            <option value="all">All</option>
+            <option value="5-7">5–7 days</option>
+            <option value="8-10">8–10 days</option>
+            <option value="11-14">11–14 days</option>
+          </select>
+        </div>
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-move">TRANSPORT</label>
+          <select id="jpsea-move" data-select="move">
+            <option value="all">All</option>
+            <option value="public">Public transport</option>
+            <option value="drive">Self-drive</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </div>
+        <div class="jpsea-frow">
+          <label class="jpsea-flabel" for="jpsea-kind">TYPE</label>
+          <select id="jpsea-kind" data-select="kind">
+            <option value="all">All</option>
+            <option value="short">Short</option>
+            <option value="long">Long</option>
+            <option value="combo">Combo (linked plans)</option>
+          </select>
+        </div>
+      </div>
+      <div class="jpsea-bar">
+        <span class="jpsea-count" data-count></span>
+        <button class="jpsea-reset" type="button" data-reset>Clear filters</button>
+      </div>
+    </div>
+    <div class="jpsea-list" data-list></div>
+  </section>
+
+  <!-- Must-sees -->
+  <section class="jpsea-view" data-panel="musts" hidden>
+    <h3 class="jpsea-sect-title">Must-sees by region</h3>
+    <div class="jpsea-jump" data-jump></div>
+    <div class="jpsea-must" data-must></div>
+  </section>
+
+  <!-- Flights & tips -->
+  <section class="jpsea-view" data-panel="flights" hidden>
+    <h3 class="jpsea-sect-title">Direct flights from Taiwan</h3>
+    <div class="jpsea-fl" data-flights></div>
+    <h3 class="jpsea-sect-title">Planning tips</h3>
+    <div class="jpsea-notes">
+      <ul>
+        <li>Cherry blossom forecasts come out around January–February and foliage forecasts around September. Lock in your dates once they are out.</li>
+        <li>Winter schedules start in late October and some routes lose flights (Aomori drops to three a week, for example); Asahikawa is seasonal. Check the airline's website before booking.</li>
+        <li>To drive, bring your original Taiwanese license plus the Japanese translation issued by the Motor Vehicles Office. From December to March, public transport is the safer choice in Hokkaido, Tohoku, Hokuriku and Shinshu.</li>
+        <li>Avoid Japanese holidays: Golden Week (late April–early May), Obon (mid August) and New Year (December 29–January 3).</li>
+        <li>Book ahead: Ghibli Park, Chichu Art Museum on Naoshima, Kawachi Fujien, Shirakawa-go light-up days, the Harry Potter studio tour, PokéPark KANTO, and popular Disney and USJ time slots.</li>
+        <li>Island-hopping combos (such as Okinawa Main Island to Ishigaki) need a separate Japanese domestic flight.</li>
+      </ul>
+    </div>
+    <p class="jpsea-src">Flight routes compiled from JNTO's airline information page (July 7, 2026 edition): <a href="https://www.japan.travel/tw/tw/airline/" target="_blank" rel="noopener">japan.travel/tw/tw/airline</a></p>
+  </section>
+</div>
+
+<noscript>
+  <p>This itinerary library needs JavaScript for its filters and tabs.</p>
+</noscript>
+<script>
+  (function () {
+    var root = document.getElementById('jpsea-app');
+    if (!root) { return; }
+
+    /* ── Plan data ──
+       s: season seal (kanji kept as a design element; aria-label gives the English name)
+       v: public / drive / mixed; ty: short / long / combo; c: keys of the plans a combo links */
+    var ALL=[1,2,3,4,5,6,7,8,9,10,11,12];
+    var NC='In/out: New Chitose', HN='In/out: Haneda', NG='In/out: Nagoya', KX='In/out: Kansai';
+    var P=[
+    /* ===== Hokkaido ===== */
+    {k:'hk-flower',a:'Hokkaido',s:'夏',t:'Central Hokkaido Flower Fields',p:'Early–mid Jul',m:[7],g:['Flower fields','Ropeways & night views'],d:[6,7],ty:'short',f:NC,v:'mixed',vn:'Drive Biei and Furano for the first 4 days; Sapporo and Otaru by JR and subway for the last 2',r:'Sapporo → Furano (Farm Tomita lavender) → Biei (Shikisai-no-Oka, Shirogane Blue Pond, Patchwork Road) → Asahikawa (Asahiyama Zoo) → Otaru Canal → Sapporo',x:'Mt. Moiwa ropeway night view, Hokkaido Shrine'},
+    {k:'hk-summer',a:'Hokkaido',s:'夏',t:'Hokkaido Summer Grand Loop',p:'Mid Jul–early Aug',m:[7,8],g:['Flower fields','Nature walks','Onsen'],d:[11,13],ty:'long',f:NC,v:'drive',vn:'Self-drive throughout; return the car in Sapporo on the last day',r:'Sapporo → Biei, Furano → Hokuryu Sunflower Village (late Jul–mid Aug) → Sounkyo → Abashiri → Shiretoko (Five Lakes, sightseeing cruise) → Lakes Mashu and Kussharo → Lake Akan → Kushiro Wetland → Obihiro (Tokachi) → Sapporo',x:'Shiretoko Five Lakes boardwalk, Ainu Kotan at Lake Akan, Tokachi butadon'},
+    {k:'hk-shiba',a:'Hokkaido',s:'春',t:'Eastern Hokkaido Moss Phlox',p:'Mid May–early Jun',m:[5,6],g:['Flower fields','Nature walks'],d:[7,8],ty:'short',f:NC,v:'drive',vn:'Self-drive throughout',r:'Sapporo → Sounkyo → Takinoue Shibazakura Park → Higashimokoto Shibazakura Park → Abashiri → Shiretoko Pass (lingering snow walls) → Lake Akan → Sapporo',x:'Whole hillsides of pink moss phlox; Shiretoko is quiet at this time of year'},
+    {k:'hk-sakura',a:'Hokkaido',s:'春',t:'Late Cherry Blossoms in Southern Hokkaido',p:'Late Apr–early May',m:[4,5],g:['Cherry blossoms','Castles','Ropeways & night views','Onsen'],d:[6,6],ty:'short',f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR limited express between cities; streetcar and subway in town',r:'Hakodate (Goryokaku blossoms, Mt. Hakodate) → Matsumae Castle (Hokkaido\'s only Japanese-style castle) → Onuma → Noboribetsu Onsen → Sapporo (Maruyama Park)',x:'Mt. Hakodate night view, Noboribetsu Jigokudani; crowded during Golden Week'},
+    {k:'hk-koyo',a:'Hokkaido',s:'秋',t:'Daisetsuzan & Central Hokkaido Foliage',p:'Late Sep–mid Oct',m:[9,10],g:['Autumn leaves','Ropeways & night views','Onsen'],d:[5,6],ty:'short',f:NC,v:'drive',vn:'Self-drive throughout',r:'Asahidake Ropeway (Japan\'s earliest foliage) → Kurodake Ropeway → Sounkyo → Shirogane Blue Pond, Biei → Jozankei Onsen → Sapporo',x:'Asahidake and Kurodake ropeways: the first mountains in Japan to turn red'},
+    {k:'hk-winter',a:'Hokkaido',s:'冬',t:'Hakodate & Sapporo in the Snow',p:'Dec–Feb',m:[12,1,2],g:['Snow scenery','Ropeways & night views','Onsen'],d:[6,6],ty:'short',f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR limited express; driving on snow is not recommended',r:'Hakodate (Mt. Hakodate, Kanemori Red Brick Warehouses, Goryokaku winter illumination) → Onuma → Noboribetsu Onsen → Lake Toya → Otaru Canal → Sapporo',x:'Mt. Hakodate night view; Christmas tree at the Kanemori warehouses in December'},
+    {k:'hk-yuki',a:'Hokkaido',s:'冬',t:'Sapporo Snow Festival & Ice Falls',p:'Early–mid Feb',m:[2],g:['Festivals','Snow scenery','Onsen'],d:[7,7],ty:'short',f:NC,v:'public',vn:'JR plus sightseeing buses',r:'Sapporo Snow Festival (about a week in early Feb) → Otaru Snow Light Path (around mid Feb) → Asahikawa (Asahiyama Zoo penguin walk) → Sounkyo Ice Fall Festival → Lake Shikotsu Ice Festival',x:'Giant snow sculptures, the penguin walk'},
+    {k:'hk-ski',a:'Hokkaido',s:'冬',t:'Hokkaido Powder Skiing',p:'Mid Dec–early Mar',m:[12,1,2,3],g:['Skiing','Onsen'],d:[5,7],ty:'short',f:NC,v:'public',vn:'Airport shuttle buses run straight to the resorts',r:'Stay at one of Niseko, Rusutsu or Kiroro → last night in Sapporo',x:'The best powder is in Jan–Feb'},
+    {k:'hk-drift',a:'Hokkaido',s:'冬',t:'Eastern Hokkaido Drift Ice & Red-crowned Cranes',p:'Early Feb–early Mar',m:[2,3],g:['Snow scenery','Nature walks','Onsen'],d:[9,10],ty:'long',f:NC,v:'public',vn:'JR limited express, the Ryuhyo Monogatari train and sightseeing buses',r:'Sapporo → Asahikawa → Abashiri (Aurora icebreaker) → Utoro, Shiretoko (drift ice walk) → Kawayu Onsen, swans at Lake Kussharo → Kushiro (cranes at Tsurui, SL Fuyu-no-Shitsugen train) → Sapporo',x:'Walking on drift ice in a dry suit'},
+    {k:'hk-winter-all',a:'Hokkaido',s:'冬',t:'Winter Hokkaido Full Circuit',p:'Early–mid Feb',m:[2],g:['Snow scenery','Festivals','Ropeways & night views','Onsen'],d:[13,14],ty:'combo',c:['hk-winter','hk-drift'],f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR and sightseeing buses throughout',r:'Hakodate → Noboribetsu → Otaru → Sapporo (add a day if the Snow Festival is on) → Asahikawa → Abashiri → Shiretoko → Kushiro → Sapporo',x:'Night views, the Snow Festival, drift ice and cranes in one trip'},
+
+    /* ===== Tohoku ===== */
+    {k:'th-sakura',a:'Tohoku',s:'春',t:'Tohoku Cherry Blossom Run',p:'Mid–late Apr',m:[4],g:['Cherry blossoms','Castles','Shrines & temples'],d:[6,7],ty:'short',f:'In: Sendai / Out: Aomori',v:'public',vn:'JR East Pass (Tohoku area)',r:'Shiroishi River Hitome Senbonzakura → Chusonji, Hiraizumi → Kitakami Tenshochi → Kakunodate samurai district → Hirosaki Castle (late Apr–early May) → Aomori',x:'Petal rafts on the Hirosaki Castle moat, Chusonji Konjikido'},
+    {k:'th-sakura-long',a:'Tohoku',s:'春',t:'Tohoku Blossoms & Snow Corridors',p:'Late Apr–early May',m:[4,5],g:['Cherry blossoms','Snow scenery','Onsen'],d:[9,10],ty:'long',f:'In: Sendai / Out: Aomori',v:'mixed',vn:'JR in the south; self-drive for Hachimantai and Hakkoda',r:'Sendai → Hiraizumi → Kakunodate → Hachimantai Snow Corridor → Lake Tazawa → Hirosaki Castle → Hakkoda Snow Corridor + Sukayu Onsen → Aomori',x:'Cherry blossoms and snow walls several meters high on the same trip'},
+    {k:'fk-spring',a:'Tohoku',s:'春',t:'Fukushima: Hanamiyama & Takizakura',p:'Early–mid Apr',m:[4],g:['Cherry blossoms','Castles'],d:[5,5],ty:'short',f:'In/out: Fukushima',v:'drive',vn:'Self-drive throughout',r:'Hanamiyama Park → Miharu Takizakura (a 1,000-year-old tree) → Tsuruga Castle, Aizuwakamatsu → Ouchi-juku → Lake Inawashiro',x:'Miharu Takizakura, one of Japan\'s three great cherry trees'},
+    {k:'th-koyo',a:'Tohoku',s:'秋',t:'Northern Tohoku Foliage',p:'Mid–late Oct',m:[10],g:['Autumn leaves','Onsen','Ropeways & night views'],d:[6,7],ty:'short',f:'In: Aomori / Out: Sendai (or Hanamaki)',v:'drive',vn:'Self-drive throughout',r:'Hakkoda Ropeway → Oirase Stream → Lake Towada → Hachimantai → Nyuto Onsen → Dakigaeri Gorge, Kakunodate → Naruko Gorge → Sendai',x:'The Oirase Stream trail, Tsurunoyu at Nyuto Onsen'},
+    {k:'th-koyo-long',a:'Tohoku',s:'秋',t:'All-Tohoku Foliage',p:'Mid Oct–early Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen'],d:[11,12],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in northern Tohoku, switch to JR in the south',r:'Hakkoda → Oirase → Lake Towada → Hachimantai → Kakunodate → Naruko Gorge → Yamadera → Zao Okama → Ginzan Onsen → Matsushima → Aizuwakamatsu → Ouchi-juku → Sendai',x:'The thousand stone steps of Yamadera, Ginzan Onsen at night'},
+    {k:'th-hakodate',a:'Tohoku',s:'秋',t:'Hakodate into Northern Tohoku Foliage',p:'Mid–late Oct',m:[10],g:['Autumn leaves','Ropeways & night views','Onsen'],d:[9,10],ty:'combo',c:['th-koyo'],f:'In: Hakodate / Out: Sendai',v:'mixed',vn:'Streetcar for 2 days in Hakodate; Hokkaido Shinkansen to Shin-Aomori, then rent a car',r:'Hakodate (Goryokaku, Mt. Hakodate, Onuma foliage) → Hokkaido Shinkansen → Shin-Aomori → the Northern Tohoku foliage route → Sendai',x:'Two regions, Hokkaido and Tohoku, in one trip'},
+    {k:'th-juhyo',a:'Tohoku',s:'冬',t:'Zao Snow Monsters & Ginzan Onsen',p:'Mid Jan–late Feb',m:[1,2],g:['Snow scenery','Onsen','Ropeways & night views','Shrines & temples'],d:[5,6],ty:'short',f:'In/out: Sendai',v:'public',vn:'JR plus buses',r:'Sendai → Zao Ropeway snow monsters (lit at night) → Yamadera in the snow → Ginzan Onsen → Matsushima → Sendai',x:'Juhyo "snow monsters", snowy nights at Ginzan Onsen'},
+    {k:'th-snow',a:'Tohoku',s:'冬',t:'Northern Tohoku Snow Country Onsen',p:'Late Jan–mid Feb',m:[1,2],g:['Snow scenery','Onsen','Festivals'],d:[6,7],ty:'short',f:'In: Aomori / Out: Akita (or Hanamaki)',v:'public',vn:'JR plus ryokan shuttles',r:'Aomori → Hakkoda snow monsters + Sukayu Onsen → Hirosaki Castle Snow Lantern Festival (early–mid Feb) → Gono Line → Nyuto Onsen → Kakunodate → Yokote Kamakura Festival (Feb 15–16) → Akita',x:'A snow-view outdoor bath at the remote Tsurunoyu'},
+    {k:'th-winter-all',a:'Tohoku',s:'冬',t:'Tohoku Winter Traverse',p:'Early–mid Feb',m:[2],g:['Snow scenery','Onsen','Festivals','Ropeways & night views'],d:[11,12],ty:'combo',c:['th-juhyo','th-snow'],f:'In: Sendai / Out: Aomori',v:'public',vn:'JR and shuttles throughout',r:'Sendai → Zao → Yamadera → Ginzan Onsen → Akita → Yokote → Kakunodate → Nyuto Onsen → Hirosaki → Hakkoda → Aomori',x:'Snow monsters, snow huts and snow lanterns in one go'},
+    {k:'th-matsuri',a:'Tohoku',s:'夏',t:'Tohoku Summer Festivals',p:'Aug 1–8',m:[8],g:['Festivals'],d:[6,7],ty:'short',f:'In: Aomori / Out: Sendai',v:'public',vn:'JR',r:'Aomori Nebuta (Aug 2–7) → Hirosaki Neputa → Morioka Sansa Odori (Aug 1–4) → Akita Kanto (Aug 3–6) → Sendai Tanabata (Aug 6–8)',x:'Book hotels six months ahead'},
+    {k:'th-summer-long',a:'Tohoku',s:'夏',t:'Tohoku Festivals & Cool Escapes',p:'Early Aug',m:[8],g:['Festivals','Nature walks','Shrines & temples','Onsen'],d:[10,11],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in the north; JR for the festival cities',r:'Aomori Nebuta → Osorezan (open May 1–Oct 31) → Oirase in summer green → Lake Towada → Akita Kanto → Kakunodate → Chusonji, Hiraizumi → Matsushima → Sendai Tanabata',x:'Osorezan, one of Japan\'s three holiest sites'},
+
+    /* ===== Kanto ===== */
+    {k:'kt-classic',a:'Kanto',s:'年',t:'Classic Tokyo in Five Days',p:'Year-round (avoid Golden Week and Obon)',m:ALL,g:['Shrines & temples','Ropeways & night views','Theme parks'],d:[5,5],ty:'short',f:HN,v:'public',vn:'Subway',r:'Imperial Palace Nijubashi + East Gardens → Sensoji → Tokyo Skytree → Meiji Jingu → Shibuya, Omotesando → teamLab at Azabudai Hills → Toyosu, Tsukiji → day trip to Kamakura',x:'The Imperial Palace, Kaminarimon at Sensoji, Meiji Jingu'},
+    {k:'kt-parks',a:'Kanto',s:'年',t:'Tokyo Theme Park Week',p:'Year-round (Halloween mid Sep–end Oct, Christmas mid Nov–Dec 25)',m:ALL,g:['Theme parks'],d:[6,7],ty:'short',f:'In/out: Narita or Haneda',v:'public',vn:'Subway and JR',r:'Tokyo DisneySea (Fantasy Springs) + Tokyo Disneyland, 2 days → PokéPark KANTO (Yomiuriland, opened Feb 2026) → Warner Bros. Studio Tour Tokyo – The Making of Harry Potter → Sanrio Puroland → Odaiba',x:'Tokyo DisneySea\'s 25th anniversary celebration from 2026'},
+    {k:'kt-sakura',a:'Kanto',s:'春',t:'Tokyo Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Subway',r:'Chidorigafuchi (Imperial Palace moat) → Meguro River → Ueno Park → Shinjuku Gyoen → Rikugien night blossoms → day trip to Kawagoe or Kamakura',x:'Rowing a boat under the blossoms at Chidorigafuchi'},
+    {k:'kt-ginkgo',a:'Kanto',s:'秋',t:'Tokyo Ginkgo & Autumn Leaves',p:'Late Nov–early Dec',m:[11,12],g:['Autumn leaves','Ropeways & night views'],d:[5,5],ty:'short',f:HN,v:'public',vn:'Subway and JR',r:'Meiji Jingu Gaien ginkgo avenue → Rikugien foliage illumination → Showa Kinen Park → Mt. Takao cable car → Hasedera, Kamakura → Marunouchi Christmas lights',x:'The golden ginkgo tunnel at Gaien'},
+    {k:'kt-fuji-koyo',a:'Kanto',s:'秋',t:'Fuji Five Lakes & Hakone Foliage',p:'Early–mid Nov',m:[11],g:['Autumn leaves','Onsen','Ropeways & night views','Shrines & temples'],d:[6,7],ty:'short',f:HN,v:'mixed',vn:'Drive the Fuji Five Lakes for 2–3 days → Hakone Free Pass for 2 days → Tokyo subway for 2 days',r:'Kawaguchiko Momiji Corridor → Chureito Pagoda, Arakurayama Sengen Park → Oshino Hakkai → Kachi Kachi Ropeway (Mt. Tenjo) → Hakone (Gora, Owakudani ropeway, pirate ship, Hakone Shrine Torii of Peace) → Hakone Kowakien Yunessun → Tokyo',x:'Yunessun sake bath (Oct 20, 2026–Jan 4, 2027) and wine bath (renovated Sep 2026)'},
+    {k:'kt-fuji-spring',a:'Kanto',s:'春',t:'Fuji Moss Phlox & Lakeside Blossoms',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Cherry blossoms','Onsen'],d:[6,6],ty:'short',f:HN,v:'mixed',vn:'Drive the Fuji Five Lakes; public transport for Hakone and Tokyo',r:'Arakurayama Sengen Park blossoms (early–mid Apr) → north shore of Lake Kawaguchi → Fuji Shibazakura Festival (Lake Motosu) → Oshino Hakkai → Hakone → Tokyo',x:'Five-story pagoda, cherry blossoms and Mt. Fuji in one frame'},
+    {k:'kt-fuji-winter',a:'Kanto',s:'冬',t:'Winter Fuji & Onsen',p:'Dec–Feb',m:[12,1,2],g:['Snow scenery','Onsen','Festivals'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Buses and passes; mountain roads ice over in winter',r:'Lake Kawaguchi (the clearest Fuji views are in winter) → Lake Sai Ice Festival (late Jan–early Feb) → Kawaguchiko winter fireworks (weekends, Jan–Feb) → Diamond Fuji at Lake Yamanaka → Hakone onsen → Tokyo',x:'Yunessun sake bath until Jan 4'},
+    {k:'kt-fuji-summer',a:'Kanto',s:'夏',t:'Fuji Lavender & Thrill Rides',p:'Late Jun–mid Jul',m:[6,7],g:['Flower fields','Theme parks','Nature walks'],d:[5,6],ty:'short',f:HN,v:'mixed',vn:'Drive the Fuji Five Lakes; Hakone Tozan Railway in Hakone',r:'Lavender at Oishi Park, Lake Kawaguchi → Fuji-Q Highland → Mt. Fuji 5th Station (climbing season Jul–early Sep, reservation required) → hydrangeas along the Hakone Tozan Railway → Tokyo',x:'Fuji-Q roller coasters, the hydrangea train'},
+    {k:'kt-flower',a:'Kanto',s:'春',t:'Kanto Flower Fields, Northern Line',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Shrines & temples'],d:[6,7],ty:'short',f:'In/out: Narita',v:'mixed',vn:'JR plus buses; the Hitachi–Ashikaga stretch can be driven',r:'Nemophila at Hitachi Seaside Park → great wisteria at Ashikaga Flower Park (lit at night) → Nikko Toshogu → moss phlox at Hitsujiyama Park, Chichibu + Mitsumine Shrine → Tokyo',x:'Hills of blue nemophila, wisteria at night'},
+    {k:'kt-kochia',a:'Kanto',s:'秋',t:'Kochia & Oku-Nikko Foliage',p:'Early–mid Oct',m:[10],g:['Autumn leaves','Flower fields','Onsen','Shrines & temples'],d:[6,6],ty:'short',f:'In/out: Narita',v:'public',vn:'JR and Tobu passes',r:'Kochia turning red at Hitachi Seaside Park → Nikko Toshogu → Irohazaka, Kegon Falls, Lake Chuzenji, Senjogahara → Kinugawa Onsen → Tokyo',x:'Hills of red kochia'},
+    {k:'kt-kusatsu',a:'Kanto',s:'秋',t:'Kusatsu & Karuizawa in Autumn',p:'Late Oct–early Nov',m:[10,11],g:['Autumn leaves','Onsen'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Shinkansen plus buses',r:'Tokyo → Kumoba Pond and Shiraito Falls, Karuizawa → Yubatake, Sainokawara outdoor bath and the yumomi show, Kusatsu → Ishidan stone steps, Ikaho → Tokyo',x:'Kusatsu Yubatake lit up at night'},
+    {k:'kt-izu',a:'Kanto',s:'冬',t:'Kawazu Cherry Blossoms & Atami',p:'Mid Feb–early Mar',m:[2,3],g:['Cherry blossoms','Onsen','Flower fields'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Odoriko limited express',r:'Atami Plum Garden → Kawazu Cherry Blossom Festival → Shuzenji → Jogasaki Coast suspension bridge → Izu Kogen → Tokyo',x:'Some of Japan\'s earliest cherry blossoms'},
+    {k:'kt-ajisai',a:'Kanto',s:'夏',t:'Kamakura & Hakone Hydrangeas',p:'Early–late Jun (rainy season)',m:[6],g:['Flower fields','Shrines & temples','Onsen'],d:[5,5],ty:'short',f:HN,v:'public',vn:'Enoden line and Hakone Free Pass',r:'Hydrangeas at Meigetsuin and Hasedera → Tsurugaoka Hachimangu → Enoshima → hydrangeas along the Hakone Tozan Railway → Yunessun → Tokyo',x:'The Great Buddha of Kamakura, "Meigetsuin blue"'},
+    {k:'kt-combo-autumn',a:'Kanto',s:'秋',t:'Tokyo Theme Parks + Fuji & Hakone Foliage',p:'Early–mid Nov',m:[11],g:['Theme parks','Autumn leaves','Onsen'],d:[11,13],ty:'combo',c:['kt-parks','kt-fuji-koyo'],f:'In: Narita / Out: Haneda',v:'mixed',vn:'Public transport in Tokyo, drive the Fuji stretch',r:'Tokyo theme parks for 6 days → Lake Kawaguchi → Hakone → Tokyo',x:'Disney\'s Christmas events have just begun'},
+    {k:'kt-combo-spring',a:'Kanto',s:'春',t:'Every Kanto Spring Bloom',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Cherry blossoms','Shrines & temples'],d:[11,12],ty:'combo',c:['kt-flower','kt-fuji-spring'],f:'In: Narita / Out: Haneda',v:'mixed',vn:'JR plus some driving on the northern line; drive the Fuji stretch',r:'Hitachi → Ashikaga → Nikko → Chichibu → Lake Kawaguchi → Lake Motosu → Hakone → Tokyo',x:'Nemophila, wisteria, moss phlox and Fuji cherry blossoms'},
+
+    /* ===== Chubu & Hokuriku ===== */
+    {k:'cb-tateyama',a:'Chubu & Hokuriku',s:'春',t:'Tateyama Kurobe Snow Corridor',p:'Mid Apr–late May',m:[4,5],g:['Snow scenery','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Toyama (or Komatsu)',v:'public',vn:'Private cars are banned on the Alpine Route; public transport throughout',r:'Toyama → Tateyama Cable Car → Highland bus → Yuki-no-Otani snow corridor (Murodo) → back down → Kenrokuen, Kanazawa → Shirakawa-go → Toyama',x:'Snow walls more than ten meters high'},
+    {k:'cb-alps',a:'Chubu & Hokuriku',s:'秋',t:'Japan Alps Autumn Traverse',p:'Early–mid Oct',m:[10],g:['Autumn leaves','Ropeways & night views','Castles'],d:[9,10],ty:'long',f:'In: Toyama / Out: Nagoya',v:'public',vn:'Private cars are banned on the Alpine Route and in Kamikochi',r:'Toyama → Murodo, Tateyama → Kurobe Dam → Ogizawa → Matsumoto Castle → Kappa Bridge, Kamikochi → Shinhotaka Ropeway (double-decker) → Takayama → Shirakawa-go → Nagoya',x:'Foliage all the way from the peaks down to the plains'},
+    {k:'cb-summer',a:'Chubu & Hokuriku',s:'夏',t:'Chubu Mountains Summer Escape',p:'Mid Jul–late Aug',m:[7,8],g:['Nature walks','Ropeways & night views'],d:[6,7],ty:'short',f:'In: Toyama / Out: Nagoya',v:'public',vn:'Mountain buses and ropeways',r:'Murodo, Tateyama (alpine flowers, ptarmigan) → Kurobe Dam water discharge (late Jun–mid Oct) → Kamikochi → Mt. Norikura → Shinhotaka Ropeway → Takayama → Nagoya',x:'About 15°C at Murodo while the lowlands hit 35°C'},
+    {k:'cb-takayama',a:'Chubu & Hokuriku',s:'秋',t:'Takayama Autumn Festival & Hokuriku',p:'Around Oct 9–10',m:[10],g:['Festivals','Onsen','Shrines & temples'],d:[6,6],ty:'short',f:'In: Nagoya / Out: Komatsu',v:'public',vn:'JR and Nohi buses',r:'Nagoya → Gero Onsen → Takayama Autumn Festival (floats, night festival) → Shirakawa-go → Kanazawa → Komatsu',x:'One of Japan\'s three most beautiful festivals'},
+    {k:'cb-hokuriku-winter',a:'Chubu & Hokuriku',s:'冬',t:'Hokuriku Snow Country & Echizen Crab',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen'],d:[5,6],ty:'short',f:'In/out: Komatsu',v:'public',vn:'JR and buses',r:'Yukitsuri at Kenrokuen and the Higashi Chaya District, Kanazawa → Shirakawa-go light-up (select dates, reservation required) → Gokayama → Yamashiro / Yamanaka Onsen → Tojinbo and the Dinosaur Museum, Fukui',x:'Echizen crab season runs Nov–Mar'},
+    {k:'cb-nagoya',a:'Chubu & Hokuriku',s:'年',t:'Nagoya Theme Parks & Castles',p:'Year-round',m:ALL,g:['Theme parks','Castles','Shrines & temples'],d:[5,6],ty:'short',f:NG,v:'public',vn:'Subway and Meitetsu',r:'Ghibli Park (reservation required) → LEGOLAND Japan → Nagoya Castle → Atsuta Jingu → Inuyama Castle → Nagashima Spa Land + Nabana no Sato illumination (about mid Oct–May)',x:'Ghibli Park, the Nabana no Sato light tunnel'},
+    {k:'cb-ise',a:'Chubu & Hokuriku',s:'年',t:'Ise Jingu & Shima',p:'Year-round (best Mar–May, Oct–Nov)',m:ALL,g:['Shrines & temples','Onsen'],d:[5,6],ty:'short',f:NG,v:'mixed',vn:'Kintetsu Ise-Shima pass; the Shima stretch can be driven',r:'Atsuta Jingu → Ise Jingu Outer Shrine → Inner Shrine + Okage Yokocho → Meoto Iwa at Futami Okitama Shrine → Toba Aquarium → Shima Spain Village → VISON',x:'The most sacred shrine in Japan'},
+    {k:'cb-koyo',a:'Chubu & Hokuriku',s:'秋',t:'Foliage around Nagoya',p:'Mid–late Nov',m:[11],g:['Autumn leaves','Ropeways & night views','Theme parks'],d:[6,6],ty:'short',f:NG,v:'mixed',vn:'Drive or take the bus to Korankei (traffic is heavy in foliage season); rail for the rest',r:'Korankei → Gozaisho Ropeway → Nabana no Sato → Ise Jingu → Nagoya Castle',x:'Korankei foliage lit up at night'},
+    {k:'cb-combo',a:'Chubu & Hokuriku',s:'年',t:'Nagoya Theme Parks + Ise',p:'Year-round',m:ALL,g:['Theme parks','Shrines & temples','Castles'],d:[8,9],ty:'combo',c:['cb-nagoya','cb-ise'],f:NG,v:'public',vn:'Meitetsu and Kintetsu',r:'Nagoya for 4 days → Nagashima → Ise → Toba → Nagoya',x:'Good for family trips'},
+    {k:'sn-monkey',a:'Chubu & Hokuriku',s:'冬',t:'Shinshu Snow Monkeys & Skiing',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Skiing','Onsen','Shrines & temples','Castles'],d:[6,7],ty:'short',f:'In/out: Narita (Hokuriku Shinkansen from Tokyo)',v:'public',vn:'Shinkansen plus the Nagano Electric Railway',r:'Tokyo → Zenkoji, Nagano → Jigokudani Monkey Park (snow monkeys in the hot spring) → Shibu Onsen nine-bath tour → skiing at Nozawa Onsen or Hakuba → Matsumoto Castle → Tokyo',x:'Snow monkeys soaking in hot springs'},
+    {k:'ng-yuzawa',a:'Chubu & Hokuriku',s:'冬',t:'Echigo-Yuzawa Snow Country & Sake Baths',p:'Late Dec–early Mar',m:[12,1,2,3],g:['Skiing','Onsen','Snow scenery'],d:[5,5],ty:'short',f:'In/out: Niigata',v:'public',vn:'Joetsu Shinkansen',r:'Niigata City → Echigo-Yuzawa (GALA Yuzawa skiing; sake tasting and a sake bath at Ponshukan in the station) → Naeba → Niigata',x:'The setting of Kawabata\'s "Snow Country"; Niigata sake'},
+
+    /* ===== Kansai ===== */
+    {k:'ks-sakura',a:'Kansai',s:'春',t:'Kyoto, Osaka & Kobe Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[6,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Trains',r:'Kyoto (Philosopher\'s Path, Daigoji, Heian Jingu, Kiyomizudera night viewing, Arashiyama) → Nara (Todaiji, Kasuga Taisha) → Osaka Castle → Himeji Castle',x:'Kiyomizudera, Fushimi Inari, Himeji Castle'},
+    {k:'ks-sakura-long',a:'Kansai',s:'春',t:'Chasing the Kansai Blossom Front',p:'Late Mar–mid Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[11,12],ty:'long',f:KX,v:'public',vn:'Trains and buses',r:'Kyoto → Nara → Yoshino Senbonzakura (early–mid Apr) → Koyasan → Osaka Castle → Himeji Castle → Hikone Castle → Kaizu Osaki, Lake Biwa (mid Apr) → Haradanien, Kyoto',x:'Following the blossoms from the plains up into the mountains'},
+    {k:'ks-koyo',a:'Kansai',s:'秋',t:'Kyoto, Osaka & Kobe Foliage',p:'Mid Nov–early Dec',m:[11,12],g:['Autumn leaves','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Trains',r:'Kiyomizudera, Eikando, Tofukuji, Nanzenji, Arashiyama → Kibune and Kurama (Eizan Railway maple tunnel) → Nara → Minoo, Osaka → Mt. Maya night view, Kobe',x:'Temples lit up at night'},
+    {k:'ks-usj',a:'Kansai',s:'年',t:'USJ, Osaka & Kobe',p:'Year-round (Halloween Sep–early Nov, Christmas mid Nov–early Jan)',m:ALL,g:['Theme parks','Ropeways & night views','Onsen'],d:[5,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Subway and JR',r:'Super Nintendo World at USJ (incl. Donkey Kong Country) → Osaka Castle → Kaiyukan → Port of Kobe → Mt. Maya ropeway "ten-million-dollar" night view → Arima Onsen (gold and silver springs)',x:'Mt. Maya, one of Japan\'s three great night views'},
+    {k:'ks-kumano',a:'Kansai',s:'秋',t:'Koyasan, Kumano Kodo & Shirahama',p:'Late Oct–mid Nov',m:[10,11],g:['Shrines & temples','Nature walks','Onsen','Autumn leaves'],d:[7,7],ty:'short',f:KX,v:'mixed',vn:'Nankai train + cable car to Koyasan; drive the Kumano stretch',r:'Temple lodging on Koyasan + Okunoin night tour → Kumano Kodo Nakahechi hike → Kumano Hongu Taisha, Oyunohara great torii → Nachi Taisha, Nachi Falls → Shirahama Onsen (Sakinoyu), Adventure World → Osaka',x:'A World Heritage pilgrimage route'},
+    {k:'ks-winter',a:'Kansai',s:'冬',t:'Kyoto by the Sea & Kinosaki Onsen',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:KX,v:'public',vn:'JR and Kyoto Tango Railway',r:'Kyoto (snow if you are lucky) → Miyama Snow Lantern Festival (late Jan) → Amanohashidate (Kasamatsu Park cable car) → Ine boathouses → Kinosaki Onsen public bath tour + snow crab → Himeji → Osaka',x:'Touring Kinosaki\'s seven public baths in a yukata'},
+    {k:'ks-gion',a:'Kansai',s:'夏',t:'Gion Matsuri & Summer Kyoto',p:'Mid Jul (float processions Jul 17 and 24)',m:[7],g:['Festivals','Shrines & temples'],d:[5,5],ty:'short',f:KX,v:'public',vn:'Trains',r:'Gion Matsuri Yoiyama and float procession → riverside kawadoko dining at Kibune → Byodoin, Uji → Fushimi Inari → Tenjin Matsuri, Osaka (Jul 24–25)',x:'Two of Japan\'s three great festivals'},
+    {k:'ks-golden-sakura',a:'Kansai',s:'春',t:'Cherry Blossoms from Tokyo to Osaka',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[10,11],ty:'combo',c:['kt-sakura','ks-sakura'],f:'In: Haneda / Out: Kansai',v:'public',vn:'The Tokaido Shinkansen links the two',r:'Tokyo for 4–5 days → Shinkansen → Kyoto → Nara → Osaka → Himeji',x:'Japan\'s Golden Route'},
+    {k:'ks-golden-koyo',a:'Kansai',s:'秋',t:'Kyoto Maples + Tokyo Ginkgo',p:'Late Nov–early Dec',m:[11,12],g:['Autumn leaves','Shrines & temples'],d:[10,11],ty:'combo',c:['ks-koyo','kt-ginkgo'],f:'In: Kansai / Out: Haneda',v:'public',vn:'Shinkansen',r:'Osaka → Kyoto → Nara → Shinkansen → Gaien ginkgo, Tokyo → Kamakura → Tokyo',x:'Kyoto red, Tokyo gold'},
+    {k:'ks-usj-koyo',a:'Kansai',s:'秋',t:'USJ + Kyoto Foliage',p:'Mid–late Nov',m:[11],g:['Theme parks','Autumn leaves','Onsen'],d:[9,10],ty:'combo',c:['ks-usj','ks-koyo'],f:KX,v:'public',vn:'Trains',r:'USJ → Osaka → Arima Onsen → Kyoto → Kibune and Kurama → Nara',x:'USJ\'s Christmas events have just started'},
+
+    /* ===== Chugoku & Shikoku ===== */
+    {k:'sy-miyajima',a:'Chugoku & Shikoku',s:'秋',t:'Miyajima, Hiroshima & Okayama Foliage',p:'Mid–late Nov',m:[11],g:['Autumn leaves','Shrines & temples','Ropeways & night views','Castles'],d:[5,6],ty:'short',f:'In: Hiroshima / Out: Okayama',v:'public',vn:'JR West rail pass',r:'Itsukushima Shrine great torii + Momijidani Park + Miyajima Ropeway to Mt. Misen → Atomic Bomb Dome → Onomichi → Kurashiki Bikan district → Korakuen autumn illumination, Okayama',x:'The great torii in the sea'},
+    {k:'sk-art',a:'Chugoku & Shikoku',s:'年',t:'Setouchi Art Islands',p:'Year-round (best Mar–May, Oct–Nov)',m:ALL,g:['Art','Shrines & temples','Castles','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Takamatsu or Okayama',v:'public',vn:'Trains plus ferries',r:'Naoshima (Chichu Art Museum, reservation required) → Teshima Art Museum → Shodoshima (Kankakei Ropeway) → Ritsurin Garden → Kotohiragu (785 steps) → Marugame Castle → Yashima',x:'Kusama\'s pumpkin, Kotohiragu'},
+    {k:'sk-loop',a:'Chugoku & Shikoku',s:'秋',t:'Shikoku Loop in Autumn',p:'Early–mid Nov',m:[11],g:['Autumn leaves','Castles','Onsen','Ropeways & night views','Nature walks'],d:[10,12],ty:'long',f:'In: Takamatsu / Out: Matsuyama',v:'drive',vn:'Self-drive throughout',r:'Kotohiragu → Iya vine bridge, Oboke gorge cruise → Kochi Castle, Katsurahama → Shimanto River → Cape Ashizuri → Uwajima → Uchiko → Matsuyama Castle (ropeway) + Dogo Onsen Honkan → cycling the Shimanami Kaido',x:'Iya Valley foliage, Dogo Onsen Honkan'},
+    {k:'sk-spring',a:'Chugoku & Shikoku',s:'春',t:'Shikoku Spring Blossoms & Shimanami',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Castles','Onsen','Nature walks'],d:[6,6],ty:'short',f:'In/out: Matsuyama (or Kochi)',v:'mixed',vn:'Streetcar in Matsuyama, drive outside the city',r:'Matsuyama Castle blossoms + Dogo Onsen → cycling the Shimanami Kaido → Uchiko → Kochi Castle blossoms → Niyodo River ("Niyodo blue")',x:'Matsuyama Castle ropeway and keep'},
+    {k:'sy-sanin',a:'Chugoku & Shikoku',s:'秋',t:'San\'in Myths & Gardens',p:'Late Oct–late Nov',m:[10,11],g:['Shrines & temples','Autumn leaves','Castles','Onsen'],d:[5,6],ty:'short',f:'In/out: Yonago',v:'drive',vn:'Self-drive throughout (San\'in JR trains are infrequent)',r:'Adachi Museum of Art (foliage early–mid Nov) → Izumo Taisha (Kamiarizuki, the 10th lunar month, around mid–late Nov) → Hinomisaki Shrine → Matsue Castle + Horikawa boat ride → Yaegaki Shrine → Mt. Daisen → Tottori Sand Dunes',x:'Kamiarizuki, when all of Japan\'s gods gather in Izumo'},
+    {k:'sy-sanin-winter',a:'Chugoku & Shikoku',s:'冬',t:'San\'in Crab Season & Onsen',p:'Dec–Feb',m:[12,1,2],g:['Onsen','Snow scenery'],d:[5,5],ty:'short',f:'In/out: Yonago',v:'public',vn:'JR plus onsen buses',r:'Kaike Onsen → Mizuki Shigeru Road, Sakaiminato → snow crab → Tamatsukuri Onsen → Matsue Castle → Mt. Daisen in the snow → Tottori Sand Dunes',x:'Snow crab season'},
+    {k:'sy-combo',a:'Chugoku & Shikoku',s:'秋',t:'San\'in to San\'yo Loop',p:'Mid–late Nov',m:[11],g:['Shrines & temples','Autumn leaves','Castles'],d:[10,11],ty:'combo',c:['sy-sanin','sy-miyajima'],f:'In: Yonago / Out: Hiroshima',v:'mixed',vn:'Drive San\'in, return the car in Izumo and switch to JR',r:'Yonago → Adachi Museum of Art → Matsue → Izumo Taisha → Iwami Ginzan → Hiroshima → Miyajima → Onomichi → Kurashiki → Okayama → Hiroshima',x:'Izumo Taisha + Itsukushima Shrine'},
+    {k:'sk-combo',a:'Chugoku & Shikoku',s:'秋',t:'Setouchi + Shikoku Loop',p:'Early–mid Nov',m:[11],g:['Art','Autumn leaves','Castles','Onsen'],d:[13,14],ty:'combo',c:['sk-art','sk-loop'],f:'In: Takamatsu / Out: Matsuyama',v:'mixed',vn:'Public transport on the islands, drive on Shikoku',r:'Naoshima → Teshima → Shodoshima → Takamatsu → Iya → Kochi → Shimanto → Matsuyama → Shimanami Kaido',x:'Art, gorges, castles and onsen'},
+
+    /* ===== Kyushu ===== */
+    {k:'ky-sakura',a:'Kyushu',s:'春',t:'Kyushu Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Castles','Shrines & temples'],d:[5,6],ty:'short',f:'In/out: Fukuoka',v:'public',vn:'JR Kyushu Rail Pass',r:'Maizuru Park (Fukuoka Castle) → Dazaifu Tenmangu → Akizuki Castle ruins → Yanagawa river cruise → Kumamoto Castle → Fukuoka',x:'About a week ahead of Kanto'},
+    {k:'ky-fuji',a:'Kyushu',s:'春',t:'Kitakyushu Wisteria & Night Views',p:'Late Apr–early May',m:[4,5],g:['Flower fields','Ropeways & night views','Castles'],d:[5,5],ty:'short',f:'In/out: Fukuoka (Kitakyushu from Taichung)',v:'public',vn:'JR plus taxis',r:'Kawachi Fujien wisteria tunnel (reservation required) → Kokura Castle → Mojiko → Mt. Sarakura cable car night view → nemophila at Uminonakamichi → Dazaifu',x:'Mt. Sarakura, one of Japan\'s new three great night views'},
+    {k:'ky-koyo',a:'Kyushu',s:'秋',t:'Central Kyushu Foliage',p:'Late Oct–mid Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen','Nature walks'],d:[6,7],ty:'short',f:'In: Kumamoto / Out: Oita (or in/out: Fukuoka)',v:'drive',vn:'Self-drive throughout (Aso and Takachiho are hard to link without a car)',r:'Kumamoto Castle → Daikanbo and Kusasenri, Aso → Kikuchi Gorge → Takachiho Gorge, Takachiho Shrine night kagura, Amano Iwato Shrine → Kokonoe Yume Suspension Bridge → Yabakei → Usa Jingu → Yufuin → Beppu hell tour',x:'Takachiho night kagura is performed every evening'},
+    {k:'ky-winter',a:'Kyushu',s:'冬',t:'Northern Kyushu Onsen & Lights',p:'Nov–Feb',m:[11,12,1,2],g:['Onsen','Theme parks','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Fukuoka (or Saga)',v:'public',vn:'JR and SUNQ Pass',r:'Yufuin (morning mist on Lake Kinrin) → Beppu hells + Kannawa Onsen → Mt. Inasa ropeway night view, Nagasaki → Huis Ten Bosch Kingdom of Light + Miffy area → Takeo and Ureshino Onsen',x:'Nagasaki, one of the world\'s new three great night views'},
+    {k:'ky-south',a:'Kyushu',s:'冬',t:'Southern Kyushu Winter Sun & Shrines',p:'Dec–Feb',m:[12,1,2],g:['Shrines & temples','Onsen','Nature walks'],d:[6,7],ty:'short',f:'In: Kagoshima / Out: Miyazaki',v:'drive',vn:'Self-drive throughout',r:'Sengan-en + Sakurajima → Ibusuki sand bath → Kirishima Jingu + Kirishima Onsen → Obi Castle → Udo Jingu → Aoshima Shrine + Devil\'s Washboard → Miyazaki',x:'Still around 15°C in winter'},
+    {k:'ky-yakushima',a:'Kyushu',s:'春',t:'Yakushima & Kagoshima',p:'Apr–early May (before the rainy season)',m:[4,5],g:['Nature walks','Onsen'],d:[7,7],ty:'short',f:'In/out: Kagoshima',v:'mixed',vn:'High-speed ferry to the island, drive on the island',r:'Kagoshima → Shiratani Unsuikyo, Yakushima → Jomon Sugi hike (about 10 hours round trip) → Hirauchi seaside onsen → Kagoshima',x:'The forest that inspired "Princess Mononoke"'},
+    {k:'ky-balloon',a:'Kyushu',s:'秋',t:'Saga Balloon Fiesta & Onsen',p:'Late Oct–early Nov',m:[10,11],g:['Festivals','Onsen','Shrines & temples'],d:[5,5],ty:'short',f:'In/out: Saga',v:'public',vn:'JR',r:'Saga International Balloon Fiesta (about 5 days) → Yutoku Inari Shrine → Ureshino Onsen → Arita porcelain → Karatsu Castle → Yoshinogari ruins',x:'More than a hundred balloons lifting off together'},
+    {k:'ky-combo-autumn',a:'Kyushu',s:'秋',t:'Balloon Fiesta + Kyushu Foliage',p:'Early Nov',m:[11],g:['Festivals','Autumn leaves','Onsen','Shrines & temples'],d:[11,12],ty:'combo',c:['ky-balloon','ky-koyo'],f:'In: Saga / Out: Oita',v:'mixed',vn:'JR in Saga, drive from Kumamoto',r:'Saga → Ureshino → Kumamoto → Aso → Takachiho → Kokonoe → Yabakei → Yufuin → Beppu',x:'Heading east from northern to central Kyushu'},
+    {k:'ky-combo-winter',a:'Kyushu',s:'冬',t:'Winter Kyushu Traverse',p:'Dec–Feb',m:[12,1,2],g:['Onsen','Shrines & temples','Ropeways & night views','Theme parks'],d:[12,13],ty:'combo',c:['ky-winter','ky-south'],f:'In: Fukuoka / Out: Kagoshima',v:'mixed',vn:'JR in the north, drive from Miyazaki',r:'Fukuoka → Yufuin → Beppu → Nagasaki → Huis Ten Bosch → Miyazaki → Aoshima Shrine → Udo Jingu → Kirishima → Ibusuki → Kagoshima',x:'Kyushu\'s onsen and shrines all the way south'},
+
+    /* ===== Okinawa ===== */
+    {k:'ok-spring',a:'Okinawa',s:'春',t:'Okinawa Main Island in Spring',p:'Late Mar–early May (before the rainy season)',m:[3,4,5],g:['Islands & beaches','Theme parks','Shrines & temples'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'A car is essential; the monorail works within Naha',r:'Churaumi Aquarium → Kouri Island → JUNGLIA → Cape Manzamo → Sefa Utaki → Shuri Castle (main hall under reconstruction, check before you go) → Kokusai Street',x:'Sefa Utaki, the most sacred site of the Ryukyus'},
+    {k:'ok-autumn',a:'Okinawa',s:'秋',t:'Okinawa Main Island in Autumn',p:'Oct–Nov',m:[10,11],g:['Islands & beaches','Festivals','Theme parks'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'Self-drive',r:'Naha Great Tug-of-War (Oct) → Churaumi Aquarium → Sesoko Beach → JUNGLIA → Naminoue Shrine → Kokusai Street',x:'Typhoon season is over and the sea is still warm'},
+    {k:'ok-winter',a:'Okinawa',s:'冬',t:'Hikan Cherry Blossoms & Whale Watching',p:'Late Jan–mid Feb',m:[1,2],g:['Cherry blossoms','Islands & beaches'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'Self-drive',r:'Motobu Yaedake Cherry Blossom Festival → Nakijin Castle blossoms → Nago Cherry Blossom Festival → whale watching off Kerama (Jan–Mar) → Churaumi Aquarium',x:'Japan\'s earliest cherry blossoms'},
+    {k:'ok-ishigaki',a:'Okinawa',s:'春',t:'Ishigaki, Taketomi & Iriomote',p:'Apr–early May',m:[4,5],g:['Islands & beaches','Nature walks'],d:[5,5],ty:'short',f:'In/out: Ishigaki',v:'mixed',vn:'Drive on Ishigaki, ferries to the outer islands',r:'Glass-bottom boat at Kabira Bay → water buffalo cart on Taketomi → mangrove kayaking on Iriomote → stargazing on Ishigaki',x:'Japan\'s first International Dark Sky Park'},
+    {k:'ok-miyako',a:'Okinawa',s:'秋',t:'Miyako Island',p:'Late Sep–Oct',m:[9,10],g:['Islands & beaches'],d:[5,5],ty:'short',f:'In/out: Shimojishima',v:'drive',vn:'Self-drive',r:'Irabu Bridge → Yonaha Maehama → 17END → Sunayama Beach → snorkeling',x:'"Miyako blue" water'},
+    {k:'ok-combo',a:'Okinawa',s:'春',t:'Okinawa Main Island + Ishigaki',p:'Apr',m:[4],g:['Islands & beaches','Theme parks','Nature walks'],d:[9,10],ty:'combo',c:['ok-spring','ok-ishigaki'],f:'In: Naha / Out: Ishigaki',v:'drive',vn:'Rent a car on each island, with a domestic flight in between',r:'Naha → the north → the south → domestic flight → Ishigaki → Taketomi → Iriomote',x:'Book the Naha–Ishigaki domestic flight separately'}
+    ];
+
+    /* Each spot: [name, place, description]; the photo link is a Google Images search for name + place */
+    var MUST=[
+     {a:'Hokkaido',i:[
+      ['Mt. Hakodate night view','Hakodate','The 334 m summit is a three-minute ropeway ride up. The fan of city lights pinched between two bays is one of Japan\'s three great night views.'],
+      ['Goryokaku','Hakodate','A star-shaped Western-style fort from the end of the Edo period, best seen from Goryokaku Tower. About 1,500 cherry trees bloom along the moat in spring.'],
+      ['Otaru Canal','Otaru','Stone warehouses line the canal, at their best when the gas lamps come on at dusk. Nearby Sakaimachi Street has glassworks and the Music Box Museum.'],
+      ['Mt. Moiwa night view','Sapporo','A ropeway and a mini cable car take you to the 531 m summit; the view over Sapporo is one of Japan\'s new three great night views.'],
+      ['Hokkaido Shrine','Sapporo','Hokkaido\'s chief shrine, next to Maruyama Park. A cherry blossom spot in spring and home of the Sapporo Festival in June.'],
+      ['Asahiyama Zoo','Asahikawa','Known for its habitat-style exhibits: watch penguins swim from an underwater tunnel, and see the penguin walk in winter.'],
+      ['Shirogane Blue Pond','Biei','Aluminum in the water turns the pond cobalt blue, with dead trees standing in it. Lit up at night in winter.'],
+      ['Farm Tomita','Furano','Furano\'s best-known lavender farm, at its purplest around mid July, with rainbow stripes of other flowers alongside.'],
+      ['Lake Toya','Central Hokkaido','A caldera lake with an island in the middle. Fireworks go up over the lake every night from late April to October.'],
+      ['Noboribetsu Jigokudani','Central Hokkaido','A valley of volcanic vents and sulfur springs; the boardwalk leads to the Oyunuma pond. Noboribetsu Onsen has an unusually wide range of spring types.'],
+      ['Shiretoko Five Lakes','Eastern Hokkaido','Five lakes in the Shiretoko World Heritage area. An elevated boardwalk leads to the first lake; depending on the season, the ground trails require a lecture or a guided tour.'],
+      ['Lake Mashu','Eastern Hokkaido','A caldera lake once measured as the clearest in the world, so often shrouded in fog that it is called "Lake Mashu of the Mist".']]},
+     {a:'Tohoku',i:[
+      ['Hirosaki Castle','Aomori','One of the twelve original castle keeps, with about 2,600 cherry trees. It is famous for the "petal rafts" of fallen blossoms covering the moat.'],
+      ['Oirase Stream','Aomori','A stream flowing about 14 km out of Lake Towada, with a riverside trail past many waterfalls. Best in fresh spring green and autumn color.'],
+      ['Lake Towada','Aomori','A double caldera lake straddling Aomori and Akita, with sightseeing cruises and Takamura Kotaro\'s "Statue of Maidens" on the shore.'],
+      ['Chusonji Konjikido','Iwate','A hall built by the Oshu Fujiwara clan in the Heian period, covered entirely in gold leaf. Part of the Hiraizumi World Heritage site.'],
+      ['Kakunodate samurai district','Akita','A street of Edo-period samurai residences, called the "Little Kyoto of Michinoku". In spring, weeping cherries hang over the black wooden fences.'],
+      ['Nyuto Onsen','Akita','Seven onsen inns in the forest of Towada-Hachimantai National Park. The best known is Tsurunoyu with its thatched roofs.'],
+      ['Yamadera (Risshakuji)','Yamagata','About a thousand stone steps lead up to the Godaido hall overlooking the valley. Basho wrote his famous haiku on silence here.'],
+      ['Ginzan Onsen','Yamagata','Taisho-era wooden inns line the Ginzan River and gas lamps light up at night. Snowy evenings here are famous.'],
+      ['Zao Okama & snow monsters','Yamagata / Miyagi','In summer and autumn, see the emerald crater lake Okama. In winter, the summit trees are encased in ice and snow as "snow monsters", lit up at night.'],
+      ['Matsushima','Miyagi','One of Japan\'s three great views: more than 260 islets scattered across the bay. Take a cruise; Zuiganji and Godaido stand on the shore.'],
+      ['Osorezan','Aomori','One of Japan\'s three holiest sites, where barren volcanic ground meets the blue of Lake Usori. Open May to October.'],
+      ['Ouchi-juku','Fukushima','An Edo-period post town with 30-odd thatched houses along the street. The signature dish is soba eaten with a whole leek as a chopstick.']]},
+     {a:'Kanto',i:[
+      ['Imperial Palace Nijubashi & East Gardens','Tokyo','Nijubashi is the palace\'s classic view. The East Gardens, on the site of Edo Castle\'s inner citadel, are free to enter (closed Mondays and Fridays).'],
+      ['Sensoji & Kaminarimon','Tokyo','Tokyo\'s oldest temple. The giant lantern of Kaminarimon leads onto Nakamise shopping street; it is quieter after dark once the lights are on.'],
+      ['Meiji Jingu','Tokyo','A shrine to Emperor Meiji in about 70 hectares of planted forest beside Harajuku, entered through huge wooden torii.'],
+      ['Tokyo Skytree','Tokyo','A 634 m broadcasting tower. The Tembo Galleria at 450 m looks out over all of Tokyo, and to Mt. Fuji on clear days.'],
+      ['Nikko Toshogu','Tochigi','The shrine of Tokugawa Ieyasu, home of the ornate Yomeimon gate, the Three Wise Monkeys and the Sleeping Cat. A World Heritage site.'],
+      ['Great Buddha & Tsurugaoka Hachimangu','Kamakura','The bronze Buddha at Kotokuin stands about 11 m tall and you can step inside it. Tsurugaoka Hachimangu was the guardian shrine of the Kamakura shogunate.'],
+      ['Hakone Shrine Torii of Peace','Hakone','A red torii standing in Lake Ashi. The photo queue gets long, so go early in the morning.'],
+      ['Owakudani','Hakone','A volcanic vent area formed by an eruption about 3,000 years ago, crossed by the Hakone Ropeway. Its black eggs are said to add seven years to your life.'],
+      ['Chureito Pagoda','Fuji','Climb about 400 steps to the lookout for the classic shot: five-story pagoda, cherry blossoms and Mt. Fuji in one frame.'],
+      ['Oshino Hakkai','Fuji','Eight ponds fed by Fuji snowmelt that has filtered underground for decades, crystal clear. Part of the Mt. Fuji World Heritage site.'],
+      ['Kusatsu Yubatake','Gunma','The steaming source spring at the heart of Kusatsu Onsen, flowing through wooden channels and lit up at night. Netsunoyu next door hosts the yumomi show.'],
+      ['Kawagoe old town','Saitama','Edo-period clay-walled storehouses and the Toki no Kane bell tower earn it the name "Little Edo". Candy Alley is fun to browse.']]},
+     {a:'Chubu & Hokuriku',i:[
+      ['Kenrokuen','Kanazawa','One of Japan\'s three great gardens. In winter, ropes strung from poles to hold up the pine branches, called yukitsuri, are the symbol of Kanazawa.'],
+      ['Higashi Chaya District','Kanazawa','A district of preserved Edo-period teahouses, with gold-leaf craft shops and cafés behind the wooden lattices.'],
+      ['Shirakawa-go','Gifu','A World Heritage village of gassho-zukuri farmhouses whose steep thatched roofs carry heavy snow. Winter light-ups on select dates need a reservation.'],
+      ['Takayama old town','Gifu','The "Little Kyoto of Hida". The Sanmachi streets keep Edo-period merchant houses, sake breweries and morning markets; the Takayama Festival runs in spring and autumn.'],
+      ['Kappa Bridge, Kamikochi','Nagano','A valley about 1,500 m up, with views of the Hotaka peaks over the Azusa River. No private cars, and closed in winter.'],
+      ['Matsumoto Castle','Nagano','A national treasure and the oldest surviving five-tier, six-floor keep, nicknamed "Crow Castle" for its black walls.'],
+      ['Zenkoji','Nagano','A non-sectarian temple founded about 1,400 years ago. Walk the pitch-dark kaidan meguri passage under the main hall.'],
+      ['Murodo, Tateyama','Toyama','The highest point of the Tateyama Kurobe Alpine Route at 2,450 m: the snow corridor in spring, Mikurigaike pond and ptarmigan in summer.'],
+      ['Ise Jingu','Mie','A complex of 125 shrines including the Outer and Inner Shrines. The Inner Shrine honors Amaterasu and is the most sacred shrine in Japan.'],
+      ['Atsuta Jingu','Nagoya','An ancient shrine in central Nagoya that houses the Kusanagi sword, one of the three imperial regalia.'],
+      ['Nagoya Castle','Nagoya','The golden shachihoko on the keep roof are Nagoya\'s symbol. The keep is currently closed, but the rebuilt Honmaru Palace is lavishly decorated.'],
+      ['Inuyama Castle','Aichi','A national treasure and one of the original keeps; walk the balcony around the top floor overlooking the Kiso River.']]},
+     {a:'Kansai',i:[
+      ['Kiyomizudera','Kyoto','Famous for its wooden stage built out over a cliff. Special night viewings in spring and autumn light up the temple.'],
+      ['Fushimi Inari Senbon Torii','Kyoto','The head shrine of all Inari shrines, with thousands of vermilion torii winding up the mountain. Open 24 hours.'],
+      ['Kinkakuji','Kyoto','Officially Rokuonji. The gold-leafed reliquary hall is reflected in the Kyokochi pond.'],
+      ['Arashiyama bamboo grove','Kyoto','The bamboo path between Nonomiya Shrine and Okochi Sanso, quietest at dawn. Togetsukyo Bridge and Tenryuji are nearby.'],
+      ['Todaiji & Nara Park deer','Nara','The Great Buddha Hall is among the largest wooden buildings in the world, housing a Buddha about 15 m tall. More than a thousand deer roam the park.'],
+      ['Kasuga Taisha','Nara','Vermilion halls and about 3,000 stone and hanging lanterns; part of the Historic Monuments of Ancient Nara World Heritage site.'],
+      ['Himeji Castle','Hyogo','Called "White Heron Castle" for its white walls. One of Japan\'s first World Heritage sites and the largest surviving castle keep.'],
+      ['Osaka Castle','Osaka','Built by Toyotomi Hideyoshi. The keep is now a museum, and the surrounding park has a plum grove and about 3,000 cherry trees.'],
+      ['Dotonbori','Osaka','The food street of the Glico running man and the giant crab sign, packed with takoyaki and okonomiyaki.'],
+      ['Arima Onsen','Kobe','One of Japan\'s oldest hot springs, with two types of water: the reddish-brown "gold spring" and the clear "silver spring".'],
+      ['Okunoin, Koyasan','Wakayama','The mausoleum of Kobo Daishi, reached by a 2 km path lined with more than 200,000 graves and towering cedars. Stay overnight at a temple lodging.'],
+      ['Kumano Hongu Taisha','Wakayama','One of the three Kumano shrines and the main goal of the Kumano Kodo; nearby Oyunohara has one of the largest torii in Japan.']]},
+     {a:'Chugoku & Shikoku',i:[
+      ['Itsukushima Shrine great torii','Hiroshima','A shrine built over the sea. At high tide the torii seems to float; at low tide you can walk out to it.'],
+      ['Atomic Bomb Dome','Hiroshima','The ruin preserved since the 1945 atomic bombing, next to the Peace Memorial Park and Museum. A World Heritage site.'],
+      ['Matsuyama Castle','Ehime','One of the twelve original castle keeps, on a hill in the city center; ride the ropeway or chairlift up.'],
+      ['Dogo Onsen Honkan','Ehime','One of Japan\'s oldest hot springs: a three-story Meiji-era wooden bathhouse often cited as an inspiration for the bathhouse in "Spirited Away".'],
+      ['Kotohiragu','Kagawa','"Konpira-san": 785 stone steps to the main shrine, and 1,368 to the inner shrine.'],
+      ['Ritsurin Garden','Kagawa','An Edo-period daimyo garden backed by Mt. Shiun, with six ponds and thirteen artificial hills; tour it by wooden boat.'],
+      ['Naoshima','Kagawa','The Setouchi art island: Chichu Art Museum, Kusama\'s pumpkin and the Art House Project. Chichu needs a reservation.'],
+      ['Izumo Taisha','Shimane','The shrine of Okuninushi, god of matchmaking. The giant shimenawa rope at the Kaguraden is about 13 m long.'],
+      ['Adachi Museum of Art','Shimane','Its garden has topped an American journal of Japanese gardening\'s ranking for many years running; the collection includes works by Yokoyama Taikan.'],
+      ['Tottori Sand Dunes','Tottori','One of Japan\'s largest coastal dune fields. Ride a camel or go sandboarding, with the Sand Museum next door.'],
+      ['Kurashiki Bikan district','Okayama','Willows along the canal and white-walled storehouses turned into shops and museums, including the Ohara Museum of Art.'],
+      ['Iya vine bridge','Tokushima','A suspension bridge woven from hardy kiwi vines, with gaps between the planks wide enough to see the river below. One of Japan\'s three unusual bridges.']]},
+     {a:'Kyushu',i:[
+      ['Dazaifu Tenmangu','Fukuoka','The shrine of Sugawara no Michizane, god of learning, popular with students before exams. Try umegae mochi on the approach.'],
+      ['Kumamoto Castle','Kumamoto','One of Japan\'s three great castles. Damaged in the 2016 earthquake, its keep has reopened while repairs continue elsewhere.'],
+      ['Mt. Aso','Kumamoto','One of the largest calderas in the world. The Nakadake crater can be viewed up close (subject to volcanic activity), and Kusasenri is a grazing meadow.'],
+      ['Takachiho Gorge','Miyazaki','A gorge cut through Aso lava; row a boat up to the foot of Manai Falls.'],
+      ['Aoshima Shrine','Miyazaki','A shrine on a small island ringed by wave-like rock formations known as the "Devil\'s Washboard".'],
+      ['Udo Jingu','Miyazaki','The main hall sits inside a seaside cave. Toss lucky clay balls into the hollow on the turtle rock to make a wish.'],
+      ['Kirishima Jingu','Kagoshima','The shrine of Ninigi, who descended from heaven in Japanese myth; its vermilion halls stand in a cedar forest.'],
+      ['Sakurajima','Kagoshima','A still-erupting volcano, about 15 minutes by ferry from Kagoshima city, with a foot bath and lookouts.'],
+      ['Yufuin','Oita','An onsen town beneath Mt. Yufu. Yunotsubo Street is good for browsing, and Lake Kinrin is often misty at dawn.'],
+      ['Beppu hell tour','Oita','Seven hot springs of different colors and forms, such as the Sea Hell, Blood Pond Hell and Tornado Hell.'],
+      ['Mt. Inasa night view','Nagasaki','A ropeway to the 333 m summit. The view of Nagasaki harbor ranks with Monaco and Hong Kong among the world\'s new three great night views.'],
+      ['Usa Jingu','Oita','The head shrine of all Hachiman shrines; its vermilion main hall is a national treasure.']]},
+     {a:'Okinawa',i:[
+      ['Churaumi Aquarium','Main Island','Whale sharks and manta rays glide through the giant Kuroshio Sea tank; Ocean Expo Park next door has dolphin shows.'],
+      ['Shuri Castle (under reconstruction)','Naha','The royal castle of the Ryukyu Kingdom. The main hall burned down in 2019 and you can watch the rebuilding; check the completion schedule before you go.'],
+      ['Sefa Utaki','Main Island','The most sacred site of the Ryukyus, where a triangular gap between giant rocks frames Kudaka Island. A World Heritage site.'],
+      ['Kouri Bridge','Main Island','A bridge of about 2 km over clear pale-blue water; Heart Rock is on the island.'],
+      ['Kabira Bay','Ishigaki','Ishigaki\'s most famous bay. Swimming is not allowed, but glass-bottom boats show you coral and tropical fish.'],
+      ['Taketomi Island','Yaeyama','Red tile roofs, white sand lanes and coral stone walls preserve a traditional village; tour it by water buffalo cart.'],
+      ['Yonaha Maehama','Miyako','A white sand beach about 7 km long, often called the most beautiful beach in the East.'],
+      ['Irabu Bridge','Miyako','Linking Miyako and Irabu islands, 3,540 m long, the longest toll-free bridge in Japan.']]}
+    ];
+
+    var FL=[
+     ['Hokkaido','New Chitose (Taoyuan, Kaohsiung, Taichung), Hakodate; Asahikawa is seasonal'],
+     ['Tohoku','Aomori, Akita, Hanamaki, Sendai (Taoyuan, Kaohsiung), Fukushima'],
+     ['Kanto','Narita (Taoyuan, Kaohsiung, Taichung), Haneda (Taoyuan, Songshan)'],
+     ['Chubu & Hokuriku','Chubu Centrair, Nagoya (Taoyuan, Taichung, Kaohsiung), Niigata, Toyama, Komatsu'],
+     ['Kansai','Kansai (Taoyuan, Kaohsiung), Kobe (Taoyuan, Taichung)'],
+     ['Chugoku & Shikoku','Hiroshima, Okayama (Taoyuan, Kaohsiung), Yonago, Takamatsu (Taoyuan, Taichung, Kaohsiung), Matsuyama, Kochi'],
+     ['Kyushu','Fukuoka (Taoyuan, Kaohsiung), Kitakyushu (Taichung), Saga, Oita, Kumamoto (Taoyuan, Taichung, Tainan, Kaohsiung), Miyazaki, Kagoshima'],
+     ['Okinawa','Naha (Taoyuan, Taichung, Tainan, Kaohsiung), Ishigaki, Shimojishima (Taoyuan, Taichung)'],
+     ['No direct flights','Shizuoka, Ibaraki, Nagasaki, Kushiro, Memanbetsu: fly into a nearby airport and continue by rail or domestic flight']
+    ];
+
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var AREAS = ['Hokkaido', 'Tohoku', 'Kanto', 'Chubu & Hokuriku', 'Kansai', 'Chugoku & Shikoku', 'Kyushu', 'Okinawa'];
+    var TAGS = ['Cherry blossoms', 'Autumn leaves', 'Flower fields', 'Snow scenery', 'Skiing', 'Festivals', 'Onsen', 'Theme parks', 'Shrines & temples', 'Castles', 'Ropeways & night views', 'Nature walks', 'Islands & beaches', 'Art'];
+    var SEASONS = { '春': 'Spring', '夏': 'Summer', '秋': 'Autumn', '冬': 'Winter', '年': 'Year-round' };
+    var KINDS = { short: 'Short trip', long: 'Long trip', combo: 'Combo' };
+    var MOVES = { public: 'Mostly public transport', drive: 'Mostly self-drive', mixed: 'Mixed transport' };
+
+    /* Month, region and purpose allow multiple picks (empty array = all); purpose can match any or all */
+    var FILTER_KEY = 'japanSeasonsFilterEnV2',
+      VIEW_KEY = 'japanSeasonsViewV1',
+      DEFAULTS = { month: [], area: [], tag: [], tagMode: 'any', days: 'all', move: 'all', kind: 'all' },
+      OPTIONS = {
+        month: ALL, area: AREAS, tag: TAGS, tagMode: ['any', 'all'],
+        days: ['all', '5-7', '8-10', '11-14'], move: ['all', 'public', 'drive', 'mixed'], kind: ['all', 'short', 'long', 'combo']
+      },
+      IDX = {},
+      st = {},
+      k;
+
+    function setDefaults() {
+      for (k in DEFAULTS) { st[k] = Array.isArray(DEFAULTS[k]) ? [] : DEFAULTS[k]; }
+    }
+
+    P.forEach(function (p, i) { p.no = i + 1; IDX[p.k] = p; });
+    setDefaults();
+    try {
+      var saved = JSON.parse(localStorage.getItem(FILTER_KEY) || 'null');
+      if (saved) {
+        for (k in DEFAULTS) {
+          if (Array.isArray(DEFAULTS[k])) {
+            if (Array.isArray(saved[k])) { st[k] = saved[k].filter(function (v) { return OPTIONS[k].indexOf(v) >= 0; }); }
+          } else if (OPTIONS[k].indexOf(saved[k]) >= 0) {
+            st[k] = saved[k];
+          }
+        }
+      }
+    } catch (err) {}
+
+    function save() {
+      try { localStorage.setItem(FILTER_KEY, JSON.stringify(st)); } catch (err) {}
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+
+    function no(n) {
+      return 'No.' + (n < 10 ? '0' + n : String(n));
+    }
+
+    /* ── Filters ── */
+    /* The first "All" chip clears its row; every other chip toggles itself */
+    function chipRow(key, allLabel, items) {
+      var el = root.querySelector('[data-filter="' + key + '"]');
+      el.innerHTML = '';
+      [[null, allLabel]].concat(items).forEach(function (it) {
+        var b = document.createElement('button'),
+          on = it[0] === null ? !st[key].length : st[key].indexOf(it[0]) >= 0;
+        b.type = 'button';
+        b.className = 'jpsea-chip';
+        b.textContent = it[1];
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.addEventListener('click', function () {
+          if (it[0] === null) {
+            st[key] = [];
+          } else {
+            var i = st[key].indexOf(it[0]);
+            if (i < 0) { st[key].push(it[0]); } else { st[key].splice(i, 1); }
+          }
+          save();
+          renderFilters();
+          renderList();
+        });
+        el.appendChild(b);
+      });
+    }
+
+    function renderFilters() {
+      chipRow('month', 'Any', MONTHS.map(function (n, i) { return [i + 1, n]; }));
+      chipRow('area', 'All', AREAS.map(function (a) { return [a, a]; }));
+      chipRow('tag', 'All', TAGS.map(function (t) { return [t, t]; }));
+      [].slice.call(root.querySelectorAll('[data-mode]')).forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-mode') === st.tagMode ? 'true' : 'false');
+      });
+      [].slice.call(root.querySelectorAll('[data-select]')).forEach(function (sel) {
+        sel.value = st[sel.getAttribute('data-select')];
+      });
+    }
+
+    function hasTag(p) {
+      return function (t) { return p.g.indexOf(t) >= 0; };
+    }
+
+    function match(p) {
+      if (st.month.length && !st.month.some(function (m) { return p.m.indexOf(m) >= 0; })) { return false; }
+      if (st.area.length && st.area.indexOf(p.a) < 0) { return false; }
+      if (st.tag.length && !(st.tagMode === 'all' ? st.tag.every(hasTag(p)) : st.tag.some(hasTag(p)))) { return false; }
+      if (st.move !== 'all' && p.v !== st.move) { return false; }
+      if (st.kind !== 'all' && p.ty !== st.kind) { return false; }
+      if (st.days !== 'all') {
+        var r = st.days.split('-'), lo = +r[0], hi = +r[1];
+        if (p.d[1] < lo || p.d[0] > hi) { return false; }
+      }
+      return true;
+    }
+
+    /* ── Plan cards ── */
+    function card(p) {
+      var days = (p.d[0] === p.d[1] ? p.d[0] : p.d[0] + '–' + p.d[1]) + ' days',
+        combo = '';
+      if (p.c) {
+        combo = '<dt>Made of</dt><dd class="jpsea-combo">' + p.c.map(function (key) {
+          return '<button type="button" data-go="' + key + '">' + no(IDX[key].no) + ' ' + esc(IDX[key].t) + '</button>';
+        }).join(' + ') + '</dd>';
+      }
+      return '<article class="jpsea-card" id="jpsea-' + p.k + '">' +
+        '<div class="jpsea-chead"><div class="jpsea-seal s-' + p.s + '" title="' + SEASONS[p.s] + '" aria-label="' + SEASONS[p.s] + '">' + p.s + '</div>' +
+        '<div class="jpsea-ctitle"><div class="jpsea-no">' + no(p.no) + ' · ' + esc(p.a) + '</div><h3>' + esc(p.t) + '</h3></div></div>' +
+        '<div class="jpsea-meta"><span class="jpsea-pill kind">' + KINDS[p.ty] + '</span><span class="jpsea-pill">' + esc(p.p) + '</span>' +
+        '<span class="jpsea-pill">' + days + '</span><span class="jpsea-pill">' + MOVES[p.v] + '</span></div>' +
+        '<dl class="jpsea-kv">' + combo +
+        '<dt>In &amp; out</dt><dd>' + esc(p.f) + '</dd>' +
+        '<dt>Transport</dt><dd>' + esc(p.vn) + '</dd>' +
+        '<dt>Route</dt><dd>' + esc(p.r) + '</dd>' +
+        '<dt>Highlights</dt><dd>' + esc(p.x) + '</dd></dl>' +
+        '<div class="jpsea-tags">' + p.g.map(function (t) { return '<span class="jpsea-tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+        '</article>';
+    }
+
+    function renderList() {
+      var list = root.querySelector('[data-list]'),
+        rows = P.filter(match);
+      root.querySelector('[data-count]').innerHTML = '<b>' + rows.length + '</b> of ' + P.length + ' plans';
+      if (!rows.length) {
+        list.innerHTML = '<div class="jpsea-empty">No matching plans. Try a wider trip length, or set the month back to “Any”.</div>';
+        return;
+      }
+      list.innerHTML = rows.map(card).join('');
+      [].slice.call(list.querySelectorAll('[data-go]')).forEach(function (b) {
+        b.addEventListener('click', function () { goTo(b.getAttribute('data-go')); });
+      });
+    }
+
+    function resetFilters() {
+      setDefaults();
+      save();
+      renderFilters();
+      renderList();
+    }
+
+    function reveal(el) {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      el.classList.add('flash');
+      setTimeout(function () { el.classList.remove('flash'); }, 1600);
+    }
+
+    function goTo(key) {
+      var el = document.getElementById('jpsea-' + key);
+      if (!el) {
+        resetFilters();
+        el = document.getElementById('jpsea-' + key);
+      }
+      if (el) { reveal(el); }
+    }
+
+    [].slice.call(root.querySelectorAll('[data-mode]')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        st.tagMode = b.getAttribute('data-mode');
+        save();
+        renderFilters();
+        renderList();
+      });
+    });
+    [].slice.call(root.querySelectorAll('[data-select]')).forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        st[sel.getAttribute('data-select')] = sel.value;
+        save();
+        renderList();
+      });
+    });
+    root.querySelector('[data-reset]').addEventListener('click', resetFilters);
+
+    /* ── Must-sees, flights ── */
+    function spot(it) {
+      var q = it[0].replace(/\s*\([^)]*\)/g, '') + ' ' + it[1];
+      return '<li><details class="jpsea-spot"><summary><span class="jpsea-spot-name">' + esc(it[0]) + '</span>' +
+        '<span class="jpsea-spot-area">' + esc(it[1]) + '</span></summary>' +
+        '<div class="jpsea-spot-body"><p>' + esc(it[2]) + '</p>' +
+        '<a href="https://www.google.com/search?tbm=isch&amp;q=' + encodeURIComponent(q) + '" target="_blank" rel="noopener">See photos on Google Images ↗</a></div>' +
+        '</details></li>';
+    }
+
+    root.querySelector('[data-jump]').innerHTML = MUST.map(function (m, i) {
+      return '<button class="jpsea-chip" type="button" data-jump-to="' + i + '">' + esc(m.a) + '</button>';
+    }).join('');
+    root.querySelector('[data-must]').innerHTML = MUST.map(function (m, i) {
+      return '<div class="jpsea-mbox" id="jpsea-must-' + i + '"><h3>' + esc(m.a) + '</h3><ul>' + m.i.map(spot).join('') + '</ul></div>';
+    }).join('');
+    [].slice.call(root.querySelectorAll('[data-jump-to]')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        reveal(document.getElementById('jpsea-must-' + b.getAttribute('data-jump-to')));
+      });
+    });
+    root.querySelector('[data-flights]').innerHTML = FL.map(function (f) {
+      return '<div class="jpsea-flrow"><b>' + esc(f[0]) + '</b><span>' + esc(f[1]) + '</span></div>';
+    }).join('');
+
+    /* ── Tabs ── */
+    var tabs = [].slice.call(root.querySelectorAll('.jpsea-tab')),
+      panels = [].slice.call(root.querySelectorAll('[data-panel]'));
+
+    function show(view) {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-view') === view ? 'true' : 'false'); });
+      panels.forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== view; });
+      try { localStorage.setItem(VIEW_KEY, view); } catch (err) {}
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { show(t.getAttribute('data-view')); });
+    });
+
+    var view = 'plans';
+    try { view = localStorage.getItem(VIEW_KEY) || 'plans'; } catch (err) {}
+    if (['plans', 'musts', 'flights'].indexOf(view) < 0) { view = 'plans'; }
+
+    renderFilters();
+    renderList();
+    show(view);
+  }());
+</script>
