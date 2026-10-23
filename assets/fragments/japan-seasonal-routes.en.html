@@ -2,6 +2,7 @@
   /* ──────────────────────────────────────────────────────────────
      日本四季行程庫英文版（2026-10，手寫 fragment）
      樣式沿用中文版 japan-seasonal-routes.html，只放寬標籤欄寬；資料要和中文版逐筆對應。
+     Day-by-day itineraries live in DETAIL (keyed by plan k: d = [day, title, text, stay], n = tips) and must match the Chinese file row by row.
 
      字級只有五級，而且每一處都明寫，不留任何繼承主題 1.8rem 的文字：
        2.2rem / 22px  主標、分頁小節標題
@@ -448,6 +449,138 @@
     text-align: center;
   }
 
+  /* ── 逐日行程（卡片內展開） ── */
+  .jpsea-more {
+    border-top: 1px dashed var(--border);
+    padding-top: .9rem;
+  }
+
+  .jpsea-more > summary {
+    align-items: center;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.5rem;
+    font-weight: 700;
+    gap: .4rem .8rem;
+    list-style: none;
+  }
+
+  .jpsea-more > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .jpsea-more > summary::before {
+    content: "▸";
+    font-size: 1.3rem;
+    transition: transform .2s;
+  }
+
+  .jpsea-more[open] > summary::before {
+    transform: rotate(90deg);
+  }
+
+  .jpsea-more > summary small {
+    color: var(--muted);
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  .jpsea-days {
+    border-left: 2px solid var(--soft);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+    margin: 1rem 0 0 .5rem;
+    padding: 0 0 0 1.2rem;
+  }
+
+  .jpsea-day {
+    display: grid;
+    gap: 0 1rem;
+    grid-template-columns: 3.4em minmax(0, 1fr);
+    margin: 0;
+  }
+
+  .jpsea-dlabel {
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    padding-top: .25rem;
+    white-space: nowrap;
+  }
+
+  .jpsea-dbody {
+    min-width: 0;
+  }
+
+  .jpsea-dbody b {
+    display: block;
+    font-size: 1.5rem;
+  }
+
+  .jpsea-dbody p {
+    font-size: 1.5rem;
+    line-height: 1.65;
+    margin: .2rem 0 0;
+  }
+
+  .jpsea-stay {
+    color: var(--muted);
+    display: block;
+    font-size: 1.3rem;
+    margin-top: .3rem;
+  }
+
+  .jpsea-dtips {
+    background: var(--sunk);
+    border-radius: 10px;
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .jpsea-dtips-title {
+    color: var(--muted);
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+  }
+
+  .jpsea-dtips ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: .5rem;
+    line-height: 1.6;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .jpsea-dtips li {
+    margin: 0;
+    padding-left: 1.1em;
+    position: relative;
+  }
+
+  .jpsea-dtips li::before {
+    color: var(--accent);
+    content: "•";
+    left: .1em;
+    position: absolute;
+  }
+
+  .jpsea-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+
   /* ── 各區必看、航點 ── */
   .jpsea-sect-title {
     font-size: 2.2rem;
@@ -623,6 +756,7 @@
   @media (prefers-reduced-motion: reduce) {
     .jpsea-card,
     .jpsea-mbox,
+    .jpsea-more > summary::before,
     .jpsea-spot summary::before {
       transition: none;
     }
@@ -635,7 +769,7 @@
   <section class="jpsea-hero">
     <div class="jpsea-eyebrow">Japan · Seasons × Regions</div>
     <h2>Japan Seasonal Routes</h2>
-    <p>Pick a region by season and purpose, then a short, long or combo plan by trip length. Blossom and foliage dates are past averages and shift by 1–2 weeks from year to year.</p>
+    <p>Pick a region by season and purpose, then a short, long or combo plan by trip length. Blossom and foliage dates are past averages and shift by 1–2 weeks from year to year. Open “Day by day” on any plan for its daily route, stays and tips.</p>
   </section>
 
   <!-- Tabs -->
@@ -697,7 +831,7 @@
       </div>
       <div class="jpsea-bar">
         <span class="jpsea-count" data-count></span>
-        <button class="jpsea-reset" type="button" data-reset>Clear filters</button>
+        <div class="jpsea-actions"><button class="jpsea-reset" type="button" data-expand aria-pressed="false">Expand all itineraries</button><button class="jpsea-reset" type="button" data-reset>Clear filters</button></div>
       </div>
     </div>
     <div class="jpsea-list" data-list></div>
@@ -718,7 +852,7 @@
     <div class="jpsea-notes">
       <ul>
         <li>Cherry blossom forecasts come out around January–February and foliage forecasts around September. Lock in your dates once they are out.</li>
-        <li>Winter schedules start in late October and some routes lose flights (Aomori drops to three a week, for example); Asahikawa is seasonal. Check the airline's website before booking.</li>
+        <li>Winter schedules start in late October and flight counts change by route (Aomori keeps daily flights in the 2026 winter schedule, for example); Asahikawa is seasonal. Check the airline's website before booking.</li>
         <li>To drive, bring your original Taiwanese license plus the Japanese translation issued by the Motor Vehicles Office. From December to March, public transport is the safer choice in Hokkaido, Tohoku, Hokuriku and Shinshu.</li>
         <li>Avoid Japanese holidays: Golden Week (late April–early May), Obon (mid August) and New Year (December 29–January 3).</li>
         <li>Book ahead: Ghibli Park, Chichu Art Museum on Naoshima, Kawachi Fujien, Shirakawa-go light-up days, the Harry Potter studio tour, PokéPark KANTO, and popular Disney and USJ time slots.</li>
@@ -746,27 +880,27 @@
     /* ===== Hokkaido ===== */
     {k:'hk-flower',a:'Hokkaido',s:'夏',t:'Central Hokkaido Flower Fields',p:'Early–mid Jul',m:[7],g:['Flower fields','Ropeways & night views'],d:[6,7],ty:'short',f:NC,v:'mixed',vn:'Drive Biei and Furano for the first 4 days; Sapporo and Otaru by JR and subway for the last 2',r:'Sapporo → Furano (Farm Tomita lavender) → Biei (Shikisai-no-Oka, Shirogane Blue Pond, Patchwork Road) → Asahikawa (Asahiyama Zoo) → Otaru Canal → Sapporo',x:'Mt. Moiwa ropeway night view, Hokkaido Shrine'},
     {k:'hk-summer',a:'Hokkaido',s:'夏',t:'Hokkaido Summer Grand Loop',p:'Mid Jul–early Aug',m:[7,8],g:['Flower fields','Nature walks','Onsen'],d:[11,13],ty:'long',f:NC,v:'drive',vn:'Self-drive throughout; return the car in Sapporo on the last day',r:'Sapporo → Biei, Furano → Hokuryu Sunflower Village (late Jul–mid Aug) → Sounkyo → Abashiri → Shiretoko (Five Lakes, sightseeing cruise) → Lakes Mashu and Kussharo → Lake Akan → Kushiro Wetland → Obihiro (Tokachi) → Sapporo',x:'Shiretoko Five Lakes boardwalk, Ainu Kotan at Lake Akan, Tokachi butadon'},
-    {k:'hk-shiba',a:'Hokkaido',s:'春',t:'Eastern Hokkaido Moss Phlox',p:'Mid May–early Jun',m:[5,6],g:['Flower fields','Nature walks'],d:[7,8],ty:'short',f:NC,v:'drive',vn:'Self-drive throughout',r:'Sapporo → Sounkyo → Takinoue Shibazakura Park → Higashimokoto Shibazakura Park → Abashiri → Shiretoko Pass (lingering snow walls) → Lake Akan → Sapporo',x:'Whole hillsides of pink moss phlox; Shiretoko is quiet at this time of year'},
+    {k:'hk-shiba',a:'Hokkaido',s:'春',t:'Eastern Hokkaido Moss Phlox',p:'Mid May–early Jun',m:[5,6],g:['Flower fields','Nature walks'],d:[7,8],ty:'short',f:NC,v:'drive',vn:'Self-drive throughout',r:'Asahikawa → Sounkyo → Takinoue Shibazakura Park → Higashimokoto Shibazakura Park → Abashiri → Shiretoko Pass (lingering snow walls) → Lake Akan → Sapporo',x:'Whole hillsides of pink moss phlox; Shiretoko is quiet at this time of year'},
     {k:'hk-sakura',a:'Hokkaido',s:'春',t:'Late Cherry Blossoms in Southern Hokkaido',p:'Late Apr–early May',m:[4,5],g:['Cherry blossoms','Castles','Ropeways & night views','Onsen'],d:[6,6],ty:'short',f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR limited express between cities; streetcar and subway in town',r:'Hakodate (Goryokaku blossoms, Mt. Hakodate) → Matsumae Castle (Hokkaido\'s only Japanese-style castle) → Onuma → Noboribetsu Onsen → Sapporo (Maruyama Park)',x:'Mt. Hakodate night view, Noboribetsu Jigokudani; crowded during Golden Week'},
     {k:'hk-koyo',a:'Hokkaido',s:'秋',t:'Daisetsuzan & Central Hokkaido Foliage',p:'Late Sep–mid Oct',m:[9,10],g:['Autumn leaves','Ropeways & night views','Onsen'],d:[5,6],ty:'short',f:NC,v:'drive',vn:'Self-drive throughout',r:'Asahidake Ropeway (Japan\'s earliest foliage) → Kurodake Ropeway → Sounkyo → Shirogane Blue Pond, Biei → Jozankei Onsen → Sapporo',x:'Asahidake and Kurodake ropeways: the first mountains in Japan to turn red'},
-    {k:'hk-winter',a:'Hokkaido',s:'冬',t:'Hakodate & Sapporo in the Snow',p:'Dec–Feb',m:[12,1,2],g:['Snow scenery','Ropeways & night views','Onsen'],d:[6,6],ty:'short',f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR limited express; driving on snow is not recommended',r:'Hakodate (Mt. Hakodate, Kanemori Red Brick Warehouses, Goryokaku winter illumination) → Onuma → Noboribetsu Onsen → Lake Toya → Otaru Canal → Sapporo',x:'Mt. Hakodate night view; Christmas tree at the Kanemori warehouses in December'},
+    {k:'hk-winter',a:'Hokkaido',s:'冬',t:'Hakodate & Sapporo in the Snow',p:'Dec–Feb',m:[12,1,2],g:['Snow scenery','Ropeways & night views','Onsen'],d:[6,6],ty:'short',f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR limited express; driving on snow is not recommended',r:'Hakodate (Mt. Hakodate, Kanemori Red Brick Warehouses, Goryokaku winter illumination) → Onuma → Lake Toya → Noboribetsu Onsen → Sapporo → Otaru Canal',x:'Mt. Hakodate night view; Christmas tree at the Kanemori warehouses in December'},
     {k:'hk-yuki',a:'Hokkaido',s:'冬',t:'Sapporo Snow Festival & Ice Falls',p:'Early–mid Feb',m:[2],g:['Festivals','Snow scenery','Onsen'],d:[7,7],ty:'short',f:NC,v:'public',vn:'JR plus sightseeing buses',r:'Sapporo Snow Festival (about a week in early Feb) → Otaru Snow Light Path (around mid Feb) → Asahikawa (Asahiyama Zoo penguin walk) → Sounkyo Ice Fall Festival → Lake Shikotsu Ice Festival',x:'Giant snow sculptures, the penguin walk'},
     {k:'hk-ski',a:'Hokkaido',s:'冬',t:'Hokkaido Powder Skiing',p:'Mid Dec–early Mar',m:[12,1,2,3],g:['Skiing','Onsen'],d:[5,7],ty:'short',f:NC,v:'public',vn:'Airport shuttle buses run straight to the resorts',r:'Stay at one of Niseko, Rusutsu or Kiroro → last night in Sapporo',x:'The best powder is in Jan–Feb'},
     {k:'hk-drift',a:'Hokkaido',s:'冬',t:'Eastern Hokkaido Drift Ice & Red-crowned Cranes',p:'Early Feb–early Mar',m:[2,3],g:['Snow scenery','Nature walks','Onsen'],d:[9,10],ty:'long',f:NC,v:'public',vn:'JR limited express, the Ryuhyo Monogatari train and sightseeing buses',r:'Sapporo → Asahikawa → Abashiri (Aurora icebreaker) → Utoro, Shiretoko (drift ice walk) → Kawayu Onsen, swans at Lake Kussharo → Kushiro (cranes at Tsurui, SL Fuyu-no-Shitsugen train) → Sapporo',x:'Walking on drift ice in a dry suit'},
-    {k:'hk-winter-all',a:'Hokkaido',s:'冬',t:'Winter Hokkaido Full Circuit',p:'Early–mid Feb',m:[2],g:['Snow scenery','Festivals','Ropeways & night views','Onsen'],d:[13,14],ty:'combo',c:['hk-winter','hk-drift'],f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR and sightseeing buses throughout',r:'Hakodate → Noboribetsu → Otaru → Sapporo (add a day if the Snow Festival is on) → Asahikawa → Abashiri → Shiretoko → Kushiro → Sapporo',x:'Night views, the Snow Festival, drift ice and cranes in one trip'},
+    {k:'hk-winter-all',a:'Hokkaido',s:'冬',t:'Winter Hokkaido Full Circuit',p:'Early–mid Feb',m:[2],g:['Snow scenery','Festivals','Ropeways & night views','Onsen'],d:[13,14],ty:'combo',c:['hk-winter','hk-drift'],f:'In: Hakodate / Out: New Chitose',v:'public',vn:'JR and sightseeing buses throughout',r:'Hakodate → Onuma → Noboribetsu → Sapporo Snow Festival → Otaru Snow Light Path → Asahikawa → Abashiri → Shiretoko → Kawayu → Kushiro → Sapporo',x:'Night views, the Snow Festival, drift ice and cranes in one trip'},
 
     /* ===== Tohoku ===== */
     {k:'th-sakura',a:'Tohoku',s:'春',t:'Tohoku Cherry Blossom Run',p:'Mid–late Apr',m:[4],g:['Cherry blossoms','Castles','Shrines & temples'],d:[6,7],ty:'short',f:'In: Sendai / Out: Aomori',v:'public',vn:'JR East Pass (Tohoku area)',r:'Shiroishi River Hitome Senbonzakura → Chusonji, Hiraizumi → Kitakami Tenshochi → Kakunodate samurai district → Hirosaki Castle (late Apr–early May) → Aomori',x:'Petal rafts on the Hirosaki Castle moat, Chusonji Konjikido'},
-    {k:'th-sakura-long',a:'Tohoku',s:'春',t:'Tohoku Blossoms & Snow Corridors',p:'Late Apr–early May',m:[4,5],g:['Cherry blossoms','Snow scenery','Onsen'],d:[9,10],ty:'long',f:'In: Sendai / Out: Aomori',v:'mixed',vn:'JR in the south; self-drive for Hachimantai and Hakkoda',r:'Sendai → Hiraizumi → Kakunodate → Hachimantai Snow Corridor → Lake Tazawa → Hirosaki Castle → Hakkoda Snow Corridor + Sukayu Onsen → Aomori',x:'Cherry blossoms and snow walls several meters high on the same trip'},
+    {k:'th-sakura-long',a:'Tohoku',s:'春',t:'Tohoku Blossoms & Snow Corridors',p:'Late Apr–early May',m:[4,5],g:['Cherry blossoms','Snow scenery','Onsen'],d:[9,10],ty:'long',f:'In: Sendai / Out: Aomori',v:'mixed',vn:'JR in the south; self-drive for Hachimantai and Hakkoda',r:'Sendai → Hiraizumi → Morioka\'s rock-splitting cherry → Kakunodate → Hachimantai Snow Corridor → Lake Towada, Oirase → Hakkoda Snow Corridor + Sukayu Onsen → Hirosaki Castle → Aomori',x:'Cherry blossoms and snow walls several meters high on the same trip'},
     {k:'fk-spring',a:'Tohoku',s:'春',t:'Fukushima: Hanamiyama & Takizakura',p:'Early–mid Apr',m:[4],g:['Cherry blossoms','Castles'],d:[5,5],ty:'short',f:'In/out: Fukushima',v:'drive',vn:'Self-drive throughout',r:'Hanamiyama Park → Miharu Takizakura (a 1,000-year-old tree) → Tsuruga Castle, Aizuwakamatsu → Ouchi-juku → Lake Inawashiro',x:'Miharu Takizakura, one of Japan\'s three great cherry trees'},
     {k:'th-koyo',a:'Tohoku',s:'秋',t:'Northern Tohoku Foliage',p:'Mid–late Oct',m:[10],g:['Autumn leaves','Onsen','Ropeways & night views'],d:[6,7],ty:'short',f:'In: Aomori / Out: Sendai (or Hanamaki)',v:'drive',vn:'Self-drive throughout',r:'Hakkoda Ropeway → Oirase Stream → Lake Towada → Hachimantai → Nyuto Onsen → Dakigaeri Gorge, Kakunodate → Naruko Gorge → Sendai',x:'The Oirase Stream trail, Tsurunoyu at Nyuto Onsen'},
-    {k:'th-koyo-long',a:'Tohoku',s:'秋',t:'All-Tohoku Foliage',p:'Mid Oct–early Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen'],d:[11,12],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in northern Tohoku, switch to JR in the south',r:'Hakkoda → Oirase → Lake Towada → Hachimantai → Kakunodate → Naruko Gorge → Yamadera → Zao Okama → Ginzan Onsen → Matsushima → Aizuwakamatsu → Ouchi-juku → Sendai',x:'The thousand stone steps of Yamadera, Ginzan Onsen at night'},
+    {k:'th-koyo-long',a:'Tohoku',s:'秋',t:'All-Tohoku Foliage',p:'Mid Oct–early Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen'],d:[11,12],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in northern Tohoku, switch to JR in the south',r:'Hakkoda → Oirase → Lake Towada → Hachimantai → Nyuto Onsen → Kakunodate → Naruko Gorge → Ginzan Onsen → Yamadera → Zao Okama → Aizuwakamatsu → Ouchi-juku → Matsushima → Sendai',x:'The thousand stone steps of Yamadera, Ginzan Onsen at night'},
     {k:'th-hakodate',a:'Tohoku',s:'秋',t:'Hakodate into Northern Tohoku Foliage',p:'Mid–late Oct',m:[10],g:['Autumn leaves','Ropeways & night views','Onsen'],d:[9,10],ty:'combo',c:['th-koyo'],f:'In: Hakodate / Out: Sendai',v:'mixed',vn:'Streetcar for 2 days in Hakodate; Hokkaido Shinkansen to Shin-Aomori, then rent a car',r:'Hakodate (Goryokaku, Mt. Hakodate, Onuma foliage) → Hokkaido Shinkansen → Shin-Aomori → the Northern Tohoku foliage route → Sendai',x:'Two regions, Hokkaido and Tohoku, in one trip'},
-    {k:'th-juhyo',a:'Tohoku',s:'冬',t:'Zao Snow Monsters & Ginzan Onsen',p:'Mid Jan–late Feb',m:[1,2],g:['Snow scenery','Onsen','Ropeways & night views','Shrines & temples'],d:[5,6],ty:'short',f:'In/out: Sendai',v:'public',vn:'JR plus buses',r:'Sendai → Zao Ropeway snow monsters (lit at night) → Yamadera in the snow → Ginzan Onsen → Matsushima → Sendai',x:'Juhyo "snow monsters", snowy nights at Ginzan Onsen'},
-    {k:'th-snow',a:'Tohoku',s:'冬',t:'Northern Tohoku Snow Country Onsen',p:'Late Jan–mid Feb',m:[1,2],g:['Snow scenery','Onsen','Festivals'],d:[6,7],ty:'short',f:'In: Aomori / Out: Akita (or Hanamaki)',v:'public',vn:'JR plus ryokan shuttles',r:'Aomori → Hakkoda snow monsters + Sukayu Onsen → Hirosaki Castle Snow Lantern Festival (early–mid Feb) → Gono Line → Nyuto Onsen → Kakunodate → Yokote Kamakura Festival (Feb 15–16) → Akita',x:'A snow-view outdoor bath at the remote Tsurunoyu'},
-    {k:'th-winter-all',a:'Tohoku',s:'冬',t:'Tohoku Winter Traverse',p:'Early–mid Feb',m:[2],g:['Snow scenery','Onsen','Festivals','Ropeways & night views'],d:[11,12],ty:'combo',c:['th-juhyo','th-snow'],f:'In: Sendai / Out: Aomori',v:'public',vn:'JR and shuttles throughout',r:'Sendai → Zao → Yamadera → Ginzan Onsen → Akita → Yokote → Kakunodate → Nyuto Onsen → Hirosaki → Hakkoda → Aomori',x:'Snow monsters, snow huts and snow lanterns in one go'},
+    {k:'th-juhyo',a:'Tohoku',s:'冬',t:'Zao Snow Monsters & Ginzan Onsen',p:'Mid Jan–late Feb',m:[1,2],g:['Snow scenery','Onsen','Ropeways & night views','Shrines & temples'],d:[5,6],ty:'short',f:'In/out: Sendai',v:'public',vn:'JR plus buses',r:'Sendai → Zao ropeway snow monsters (with night light-up) → Ginzan Onsen → Yamadera → Sendai → Matsushima',x:'Juhyo "snow monsters", snowy nights at Ginzan Onsen'},
+    {k:'th-snow',a:'Tohoku',s:'冬',t:'Northern Tohoku Snow Country Onsen',p:'Late Jan–mid Feb',m:[1,2],g:['Snow scenery','Onsen','Festivals'],d:[6,7],ty:'short',f:'In: Aomori / Out: Akita (or Hanamaki)',v:'public',vn:'JR plus ryokan shuttles',r:'Aomori → Hakkoda snow monsters + Sukayu Onsen → Hirosaki Castle Snow Lantern Festival (early Feb) → Gono Line, Furofushi Onsen → Nyuto Onsen → Kakunodate → Yokote Kamakura Festival (mid Feb) → Akita',x:'A snow-view outdoor bath at the remote Tsurunoyu'},
+    {k:'th-winter-all',a:'Tohoku',s:'冬',t:'Tohoku Winter Traverse',p:'Early–mid Feb (2027: Feb 7–18 suggested)',m:[2],g:['Snow scenery','Onsen','Festivals','Ropeways & night views'],d:[12,12],ty:'combo',c:['th-juhyo','th-snow'],f:'In: Aomori / Out: Sendai',v:'public',vn:'JR, the Resort Shirakami, reserved buses and ryokan shuttles',r:'Aomori → Hakkoda snow monsters, Sukayu Onsen → Hirosaki Castle Snow Lantern Festival → Gono Line, Furofushi Onsen → Nyuto Onsen → Kakunodate → Yokote Kamakura Festival → Zao snow monster light-up → Ginzan Onsen → Yamadera → Sendai → Matsushima',x:'Snow monsters, snow huts and snow lanterns in one go'},
     {k:'th-matsuri',a:'Tohoku',s:'夏',t:'Tohoku Summer Festivals',p:'Aug 1–8',m:[8],g:['Festivals'],d:[6,7],ty:'short',f:'In: Aomori / Out: Sendai',v:'public',vn:'JR',r:'Aomori Nebuta (Aug 2–7) → Hirosaki Neputa → Morioka Sansa Odori (Aug 1–4) → Akita Kanto (Aug 3–6) → Sendai Tanabata (Aug 6–8)',x:'Book hotels six months ahead'},
-    {k:'th-summer-long',a:'Tohoku',s:'夏',t:'Tohoku Festivals & Cool Escapes',p:'Early Aug',m:[8],g:['Festivals','Nature walks','Shrines & temples','Onsen'],d:[10,11],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in the north; JR for the festival cities',r:'Aomori Nebuta → Osorezan (open May 1–Oct 31) → Oirase in summer green → Lake Towada → Akita Kanto → Kakunodate → Chusonji, Hiraizumi → Matsushima → Sendai Tanabata',x:'Osorezan, one of Japan\'s three holiest sites'},
+    {k:'th-summer-long',a:'Tohoku',s:'夏',t:'Tohoku Festivals & Cool Escapes',p:'Early Aug',m:[8],g:['Festivals','Nature walks','Shrines & temples','Onsen'],d:[10,11],ty:'long',f:'In: Aomori / Out: Sendai',v:'mixed',vn:'Drive in the north; JR for the festival cities',r:'Aomori Nebuta → Osorezan (open May 1–Oct 31) → Oirase in summer green → Lake Towada → Akita Kanto → Kakunodate → Chusonji, Hiraizumi → Sendai Tanabata → Yamadera → Ginzan Onsen → Zao Okama → Matsushima',x:'Osorezan, one of Japan\'s three holiest sites'},
 
     /* ===== Kanto ===== */
     {k:'kt-classic',a:'Kanto',s:'年',t:'Classic Tokyo in Five Days',p:'Year-round (avoid Golden Week and Obon)',m:ALL,g:['Shrines & temples','Ropeways & night views','Theme parks'],d:[5,5],ty:'short',f:HN,v:'public',vn:'Subway',r:'Imperial Palace Nijubashi + East Gardens → Sensoji → Tokyo Skytree → Meiji Jingu → Shibuya, Omotesando → teamLab at Azabudai Hills → Toyosu, Tsukiji → day trip to Kamakura',x:'The Imperial Palace, Kaminarimon at Sensoji, Meiji Jingu'},
@@ -780,35 +914,35 @@
     {k:'kt-flower',a:'Kanto',s:'春',t:'Kanto Flower Fields, Northern Line',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Shrines & temples'],d:[6,7],ty:'short',f:'In/out: Narita',v:'mixed',vn:'JR plus buses; the Hitachi–Ashikaga stretch can be driven',r:'Nemophila at Hitachi Seaside Park → great wisteria at Ashikaga Flower Park (lit at night) → Nikko Toshogu → moss phlox at Hitsujiyama Park, Chichibu + Mitsumine Shrine → Tokyo',x:'Hills of blue nemophila, wisteria at night'},
     {k:'kt-kochia',a:'Kanto',s:'秋',t:'Kochia & Oku-Nikko Foliage',p:'Early–mid Oct',m:[10],g:['Autumn leaves','Flower fields','Onsen','Shrines & temples'],d:[6,6],ty:'short',f:'In/out: Narita',v:'public',vn:'JR and Tobu passes',r:'Kochia turning red at Hitachi Seaside Park → Nikko Toshogu → Irohazaka, Kegon Falls, Lake Chuzenji, Senjogahara → Kinugawa Onsen → Tokyo',x:'Hills of red kochia'},
     {k:'kt-kusatsu',a:'Kanto',s:'秋',t:'Kusatsu & Karuizawa in Autumn',p:'Late Oct–early Nov',m:[10,11],g:['Autumn leaves','Onsen'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Shinkansen plus buses',r:'Tokyo → Kumoba Pond and Shiraito Falls, Karuizawa → Yubatake, Sainokawara outdoor bath and the yumomi show, Kusatsu → Ishidan stone steps, Ikaho → Tokyo',x:'Kusatsu Yubatake lit up at night'},
-    {k:'kt-izu',a:'Kanto',s:'冬',t:'Kawazu Cherry Blossoms & Atami',p:'Mid Feb–early Mar',m:[2,3],g:['Cherry blossoms','Onsen','Flower fields'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Odoriko limited express',r:'Atami Plum Garden → Kawazu Cherry Blossom Festival → Shuzenji → Jogasaki Coast suspension bridge → Izu Kogen → Tokyo',x:'Some of Japan\'s earliest cherry blossoms'},
+    {k:'kt-izu',a:'Kanto',s:'冬',t:'Kawazu Cherry Blossoms & Atami',p:'Mid Feb–early Mar',m:[2,3],g:['Cherry blossoms','Onsen','Flower fields'],d:[5,6],ty:'short',f:HN,v:'public',vn:'Odoriko limited express',r:'Atami Plum Garden → Izu Kogen (Jogasaki suspension bridge, Mt. Omuro) → Kawazu Cherry Festival → Amagi Pass → Shuzenji → Tokyo',x:'Some of Japan\'s earliest cherry blossoms'},
     {k:'kt-ajisai',a:'Kanto',s:'夏',t:'Kamakura & Hakone Hydrangeas',p:'Early–late Jun (rainy season)',m:[6],g:['Flower fields','Shrines & temples','Onsen'],d:[5,5],ty:'short',f:HN,v:'public',vn:'Enoden line and Hakone Free Pass',r:'Hydrangeas at Meigetsuin and Hasedera → Tsurugaoka Hachimangu → Enoshima → hydrangeas along the Hakone Tozan Railway → Yunessun → Tokyo',x:'The Great Buddha of Kamakura, "Meigetsuin blue"'},
     {k:'kt-combo-autumn',a:'Kanto',s:'秋',t:'Tokyo Theme Parks + Fuji & Hakone Foliage',p:'Early–mid Nov',m:[11],g:['Theme parks','Autumn leaves','Onsen'],d:[11,13],ty:'combo',c:['kt-parks','kt-fuji-koyo'],f:'In: Narita / Out: Haneda',v:'mixed',vn:'Public transport in Tokyo, drive the Fuji stretch',r:'Tokyo theme parks for 6 days → Lake Kawaguchi → Hakone → Tokyo',x:'Disney\'s Christmas events have just begun'},
-    {k:'kt-combo-spring',a:'Kanto',s:'春',t:'Every Kanto Spring Bloom',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Cherry blossoms','Shrines & temples'],d:[11,12],ty:'combo',c:['kt-flower','kt-fuji-spring'],f:'In: Narita / Out: Haneda',v:'mixed',vn:'JR plus some driving on the northern line; drive the Fuji stretch',r:'Hitachi → Ashikaga → Nikko → Chichibu → Lake Kawaguchi → Lake Motosu → Hakone → Tokyo',x:'Nemophila, wisteria, moss phlox and Fuji cherry blossoms'},
+    {k:'kt-combo-spring',a:'Kanto',s:'春',t:'Every Kanto Spring Bloom',p:'Mid Apr–early May',m:[4,5],g:['Flower fields','Cherry blossoms','Shrines & temples'],d:[11,12],ty:'combo',c:['kt-flower','kt-fuji-spring'],f:'In: Haneda / Out: Narita',v:'mixed',vn:'Drive the Fuji lakes, trains in Hakone and Tokyo, then a car from Tokyo to Narita for northern Kanto',r:'Lake Kawaguchi → Lake Motosu → Hakone → Tokyo → Chichibu → Ashikaga → Nikko → Hitachi → Narita',x:'Nemophila, wisteria, moss phlox and Fuji cherry blossoms'},
 
     /* ===== Chubu & Hokuriku ===== */
     {k:'cb-tateyama',a:'Chubu & Hokuriku',s:'春',t:'Tateyama Kurobe Snow Corridor',p:'Mid Apr–late May',m:[4,5],g:['Snow scenery','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Toyama (or Komatsu)',v:'public',vn:'Private cars are banned on the Alpine Route; public transport throughout',r:'Toyama → Tateyama Cable Car → Highland bus → Yuki-no-Otani snow corridor (Murodo) → back down → Kenrokuen, Kanazawa → Shirakawa-go → Toyama',x:'Snow walls more than ten meters high'},
     {k:'cb-alps',a:'Chubu & Hokuriku',s:'秋',t:'Japan Alps Autumn Traverse',p:'Early–mid Oct',m:[10],g:['Autumn leaves','Ropeways & night views','Castles'],d:[9,10],ty:'long',f:'In: Toyama / Out: Nagoya',v:'public',vn:'Private cars are banned on the Alpine Route and in Kamikochi',r:'Toyama → Murodo, Tateyama → Kurobe Dam → Ogizawa → Matsumoto Castle → Kappa Bridge, Kamikochi → Shinhotaka Ropeway (double-decker) → Takayama → Shirakawa-go → Nagoya',x:'Foliage all the way from the peaks down to the plains'},
     {k:'cb-summer',a:'Chubu & Hokuriku',s:'夏',t:'Chubu Mountains Summer Escape',p:'Mid Jul–late Aug',m:[7,8],g:['Nature walks','Ropeways & night views'],d:[6,7],ty:'short',f:'In: Toyama / Out: Nagoya',v:'public',vn:'Mountain buses and ropeways',r:'Murodo, Tateyama (alpine flowers, ptarmigan) → Kurobe Dam water discharge (late Jun–mid Oct) → Kamikochi → Mt. Norikura → Shinhotaka Ropeway → Takayama → Nagoya',x:'About 15°C at Murodo while the lowlands hit 35°C'},
     {k:'cb-takayama',a:'Chubu & Hokuriku',s:'秋',t:'Takayama Autumn Festival & Hokuriku',p:'Around Oct 9–10',m:[10],g:['Festivals','Onsen','Shrines & temples'],d:[6,6],ty:'short',f:'In: Nagoya / Out: Komatsu',v:'public',vn:'JR and Nohi buses',r:'Nagoya → Gero Onsen → Takayama Autumn Festival (floats, night festival) → Shirakawa-go → Kanazawa → Komatsu',x:'One of Japan\'s three most beautiful festivals'},
-    {k:'cb-hokuriku-winter',a:'Chubu & Hokuriku',s:'冬',t:'Hokuriku Snow Country & Echizen Crab',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen'],d:[5,6],ty:'short',f:'In/out: Komatsu',v:'public',vn:'JR and buses',r:'Yukitsuri at Kenrokuen and the Higashi Chaya District, Kanazawa → Shirakawa-go light-up (select dates, reservation required) → Gokayama → Yamashiro / Yamanaka Onsen → Tojinbo and the Dinosaur Museum, Fukui',x:'Echizen crab season runs Nov–Mar'},
+    {k:'cb-hokuriku-winter',a:'Chubu & Hokuriku',s:'冬',t:'Hokuriku Snow Country & Echizen Crab',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen'],d:[5,6],ty:'short',f:'In/out: Komatsu',v:'public',vn:'JR and buses',r:'Yukitsuri at Kenrokuen and the Higashi Chaya District, Kanazawa → Shirakawa-go light-up (select dates, reservation required) → Yamashiro / Yamanaka Onsen → Tojinbo and the Dinosaur Museum, Fukui',x:'Echizen crab season runs Nov–Mar'},
     {k:'cb-nagoya',a:'Chubu & Hokuriku',s:'年',t:'Nagoya Theme Parks & Castles',p:'Year-round',m:ALL,g:['Theme parks','Castles','Shrines & temples'],d:[5,6],ty:'short',f:NG,v:'public',vn:'Subway and Meitetsu',r:'Ghibli Park (reservation required) → LEGOLAND Japan → Nagoya Castle → Atsuta Jingu → Inuyama Castle → Nagashima Spa Land + Nabana no Sato illumination (about mid Oct–May)',x:'Ghibli Park, the Nabana no Sato light tunnel'},
-    {k:'cb-ise',a:'Chubu & Hokuriku',s:'年',t:'Ise Jingu & Shima',p:'Year-round (best Mar–May, Oct–Nov)',m:ALL,g:['Shrines & temples','Onsen'],d:[5,6],ty:'short',f:NG,v:'mixed',vn:'Kintetsu Ise-Shima pass; the Shima stretch can be driven',r:'Atsuta Jingu → Ise Jingu Outer Shrine → Inner Shrine + Okage Yokocho → Meoto Iwa at Futami Okitama Shrine → Toba Aquarium → Shima Spain Village → VISON',x:'The most sacred shrine in Japan'},
-    {k:'cb-koyo',a:'Chubu & Hokuriku',s:'秋',t:'Foliage around Nagoya',p:'Mid–late Nov',m:[11],g:['Autumn leaves','Ropeways & night views','Theme parks'],d:[6,6],ty:'short',f:NG,v:'mixed',vn:'Drive or take the bus to Korankei (traffic is heavy in foliage season); rail for the rest',r:'Korankei → Gozaisho Ropeway → Nabana no Sato → Ise Jingu → Nagoya Castle',x:'Korankei foliage lit up at night'},
-    {k:'cb-combo',a:'Chubu & Hokuriku',s:'年',t:'Nagoya Theme Parks + Ise',p:'Year-round',m:ALL,g:['Theme parks','Shrines & temples','Castles'],d:[8,9],ty:'combo',c:['cb-nagoya','cb-ise'],f:NG,v:'public',vn:'Meitetsu and Kintetsu',r:'Nagoya for 4 days → Nagashima → Ise → Toba → Nagoya',x:'Good for family trips'},
+    {k:'cb-ise',a:'Chubu & Hokuriku',s:'年',t:'Ise Jingu & Shima',p:'Year-round (best Mar–May, Oct–Nov)',m:ALL,g:['Shrines & temples','Onsen'],d:[5,6],ty:'short',f:NG,v:'mixed',vn:'Kintetsu Ise-Shima pass; the Shima stretch can be driven',r:'Atsuta Jingu → Ise Jingu Outer Shrine → Inner Shrine + Okage Yokocho → Meoto Iwa at Futami Okitama Shrine → Toba Aquarium → Shima Spain Village → VISON → high-speed boat from Tsu to Chubu Centrair',x:'The most sacred shrine in Japan'},
+    {k:'cb-koyo',a:'Chubu & Hokuriku',s:'秋',t:'Foliage around Nagoya',p:'Mid–late Nov',m:[11],g:['Autumn leaves','Ropeways & night views','Theme parks'],d:[6,6],ty:'short',f:NG,v:'mixed',vn:'Drive or take the bus to Korankei (traffic is heavy in foliage season); rail for the rest',r:'Nagoya Castle → Korankei → Gozaisho Ropeway → Nabana no Sato → Ise Jingu → high-speed boat from Tsu to Chubu Centrair',x:'Korankei foliage lit up at night'},
+    {k:'cb-combo',a:'Chubu & Hokuriku',s:'年',t:'Nagoya Theme Parks + Ise',p:'Year-round',m:ALL,g:['Theme parks','Shrines & temples','Castles'],d:[8,9],ty:'combo',c:['cb-nagoya','cb-ise'],f:NG,v:'public',vn:'Meitetsu and Kintetsu',r:'4 days in Nagoya → Nagashima → Ise → Toba → Shima → high-speed boat from Tsu to Chubu Centrair',x:'Good for family trips'},
     {k:'sn-monkey',a:'Chubu & Hokuriku',s:'冬',t:'Shinshu Snow Monkeys & Skiing',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Skiing','Onsen','Shrines & temples','Castles'],d:[6,7],ty:'short',f:'In/out: Narita (Hokuriku Shinkansen from Tokyo)',v:'public',vn:'Shinkansen plus the Nagano Electric Railway',r:'Tokyo → Zenkoji, Nagano → Jigokudani Monkey Park (snow monkeys in the hot spring) → Shibu Onsen nine-bath tour → skiing at Nozawa Onsen or Hakuba → Matsumoto Castle → Tokyo',x:'Snow monkeys soaking in hot springs'},
     {k:'ng-yuzawa',a:'Chubu & Hokuriku',s:'冬',t:'Echigo-Yuzawa Snow Country & Sake Baths',p:'Late Dec–early Mar',m:[12,1,2,3],g:['Skiing','Onsen','Snow scenery'],d:[5,5],ty:'short',f:'In/out: Niigata',v:'public',vn:'Joetsu Shinkansen',r:'Niigata City → Echigo-Yuzawa (GALA Yuzawa skiing; sake tasting and a sake bath at Ponshukan in the station) → Naeba → Niigata',x:'The setting of Kawabata\'s "Snow Country"; Niigata sake'},
 
     /* ===== Kansai ===== */
     {k:'ks-sakura',a:'Kansai',s:'春',t:'Kyoto, Osaka & Kobe Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[6,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Trains',r:'Kyoto (Philosopher\'s Path, Daigoji, Heian Jingu, Kiyomizudera night viewing, Arashiyama) → Nara (Todaiji, Kasuga Taisha) → Osaka Castle → Himeji Castle',x:'Kiyomizudera, Fushimi Inari, Himeji Castle'},
-    {k:'ks-sakura-long',a:'Kansai',s:'春',t:'Chasing the Kansai Blossom Front',p:'Late Mar–mid Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[11,12],ty:'long',f:KX,v:'public',vn:'Trains and buses',r:'Kyoto → Nara → Yoshino Senbonzakura (early–mid Apr) → Koyasan → Osaka Castle → Himeji Castle → Hikone Castle → Kaizu Osaki, Lake Biwa (mid Apr) → Haradanien, Kyoto',x:'Following the blossoms from the plains up into the mountains'},
-    {k:'ks-koyo',a:'Kansai',s:'秋',t:'Kyoto, Osaka & Kobe Foliage',p:'Mid Nov–early Dec',m:[11,12],g:['Autumn leaves','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Trains',r:'Kiyomizudera, Eikando, Tofukuji, Nanzenji, Arashiyama → Kibune and Kurama (Eizan Railway maple tunnel) → Nara → Minoo, Osaka → Mt. Maya night view, Kobe',x:'Temples lit up at night'},
+    {k:'ks-sakura-long',a:'Kansai',s:'春',t:'Chasing the Kansai Blossom Front',p:'Late Mar–mid Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[11,12],ty:'long',f:'In: Kobe / Out: Kansai',v:'public',vn:'Trains and buses',r:'Himeji Castle → Osaka Castle → Kyoto (Philosopher\'s Path, Daigoji, Arashiyama) → Nara → Yoshino Senbonzakura (early–mid Apr) → Koyasan → Hikone Castle → Kaizu Osaki, Lake Biwa (mid Apr) → Omuro cherries and Haradanien, Kyoto',x:'Following the blossoms from the plains up into the mountains'},
+    {k:'ks-koyo',a:'Kansai',s:'秋',t:'Kyoto, Osaka & Kobe Foliage',p:'Mid Nov–early Dec',m:[11,12],g:['Autumn leaves','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:'In: Kobe / Out: Kansai (or the reverse)',v:'public',vn:'Trains',r:'Mt. Maya night view, Kobe → Higashiyama, Kyoto (Kiyomizudera, Eikando, Nanzenji) → Tofukuji → Fushimi Inari → Kibune and Kurama (Eizan Railway maple tunnel) → Arashiyama → Nara',x:'Temples lit up at night'},
     {k:'ks-usj',a:'Kansai',s:'年',t:'USJ, Osaka & Kobe',p:'Year-round (Halloween Sep–early Nov, Christmas mid Nov–early Jan)',m:ALL,g:['Theme parks','Ropeways & night views','Onsen'],d:[5,6],ty:'short',f:'In/out: Kansai or Kobe',v:'public',vn:'Subway and JR',r:'Super Nintendo World at USJ (incl. Donkey Kong Country) → Osaka Castle → Kaiyukan → Port of Kobe → Mt. Maya ropeway "ten-million-dollar" night view → Arima Onsen (gold and silver springs)',x:'Mt. Maya, one of Japan\'s three great night views'},
-    {k:'ks-kumano',a:'Kansai',s:'秋',t:'Koyasan, Kumano Kodo & Shirahama',p:'Late Oct–mid Nov',m:[10,11],g:['Shrines & temples','Nature walks','Onsen','Autumn leaves'],d:[7,7],ty:'short',f:KX,v:'mixed',vn:'Nankai train + cable car to Koyasan; drive the Kumano stretch',r:'Temple lodging on Koyasan + Okunoin night tour → Kumano Kodo Nakahechi hike → Kumano Hongu Taisha, Oyunohara great torii → Nachi Taisha, Nachi Falls → Shirahama Onsen (Sakinoyu), Adventure World → Osaka',x:'A World Heritage pilgrimage route'},
-    {k:'ks-winter',a:'Kansai',s:'冬',t:'Kyoto by the Sea & Kinosaki Onsen',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:KX,v:'public',vn:'JR and Kyoto Tango Railway',r:'Kyoto (snow if you are lucky) → Miyama Snow Lantern Festival (late Jan) → Amanohashidate (Kasamatsu Park cable car) → Ine boathouses → Kinosaki Onsen public bath tour + snow crab → Himeji → Osaka',x:'Touring Kinosaki\'s seven public baths in a yukata'},
-    {k:'ks-gion',a:'Kansai',s:'夏',t:'Gion Matsuri & Summer Kyoto',p:'Mid Jul (float processions Jul 17 and 24)',m:[7],g:['Festivals','Shrines & temples'],d:[5,5],ty:'short',f:KX,v:'public',vn:'Trains',r:'Gion Matsuri Yoiyama and float procession → riverside kawadoko dining at Kibune → Byodoin, Uji → Fushimi Inari → Tenjin Matsuri, Osaka (Jul 24–25)',x:'Two of Japan\'s three great festivals'},
+    {k:'ks-kumano',a:'Kansai',s:'秋',t:'Koyasan, Kumano Kodo & Shirahama',p:'Late Oct–mid Nov',m:[10,11],g:['Shrines & temples','Nature walks','Onsen','Autumn leaves'],d:[7,7],ty:'short',f:KX,v:'mixed',vn:'Nankai train + cable car to Koyasan; drive the Kumano stretch',r:'Temple lodging on Koyasan + Okunoin night tour → Koya-Ryujin Skyline, Ryujin Onsen → Kumano Kodo Nakahechi hike → Kumano Hongu Taisha, Oyunohara great torii → Nachi Taisha, Nachi Falls → Shirahama Onsen (Sakinoyu), Adventure World',x:'A World Heritage pilgrimage route'},
+    {k:'ks-winter',a:'Kansai',s:'冬',t:'Kyoto by the Sea & Kinosaki Onsen',p:'Jan–Feb',m:[1,2],g:['Snow scenery','Onsen','Shrines & temples','Ropeways & night views'],d:[6,6],ty:'short',f:'In: Kansai / Out: Kobe (or Kansai)',v:'public',vn:'JR and Kyoto Tango Railway',r:'Kyoto (snow if you are lucky) → Miyama Snow Lantern Festival (late Jan) → Amanohashidate (Kasamatsu Park cable car) → Ine boathouses → Kinosaki Onsen public bath tour + snow crab → Himeji → Osaka',x:'Touring Kinosaki\'s seven public baths in a yukata'},
+    {k:'ks-gion',a:'Kansai',s:'夏',t:'Gion Matsuri & Summer Kyoto',p:'Late Jul (second float procession Jul 24, Tenjin Matsuri Jul 24–25)',m:[7],g:['Festivals','Shrines & temples'],d:[5,6],ty:'short',f:KX,v:'public',vn:'Trains',r:'Gion Matsuri second-half Yoiyama → riverside kawadoko dining at Kibune → Byodoin, Uji → Fushimi Inari → second-half float procession (Jul 24) → Tenjin Matsuri, Osaka (Jul 24–25)',x:'Two of Japan\'s three great festivals'},
     {k:'ks-golden-sakura',a:'Kansai',s:'春',t:'Cherry Blossoms from Tokyo to Osaka',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Shrines & temples','Castles'],d:[10,11],ty:'combo',c:['kt-sakura','ks-sakura'],f:'In: Haneda / Out: Kansai',v:'public',vn:'The Tokaido Shinkansen links the two',r:'Tokyo for 4–5 days → Shinkansen → Kyoto → Nara → Osaka → Himeji',x:'Japan\'s Golden Route'},
     {k:'ks-golden-koyo',a:'Kansai',s:'秋',t:'Kyoto Maples + Tokyo Ginkgo',p:'Late Nov–early Dec',m:[11,12],g:['Autumn leaves','Shrines & temples'],d:[10,11],ty:'combo',c:['ks-koyo','kt-ginkgo'],f:'In: Kansai / Out: Haneda',v:'public',vn:'Shinkansen',r:'Osaka → Kyoto → Nara → Shinkansen → Gaien ginkgo, Tokyo → Kamakura → Tokyo',x:'Kyoto red, Tokyo gold'},
-    {k:'ks-usj-koyo',a:'Kansai',s:'秋',t:'USJ + Kyoto Foliage',p:'Mid–late Nov',m:[11],g:['Theme parks','Autumn leaves','Onsen'],d:[9,10],ty:'combo',c:['ks-usj','ks-koyo'],f:KX,v:'public',vn:'Trains',r:'USJ → Osaka → Arima Onsen → Kyoto → Kibune and Kurama → Nara',x:'USJ\'s Christmas events have just started'},
+    {k:'ks-usj-koyo',a:'Kansai',s:'秋',t:'USJ + Kyoto Foliage',p:'Mid–late Nov',m:[11],g:['Theme parks','Autumn leaves','Onsen'],d:[9,10],ty:'combo',c:['ks-usj','ks-koyo'],f:'In: Kobe / Out: Kansai',v:'public',vn:'Trains',r:'Mt. Maya night view, Kobe → Arima Onsen → Osaka → USJ → Kyoto → Kibune and Kurama → Nara',x:'USJ\'s Christmas events have just started'},
 
     /* ===== Chugoku & Shikoku ===== */
     {k:'sy-miyajima',a:'Chugoku & Shikoku',s:'秋',t:'Miyajima, Hiroshima & Okayama Foliage',p:'Mid–late Nov',m:[11],g:['Autumn leaves','Shrines & temples','Ropeways & night views','Castles'],d:[5,6],ty:'short',f:'In: Hiroshima / Out: Okayama',v:'public',vn:'JR West rail pass',r:'Itsukushima Shrine great torii + Momijidani Park + Miyajima Ropeway to Mt. Misen → Atomic Bomb Dome → Onomichi → Kurashiki Bikan district → Korakuen autumn illumination, Okayama',x:'The great torii in the sea'},
@@ -817,27 +951,27 @@
     {k:'sk-spring',a:'Chugoku & Shikoku',s:'春',t:'Shikoku Spring Blossoms & Shimanami',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Castles','Onsen','Nature walks'],d:[6,6],ty:'short',f:'In/out: Matsuyama (or Kochi)',v:'mixed',vn:'Streetcar in Matsuyama, drive outside the city',r:'Matsuyama Castle blossoms + Dogo Onsen → cycling the Shimanami Kaido → Uchiko → Kochi Castle blossoms → Niyodo River ("Niyodo blue")',x:'Matsuyama Castle ropeway and keep'},
     {k:'sy-sanin',a:'Chugoku & Shikoku',s:'秋',t:'San\'in Myths & Gardens',p:'Late Oct–late Nov',m:[10,11],g:['Shrines & temples','Autumn leaves','Castles','Onsen'],d:[5,6],ty:'short',f:'In/out: Yonago',v:'drive',vn:'Self-drive throughout (San\'in JR trains are infrequent)',r:'Adachi Museum of Art (foliage early–mid Nov) → Izumo Taisha (Kamiarizuki, the 10th lunar month, around mid–late Nov) → Hinomisaki Shrine → Matsue Castle + Horikawa boat ride → Yaegaki Shrine → Mt. Daisen → Tottori Sand Dunes',x:'Kamiarizuki, when all of Japan\'s gods gather in Izumo'},
     {k:'sy-sanin-winter',a:'Chugoku & Shikoku',s:'冬',t:'San\'in Crab Season & Onsen',p:'Dec–Feb',m:[12,1,2],g:['Onsen','Snow scenery'],d:[5,5],ty:'short',f:'In/out: Yonago',v:'public',vn:'JR plus onsen buses',r:'Kaike Onsen → Mizuki Shigeru Road, Sakaiminato → snow crab → Tamatsukuri Onsen → Matsue Castle → Mt. Daisen in the snow → Tottori Sand Dunes',x:'Snow crab season'},
-    {k:'sy-combo',a:'Chugoku & Shikoku',s:'秋',t:'San\'in to San\'yo Loop',p:'Mid–late Nov',m:[11],g:['Shrines & temples','Autumn leaves','Castles'],d:[10,11],ty:'combo',c:['sy-sanin','sy-miyajima'],f:'In: Yonago / Out: Hiroshima',v:'mixed',vn:'Drive San\'in, return the car in Izumo and switch to JR',r:'Yonago → Adachi Museum of Art → Matsue → Izumo Taisha → Iwami Ginzan → Hiroshima → Miyajima → Onomichi → Kurashiki → Okayama → Hiroshima',x:'Izumo Taisha + Itsukushima Shrine'},
+    {k:'sy-combo',a:'Chugoku & Shikoku',s:'秋',t:'San\'in to San\'yo Loop',p:'Mid–late Nov',m:[11],g:['Shrines & temples','Autumn leaves','Castles'],d:[10,11],ty:'combo',c:['sy-sanin','sy-miyajima'],f:'In: Yonago / Out: Okayama',v:'mixed',vn:'Drive San\'in, return the car in Izumo and switch to JR',r:'Yonago → Adachi Museum → Matsue → Izumo Taisha → Iwami Ginzan → Hiroshima → Miyajima → Onomichi → Kurashiki → Okayama',x:'Izumo Taisha + Itsukushima Shrine'},
     {k:'sk-combo',a:'Chugoku & Shikoku',s:'秋',t:'Setouchi + Shikoku Loop',p:'Early–mid Nov',m:[11],g:['Art','Autumn leaves','Castles','Onsen'],d:[13,14],ty:'combo',c:['sk-art','sk-loop'],f:'In: Takamatsu / Out: Matsuyama',v:'mixed',vn:'Public transport on the islands, drive on Shikoku',r:'Naoshima → Teshima → Shodoshima → Takamatsu → Iya → Kochi → Shimanto → Matsuyama → Shimanami Kaido',x:'Art, gorges, castles and onsen'},
 
     /* ===== Kyushu ===== */
-    {k:'ky-sakura',a:'Kyushu',s:'春',t:'Kyushu Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Castles','Shrines & temples'],d:[5,6],ty:'short',f:'In/out: Fukuoka',v:'public',vn:'JR Kyushu Rail Pass',r:'Maizuru Park (Fukuoka Castle) → Dazaifu Tenmangu → Akizuki Castle ruins → Yanagawa river cruise → Kumamoto Castle → Fukuoka',x:'About a week ahead of Kanto'},
-    {k:'ky-fuji',a:'Kyushu',s:'春',t:'Kitakyushu Wisteria & Night Views',p:'Late Apr–early May',m:[4,5],g:['Flower fields','Ropeways & night views','Castles'],d:[5,5],ty:'short',f:'In/out: Fukuoka (Kitakyushu from Taichung)',v:'public',vn:'JR plus taxis',r:'Kawachi Fujien wisteria tunnel (reservation required) → Kokura Castle → Mojiko → Mt. Sarakura cable car night view → nemophila at Uminonakamichi → Dazaifu',x:'Mt. Sarakura, one of Japan\'s new three great night views'},
-    {k:'ky-koyo',a:'Kyushu',s:'秋',t:'Central Kyushu Foliage',p:'Late Oct–mid Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen','Nature walks'],d:[6,7],ty:'short',f:'In: Kumamoto / Out: Oita (or in/out: Fukuoka)',v:'drive',vn:'Self-drive throughout (Aso and Takachiho are hard to link without a car)',r:'Kumamoto Castle → Daikanbo and Kusasenri, Aso → Kikuchi Gorge → Takachiho Gorge, Takachiho Shrine night kagura, Amano Iwato Shrine → Kokonoe Yume Suspension Bridge → Yabakei → Usa Jingu → Yufuin → Beppu hell tour',x:'Takachiho night kagura is performed every evening'},
-    {k:'ky-winter',a:'Kyushu',s:'冬',t:'Northern Kyushu Onsen & Lights',p:'Nov–Feb',m:[11,12,1,2],g:['Onsen','Theme parks','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Fukuoka (or Saga)',v:'public',vn:'JR and SUNQ Pass',r:'Yufuin (morning mist on Lake Kinrin) → Beppu hells + Kannawa Onsen → Mt. Inasa ropeway night view, Nagasaki → Huis Ten Bosch Kingdom of Light + Miffy area → Takeo and Ureshino Onsen',x:'Nagasaki, one of the world\'s new three great night views'},
+    {k:'ky-sakura',a:'Kyushu',s:'春',t:'Kyushu Cherry Blossoms',p:'Late Mar–early Apr',m:[3,4],g:['Cherry blossoms','Castles','Shrines & temples'],d:[5,6],ty:'short',f:'In: Fukuoka / Out: Kumamoto (or back to Fukuoka)',v:'public',vn:'JR Kyushu Rail Pass',r:'Maizuru Park (Fukuoka Castle) → Dazaifu Tenmangu → Akizuki Castle ruins → Yanagawa canal boat → Kumamoto Castle',x:'About a week ahead of Kanto'},
+    {k:'ky-fuji',a:'Kyushu',s:'春',t:'Kitakyushu Wisteria & Night Views',p:'Late Apr–early May',m:[4,5],g:['Flower fields','Ropeways & night views','Castles'],d:[5,5],ty:'short',f:'In/out: Fukuoka (Kitakyushu from Taichung)',v:'public',vn:'JR plus taxis',r:'Uminonakamichi nemophila → Kokura Castle → Mojiko → Kawachi Fujien wisteria tunnels (booking required) → Mt. Sarakura ropeway night view → Dazaifu',x:'Mt. Sarakura, one of Japan\'s new three great night views'},
+    {k:'ky-koyo',a:'Kyushu',s:'秋',t:'Central Kyushu Foliage',p:'Late Oct–mid Nov',m:[10,11],g:['Autumn leaves','Shrines & temples','Onsen','Nature walks'],d:[6,7],ty:'short',f:'In: Kumamoto / Out: Oita (or in/out: Fukuoka)',v:'drive',vn:'Self-drive throughout (Aso and Takachiho are hard to link without a car)',r:'Kumamoto Castle → Kikuchi Gorge → Daikanbo and Kusasenri, Aso → Takachiho Gorge, Amano Iwato Shrine, Takachiho Shrine night kagura → Kurokawa Onsen → Kokonoe Yume Suspension Bridge → Yabakei → Usa Jingu → Yufuin → Beppu hell tour',x:'Takachiho night kagura is performed every evening'},
+    {k:'ky-winter',a:'Kyushu',s:'冬',t:'Northern Kyushu Onsen & Lights',p:'Nov–Feb',m:[11,12,1,2],g:['Onsen','Theme parks','Ropeways & night views'],d:[5,6],ty:'short',f:'In/out: Fukuoka (or Saga)',v:'public',vn:'JR and SUNQ Pass',r:'Yufuin (morning mist on Lake Kinrin) → Beppu hells + Kannawa Onsen → Mt. Inasa ropeway night view, Nagasaki → Takeo Onsen → Huis Ten Bosch Kingdom of Light + Miffy area',x:'Nagasaki, one of the world\'s new three great night views'},
     {k:'ky-south',a:'Kyushu',s:'冬',t:'Southern Kyushu Winter Sun & Shrines',p:'Dec–Feb',m:[12,1,2],g:['Shrines & temples','Onsen','Nature walks'],d:[6,7],ty:'short',f:'In: Kagoshima / Out: Miyazaki',v:'drive',vn:'Self-drive throughout',r:'Sengan-en + Sakurajima → Ibusuki sand bath → Kirishima Jingu + Kirishima Onsen → Obi Castle → Udo Jingu → Aoshima Shrine + Devil\'s Washboard → Miyazaki',x:'Still around 15°C in winter'},
     {k:'ky-yakushima',a:'Kyushu',s:'春',t:'Yakushima & Kagoshima',p:'Apr–early May (before the rainy season)',m:[4,5],g:['Nature walks','Onsen'],d:[7,7],ty:'short',f:'In/out: Kagoshima',v:'mixed',vn:'High-speed ferry to the island, drive on the island',r:'Kagoshima → Shiratani Unsuikyo, Yakushima → Jomon Sugi hike (about 10 hours round trip) → Hirauchi seaside onsen → Kagoshima',x:'The forest that inspired "Princess Mononoke"'},
     {k:'ky-balloon',a:'Kyushu',s:'秋',t:'Saga Balloon Fiesta & Onsen',p:'Late Oct–early Nov',m:[10,11],g:['Festivals','Onsen','Shrines & temples'],d:[5,5],ty:'short',f:'In/out: Saga',v:'public',vn:'JR',r:'Saga International Balloon Fiesta (about 5 days) → Yutoku Inari Shrine → Ureshino Onsen → Arita porcelain → Karatsu Castle → Yoshinogari ruins',x:'More than a hundred balloons lifting off together'},
     {k:'ky-combo-autumn',a:'Kyushu',s:'秋',t:'Balloon Fiesta + Kyushu Foliage',p:'Early Nov',m:[11],g:['Festivals','Autumn leaves','Onsen','Shrines & temples'],d:[11,12],ty:'combo',c:['ky-balloon','ky-koyo'],f:'In: Saga / Out: Oita',v:'mixed',vn:'JR in Saga, drive from Kumamoto',r:'Saga → Ureshino → Kumamoto → Aso → Takachiho → Kokonoe → Yabakei → Yufuin → Beppu',x:'Heading east from northern to central Kyushu'},
-    {k:'ky-combo-winter',a:'Kyushu',s:'冬',t:'Winter Kyushu Traverse',p:'Dec–Feb',m:[12,1,2],g:['Onsen','Shrines & temples','Ropeways & night views','Theme parks'],d:[12,13],ty:'combo',c:['ky-winter','ky-south'],f:'In: Fukuoka / Out: Kagoshima',v:'mixed',vn:'JR in the north, drive from Miyazaki',r:'Fukuoka → Yufuin → Beppu → Nagasaki → Huis Ten Bosch → Miyazaki → Aoshima Shrine → Udo Jingu → Kirishima → Ibusuki → Kagoshima',x:'Kyushu\'s onsen and shrines all the way south'},
+    {k:'ky-combo-winter',a:'Kyushu',s:'冬',t:'Winter Kyushu Traverse',p:'Dec–Feb',m:[12,1,2],g:['Onsen','Shrines & temples','Ropeways & night views','Theme parks'],d:[12,13],ty:'combo',c:['ky-winter','ky-south'],f:'In: Fukuoka / Out: Kagoshima',v:'mixed',vn:'JR in the north and along the east coast, a car from Miyazaki to Kagoshima',r:'Fukuoka → Nagasaki → Huis Ten Bosch → Yufuin → Beppu → Miyazaki (Aoshima Shrine, Udo Jingu) → Kirishima → Ibusuki → Kagoshima',x:'Kyushu\'s onsen and shrines all the way south'},
 
     /* ===== Okinawa ===== */
-    {k:'ok-spring',a:'Okinawa',s:'春',t:'Okinawa Main Island in Spring',p:'Late Mar–early May (before the rainy season)',m:[3,4,5],g:['Islands & beaches','Theme parks','Shrines & temples'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'A car is essential; the monorail works within Naha',r:'Churaumi Aquarium → Kouri Island → JUNGLIA → Cape Manzamo → Sefa Utaki → Shuri Castle (main hall under reconstruction, check before you go) → Kokusai Street',x:'Sefa Utaki, the most sacred site of the Ryukyus'},
+    {k:'ok-spring',a:'Okinawa',s:'春',t:'Okinawa Main Island in Spring',p:'Late Mar–early May (before the rainy season)',m:[3,4,5],g:['Islands & beaches','Theme parks','Shrines & temples'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'A car is essential; the monorail works within Naha',r:'Shuri Castle (main hall restored in Nov 2026) → Kokusai Street → Cape Manzamo → Churaumi Aquarium → JUNGLIA → Kouri Island → Sefa Utaki',x:'Sefa Utaki, the most sacred site of the Ryukyus'},
     {k:'ok-autumn',a:'Okinawa',s:'秋',t:'Okinawa Main Island in Autumn',p:'Oct–Nov',m:[10,11],g:['Islands & beaches','Festivals','Theme parks'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'Self-drive',r:'Naha Great Tug-of-War (Oct) → Churaumi Aquarium → Sesoko Beach → JUNGLIA → Naminoue Shrine → Kokusai Street',x:'Typhoon season is over and the sea is still warm'},
-    {k:'ok-winter',a:'Okinawa',s:'冬',t:'Hikan Cherry Blossoms & Whale Watching',p:'Late Jan–mid Feb',m:[1,2],g:['Cherry blossoms','Islands & beaches'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'Self-drive',r:'Motobu Yaedake Cherry Blossom Festival → Nakijin Castle blossoms → Nago Cherry Blossom Festival → whale watching off Kerama (Jan–Mar) → Churaumi Aquarium',x:'Japan\'s earliest cherry blossoms'},
+    {k:'ok-winter',a:'Okinawa',s:'冬',t:'Hikan Cherry Blossoms & Whale Watching',p:'Late Jan–mid Feb',m:[1,2],g:['Cherry blossoms','Islands & beaches'],d:[5,5],ty:'short',f:'In/out: Naha',v:'drive',vn:'Self-drive',r:'Kerama whale watching (Jan–Mar) → Yaedake cherry festival → Nakijin Castle cherries → Nago cherry festival → Churaumi Aquarium → Naha',x:'Japan\'s earliest cherry blossoms'},
     {k:'ok-ishigaki',a:'Okinawa',s:'春',t:'Ishigaki, Taketomi & Iriomote',p:'Apr–early May',m:[4,5],g:['Islands & beaches','Nature walks'],d:[5,5],ty:'short',f:'In/out: Ishigaki',v:'mixed',vn:'Drive on Ishigaki, ferries to the outer islands',r:'Glass-bottom boat at Kabira Bay → water buffalo cart on Taketomi → mangrove kayaking on Iriomote → stargazing on Ishigaki',x:'Japan\'s first International Dark Sky Park'},
     {k:'ok-miyako',a:'Okinawa',s:'秋',t:'Miyako Island',p:'Late Sep–Oct',m:[9,10],g:['Islands & beaches'],d:[5,5],ty:'short',f:'In/out: Shimojishima',v:'drive',vn:'Self-drive',r:'Irabu Bridge → Yonaha Maehama → 17END → Sunayama Beach → snorkeling',x:'"Miyako blue" water'},
-    {k:'ok-combo',a:'Okinawa',s:'春',t:'Okinawa Main Island + Ishigaki',p:'Apr',m:[4],g:['Islands & beaches','Theme parks','Nature walks'],d:[9,10],ty:'combo',c:['ok-spring','ok-ishigaki'],f:'In: Naha / Out: Ishigaki',v:'drive',vn:'Rent a car on each island, with a domestic flight in between',r:'Naha → the north → the south → domestic flight → Ishigaki → Taketomi → Iriomote',x:'Book the Naha–Ishigaki domestic flight separately'}
+    {k:'ok-combo',a:'Okinawa',s:'春',t:'Okinawa Main Island + Ishigaki',p:'Apr',m:[4],g:['Islands & beaches','Theme parks','Nature walks'],d:[9,10],ty:'combo',c:['ok-spring','ok-ishigaki'],f:'In: Naha / Out: Ishigaki',v:'drive',vn:'Rent a car on each island, with a domestic flight in between',r:'Naha → the north → central and south → domestic flight → Ishigaki → Taketomi → Iriomote',x:'Book the Naha–Ishigaki domestic flight separately'}
     ];
 
     /* Each spot: [name, place, description]; the photo link is a Google Images search for name + place */
@@ -935,7 +1069,7 @@
       ['Usa Jingu','Oita','The head shrine of all Hachiman shrines; its vermilion main hall is a national treasure.']]},
      {a:'Okinawa',i:[
       ['Churaumi Aquarium','Main Island','Whale sharks and manta rays glide through the giant Kuroshio Sea tank; Ocean Expo Park next door has dolphin shows.'],
-      ['Shuri Castle (under reconstruction)','Naha','The royal castle of the Ryukyu Kingdom. The main hall burned down in 2019 and you can watch the rebuilding; check the completion schedule before you go.'],
+      ['Shuri Castle','Naha','The royal castle of the Ryukyu Kingdom. The main hall burned down in 2019 and was restored in November 2026; its interior opens to visitors from November 23, 2026.'],
       ['Sefa Utaki','Main Island','The most sacred site of the Ryukyus, where a triangular gap between giant rocks frames Kudaka Island. A World Heritage site.'],
       ['Kouri Bridge','Main Island','A bridge of about 2 km over clear pale-blue water; Heart Rock is on the island.'],
       ['Kabira Bay','Ishigaki','Ishigaki\'s most famous bay. Swimming is not allowed, but glass-bottom boats show you coral and tropical fish.'],
@@ -955,6 +1089,780 @@
      ['Okinawa','Naha (Taoyuan, Taichung, Tainan, Kaohsiung), Ishigaki, Shimojishima (Taoyuan, Taichung)'],
      ['No direct flights','Shizuoka, Ibaraki, Nagasaki, Kushiro, Memanbetsu: fly into a nearby airport and continue by rail or domestic flight']
     ];
+
+    /* ── Day by day: keyed by plan k; d = [day, title, text, stay (blank on the last day)], n = tips ── */
+    var DETAIL = {
+      /* ===== Hokkaido ===== */
+      'hk-flower':{d:[
+       ['D1','Arrive, drive to Furano','Pick up the car at New Chitose and drive about 2 hours to Furano. In the evening, browse the log-cabin shops of Ningle Terrace.','Furano'],
+       ['D2','Furano flower fields','Reach Farm Tomita before 8 a.m. for the lavender without the crowds, then Saika no Sato, the Nakafurano town lavender field by chairlift, and Furano Cheese Factory.','Furano'],
+       ['D3','Biei hills','Shikisai-no-Oka → Patchwork Road (Ken & Mary Tree, Seven Stars Tree) → Shirogane Blue Pond → Shirahige Falls, then a soak at Shirogane Onsen.','Shirogane Onsen'],
+       ['D4','Asahikawa, back to Sapporo','Be at Asahiyama Zoo when it opens, have Asahikawa shoyu ramen for lunch, then drive back to Sapporo (about 2 hours) and return the car.','Sapporo'],
+       ['D5','Otaru','JR to Otaru in about 40 minutes. Otaru Canal → Sakaimachi Street (Kitaichi Glass, Music Box Museum) → seafood bowl at Sankaku Market; stay until the canal\'s gas lamps come on.','Sapporo'],
+       ['D6','Sapporo','Hokkaido Shrine → Maruyama Park → Odori Park and the Clock Tower → Nijo Market; Mt. Moiwa ropeway for the night view and soup curry for a late dinner.','Sapporo'],
+       ['D7','Fly home','JR to New Chitose. The domestic terminal has a ramen alley and dessert shops, so go early.','']],
+       n:['Lavender peaks around mid July; the first week of July is early and much is harvested by early August.','Picking up at New Chitose and dropping off in Sapporo costs a one-way fee. You can also return the car at New Chitose on D4 and take JR into Sapporo.','For 6 days, fold Otaru into the D6 afternoon and cut Sapporo to half a day.']},
+      'hk-summer':{d:[
+       ['D1','Arrive in Sapporo','Pick up the car at New Chitose and drive into Sapporo; Genghis Khan lamb barbecue for dinner.','Sapporo'],
+       ['D2','Furano and Biei','Drive to Furano (about 2 hours) for Farm Tomita, then Shikisai-no-Oka in Biei in the afternoon.','Biei'],
+       ['D3','Blue Pond and sunflowers','Shirogane Blue Pond and Shirahige Falls in the morning, Hokuryu Sunflower Village (about 1.5 hours), Asahikawa by evening.','Asahikawa'],
+       ['D4','Asahiyama Zoo, Sounkyo','Asahiyama Zoo in the morning, then drive to Sounkyo (about 1.5 hours) for Ginga and Ryusei Falls.','Sounkyo Onsen'],
+       ['D5','Mt. Kurodake, Abashiri','Kurodake ropeway for alpine flowers, then drive to Abashiri (about 2.5 hours) for the Abashiri Prison Museum.','Abashiri'],
+       ['D6','Shiretoko Five Lakes','Via the Koshimizu wildflower garden to Utoro; walk the Five Lakes elevated boardwalk and watch sunset from Yuhidai.','Utoro'],
+       ['D7','Shiretoko cruise and pass','A sightseeing cruise along the Shiretoko cliffs and waterfalls, then the Shiretoko Pass road for views of Mt. Rausu.','Utoro'],
+       ['D8','Lake Mashu, Mt. Io','Ura-Mashu and Mashu No. 1 observatories, Mt. Io, and a night at Kawayu Onsen.','Kawayu Onsen'],
+       ['D9','Lakes Kussharo and Akan','Sunayu beach on Lake Kussharo → Bihoro Pass → Lake Akan cruise to see marimo; Ainu dance at Ainu Kotan in the evening.','Akanko Onsen'],
+       ['D10','Kushiro Wetland','Overlook Kushiro Marsh from Hosooka Observatory, then build-your-own seafood bowl at Washo Market and sunset at Nusamai Bridge.','Kushiro'],
+       ['D11','Obihiro','Drive to Obihiro (about 2.5 hours) for butadon pork bowls, then Tokachi Millennium Forest or Manabe Garden.','Obihiro'],
+       ['D12','Back to Sapporo','Over Nissho Pass to Sapporo (about 3 hours). Refuel before returning the car; Hokkaido Shrine and the Mt. Moiwa night view.','Sapporo'],
+       ['D13','Fly home','JR to New Chitose.','']],
+       n:['Eastern Hokkaido is spread out, so expect 2–4 hours of driving a day. Book a summer rental car early.','Choose a large-boat operator for the Shiretoko cruise. Bad weather often cancels sailings, so leave slack around D7.','For 11 days, skip Obihiro, drive straight from Lake Akan to Sapporo (about 4.5 hours) and cut one Sapporo day.']},
+      'hk-shiba':{d:[
+       ['D1','Arrive, drive to Asahikawa','Pick up the car at New Chitose and drive straight to Asahikawa (about 2 hours); Asahikawa ramen for dinner.','Asahikawa'],
+       ['D2','Sounkyo','Drive to Sounkyo (about 1.5 hours) for the Obako and Kobako basalt columns and Ginga Falls.','Sounkyo Onsen'],
+       ['D3','Two moss phlox parks','Takinoue Shibazakura Park (about 1.5 hours) → Higashimokoto Shibazakura Park (about 2 hours), reaching Abashiri by evening.','Abashiri'],
+       ['D4','Shiretoko Five Lakes','Via the Koshimizu wildflower garden to Utoro; walk the Five Lakes elevated boardwalk. The ground trails need a licensed guide at this time of year.','Utoro'],
+       ['D5','Shiretoko Pass','Cross Shiretoko Pass between snow walls with views of Mt. Rausu, drop to Rausu, then on via Kaiyodai to Lake Mashu.','Kawayu Onsen'],
+       ['D6','Lakes Kussharo and Akan','Sunayu on Lake Kussharo → Bihoro Pass → Lake Akan cruise; Ainu Kotan in the evening.','Akanko Onsen'],
+       ['D7','Drive back to Sapporo','Via Ashoro and Nissho Pass to Sapporo (about 4.5 hours) and return the car.','Sapporo'],
+       ['D8','Fly home','JR to New Chitose.','']],
+       n:['Higashimokoto blooms early to late May and Takinoue mid May to early June, so the overlap is mid to late May.','Sleeping in Asahikawa on the first night instead of Sapporo saves about 1.5 hours of driving and splits the longest leg over two days.','May 10–July 31 is brown bear season at Shiretoko Five Lakes; the ground trails are only open on licensed-guide tours. Shiretoko Pass opens around late April and closes at night. For 7 days, drop D2 and drive from Asahikawa straight to Takinoue.']},
+      'hk-sakura':{d:[
+       ['D1','Hakodate','Arrive in Hakodate and take the streetcar to Goryokaku. See the star-shaped fort and its cherry trees from Goryokaku Tower; Mt. Hakodate ropeway for the night view.','Hakodate'],
+       ['D2','Matsumae Castle','Shinkansen to Kikonai, then a bus to Matsumae (about 1.5 hours). Matsumae Castle has about 250 varieties and over 10,000 cherry trees. Back to Hakodate for an evening at the Kanemori red brick warehouses.','Hakodate'],
+       ['D3','Onuma and Noboribetsu','Hakodate Morning Market, then a JR limited express to Onuma Park to cycle around the lake, and the Hokuto limited express to Noboribetsu (about 2 hours).','Noboribetsu Onsen'],
+       ['D4','Hell Valley, Sapporo','Walk Jigokudani and Oyunuma, then a limited express to Sapporo (about 1 hour 15 minutes); cherry blossoms at Maruyama Park and Hokkaido Shrine in the late afternoon.','Sapporo'],
+       ['D5','Sapporo and Otaru','Otaru Canal and Sakaimachi Street in the morning, Odori Park in the afternoon, Mt. Moiwa night view.','Sapporo'],
+       ['D6','Fly home','JR to New Chitose.','']],
+       n:['Hakodate and Matsumae peak in late April to early May, Sapporo around the turn of May.','This lands on Japan\'s Golden Week, so book rooms and JR reserved seats early.','Flying into Hakodate and out of New Chitose needs an open-jaw ticket.']},
+      'hk-koyo':{d:[
+       ['D1','Arrive in Asahikawa','Pick up the car at New Chitose and drive to Asahikawa (about 2 hours); Asahikawa ramen for dinner.','Asahikawa'],
+       ['D2','Mt. Asahidake','Asahidake ropeway to Sugatami Pond and the hour-long loop trail; the colors peak around mid to late September. Tenninkyo gorge in the afternoon.','Asahidake Onsen'],
+       ['D3','Kurodake and Sounkyo','Kurodake ropeway and chairlift to the seventh station, with summit colors around late September; then Ginga and Ryusei Falls and Obako.','Sounkyo Onsen'],
+       ['D4','Biei and Furano','Shirogane Blue Pond → Shirahige Falls → Patchwork Road, reaching Furano by evening.','Furano'],
+       ['D5','Jozankei','Drive to Jozankei (about 3 hours); Futami suspension bridge and Hoheikyo Dam turn red around early to mid October.','Jozankei Onsen'],
+       ['D6','Fly home','Drive to New Chitose (about 1.5 hours) and return the car.','']],
+       n:['The Daisetsuzan range is the first place in Japan to turn red: the peaks in late September, Jozankei by mid October.','The first snow can fall on the peaks by late September, so pack a warm jacket and gloves.','For 5 days, skip Furano and drive from Biei straight to Jozankei on D4.']},
+      'hk-winter':{d:[
+       ['D1','Hakodate night view','Arrive in Hakodate, walk the Kanemori red brick warehouses (with a giant Christmas tree in December), and ride the Mt. Hakodate ropeway for the snowy night view.','Hakodate'],
+       ['D2','Hakodate','Seafood bowl at the Morning Market → Hachiman-zaka slope in Motomachi → Goryokaku Tower, where the fort is lit in a star shape in winter; Yunokawa Onsen for the night.','Yunokawa Onsen'],
+       ['D3','Onuma, Lake Toya','JR limited express to Onuma Park for the snowy lake, then the Hokuto limited express to Toya (about 1.5 hours) and a bus to Toyako Onsen.','Toyako Onsen'],
+       ['D4','Noboribetsu, Sapporo','Limited express to Noboribetsu (about 30 minutes) for Jigokudani in the snow, then on to Sapporo (about 1 hour 15 minutes).','Sapporo'],
+       ['D5','Otaru','JR to Otaru for the canal in the snow, Kitaichi Glass and the Music Box Museum; soup curry back in Sapporo.','Sapporo'],
+       ['D6','Fly home','JR to New Chitose.','']],
+       n:['Wear shoes with grip; city sidewalks ice over. Slip-on ice cleats are sold locally.','Hakodate to Sapporo is by JR limited express, which makes the Hokkaido Rail Pass worth it here.','If you go in late January or February, swap D5 for the Snow Festival plan (No.07).']},
+      'hk-yuki':{d:[
+       ['D1','Arrive in Sapporo','JR into Sapporo and see the lit snow sculptures at the Odori site.','Sapporo'],
+       ['D2','Sapporo Snow Festival','Giant snow sculptures at Odori, ice sculptures at Susukino, and snow slides at the Tsudome site.','Sapporo'],
+       ['D3','Asahikawa, Sounkyo','JR limited express to Asahikawa (about 1.5 hours) for the Asahiyama Zoo penguin walk (and the Asahikawa Winter Festival if it is on), then a bus to Sounkyo (about 2 hours) for the lit Ice Fall Festival.','Sounkyo Onsen'],
+       ['D4','Back to Sapporo','Bus to Asahikawa and JR to Sapporo; Nijo Market and Tanukikoji in the afternoon.','Sapporo'],
+       ['D5','Otaru Snow Light Path','Otaru in the evening, when the canal and the old Temiya Line tracks are lined with snow candles.','Otaru'],
+       ['D6','Lake Shikotsu Ice Festival','Via Sapporo, a bus to Lake Shikotsu (about 1 hour) for blue ice sculptures made from lake water, lit at night.','Shikotsuko Onsen'],
+       ['D7','Fly home','Bus to New Chitose (about 45 minutes).','']],
+       n:['In 2027 the Snow Festival runs Feb 4–11 and the Otaru Snow Light Path Feb 6–13; starting on Feb 5–7 puts both D2 and D5 inside the dates.','The order follows the dates: the Snow Festival opens first and Otaru two days later, so Sapporo comes before Otaru. Lake Shikotsu is closest to New Chitose, so it takes the last night and the airport is only 45 minutes away.','Sapporo rooms are hardest to get during the festival, so book about six months ahead.']},
+      'hk-ski':{d:[
+       ['D1','Arrive in Niseko','Ski shuttle bus from New Chitose to Niseko (about 3 hours); rent gear and buy the Niseko United all-mountain pass.','Niseko'],
+       ['D2–5','Ski Niseko','Ride Grand Hirafu, Hanazono, Niseko Village and Annupuri on the shared pass; izakaya in Hirafu village or night skiing in the evening.','Niseko'],
+       ['D6','Snow day, back to Sapporo','A rest day: snowshoeing, snowmobiling or a soak at Goshiki Onsen, then a bus back to Sapporo (about 2.5 hours).','Sapporo'],
+       ['D7','Fly home','JR to New Chitose.','']],
+       n:['January and February bring the best powder; March snow is heavier but the slopes are quieter.','Book Niseko lodging, ski school and Chinese- or English-speaking instructors 3–6 months ahead.','Beginners may prefer Rusutsu or Kiroro, closer to the airport or Sapporo. For 5 days, drop D6 and two ski days.']},
+      'hk-drift':{d:[
+       ['D1','Arrive in Sapporo','JR into Sapporo; Tanukikoji in the evening.','Sapporo'],
+       ['D2','Asahikawa','JR limited express to Asahikawa (about 1.5 hours) for the Asahiyama Zoo penguin walk.','Asahikawa'],
+       ['D3','Abashiri','Taisetsu limited express to Abashiri (about 3.5 hours); Okhotsk Ryu-hyo Museum and the Abashiri Prison Museum.','Abashiri'],
+       ['D4','Icebreaker and drift ice train','The Aurora icebreaker (about 1 hour), then the JR Ryuhyo Monogatari train along the coast to Shiretoko-Shari and a bus to Utoro.','Utoro'],
+       ['D5','Drift ice walk','Put on a drysuit and walk out onto the floating ice (about 1.5 hours, booking needed); a guided snowshoe walk at Shiretoko Five Lakes in the afternoon.','Utoro'],
+       ['D6','Kawayu Onsen','Bus to Shari and the JR Senmo Line to Kawayu Onsen (about 1 hour); Mt. Io and the swans at Sunayu on Lake Kussharo.','Kawayu Onsen'],
+       ['D7','Winter wetland steam train','Lake Mashu in winter, then JR to Shibecha and the SL Fuyu-no-Shitsugen steam train to Kushiro.','Kushiro'],
+       ['D8','Red-crowned cranes','Tsurumidai and the Ito Tancho Sanctuary in Tsurui, busiest at winter feeding time; Washo Market in the evening.','Kushiro'],
+       ['D9','Back to Sapporo','JR Ozora limited express to Sapporo (about 4 hours).','Sapporo'],
+       ['D10','Fly home','JR to New Chitose.','']],
+       n:['Abashiri and Shiretoko come before Kushiro because drift ice is most reliable from mid to late February, so later is safer on the Okhotsk coast; the cranes stay all winter.','Book the Aurora, the drift ice walk and the Five Lakes snowshoe tour. The SL Fuyu-no-Shitsugen runs only on set days in January–March, so check them before fixing D7.','For 9 days, drop D2. If a seasonal Taoyuan–Asahikawa flight is running, flying into Asahikawa and out of New Chitose saves another day.']},
+      'hk-winter-all':{d:[
+       ['D1','Hakodate night view','Arrive in Hakodate, the Kanemori warehouses, and the Mt. Hakodate ropeway at night.','Hakodate'],
+       ['D2','Hakodate','Morning Market, Hachiman-zaka in Motomachi, Goryokaku Tower; Yunokawa Onsen for the night.','Yunokawa Onsen'],
+       ['D3','Onuma, Noboribetsu','JR limited express to Onuma Park, then on to Noboribetsu (about 2 hours) for Jigokudani in the snow.','Noboribetsu Onsen'],
+       ['D4','Sapporo Snow Festival','Limited express to Sapporo (about 1 hour 15 minutes); the Odori site lit up and the Susukino ice sculptures in the evening.','Sapporo'],
+       ['D5','Sapporo Snow Festival','The Odori and Tsudome sites by day, the Mt. Moiwa night view.','Sapporo'],
+       ['D6','Otaru Snow Light Path','JR to Otaru (about 40 minutes) for the snow candles along the canal and the Temiya Line.','Otaru'],
+       ['D7','Asahikawa','JR via Sapporo to Asahikawa (about 2 hours) for the Asahiyama Zoo penguin walk.','Asahikawa'],
+       ['D8','Abashiri','Taisetsu limited express to Abashiri; Okhotsk Ryu-hyo Museum.','Abashiri'],
+       ['D9','Icebreaker','The Aurora icebreaker → Ryuhyo Monogatari train → bus to Utoro.','Utoro'],
+       ['D10','Drift ice walk','Drift ice walk and a snowshoe tour at Shiretoko Five Lakes.','Utoro'],
+       ['D11','Kawayu Onsen','JR Senmo Line to Kawayu Onsen; swans on Lake Kussharo.','Kawayu Onsen'],
+       ['D12','Winter wetland steam train','SL Fuyu-no-Shitsugen to Kushiro.','Kushiro'],
+       ['D13','Cranes, back to Sapporo','Red-crowned cranes in Tsurui in the morning, then the Ozora limited express to Sapporo (about 4 hours).','Sapporo'],
+       ['D14','Fly home','JR to New Chitose.','']],
+       n:['In 2027 the Snow Festival runs Feb 4–11 and the Otaru Snow Light Path Feb 6–13. Start on Feb 1 so D4–5 fall in the Snow Festival and D6 meets Otaru\'s opening; Sapporo comes first because Otaru opens two days later.','Don\'t reverse it: going the other way puts Shiretoko in late January, before the drift ice is reliably in. Flying home from New Chitose also gives more winter flights and easier rebooking after delays.','A 7-day Hokkaido Rail Pass covers the long legs on D7–D13. Sapporo and Utoro rooms are tightest during the festival and drift ice season; book them first.']},
+
+      /* ===== Tohoku ===== */
+      'th-sakura':{d:[
+       ['D1','Arrive in Sendai','See the city from the Date Masamune statue at Sendai Castle ruins; beef tongue in Kokubuncho for dinner.','Sendai'],
+       ['D2','Shiroishi River','JR to Ogawara (about 45 minutes) for the Hitome Senbonzakura along the Shiroishi River, then Funaoka Castle Park for blossoms against the Zao range; back to Sendai.','Sendai'],
+       ['D3','Hiraizumi, Kitakami','Shinkansen to Ichinoseki (about 35 minutes) for Chusonji\'s Golden Hall and Motsuji, then the cherry tunnel and carp streamers at Kitakami Tenshochi.','Kitakami'],
+       ['D4','Kakunodate','Via Morioka on the Akita Shinkansen to Kakunodate (about 1.5 hours); weeping cherries in the samurai district and the 2 km cherry walk on the Hinokinai River.','Kakunodate'],
+       ['D5','Hirosaki','Via Morioka and Shin-Aomori to Hirosaki (about 3 hours); Hirosaki Castle under the lights at night.','Hirosaki'],
+       ['D6','Hirosaki Castle, Aomori','Petals on the moat and the cherry tunnel along the west moat in the morning, apple pie, then on to Aomori.','Aomori'],
+       ['D7','Fly home','From Aomori Airport.','']],
+       n:['Sendai in, Aomori out follows the cherry front north. The Shiroishi River usually blooms about two weeks before Hirosaki, so in 7 days you rarely catch every stop at peak; time it for Kakunodate and Hirosaki (late April).','The flexible JR East Pass (Tohoku area) was discontinued in March 2026; the new JR EAST PASS is 5 consecutive days for ¥35,000. The shinkansen legs here fit inside 5 days, so check whether it pays off.','For 6 days, drop D2.']},
+      'th-sakura-long':{d:[
+       ['D1','Arrive in Sendai','Sendai Castle ruins and beef tongue in Kokubuncho.','Sendai'],
+       ['D2','Hiraizumi, Morioka','Shinkansen to Ichinoseki for Chusonji and Motsuji; the rock-splitting cherry tree in Morioka in the late afternoon.','Morioka'],
+       ['D3','Kakunodate','Akita Shinkansen to Kakunodate for the weeping cherries and the Hinokinai River.','Kakunodate'],
+       ['D4','Hachimantai snow corridor','Pick up a car at Tazawako and drive the Hachimantai Aspite Line through snow walls several meters high.','Hachimantai Onsen'],
+       ['D5','Lake Towada, Oirase','Drive to Lake Towada (about 2 hours) for lingering snow and new leaves, then a stretch of the Oirase Stream in the late afternoon.','Oirase'],
+       ['D6','Hakkoda snow corridor','The snow walls on the Hakkoda–Towada Gold Line, and the thousand-person bath at Sukayu Onsen.','Sukayu Onsen'],
+       ['D7','Hirosaki Castle','Drive to Hirosaki (about 1.5 hours); the castle blossoms by day and lit at night.','Hirosaki'],
+       ['D8','Ashino Park','Hirosaki Castle while it is quiet at dawn; in the afternoon, Ashino Park in Dazai Osamu\'s hometown, where the Tsugaru Railway runs through a cherry tunnel.','Hirosaki'],
+       ['D9','Aomori','Drive to Aomori and return the car; Nebuta Museum Wa Rasse and A-Factory.','Aomori'],
+       ['D10','Fly home','From Aomori Airport.','']],
+       n:['The Hachimantai snow corridor opens around mid April and Hakkoda around early April; both close at night.','Mountain roads can still see snow in April, so make sure the rental has winter tires.','For 9 days, drop D8.']},
+      'fk-spring':{d:[
+       ['D1','Arrive in Fukushima','Pick up the car at Fukushima Airport and drive north to Iizaka Onsen above Fukushima City (about 1 hour 15 minutes).','Iizaka Onsen'],
+       ['D2','Hanamiyama, Miharu Takizakura','Hanamiyama Park first thing in the morning (fewer people, better light), then drive to Miharu (about 1 hour) for the Takizakura, over 1,000 years old and lit at night.','Bandai-Atami Onsen'],
+       ['D3','Aizu-Wakamatsu','Drive to Aizu-Wakamatsu (about 1 hour) for Tsurugajo Castle in bloom, Iimoriyama and Nanokamachi Street.','Higashiyama Onsen'],
+       ['D4','Ouchi-juku, Lake Inawashiro','Leek soba at Ouchi-juku → Tonohetsuri cliffs → Lake Inawashiro and the Noguchi Hideyo Memorial Museum.','Bandai-Atami Onsen'],
+       ['D5','Fly home','Drive to Fukushima Airport (about 1 hour) and return the car.','']],
+       n:['This follows the bloom from early to late: Hanamiyama (early to mid April) → Miharu Takizakura (mid April) → Aizu (mid to late April). The route goes north, then east, then west, with no backtracking.','Taoyuan–Fukushima flights are few, so check the schedule before fixing dates.','Hanamiyama restricts traffic in bloom season; park at the temporary lot and take the shuttle bus.']},
+      'th-koyo':{d:[
+       ['D1','Hakkoda','Pick up the car at Aomori Airport and ride the Hakkoda ropeway for summit colors (around early to mid October); Sukayu Onsen for the night.','Sukayu Onsen'],
+       ['D2','Oirase, Lake Towada','Suiren-numa pond → Oirase Stream (about 3 hours on foot from Ishigedo to Choshi Otaki falls, or drive it in sections) → Lake Towada cruise.','Lake Towada'],
+       ['D3','Hachimantai','Hakka Pass → Hachimantai Aspite Line → the summit trail; stay at Goshogake Onsen.','Hachimantai Onsen'],
+       ['D4','Nyuto Onsen','Drive to Nyuto Onsen (about 1.5 hours) for a soak at Tsurunoyu, passing the Tatsuko statue on Lake Tazawa.','Nyuto Onsen'],
+       ['D5','Kakunodate, Naruko','Dakigaeri Gorge (Kami-no-Iwahashi bridge, Mikaeri Falls) and the samurai district, then drive to Naruko (about 2.5 hours).','Naruko Onsen'],
+       ['D6','Naruko Gorge, Sendai','The Ofukazawa trail in Naruko Gorge, then drive to Sendai (about 1.5 hours), return the car and have beef tongue.','Sendai'],
+       ['D7','Fly home','From Sendai Airport.','']],
+       n:['The colors move downhill: Hakkoda and Hachimantai in early to mid October, Oirase in late October, Kakunodate and Naruko around the turn of November. Mid to late October is the best start.','Oirase jams on foliage weekends; get into the gorge before 8 a.m.','An Aomori pickup and Sendai drop-off costs a one-way fee. For 6 days, drop D4 Nyuto.']},
+      'th-koyo-long':{d:[
+       ['D1','Hakkoda','Pick up the car in Aomori, Hakkoda ropeway for summit colors, Sukayu Onsen at night.','Sukayu Onsen'],
+       ['D2','Oirase, Lake Towada','The Oirase Stream trail and a Lake Towada cruise.','Lake Towada'],
+       ['D3','Hachimantai','Hachimantai Aspite Line and the summit trail.','Hachimantai Onsen'],
+       ['D4','Nyuto Onsen, Kakunodate','A morning bath at Nyuto Onsen, the Kakunodate samurai district in the afternoon, and return the car in Kakunodate.','Kakunodate'],
+       ['D5','Dakigaeri Gorge, Naruko','Dakigaeri Gorge in the morning, then JR via Morioka and Furukawa to the Rikuu East Line and Naruko Onsen (about 3 hours).','Naruko Onsen'],
+       ['D6','Naruko Gorge, Ginzan Onsen','Naruko Gorge, then the Rikuu East Line to Shinjo and Oishida, and a bus to Ginzan Onsen.','Ginzan Onsen'],
+       ['D7','Yamadera, Zao','Yamagata Shinkansen to Yamagata, the Senzan Line to Yamadera to climb its thousand steps, and a bus up to Zao Onsen.','Zao Onsen'],
+       ['D8','Okama crater lake','Autumn bus or taxi to the Katta summit for the Okama crater lake, then the Zao Onsen Dairotenburo outdoor bath.','Zao Onsen'],
+       ['D9','Aizu-Wakamatsu','Via Yamagata, Fukushima and Koriyama to Aizu-Wakamatsu (about 3 hours); Tsurugajo Castle in autumn color.','Higashiyama Onsen'],
+       ['D10','Ouchi-juku','Bus or sightseeing taxi to Ouchi-juku and Tonohetsuri.','Higashiyama Onsen'],
+       ['D11','Matsushima','Shinkansen from Koriyama to Sendai and the Senseki Line to Matsushima; Zuiganji and the lit maples at Entsuin.','Matsushima'],
+       ['D12','Fly home','Back to Sendai and Sendai Airport.','']],
+       n:['North to south and high to low follows the colors downhill. Aizu comes before Matsushima so the last night is near the airport and the flight day has no long transfer.','The Zao Echo Line closes around early November, so D8 must fall in late October at the latest; the summit crater peaks in early October, so at this time you see the mid slopes.','For the JR half in the south, check whether the new JR EAST PASS (5 consecutive days) pays off. For 11 days, drop D10 Ouchi-juku.']},
+      'th-hakodate':{d:[
+       ['D1','Hakodate','Arrive in Hakodate, Goryokaku Tower, and the Mt. Hakodate ropeway at night.','Hakodate'],
+       ['D2','Onuma, Hakodate','JR to Onuma Park for lakeside foliage (mid to late October); Motomachi and the Kanemori warehouses in the afternoon.','Hakodate'],
+       ['D3','Shinkansen to Aomori','Hokkaido Shinkansen to Shin-Aomori (about 1 hour), pick up a car, Hakkoda ropeway, Sukayu Onsen at night.','Sukayu Onsen'],
+       ['D4','Oirase, Lake Towada','The Oirase Stream trail and a Lake Towada cruise.','Lake Towada'],
+       ['D5','Hachimantai','Hachimantai Aspite Line and the summit trail.','Hachimantai Onsen'],
+       ['D6','Nyuto Onsen','Tsurunoyu and the Tatsuko statue on Lake Tazawa.','Nyuto Onsen'],
+       ['D7','Kakunodate, Naruko','Dakigaeri Gorge and the samurai district, then drive to Naruko.','Naruko Onsen'],
+       ['D8','Naruko Gorge, Sendai','Naruko Gorge, then drive to Sendai and return the car.','Sendai'],
+       ['D9','Matsushima','Senseki Line to Matsushima for Zuiganji and a bay cruise.','Sendai'],
+       ['D10','Fly home','From Sendai Airport.','']],
+       n:['Flying into Hakodate and out of Sendai needs an open-jaw ticket or two one-ways.','A Shin-Aomori pickup and Sendai drop-off costs a one-way fee.','For 9 days, drop D9 Matsushima.']},
+      'th-juhyo':{d:[
+       ['D1','Arrive in Sendai','Jozenji-dori and beef tongue in Kokubuncho.','Sendai'],
+       ['D2','Zao snow monsters','Highway bus to Yamagata (about 1 hour), then a bus to Zao Onsen (about 40 minutes). Ride the Zao ropeway to Jizo summit for the snow monsters, and come back for the evening light-up.','Zao Onsen'],
+       ['D3','Ginzan Onsen','Ride the ropeway again in the morning if yesterday was clouded out, bus back to Yamagata, the Yamagata Shinkansen to Oishida (about 35 minutes), and a bus to Ginzan Onsen for its gas lamps at dusk.','Ginzan Onsen'],
+       ['D4','Yamadera, back to Sendai','Ginzan in the morning snow, back to Yamagata and the Senzan Line to Yamadera (about 20 minutes) to climb its thousand steps. Yamadera lies on the way to Sendai, so continue on the Senzan Line (about 1 hour).','Sendai'],
+       ['D5','Matsushima','Senseki Line to Matsushima (about 40 minutes) for Zuiganji, Godaido and a bay cruise; back to Sendai in the afternoon.','Sendai'],
+       ['D6','Fly home','From Sendai Airport.','']],
+       n:['Yamadera sits on the Senzan Line between Yamagata and Sendai, so seeing it on the way back avoids a round trip from Yamagata.','The Zao light-up runs only on set nights (in the 2026–27 season, Feb 5–7, 10–14 and 19–23 per third-party listings; check the official site), so D2 must fall on one. The Zao Onsen Dairotenburo is closed in winter; use the public baths.','Ginzan Onsen limits day visitors in winter, so staying the night is easiest, but rooms are few and go early. For 5 days, drop D5 Matsushima.']},
+      'th-snow':{d:[
+       ['D1','Aomori','Taoyuan 09:55 to Aomori 14:20; Nebuta Museum Wa Rasse and the Aomori Gyosai Center fish market.','Aomori'],
+       ['D2','Hakkoda snow monsters','The winter Hakkoda-go bus (book online to board in Aomori) to the Hakkoda ropeway (about 1 hour) for the snow monsters at the top; stay at Sukayu Onsen.','Sukayu Onsen'],
+       ['D3','Hirosaki Snow Lantern Festival','Bus back to Aomori and JR to Hirosaki (about 45 minutes); the Snow Lantern Festival at the castle at night.','Hirosaki'],
+       ['D4','Gono Line, Furofushi Onsen','The Resort Shirakami south along the Sea of Japan to Henashi, and the seaside open-air bath at Koganezaki Furofushi Onsen facing the winter waves.','Koganezaki Furofushi Onsen'],
+       ['D5','Nyuto Onsen','A morning soak in the seaside bath, the Gono Line to Higashi-Noshiro, via Akita on the Akita Shinkansen to Tazawako, and a bus to Nyuto Onsen (about 50 minutes).','Nyuto Onsen'],
+       ['D6','Kakunodate, Yokote','A morning bath, then down to the Kakunodate samurai district and via Omagari to Yokote for the Kamakura snow hut festival at night.','Yokote'],
+       ['D7','Fly home','JR to Akita Airport (or Hanamaki instead).','']],
+       n:['In 2027 the Hirosaki Snow Lantern Festival runs Feb 10–14 and the Yokote Kamakura Festival Feb 12–13 (now on trial as the second Friday and Saturday of February). D3 and D6 are 3 days apart, so D1 has to be Feb 8: D3 = Feb 10, Hirosaki\'s first night, and D6 = Feb 13, Yokote\'s last night.','The Resort Shirakami runs only Thursday to Sunday in most of February (No.4 on Feb 11, No.2 on Feb 12); on other days use regular Gono Line trains. Furofushi\'s seaside bath closes at sunset, so if you arrive late, save it for the next morning.','Akita and Hanamaki flights don\'t run every day. If neither fits, go from Yokote via Kitakami to Sendai by shinkansen (about 2.5 hours) and fly from there, or use No.19 instead.']},
+      'th-winter-all':{d:[
+       ['D1','Feb 7 (Sun) Aomori','Taoyuan 09:55 to Aomori 14:20, then the airport bus to Aomori Station (about 35 minutes); Nebuta Museum Wa Rasse and A-Factory are both next to the station.','Aomori Station area'],
+       ['D2','Feb 8 (Mon) Hakkoda, Sukayu','Hakkoda-go No.2 leaves Aomori Station at 8:10 (book online) → Hakkoda ropeway at 9:10 for the snow monsters → bus to Sukayu Onsen and its thousand-person bath in the afternoon.','Sukayu Onsen'],
+       ['D3','Feb 9 (Tue) On to Hirosaki','If the ropeway was closed yesterday, ride it this morning; bus back to Aomori and JR to Hirosaki (about 45 minutes), and see the winter light-up in Hirosaki Park at night.','Hirosaki'],
+       ['D4','Feb 10 (Wed) Hirosaki Snow Lantern Festival','Hirosaki town by day, and the first night of the Snow Lantern Festival at the castle after dark (about 1.5–2 hours).','Hirosaki'],
+       ['D5','Feb 11 (Thu) Gono Line','Hirosaki in the morning, then the Resort Shirakami No.4 from Hirosaki in the afternoon, chasing the sunset along the Sea of Japan to Wespa Tsubakiyama and the ryokan shuttle to Furofushi Onsen.','Koganezaki Furofushi Onsen'],
+       ['D6','Feb 12 (Fri) Nyuto Onsen','The seaside bath after sunrise, the Resort Shirakami No.2 at 11:13 → Akita 13:29, the Komachi to Tazawako, and the Ugo Kotsu bus to Nyuto (35–50 minutes).','Nyuto Onsen (Tsurunoyu)'],
+       ['D7','Feb 13 (Sat) Kakunodate, Yokote','Two more baths with the Nyuto bath-hopping pass, 2–3 hours in the Kakunodate samurai district, the Komachi to Omagari and on to Yokote for the last night of the Kamakura Festival.','Yokote'],
+       ['D8','Feb 14 (Sun) Zao light-up','Yokote 7:11 → Shinjo 8:42, the Tsubasa to Yamagata, and a bus up to Zao Onsen; the ropeway for the snow monsters by day and again for the light-up at dusk.','Zao Onsen'],
+       ['D9','Feb 15 (Mon) Ginzan Onsen','If yesterday was clouded out, ride the ropeway in the morning; bus to Yamagata, the Tsubasa to Oishida (about 35 minutes), and the Hanagasa bus to Ginzan Onsen for its gas lamps at dusk.','Ginzan Onsen'],
+       ['D10','Feb 16 (Tue) Yamadera, Sendai','Ginzan in the morning snow, bus to Oishida, via Yamagata on the Senzan Line to Yamadera to climb its steps (wear ice cleats), then on to Sendai (about 1 hour).','Sendai'],
+       ['D11','Feb 17 (Wed) Matsushima','Senseki Line to Matsushima-Kaigan (about 40 minutes) for Zuiganji, Godaido and a bay cruise; back to Sendai in the afternoon.','Sendai'],
+       ['D12','Feb 18 (Thu) Fly home','Airport line from Sendai Station (about 25 minutes) to Sendai Airport.','']],
+       n:['All 2027 dates are out: Hirosaki Snow Lantern Festival Feb 10–14, Yokote Kamakura Festival Feb 12–13, and Zao light-up nights in February on the 5th–7th, 10th–14th and 19th–23rd (dark Feb 15–18). The festivals are at most 2 nights apart, so Kakunodate becomes a daytime stop, Zao follows Yokote the next day, and Ginzan moves after Zao (Oishida is about 35 minutes north of Yamagata).','It only works north to south, since Hirosaki opens first and Yokote ends first. Starting Feb 7 lines up with Taiwan\'s Lunar New Year holiday. The Kakunodate Hiburi Kamakura is always the night of Feb 14, the same night as the Zao light-up, so pick one.','The Resort Shirakami runs only Thursday to Sunday in February (No.4 on Feb 11, No.2 on Feb 12), and the Hakkoda-go opens bookings 3 months before the travel date. The new JR EAST PASS (5 consecutive days, ¥35,000) doesn\'t pay off here: single tickets total about ¥26,000. Tsurunoyu\'s main building only takes phone bookings, and Sukayu and Ginzan also need booking early.']},
+      'th-matsuri':{d:[
+       ['D1','Aomori Nebuta','Fly Taoyuan to Aomori on Aug 2; the Nebuta Festival from about 19:00.','Aomori'],
+       ['D2','Hirosaki Neputa','Nebuta Museum Wa Rasse by day, then JR to Hirosaki for the fan-shaped lanterns of the Neputa Festival.','Hirosaki'],
+       ['D3','Morioka Sansa Odori','Shinkansen to Morioka for the Sansa Odori parade (around Aug 1–4).','Morioka'],
+       ['D4','Akita Kanto','Akita Shinkansen to Akita (about 1.5 hours) for the Kanto pole-lantern festival at night.','Akita'],
+       ['D5','Kanto by day, on to Sendai','The daytime Kanto skills contest, then via Morioka to Sendai (about 2.5 hours).','Sendai'],
+       ['D6','Sendai Tanabata','The Tanabata streamers in the shopping arcades, Matsushima in the afternoon.','Sendai'],
+       ['D7','Fly home','From Sendai Airport.','']],
+       n:['Dates using 2026 as an example: Aomori Nebuta Aug 2–7, Hirosaki Neputa Aug 1–7, Morioka Sansa Aug 1–4, Akita Kanto Aug 3–6, Sendai Tanabata Aug 6–8.','Early August is the hardest time to book in Tohoku, so reserve six months out; if full, stay in a nearby city and commute by shinkansen.','Reserved viewing seats (sajiki) can be bought online and beat standing at the curb.']},
+      'th-summer-long':{d:[
+       ['D1','Aomori Nebuta','Fly Taoyuan to Aomori on Aug 2; the Nebuta Festival at night.','Aomori'],
+       ['D2','Osorezan','Pick up a car in Aomori and drive to Osorezan on the Shimokita Peninsula (about 2.5 hours) for Lake Usori and the volcanic wasteland.','Yagen Onsen'],
+       ['D3','Oirase','Drive to Oirase (about 3 hours); the stream is coolest in summer shade. Walk from Ishigedo to Kumoi Falls.','Oirase'],
+       ['D4','Lake Towada, Akita Kanto','Lake Towada cruise, then drive to Akita (about 2.5 hours), return the car and watch the Kanto Festival.','Akita'],
+       ['D5','Kakunodate, Nyuto','Akita Shinkansen to the Kakunodate samurai district, then Lake Tazawa and Nyuto Onsen.','Nyuto Onsen'],
+       ['D6','Hiraizumi','Via Morioka and Ichinoseki to Hiraizumi for Chusonji\'s Golden Hall and Motsuji.','Ichinoseki'],
+       ['D7','Sendai Tanabata','Shinkansen to Sendai (about 35 minutes) for the Tanabata streamers.','Sendai'],
+       ['D8','Yamadera, Ginzan Onsen','Senzan Line to Yamadera to climb the thousand steps, then via Yamagata on the Yamagata Shinkansen to Oishida and a bus to Ginzan Onsen.','Ginzan Onsen'],
+       ['D9','Okama crater lake','Bus back to Oishida, via Yamagata by bus up Zao for the jade Okama crater lake, and the Zao Onsen Dairotenburo outdoor bath (open in summer).','Zao Onsen'],
+       ['D10','Matsushima','Bus down to Yamagata, highway bus to Sendai (about 1 hour), and the Senseki Line to Matsushima for Zuiganji and a bay cruise.','Matsushima or Sendai'],
+       ['D11','Fly home','From Sendai Airport.','']],
+       n:['D1 must be Aug 2 so that D4 meets Akita Kanto (Aug 3–6) and D7 meets Sendai Tanabata (Aug 6–8).','After Tanabata, loop through Yamagata (Yamadera, Ginzan, Zao) and end at Matsushima and Sendai, so the airport is only 30 minutes away on the flight day.','Osorezan is open each year from May 1 to October 31. For 10 days, drop D9 Zao and go from Ginzan Onsen straight back to Sendai.']},
+      /* ===== Kanto ===== */
+      'kt-classic':{d:[
+       ['D1','Asakusa, Skytree','Keikyu through-train from Haneda to Asakusa (about 40 minutes): Sensoji and Nakamise, then Tokyo Skytree for the night view.','Asakusa or Ueno'],
+       ['D2','Imperial Palace, Ginza','Breakfast at the Tsukiji outer market → Nijubashi bridge at the Imperial Palace → the East Gardens (old Edo Castle keep) → Marunouchi and Tokyo Station → Ginza; teamLab Borderless at Azabudai Hills in the evening.','Tokyo'],
+       ['D3','Meiji Shrine, Shibuya','Meiji Jingu → Takeshita Street in Harajuku → Omotesando → Shibuya, and sunset from Shibuya Sky.','Tokyo'],
+       ['D4','Kamakura day trip','JR to Kamakura (about 1 hour): Tsurugaoka Hachimangu → Enoden line → Hasedera and the Great Buddha → Enoshima.','Tokyo'],
+       ['D5','Fly home','From Haneda.','']],
+       n:['The East Gardens close on Mondays and Fridays, so put them on another day.','Book Shibuya Sky sunset slots and teamLab online in advance.','Stay around Ueno, Asakusa or Tokyo Station for easy access to both Haneda and Narita.']},
+      'kt-parks':{d:[
+       ['D1','Arrive in Maihama','Limousine bus from the airport straight to Maihama (about 1 hour); Ikspiari in the evening.','Maihama'],
+       ['D2','Tokyo DisneySea','Line up before opening and head for Fantasy Springs first; use a Premier Access or DPA for the busiest rides.','Maihama'],
+       ['D3','Tokyo Disneyland','Enchanted Tale of Beauty and the Beast, and the night parade.','Shinjuku'],
+       ['D4','PokéPark KANTO','Keio Line to the Yomiuriland area for PokéPark KANTO (opened Feb 2026): Pokémon Forest and Sedge Town. Entry needs a reservation.','Shinjuku'],
+       ['D5','Harry Potter studio tour','Seibu Line to Toshimaen for Warner Bros. Studio Tour Tokyo (timed tickets); Ikebukuro in the evening.','Shinjuku'],
+       ['D6','Sanrio, Odaiba','Keio Line to Tama Center for Sanrio Puroland, then Odaiba for the Gundam statue and the night view.','Shinjuku'],
+       ['D7','Fly home','From the airport.','']],
+       n:['Disney, PokéPark and the Harry Potter tour all sell dated tickets; buy those before your flights.','Halloween (mid Sep–end Oct) and Christmas (mid Nov–Dec 25) events draw the biggest crowds.','For 6 days, drop D6.']},
+      'kt-sakura':{d:[
+       ['D1','Ueno at night','Haneda to Ueno; cherry blossoms in Ueno Park, lit at night.','Ueno'],
+       ['D2','Chidorigafuchi, Meguro River','The cherry walk along the Imperial Palace moat at Chidorigafuchi (with rowboats) and Kitanomaru Park; the Meguro River lit at night.','Tokyo'],
+       ['D3','Shinjuku Gyoen, Rikugien','Shinjuku Gyoen (no alcohol allowed), then Rikugien\'s weeping cherry, lit at night.','Tokyo'],
+       ['D4','Kawagoe','Tobu Tojo Line to Kawagoe (about 30 minutes): the Little Edo streets, the Bell of Time, cherry trees on the Shingashi River, and Kitain temple.','Tokyo'],
+       ['D5','Sumida Park, Skytree','Cherry trees along the Sumida River and Sensoji, then Tokyo Skytree in the evening.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['Tokyo peaks in late March and the blossoms last about a week; go by the Japan Weather Association forecast.','The Chidorigafuchi rowboat queue is long on weekends; go on a weekday morning.','For 5 days, drop D4 Kawagoe.']},
+      'kt-ginkgo':{d:[
+       ['D1','Gaien ginkgo','Into the city from Haneda; the Meiji Jingu Gaien ginkgo avenue in the late afternoon, then Omotesando.','Tokyo'],
+       ['D2','Mt. Takao, Showa Kinen Park','Keio Line to Takaosanguchi (about 50 minutes), cable car or chairlift up and the maples at Yakuoin; stop at Tachikawa on the way back for the ginkgo avenue in Showa Kinen Park.','Tokyo'],
+       ['D3','Kamakura','JR to Kamakura for the foliage at Hasedera and Engakuji; the Marunouchi Christmas lights back in Tokyo.','Tokyo'],
+       ['D4','Rikugien','Koishikawa Korakuen and Rikugien by day, Rikugien\'s maples lit at night.','Tokyo'],
+       ['D5','Fly home','From Haneda.','']],
+       n:['The Gaien ginkgo turns fully yellow from late November to early December, with a ginkgo festival on weekends.','Mt. Takao\'s maples peak in mid to late November; the cable car queues on weekends.','The Marunouchi lights run from mid November to February.']},
+      'kt-fuji-koyo':{d:[
+       ['D1','Lake Kawaguchi','Pick up a car at Haneda and drive to Lake Kawaguchi (1.5–2 hours); the Kachi Kachi Ropeway at dusk for Mt. Fuji.','Lake Kawaguchi'],
+       ['D2','Chureito Pagoda, Momiji Corridor','Climb the roughly 400 steps to the Chureito Pagoda around sunrise; the Kawaguchiko Momiji Corridor by day and its light-up at night.','Lake Kawaguchi'],
+       ['D3','Oshino Hakkai, on to Hakone','Oshino Hakkai → Lake Yamanaka → drive to Gotemba (about 30 minutes) to return the car, then a bus over Otome Pass to Sengokuhara in Hakone.','Hakone'],
+       ['D4','Hakone loop','On the Hakone Free Pass: pirate ship from Togendai → Hakone Shrine\'s Torii of Peace → Owakudani ropeway → Gora Park → mountain railway.','Hakone'],
+       ['D5','Yunessun, back to Tokyo','The sake and wine baths at Kowakien Yunessun (bring a swimsuit), then the Romancecar to Shinjuku.','Tokyo'],
+       ['D6','Tokyo','Asakusa and Skytree, or shopping in Ginza.','Tokyo'],
+       ['D7','Fly home','From Haneda.','']],
+       n:['The Lake Kawaguchi maples peak in early to mid November; Fuji shows itself most often in the morning, so shoot early.','Hakone\'s roads jam and parking is scarce in foliage season, so returning the car in Gotemba and switching to the Free Pass is smoothest. Entering from the Sengokuhara and Togendai side runs against most of the crowd.','The Yunessun sake bath runs Oct 20, 2026–Jan 4, 2027; in later years, check that year\'s program. For 6 days, drop D6.']},
+      'kt-fuji-spring':{d:[
+       ['D1','Lake Kawaguchi','Pick up a car at Haneda and drive to Lake Kawaguchi; cherry trees on the north shore at Ubuyagasaki.','Lake Kawaguchi'],
+       ['D2','Chureito Pagoda, moss phlox','The pagoda, blossoms and Fuji in one frame at Arakurayama Sengen Park in the morning; the Fuji Shibazakura Festival by Lake Motosu in the afternoon, back via Lake Shoji.','Lake Kawaguchi'],
+       ['D3','Oshino Hakkai, on to Hakone','Oshino Hakkai → Lake Yamanaka → drive to Gotemba to return the car, then a bus into Sengokuhara in Hakone.','Hakone'],
+       ['D4','Hakone loop','The pirate ship, Hakone Shrine, the Owakudani ropeway and the mountain railway.','Hakone'],
+       ['D5','Odawara, Tokyo','Down to Odawara Castle, then the Romancecar or JR to Tokyo.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['Arakurayama\'s cherries bloom around early to mid April and the moss phlox from mid April to late May, so the overlap is mid to late April.','The pagoda is quietest at dawn, which is also when Fuji is most likely to show.','Returning the car in Gotemba before entering Hakone avoids parking on its mountain roads. The Shibazakura Festival charges admission and the car parks fill on weekends.']},
+      'kt-fuji-winter':{d:[
+       ['D1','Lake Kawaguchi','Highway bus from Haneda straight to Lake Kawaguchi (about 2.5 hours); book a room with a Fuji view.','Lake Kawaguchi'],
+       ['D2','Lake Saiko Ice Festival','Fuji at dawn, then the retro sightseeing bus to the Lake Saiko Ice Festival and Saiko Iyashi-no-Sato Nenba; the Kawaguchiko winter fireworks on weekend nights.','Lake Kawaguchi'],
+       ['D3','Diamond Fuji','Diamond Fuji at Lake Yamanaka (the sun sits on the summit, roughly mid October to February), Oshino Hakkai, then via Gotemba by bus to Hakone.','Hakone'],
+       ['D4','Hakone','The Hakone loop; the winter air is clear and Fuji shows from the ropeway.','Hakone'],
+       ['D5','Yunessun, back to Tokyo','A soak at Yunessun and the Romancecar to Shinjuku.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['The Kawaguchiko winter fireworks run on weekends from about mid January to mid February, and the Saiko Ice Festival for about two weeks from late January; dates are announced each year.','Mountain roads ice up in winter, so this plan uses public transport throughout.','Diamond Fuji dates and viewpoints change daily; the Yamanakako village tourism site lists them.']},
+      'kt-fuji-summer':{d:[
+       ['D1','Kawaguchiko lavender','Pick up a car at Haneda and drive to Lake Kawaguchi for the lavender at Oishi Park (late June–mid July).','Lake Kawaguchi'],
+       ['D2','Fuji-Q Highland','A full day of roller coasters at Fuji-Q.','Lake Kawaguchi'],
+       ['D3','Fuji Fifth Station','Private cars are banned on the Fuji Subaru Line in summer, so park at the lake and take the bus up to the Fifth Station; Oshino Hakkai in the afternoon, then drive to Gotemba to return the car and take a bus into Hakone.','Hakone'],
+       ['D4','Hakone hydrangeas','Hydrangeas along the Hakone Tozan Railway (mid June–mid July) and Gora Park.','Hakone'],
+       ['D5','Back to Tokyo','Romancecar to Shinjuku and a free afternoon.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['To climb Mt. Fuji, register online and pay the trail fee in advance; the season runs from about July to early September.','The hydrangea train has special lit-up evening runs that need booking.','Go to Fuji-Q on a weekday; fast passes are sold for the big rides.']},
+      'kt-flower':{d:[
+       ['D1','Arrive in Ibaraki','Pick up a car at Narita and drive to Katsuta (about 1.5 hours).','Katsuta or Mito'],
+       ['D2','Nemophila, Ashikaga wisteria','Hitachi Seaside Park at opening time for the nemophila on Miharashi Hill, lunch at Nakaminato fish market, then drive to Ashikaga (about 2 hours): see the giant wisteria by day and stay for the night light-up.','Ashikaga'],
+       ['D3','Nikko','Drive to Nikko (about 1.5 hours) for Toshogu, Rinnoji and Kegon Falls; return the car in Nikko.','Nikko or Kinugawa Onsen'],
+       ['D4','Chichibu moss phlox','Tobu limited express to Asakusa, then from Ikebukuro the Seibu Laview to Chichibu (about 1 hour 20 minutes) for the moss phlox at Hitsujiyama Park.','Chichibu'],
+       ['D5','Mitsumine Shrine, Nagatoro','Bus to Mitsumine Shrine, a river boat at Nagatoro in the afternoon, back to Tokyo by evening.','Tokyo'],
+       ['D6','Tokyo','A free day in Tokyo, which also serves as a bad-weather buffer.','Tokyo'],
+       ['D7','Fly home','From Narita.','']],
+       n:['Nemophila blooms late April to early May, the giant wisteria mid April to early May, and the moss phlox mid April to early May; the overlap is late April.','Ashikaga\'s day and night views fit into one visit, so there is no need for an extra day there. Narita is east and Hitachi northeast, so heading straight north from the airport is smoothest.','Golden Week brings the biggest crowds; arrive early for the Ashikaga night entry. For 6 days, drop D6.']},
+      'kt-kochia':{d:[
+       ['D1','Arrive in Mito','JR from Narita via Abiko on the Joban Line to Mito (about 2.5 hours); dinner near Mito Station.','Mito'],
+       ['D2','Kochia, on to Nikko','JR to Katsuta and a bus to Hitachi Seaside Park for the red kochia and cosmos; in the afternoon, JR via Mito, Oyama and Utsunomiya to Nikko (3–3.5 hours).','Nikko'],
+       ['D3','Toshogu, Lake Chuzenji','Toshogu and Rinnoji in the morning, then the bus up the Irohazaka switchbacks and the Akechidaira ropeway for Kegon Falls; stay by Lake Chuzenji.','Lake Chuzenji'],
+       ['D4','Senjogahara, Kinugawa','The Senjogahara trail and Yumoto in the morning, then the bus down and Tobu to Kinugawa Onsen.','Kinugawa Onsen'],
+       ['D5','Back to Tokyo','Tobu limited express to Asakusa (about 2 hours); Asakusa and Skytree in the afternoon.','Tokyo'],
+       ['D6','Fly home','Keisei line from Oshiage straight to Narita (about 1 hour).','']],
+       n:['Narita is east and Hitachi northeast, so head for Mito after landing instead of going into Tokyo and back out.','Kochia is reddest in early to mid October; Senjogahara and Yumoto peak in early to mid October, Lake Chuzenji in mid to late October. Irohazaka jams on foliage weekends and buses can run 1–2 hours late, so go on a weekday morning.','Tobu\'s Nikko Pass covers trains and buses around Nikko. Spending the last night in Asakusa makes the airport run a single Keisei train.']},
+      'kt-kusatsu':{d:[
+       ['D1','Karuizawa','Haneda into the city, then the Hokuriku Shinkansen to Karuizawa (about 1 hour) for the maples at Kumoba Pond.','Karuizawa'],
+       ['D2','Shiraito Falls, on to Kusatsu','Shiraito Falls, Harunire Terrace and Old Karuizawa Ginza, then a bus to Kusatsu in the late afternoon.','Kusatsu Onsen'],
+       ['D3','Kusatsu Yubatake','The yumomi water-paddling show at Netsunoyu, the Sainokawara open-air bath, and the Yubatake lit at night.','Kusatsu Onsen'],
+       ['D4','Ikaho','Bus to Naganohara-Kusatsuguchi, JR to Shibukawa and a bus to Ikaho for the stone steps and the maples at Kajika Bridge.','Ikaho Onsen'],
+       ['D5','Back to Tokyo','Via Takasaki on the shinkansen to Tokyo.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['Karuizawa colors peak late October to early November, Ikaho\'s Kajika Bridge early to mid November with a light-up.','Kusatsu\'s water is very acidic; rinse with fresh water after bathing to spare your skin.','For 5 days, drop D5 and head straight from Ikaho to Tokyo and the airport on D4.']},
+      'kt-izu':{d:[
+       ['D1','Atami','Tokaido Shinkansen to Atami (about 45 minutes), the Atami Plum Garden, and an Atami onsen at night.','Atami'],
+       ['D2','Jogasaki, Mt. Omuro','Ito Line and Izukyu to Izu Kogen (about 1 hour): the Kadowaki suspension bridge on the Jogasaki coast, and the chairlift around the Mt. Omuro crater.','Izu Kogen'],
+       ['D3','Kawazu cherry','Izukyu south to Kawazu (about 30 minutes) for 4 km of Kawazu-zakura along the river, lit at night.','Kawazu or Imaihama'],
+       ['D4','Shuzenji','Bus north over Amagi Pass to Shuzenji (about 1.5 hours) for the bamboo path and Shuzenji temple.','Shuzenji Onsen'],
+       ['D5','Back to Tokyo','Izuhakone Railway to Mishima and the shinkansen to Tokyo.','Tokyo'],
+       ['D6','Fly home','From Haneda.','']],
+       n:['Go down Izu\'s east coast to Kawazu, then over the Amagi mountains north to Shuzenji and Mishima: one loop with no backtracking.','The Kawazu cherries peak in mid to late February; the Atami Plum Garden blooms from mid January to early March.','For 5 days, drop D2 and take the Izukyu from Atami straight to Kawazu.']},
+      'kt-ajisai':{d:[
+       ['D1','Kamakura','Haneda via Yokohama to Kamakura; Komachi-dori and Tsurugaoka Hachimangu.','Kamakura'],
+       ['D2','Hydrangea temples','Meigetsuin (famous for its own shade of blue) → Engakuji → Hasedera\'s hydrangeas (timed tickets on weekends) → the Great Buddha → Enoshima.','Kamakura or Fujisawa'],
+       ['D3','Hakone hydrangea train','To Odawara and the Hakone Tozan Railway, lined with hydrangeas; Gora Park.','Hakone'],
+       ['D4','Yunessun, back to Tokyo','Yunessun and Owakudani, then the Romancecar to Shinjuku.','Tokyo'],
+       ['D5','Fly home','From Haneda.','']],
+       n:['Hydrangeas peak in mid June, in the rainy season, so pack rain gear.','On hydrangea weekends Hasedera hands out timed tickets and the wait can be 1–2 hours.','The lit-up evening hydrangea trains need booking.']},
+      'kt-combo-autumn':{d:[
+       ['D1','Arrive in Maihama','Limousine bus from Narita to Maihama.','Maihama'],
+       ['D2','Tokyo DisneySea','Fantasy Springs; use Premier Access or DPA for the busiest rides.','Maihama'],
+       ['D3','Tokyo Disneyland','Christmas events usually start in early to mid November.','Shinjuku'],
+       ['D4','PokéPark KANTO','Entry needs a reservation.','Shinjuku'],
+       ['D5','Harry Potter studio tour','Toshimaen on the Seibu Line; timed tickets.','Shinjuku'],
+       ['D6','Sanrio, Odaiba','Sanrio Puroland, Odaiba in the evening.','Shinjuku'],
+       ['D7','Lake Kawaguchi','Pick up a car in Shinjuku and drive to Lake Kawaguchi; the Kachi Kachi Ropeway.','Lake Kawaguchi'],
+       ['D8','Chureito, Momiji Corridor','Sunrise at the Chureito Pagoda, the Momiji Corridor by day and lit at night.','Lake Kawaguchi'],
+       ['D9','On to Hakone','Oshino Hakkai and Lake Yamanaka, then drive to Gotemba to return the car and take a bus into Hakone.','Hakone'],
+       ['D10','Hakone loop','The pirate ship, Hakone Shrine, Owakudani and the mountain railway.','Hakone'],
+       ['D11','Yunessun, back to Tokyo','A soak at Yunessun and the Romancecar to Shinjuku.','Tokyo'],
+       ['D12','Tokyo','The Gaien ginkgo if it has turned, or Asakusa and Skytree.','Tokyo'],
+       ['D13','Fly home','From Haneda.','']],
+       n:['Both directions work. For Disney\'s Christmas, keep parks first and Fuji second. To catch the Lake Kawaguchi maples at their peak (early to mid November), reverse it: fly into Haneda, do Fuji and Hakone first, and finish in Maihama to fly out of Narita.','All the park tickets are dated; put them on weekdays. Renting from Shinjuku avoids central Tokyo traffic.','For 11 days, drop D6 and D12.']},
+      'kt-combo-spring':{d:[
+       ['D1','Lake Kawaguchi','Pick up a car at Haneda and drive to Lake Kawaguchi for the lakeside cherries.','Lake Kawaguchi'],
+       ['D2','Chureito, moss phlox','Arakurayama Sengen Park and the Fuji Shibazakura Festival at Lake Motosu.','Lake Kawaguchi'],
+       ['D3','On to Hakone','Oshino Hakkai and Lake Yamanaka, then drive to Gotemba to return the car and take a bus into Hakone.','Hakone'],
+       ['D4','Hakone','The pirate ship, Owakudani and the mountain railway.','Hakone'],
+       ['D5','Back to Tokyo','Odawara Castle and back to Tokyo.','Tokyo'],
+       ['D6','Chichibu moss phlox','Pick up a car in Tokyo (around Nerima) and take the Kan-Etsu Expressway to Chichibu (about 2 hours) for Hitsujiyama Park.','Chichibu'],
+       ['D7','Mitsumine Shrine, Ashikaga','Mitsumine Shrine and a Nagatoro river boat, then drive to Ashikaga (about 1.5 hours) for the giant wisteria at night.','Ashikaga'],
+       ['D8','Nikko','Toshogu, Kegon Falls and Lake Chuzenji.','Nikko or Kinugawa Onsen'],
+       ['D9','On to Ibaraki','Drive to Katsuta (about 2.5 hours); Nakaminato fish market in the afternoon.','Katsuta'],
+       ['D10','Nemophila','Hitachi Seaside Park at opening time for the nemophila, then drive to Narita (about 1.5 hours) and return the car.','Narita'],
+       ['D11','Fly home','From Narita.','']],
+       n:['Reversed to follow the bloom: the Fuji lakeside cherries come first (early to mid April), and nemophila, wisteria and moss phlox all peak in late April, so they take the second half.','Flying into Haneda and out of Narita needs an open-jaw ticket. The route runs Fuji → Hakone → Tokyo → Chichibu → Ashikaga → Nikko → Hitachi → Narita, heading steadily northeast toward the airport.','The two rentals are separate; for one more day, add a buffer night in Tokyo.']},
+
+      /* ===== Chubu & Hokuriku ===== */
+      'cb-tateyama':{d:[
+       ['D1','Toyama','Arrive in Toyama; Kansui Park and Toyama Bay sushi.','Toyama'],
+       ['D2','Snow Corridor','Toyama Chiho Railway to Tateyama (about 1 hour), cable car and highland bus to Murodo, and the walk between the snow walls. Stay at Murodo for sunrise or head back to Toyama.','Murodo'],
+       ['D3','Kanazawa','Back to Toyama and the Hokuriku Shinkansen to Kanazawa (about 20 minutes); Omicho Market.','Kanazawa'],
+       ['D4','Kenrokuen, Higashi Chaya','Kenrokuen, Kanazawa Castle, the Higashi Chaya district and the 21st Century Museum.','Kanazawa'],
+       ['D5','Shirakawa-go','Nohi bus to Shirakawa-go (about 1.5 hours, booking needed), the Shiroyama viewpoint over the village, and a bus to Toyama in the late afternoon.','Toyama'],
+       ['D6','Fly home','From Toyama Airport.','']],
+       n:['The Tateyama Kurobe Alpine Route opens around April 15 and the Snow Corridor walk lasts until about mid June.','Murodo is near freezing in April–May; bring a down jacket and sunglasses.','Taoyuan–Toyama flights are few; you can use Komatsu instead and stay in Kanazawa on D1 and D6.']},
+      'cb-alps':{d:[
+       ['D1','Toyama','Arrive in Toyama.','Toyama'],
+       ['D2','Murodo','Toyama Chiho Railway, Tateyama cable car and highland bus to Murodo for Mikurigaike pond and Jigokudani; colors around late September to early October.','Murodo'],
+       ['D3','Kurobe Dam, Matsumoto','Daikanbo ropeway → Kurobedaira → Lake Kurobe → Kurobe Dam → Ogizawa, then a bus to Shinano-Omachi and JR to Matsumoto.','Matsumoto'],
+       ['D4','Matsumoto Castle','Matsumoto Castle, Nakamachi and Nawate streets.','Matsumoto'],
+       ['D5','Kamikochi','Bus to Kamikochi (about 1.5 hours): Taisho Pond → Kappa Bridge → Myojin Pond.','Kamikochi'],
+       ['D6','Shinhotaka Ropeway','Bus via Hirayu to Shinhotaka and the double-decker ropeway for the Northern Alps; stay at Okuhida Onsen.','Okuhida Onsen'],
+       ['D7','Takayama','Bus to Takayama (about 1.5 hours) for the old town and Hida beef.','Takayama'],
+       ['D8','Shirakawa-go, on to Nagoya','The Miyagawa morning market, a bus to Shirakawa-go (about 50 minutes), and a highway bus straight to Nagoya in the afternoon (2.5–3 hours).','Nagoya'],
+       ['D9','Nagoya','The Honmaru Palace at Nagoya Castle and Atsuta Jingu; also a buffer day.','Nagoya'],
+       ['D10','Fly home','From Chubu Centrair.','']],
+       n:['Toyama in, Nagoya out follows the colors downhill: Murodo late September to early October, Shinhotaka early to mid October, Kamikochi mid to late October, Shirakawa-go late October onward.','A highway bus runs from Shirakawa-go straight to Nagoya, so there is no need to go back to Takayama for the train. Send bags by takkyubin from Toyama to Nagoya and cross the mountains with a day pack.','For 9 days, drop D4 Matsumoto Castle and go into Kamikochi the morning after reaching Matsumoto.']},
+      'cb-summer':{d:[
+       ['D1','Toyama','Arrive in Toyama.','Toyama'],
+       ['D2','Murodo','Alpine flowers and Mikurigaike pond at Murodo, with a chance of ptarmigan.','Murodo'],
+       ['D3','Kurobe Dam','Daikanbo and the Kurobe Dam water discharge, then the Ogizawa bus to Shinano-Omachi and JR to Matsumoto.','Matsumoto'],
+       ['D4','Kamikochi','Bus to Kamikochi: Kappa Bridge → Myojin Pond → the Tokusawa trail.','Kamikochi'],
+       ['D5','Mt. Norikura, Shinhotaka','Bus via Hirayu up to Tatamidaira on Mt. Norikura (about 2,700 m), and the Shinhotaka double-decker ropeway in the afternoon.','Okuhida Onsen'],
+       ['D6','Takayama, Nagoya','Takayama old town, then the Hida limited express to Nagoya.','Nagoya'],
+       ['D7','Fly home','From Chubu Centrair.','']],
+       n:['The Kurobe Dam sightseeing discharge runs from about late June to mid October.','Private cars are banned on Mt. Norikura and in Kamikochi; buses only.','Mountain mornings and evenings are cold; bring a light down jacket even in summer.']},
+      'cb-takayama':{d:[
+       ['D1','Nagoya','Arrive in Nagoya; miso katsu or hitsumabushi eel for dinner.','Nagoya'],
+       ['D2','Gero Onsen','JR Hida limited express to Gero (about 1.5 hours) for the hot spring town and Onsenji temple.','Gero Onsen'],
+       ['D3','Takayama Autumn Festival','Limited express to Takayama (about 45 minutes); the floats on display around Sakurayama Hachimangu, and lantern-lit floats at the evening festival.','Takayama'],
+       ['D4','Takayama Autumn Festival','The festival\'s second day, the Miyagawa morning market, and Hida beef sushi.','Takayama'],
+       ['D5','Shirakawa-go, Kanazawa','Bus to Shirakawa-go, then on by bus to Kanazawa.','Kanazawa'],
+       ['D6','Fly home','Kenrokuen, then a bus to Komatsu Airport (about 40 minutes).','']],
+       n:['The Takayama Autumn Festival is always October 9–10; rooms in Takayama are very hard to get, so consider Gero or Toyama.','Flying into Nagoya and out of Komatsu needs an open-jaw ticket.','Book the Shirakawa-go bus in advance.']},
+      'cb-hokuriku-winter':{d:[
+       ['D1','Kanazawa','Bus from Komatsu Airport to Kanazawa (about 40 minutes), Omicho Market, and the Higashi Chaya district at night.','Kanazawa'],
+       ['D2','Kenrokuen snow ropes','Kenrokuen\'s yukitsuri snow ropes, Kanazawa Castle and the 21st Century Museum.','Kanazawa'],
+       ['D3','Shirakawa-go','Bus to Shirakawa-go (light-up nights need a booking); stay in a gassho farmhouse or return to Kanazawa.','Shirakawa-go'],
+       ['D4','Yamashiro Onsen','Bus back to Kanazawa and JR to Kaga Onsen for Yamashiro\'s Kosoyu bathhouse or the Kakusenkei gorge at Yamanaka.','Yamashiro Onsen'],
+       ['D5','Fukui','JR to Fukui, the Dinosaur Museum in Katsuyama, and the Tojinbo cliffs in the late afternoon.','Awara Onsen'],
+       ['D6','Fly home','To Komatsu Airport.','']],
+       n:['Echizen crab (male) season runs November 6 to March 20; a crab kaiseki dinner is the winter treat.','The Shirakawa-go light-up happens only on set days in January–February and needs a bus or room booking.','For 5 days, drop D5 Fukui.']},
+      'cb-nagoya':{d:[
+       ['D1','Nagoya Castle','Arrive in Nagoya; the Honmaru Palace at Nagoya Castle (the keep is closed inside) and Osu shopping street.','Nagoya'],
+       ['D2','Ghibli Park','Higashiyama subway line and the Linimo to Expo 2005 Aichi Commemorative Park for Ghibli Park (booking required, tickets by area).','Nagoya'],
+       ['D3','Legoland','Aonami Line to Kinjo Futo for Legoland Japan and the SCMAGLEV and Railway Park next door.','Nagoya'],
+       ['D4','Atsuta, Inuyama','Atsuta Jingu, then Meitetsu to Inuyama (about 30 minutes) for the national-treasure castle and its old town.','Nagoya'],
+       ['D5','Nagashima','Bus to Nagashima Onsen for Nagashima Spa Land, and the Nabana no Sato illumination tunnel at night.','Nagashima Onsen'],
+       ['D6','Fly home','Bus back to Nagoya Station (about 50 minutes) and Meitetsu to Chubu Centrair (about 30 minutes).','']],
+       n:['Ghibli Park tickets are sold by date and area. Legoland closes on some weekdays in the off season, so check opening days before fixing D2 and D3.','The Nabana no Sato illuminations run from about mid October to May.','For 5 days, drop D3.']},
+      'cb-ise':{d:[
+       ['D1','Atsuta Jingu','Arrive at Chubu Centrair and take Meitetsu to Jingu-mae (about 25 minutes) for Atsuta Jingu, then on to Nagoya.','Nagoya'],
+       ['D2','Ise Jingu','Kintetsu limited express to Iseshi (about 1.5 hours): the Outer Shrine first, then a bus to the Inner Shrine and akafuku sweets in Okage Yokocho.','Ise'],
+       ['D3','Meoto Iwa, Toba','The Meoto Iwa wedded rocks at Futami Okitama Shrine at dawn, Toba Aquarium and Mikimoto Pearl Island.','Toba'],
+       ['D4','Shima','Kintetsu to Kashikojima, Shima Spain Village, and Ago Bay from the Yokoyama observatory.','Kashikojima'],
+       ['D5','VISON, on to Tsu','The market and baths at VISON in Taki, then via Matsusaka on Kintetsu to Tsu in the late afternoon.','Tsu'],
+       ['D6','Fly home','High-speed boat from Tsu straight to Chubu Centrair (about 45 minutes).','']],
+       n:['Atsuta Jingu is on the Meitetsu line from the airport to Nagoya, so visit it on arrival day.','The high-speed boat from Tsu goes straight to the airport, faster than going back to Nagoya and with no luggage transfers.','The Kintetsu Ise-Shima pass covers local trains and buses. Visit the Outer Shrine before the Inner Shrine.']},
+      'cb-koyo':{d:[
+       ['D1','Nagoya Castle','Arrive in Nagoya; the Honmaru Palace at Nagoya Castle.','Nagoya'],
+       ['D2','Korankei','Meitetsu to Toyotashi and a bus (about 1 hour) to Korankei; stay for the light-up.','Nagoya'],
+       ['D3','Gozaisho','Kintetsu to Yunoyama Onsen and the Gozaisho ropeway (summit colors around mid October, the foot in November).','Yunoyama Onsen'],
+       ['D4','Nabana no Sato','Kintetsu via Yokkaichi and Kuwana, then a bus to Nagashima for the Nabana no Sato illumination tunnel.','Nagashima Onsen'],
+       ['D5','Ise Jingu','Via Kuwana on Kintetsu to Ise for the Outer and Inner Shrines and Okage Yokocho.','Ise'],
+       ['D6','Fly home','Kintetsu to Tsu and the high-speed boat straight to Chubu Centrair (about 45 minutes).','']],
+       n:['Korankei is east, Gozaisho and Nagashima west, Ise south. Go east → west → south and finish with the boat from Tsu to the airport, with no return to Nagoya.','Korankei peaks in mid to late November with a light-up until the end of the month; weekend buses crawl in foliage season, so go on a weekday.','Gozaisho\'s summit and foot are about a month apart; in mid November, enjoy the foot.']},
+      'cb-combo':{d:[
+       ['D1','Nagoya Castle','The Honmaru Palace and Osu.','Nagoya'],
+       ['D2','Ghibli Park','Booking required.','Nagoya'],
+       ['D3','Legoland','Legoland and the SCMAGLEV and Railway Park.','Nagoya'],
+       ['D4','Atsuta, Inuyama','Atsuta Jingu and Inuyama Castle.','Nagoya'],
+       ['D5','Nagashima','Nagashima Spa Land and the Nabana no Sato lights.','Nagashima Onsen'],
+       ['D6','Ise Jingu','Via Kuwana by Kintetsu to Ise for the Outer and Inner Shrines.','Ise'],
+       ['D7','Meoto Iwa, Toba','The wedded rocks and Toba Aquarium.','Toba'],
+       ['D8','Shima','Shima Spain Village, then Kintetsu to Tsu in the late afternoon.','Tsu'],
+       ['D9','Fly home','High-speed boat from Tsu straight to Chubu Centrair (about 45 minutes).','']],
+       n:['You can stay in the same Nagoya hotel for the first four nights; Nagashima is on the way to Ise, so there is no return to Nagoya.','The boat from Tsu to the airport saves the 1.5-hour trip back through Nagoya.','Check opening days and tickets for Ghibli Park and Legoland. For 8 days, drop D3.']},
+      'sn-monkey':{d:[
+       ['D1','Arrive in Tokyo','Into the city from Narita.','Tokyo'],
+       ['D2','Zenkoji, Shibu Onsen','Hokuriku Shinkansen to Nagano (about 1.5 hours), the Zenkoji kaidan meguri in the dark, then the Nagaden line to Yudanaka and a bus to Shibu Onsen.','Shibu Onsen'],
+       ['D3','Snow monkeys','Walk 30–40 minutes to Jigokudani Monkey Park to see the monkeys bathe, then the nine-bath circuit at Shibu Onsen.','Shibu Onsen'],
+       ['D4','Nozawa Onsen','Via Nagano by bus to Nozawa Onsen (about 1.5 hours) and ski in the afternoon.','Nozawa Onsen'],
+       ['D5','Ski and soto-yu','Ski all day, then the Oyu and the village\'s 13 free public baths at night.','Nozawa Onsen'],
+       ['D6','Matsumoto Castle, back to Tokyo','Bus to Nagano, JR to Matsumoto for the castle in the snow, and the Azusa limited express to Shinjuku (about 2.5 hours).','Tokyo'],
+       ['D7','Fly home','From Narita.','']],
+       n:['The monkeys bathe most in January–February; the path ices over, so wear shoes with grip.','Nozawa Onsen holds its Dosojin fire festival on January 15.','Beginners may prefer Hakuba (about 1 hour by bus from Nagano), with more ski areas to choose from.']},
+      'ng-yuzawa':{d:[
+       ['D1','Niigata','Niigata Airport to the city (about 25 minutes), Honcho Market and Bandai Bridge; Niigata sake with seafood at night.','Niigata'],
+       ['D2','GALA Yuzawa','Joetsu Shinkansen to Echigo-Yuzawa (about 50 minutes) and one more stop to GALA Yuzawa, a ski area attached to its station.','Echigo-Yuzawa'],
+       ['D3','Naeba, Ponshukan','Bus to Naeba (about 40 minutes) or the Yuzawa Kogen ropeway for snow views; sake tasting and the sake bath at Ponshukan inside the station in the evening.','Echigo-Yuzawa'],
+       ['D4','Back to Niigata','Shinkansen back to Niigata and the city.','Niigata'],
+       ['D5','Fly home','From Niigata Airport.','']],
+       n:['GALA Yuzawa operates from about mid December to early May.','At Ponshukan you taste sake from Niigata\'s breweries with tokens, and its bath has sake added to the water.','This is the setting of Kawabata Yasunari\'s Snow Country; the Yukiguni-kan museum is nearby.']},
+      /* ===== Kansai ===== */
+      'ks-sakura':{d:[
+       ['D1','Osaka Castle','Nankai from Kansai Airport to Namba; evening cherry blossoms in the Nishinomaru Garden at Osaka Castle.','Osaka'],
+       ['D2','Higashiyama, Kyoto','Philosopher\'s Path → Nanzenji → Heian Shrine garden; the special night viewing at Kiyomizudera.','Kyoto'],
+       ['D3','Daigoji, Fushimi Inari','Subway to Daigoji, where Toyotomi Hideyoshi held his famous blossom party, then the torii gates of Fushimi Inari; Gion Shirakawa lit at night.','Kyoto'],
+       ['D4','Arashiyama','Tenryuji, Togetsukyo Bridge and the bamboo grove; Hirano Shrine at night.','Kyoto'],
+       ['D5','Nara','Kintetsu to Nara (about 45 minutes) for Todaiji, Kasuga Taisha and the deer under the cherries; back to Osaka.','Osaka'],
+       ['D6','Himeji Castle, fly home','JR special rapid to Himeji (about 1 hour) for the white castle in bloom, then Kansai (or Kobe) Airport.','']],
+       n:['Kyoto peaks from late March to early April; night viewings and light-ups run for limited dates, so check each temple.','Kyoto city buses are packed; use the subway, JR, Keihan and Hankyu where you can.','Flying into Kansai and out of Kobe saves the trip back to Osaka on D6.']},
+      'ks-sakura-long':{d:[
+       ['D1','Himeji Castle','Kobe Airport to Sannomiya, then the JR special rapid to Himeji (about 40 minutes) for the white castle in bloom; on to Osaka for Osaka Castle at night.','Osaka'],
+       ['D2','Higashiyama, Kyoto','Philosopher\'s Path and Nanzenji; Kiyomizudera at night.','Kyoto'],
+       ['D3','Daigoji, Fushimi Inari','Daigoji and Fushimi Inari; Gion Shirakawa at night.','Kyoto'],
+       ['D4','Arashiyama','Tenryuji and Togetsukyo; Hirano Shrine at night.','Kyoto'],
+       ['D5','Nara','Todaiji, Kasuga Taisha and Nara Park.','Nara'],
+       ['D6','Mt. Yoshino','Kintetsu to Yoshino (about 1.5 hours) and the ropeway up: Shimo Senbon → Naka Senbon.','Mt. Yoshino'],
+       ['D7','Kami Senbon, Koyasan','Kami Senbon and the view from Yoshimizu Shrine at dawn, then via Yoshinoguchi and Hashimoto on the Nankai line to Koyasan.','Koyasan temple lodging'],
+       ['D8','Okunoin, back to Kyoto','Morning prayers at the temple lodging and the Okunoin approach, then down via Namba to Kyoto.','Kyoto'],
+       ['D9','Hikone Castle','JR special rapid to Hikone (about 50 minutes) for the cherries around national-treasure Hikone Castle; Nagahama by evening.','Nagahama'],
+       ['D10','Kaizu Osaki','A cherry-viewing boat from Nagahama port or JR to Makino for the cherry tunnel along the lake at Kaizu Osaki; back to Kyoto on the Kosei Line.','Kyoto'],
+       ['D11','Omuro cherries, Haradanien','Ninnaji\'s late-blooming Omuro cherries and the red weeping cherries at Haradanien.','Kyoto'],
+       ['D12','Fly home','Haruka express to Kansai Airport.','']],
+       n:['This follows the bloom from early to late: Himeji, Osaka and central Kyoto (late March–early April) → Yoshino (early to mid April, lower to upper slopes) → Hikone, Kaizu Osaki and Omuro (around mid April). Himeji used to sit on day 8, by which time its blossoms are usually gone.','Kobe in, Kansai out: Himeji is closest to Kobe Airport, so it goes first; the last night is in Kyoto, with the Haruka straight to Kansai Airport.','Koyasan blooms one to two weeks later than the lowlands, so the stop there is about the temple stay. The JR Kansai Wide Area Pass covers Himeji, Hikone and the Kosei Line. For 11 days, drop D11.']},
+      'ks-koyo':{d:[
+       ['D1','Mt. Maya night view','Kobe Airport to Sannomiya (about 20 minutes), then the Maya cable car and ropeway to Kikuseidai for the night view.','Kobe'],
+       ['D2','Higashiyama, Kyoto','JR to Kyoto: Kiyomizudera → Kodaiji → Eikando → Nanzenji, with Kiyomizudera or Kodaiji lit at night.','Kyoto'],
+       ['D3','Tofukuji, Fushimi Inari','Tofukuji\'s Tsutenkyo bridge at opening time, then Fushimi Inari; Sennyuji in the afternoon or Eikando lit at night.','Kyoto'],
+       ['D4','Kibune, Kurama','Eizan Railway through the maple tunnel to Kibune for the shrine and the riverside maples, then hike over the ridge to Kuramadera; Kibune lit at dusk.','Kyoto'],
+       ['D5','Arashiyama','Tenryuji, Hogonin, Jojakkoji and Giouji.','Kyoto'],
+       ['D6','Nara, fly home','JR to Nara for Nara Park and Todaiji, then a bus to Kansai Airport (about 1.5 hours).','']],
+       n:['Kyoto peaks in mid to late November; popular temples hold special night viewings, so check each one.','Tofukuji\'s Tsutenkyo goes one-way and gets packed in foliage season; queue before opening.','To add Minoo Falls in Osaka, go after landing on D1; it is about 30 minutes by Hankyu.']},
+      'ks-usj':{d:[
+       ['D1','Osaka','Kansai Airport to Namba; Dotonbori and Shinsaibashi.','Osaka'],
+       ['D2','USJ','A full day at Universal Studios Japan. Super Nintendo World (including Donkey Kong Country) needs a timed entry ticket or an Express Pass.','Near USJ'],
+       ['D3','Osaka Castle, Kaiyukan','Osaka Castle, then the Kaiyukan aquarium and the Tempozan Ferris wheel.','Osaka'],
+       ['D4','Kobe','Hanshin or JR to Kobe: the Kitano foreign residences and the harbor, then the Kikuseidai night view on Mt. Maya.','Kobe'],
+       ['D5','Arima Onsen','Bus or Kobe Electric Railway to Arima Onsen (about 30 minutes) for the gold and silver springs.','Arima Onsen'],
+       ['D6','Fly home','From Arima to Kobe (or Kansai) Airport.','']],
+       n:['USJ is crowded on holidays and the Nintendo area often needs timed entry; an Express Pass that includes it saves the most time.','Halloween (Sep–early Nov) and Christmas (mid Nov–early Jan) bring seasonal events.','Flying into Kansai and out of Kobe shortens the last day. For 5 days, drop D3.']},
+      'ks-kumano':{d:[
+       ['D1','Koyasan','Kansai Airport via Namba on the Nankai Koya Line and cable car to Koyasan (about 2.5 hours); shojin vegetarian dinner at a temple lodging.','Koyasan temple lodging'],
+       ['D2','Koyasan','Morning prayers, Kongobuji and the Danjo Garan; the Okunoin night tour.','Koyasan temple lodging'],
+       ['D3','Ryujin Onsen','Nankai down to Hashimoto, pick up a car, and drive the Koya-Ryujin Skyline to Ryujin Onsen (about 2 hours).','Ryujin Onsen'],
+       ['D4','Kumano Hongu, the old road','Drive to Kumano Hongu (about 1.5 hours) and hike the Nakahechi from Hosshinmon-oji to Hongu Taisha (about 7 km); the giant torii at Oyunohara.','Yunomine Onsen'],
+       ['D5','Nachi','Drive to Nachi (about 1.5 hours): Daimonzaka → Nachi Taisha → Seigantoji\'s pagoda with Nachi Falls; tuna in Katsuura for dinner.','Katsuura Onsen'],
+       ['D6','Shirahama','Drive to Shirahama (about 2 hours): Adventure World, Sandanbeki and Senjojiki, and sunset from the Sakinoyu seaside bath.','Shirahama Onsen'],
+       ['D7','Fly home','Drive to Kansai Airport (about 2.5 hours) and return the car.','']],
+       n:['Book temple lodging on the Koyasan Shukubo Association site; the Okunoin night tour needs booking too.','Tsuboyu at Yunomine is the only bath you can use inside a World Heritage site: 30 minutes per group, with numbered tickets.','Mountain roads are narrow; 1.5–2.5 hours of driving a day is about right. Without a car, Kumano buses work but add a day.']},
+      'ks-winter':{d:[
+       ['D1','Kyoto','Haruka express from Kansai Airport to Kyoto.','Kyoto'],
+       ['D2','Miyama snow lanterns','Kyoto in the snow if you are lucky (Kinkakuji), then JR to Sonobe and a bus to the thatched village of Miyama, lit with snow lanterns in late January.','Miyama or Kyoto'],
+       ['D3','Amanohashidate','JR and Kyoto Tango Railway to Amanohashidate (about 2 hours); the Kasamatsu Park chairlift for the upside-down view through your legs.','Amanohashidate'],
+       ['D4','Ine, Kinosaki','Bus to the Ine boathouses (about 1 hour) and a boat ride, back to Amanohashidate and by rail to Kinosaki Onsen (about 1.5 hours).','Kinosaki Onsen'],
+       ['D5','Kinosaki Onsen','Make the rounds of the seven public baths in a yukata; a snow crab kaiseki dinner.','Kinosaki Onsen'],
+       ['D6','Himeji Castle, fly home','Limited express to Himeji (about 1.5 hours) for the castle, then Kansai or Kobe Airport.','']],
+       n:['Snow crab season runs from early November to late March; most Kinosaki ryokan include a public-bath pass.','The Miyama snow lanterns are lit after dark for about a week in late January.','The JR Kansai Wide Area Pass covers the Kyoto Tango Railway and the limited expresses to Kinosaki and Himeji.']},
+      'ks-gion':{d:[
+       ['D1','Atomatsuri Yoiyama','Arrive in Kyoto on July 21 for the Yoiyama evenings of the second half of the Gion Festival: floats lit up and folding screens on show in the townhouses.','Kyoto'],
+       ['D2','Kibune kawadoko','Eizan Railway to Kibune for lunch on a platform over the stream, then hike to Kuramadera.','Kyoto'],
+       ['D3','Uji, Fushimi Inari','JR to Uji for Byodoin and matcha, Fushimi Inari in the afternoon, and Yoiyama again at night.','Kyoto'],
+       ['D4','Float procession, Tenjin Matsuri','The Atomatsuri float procession on the morning of July 24 (smaller crowds than the July 17 one), then Osaka for the Tenjin Matsuri eve.','Osaka'],
+       ['D5','Tenjin Matsuri, fly home','The daytime land procession of the Tenjin Matsuri main day on July 25, then an evening flight home.','']],
+       n:['The Gion Festival processions are always July 17 (first half) and July 24 (second half); the Tenjin Matsuri is July 24–25. This plan pairs the second half with the Tenjin Matsuri.','To see the Tenjin Matsuri boat procession and fireworks on the night of July 25, add a night and make it 6 days.','Kyoto is very hot in late July; put indoor sights or a kawadoko lunch at midday.']},
+      'ks-golden-sakura':{d:[
+       ['D1','Ueno at night','Haneda to Ueno; Ueno Park at night.','Ueno'],
+       ['D2','Chidorigafuchi, Meguro River','Chidorigafuchi and Kitanomaru Park; the Meguro River at night.','Tokyo'],
+       ['D3','Shinjuku Gyoen, Rikugien','Shinjuku Gyoen, and Rikugien\'s weeping cherry at night.','Tokyo'],
+       ['D4','Kawagoe or Kamakura','Pick one for a day trip.','Tokyo'],
+       ['D5','On to Kyoto','Tokaido Shinkansen to Kyoto (about 2 hours 15 minutes), the Philosopher\'s Path, and Kiyomizudera at night.','Kyoto'],
+       ['D6','Daigoji, Fushimi Inari','Daigoji and Fushimi Inari; Gion Shirakawa at night.','Kyoto'],
+       ['D7','Arashiyama','Tenryuji and Togetsukyo; Hirano Shrine at night.','Kyoto'],
+       ['D8','Nara','Todaiji and Kasuga Taisha.','Osaka'],
+       ['D9','Osaka Castle','Osaka Castle and Dotonbori.','Osaka'],
+       ['D10','Himeji Castle','Himeji Castle and back to Osaka.','Osaka'],
+       ['D11','Fly home','From Kansai Airport.','']],
+       n:['Tokyo usually peaks 2–3 days before Kyoto, so Tokyo first follows the blossoms.','Flying into Haneda and out of Kansai needs an open-jaw ticket.','For 10 days, drop D4.']},
+      'ks-golden-koyo':{d:[
+       ['D1','Arrive in Osaka','Kansai Airport to Osaka; Dotonbori.','Osaka'],
+       ['D2','Higashiyama, Kyoto','Kiyomizudera, Eikando and Nanzenji, lit at night.','Kyoto'],
+       ['D3','Tofukuji, Fushimi Inari','Tofukuji\'s Tsutenkyo at opening time, then Fushimi Inari.','Kyoto'],
+       ['D4','Kibune, Kurama','The Eizan maple tunnel, Kibune Shrine and Kuramadera.','Kyoto'],
+       ['D5','Arashiyama','Tenryuji, Hogonin and Jojakkoji.','Kyoto'],
+       ['D6','Nara','Nara Park and Todaiji, back to Kyoto.','Kyoto'],
+       ['D7','On to Tokyo','Shinkansen to Tokyo; the Gaien ginkgo avenue in the late afternoon.','Tokyo'],
+       ['D8','Rikugien','Koishikawa Korakuen, and Rikugien\'s maples at night.','Tokyo'],
+       ['D9','Mt. Takao','Maples on Mt. Takao, and the Showa Kinen Park ginkgo on the way back.','Tokyo'],
+       ['D10','Kamakura, Marunouchi','Hasedera in Kamakura; the Marunouchi lights at night.','Tokyo'],
+       ['D11','Fly home','From Haneda.','']],
+       n:['Kyoto peaks in mid to late November and the Tokyo Gaien ginkgo from late November to early December, so Kyoto first works best.','Flying into Kansai and out of Haneda needs an open-jaw ticket.','For 10 days, drop D9.']},
+      'ks-usj-koyo':{d:[
+       ['D1','Kobe night view','Kobe Airport to Sannomiya (about 20 minutes), the Kitano foreign residences, and the Kikuseidai night view on Mt. Maya at dusk.','Kobe'],
+       ['D2','Arima Onsen','Bus to Arima Onsen (about 30 minutes) for the maples in Zuihoji Park and the gold and silver springs.','Arima Onsen'],
+       ['D3','Osaka Castle, Kaiyukan','Bus to Osaka (about 1 hour); Osaka Castle and the Kaiyukan aquarium.','Osaka'],
+       ['D4','USJ','Universal Studios Japan; Christmas events usually start in mid November.','Near USJ'],
+       ['D5','Higashiyama, Kyoto','JR to Kyoto for Kiyomizudera and Eikando, lit at night.','Kyoto'],
+       ['D6','Tofukuji, Fushimi Inari','Tofukuji\'s Tsutenkyo at opening time, then Fushimi Inari.','Kyoto'],
+       ['D7','Kibune, Kurama','The Eizan maple tunnel, Kibune Shrine and Kuramadera.','Kyoto'],
+       ['D8','Arashiyama','Tenryuji, Hogonin and Jojakkoji.','Kyoto'],
+       ['D9','Nara','Kintetsu to Nara for Nara Park and Todaiji.','Nara'],
+       ['D10','Fly home','Bus to Kansai Airport (about 1.5 hours).','']],
+       n:['Now Kobe in, Kansai out: Kobe → Arima → Osaka → Kyoto → Nara runs west to east in one line, with no trips back from Osaka to Kobe and Arima.','USJ is quieter midweek. Zuihoji Park in Arima turns around mid November, the same time as Kyoto.','For 9 days, drop D3 and take the bus from Arima to a hotel near USJ.']},
+
+      /* ===== Chugoku & Shikoku ===== */
+      'sy-miyajima':{d:[
+       ['D1','Hiroshima','Arrive in Hiroshima; the Atomic Bomb Dome and the Peace Memorial Museum, okonomiyaki for dinner.','Hiroshima'],
+       ['D2','Miyajima','JR to Miyajimaguchi and the ferry (about 10 minutes): Itsukushima Shrine, Momijidani Park and the ropeway up Mt. Misen. Stay on the island to see the great torii lit at night.','Miyajima'],
+       ['D3','Onomichi','Back to Hiroshima and JR to Onomichi (about 1.5 hours): the Senkoji ropeway, Cat Alley and Onomichi ramen.','Onomichi'],
+       ['D4','Kurashiki','JR to Kurashiki (about 1 hour) for the Bikan historical quarter and the Ohara Museum.','Kurashiki'],
+       ['D5','Okayama','Korakuen and Okayama Castle, with Korakuen\'s autumn light-up at night.','Okayama'],
+       ['D6','Fly home','From Okayama Airport.','']],
+       n:['Momijidani peaks in mid to late November. At low tide you can walk to the base of the great torii; check the tide table.','Miyajima charges a ¥100 visitor tax, paid with the ferry fare.','Flying into Hiroshima and out of Okayama needs an open-jaw ticket. For 5 days, drop D4 Kurashiki.']},
+      'sk-art':{d:[
+       ['D1','Takamatsu','Takamatsu Airport to the city, Ritsurin Garden, Sanuki udon for dinner.','Takamatsu'],
+       ['D2','Naoshima','Ferry to Naoshima (about 50 minutes): Chichu Art Museum (booking required), Lee Ufan Museum, Benesse House Museum and the yellow pumpkin.','Naoshima'],
+       ['D3','Teshima, on to Shodoshima','The Art House Project in Honmura in the morning, a ferry to Teshima for the Teshima Art Museum and Les Archives du Coeur, and a ferry on to Tonosho on Shodoshima in the late afternoon.','Shodoshima'],
+       ['D4','Shodoshima','The Kankakei ropeway, the Angel Road sandbar at low tide, and Olive Park; ferry back to Takamatsu (about 1 hour) in the late afternoon.','Takamatsu'],
+       ['D5','Konpira-san','The Kotoden to Kotohira, the 785 steps of Kotohiragu, and Marugame Castle.','Takamatsu'],
+       ['D6','Fly home','The Yashima lookout, then Takamatsu Airport.','']],
+       n:['Naoshima → Teshima → Shodoshima → Takamatsu makes one ferry loop instead of returning to Takamatsu each time. Leave the big bags at the Takamatsu hotel and carry two nights\' worth on the islands.','Chichu closes on Mondays and uses timed tickets. Teshima Art Museum closes Tuesdays (Mar–Nov) and Tuesday to Thursday (Dec–Feb), so avoid those days for D2 and D3.','Okayama in, Takamatsu out is even smoother: JR from Okayama Station to Uno port (about 1 hour), then 20 minutes by ferry to Naoshima.']},
+      'sk-loop':{d:[
+       ['D1','Takamatsu','Pick up a car at Takamatsu Airport; Ritsurin Garden.','Takamatsu'],
+       ['D2','Konpira-san','The 785 steps of Kotohiragu and Marugame Castle, then drive to Iya (about 1.5 hours).','Iya Onsen'],
+       ['D3','Iya vine bridge','The Iya Kazurabashi vine bridge, Biwa Falls and the gorge lookout; ride the ryokan\'s cable car down to its riverside bath at night.','Iya Onsen'],
+       ['D4','Oku-Iya, Oboke','The twin vine bridges of Oku-Iya, and a boat through the Oboke gorge in the afternoon.','Oboke'],
+       ['D5','Kochi','Drive to Kochi (about 1.5 hours) for Kochi Castle and straw-seared bonito at Hirome Market.','Kochi'],
+       ['D6','Katsurahama, Niyodo River','Katsurahama and the Sakamoto Ryoma Memorial Museum, then the Niyodo blue at Nakatsu Gorge.','Kochi'],
+       ['D7','Shimanto River','Drive to Shimanto (about 2 hours) for the low-water bridges and a houseboat ride.','Shimanto'],
+       ['D8','Cape Ashizuri','Cape Ashizuri lighthouse and the Tatsukushi coast.','Ashizuri'],
+       ['D9','Uwajima, Uchiko','Drive to Uwajima (about 2.5 hours) for the castle and sea bream rice, reaching Uchiko by evening.','Uchiko or Ozu'],
+       ['D10','Uchiko, Dogo','The Uchiko-za theater, the old town and Ozu Castle, then drive to Matsuyama for the Dogo Onsen Honkan.','Dogo Onsen'],
+       ['D11','Shimanami Kaido','Drive to Imabari, rent a bike and ride across the Kurushima-Kaikyo Bridge to Oshima and back; return to Matsuyama.','Matsuyama'],
+       ['D12','Fly home','Matsuyama Castle (ropeway or chairlift), return the car, Matsuyama Airport.','']],
+       n:['Iya turns around early to mid November, Oboke and Shimanto a little later.','Shikoku mountain roads are narrow and winding; keep to 2–3 hours of driving a day and arrive before dark.','A Takamatsu pickup and Matsuyama drop-off costs a one-way fee. For 10 days, drop D4 and D8.']},
+      'sk-spring':{d:[
+       ['D1','Matsuyama Castle, Dogo','Arrive in Matsuyama, take the ropeway up to the castle cherries, and bathe at the Dogo Onsen Honkan at night.','Dogo Onsen'],
+       ['D2','Shimanami Kaido','Pick up a car and drive to Imabari; rent a bike at Itoyama Park to ride the Kurushima-Kaikyo Bridge, then drive to Oyamazumi Shrine on Omishima.','Imabari'],
+       ['D3','Uchiko, Ozu','Drive to Uchiko (about 1.5 hours) for the theater and old streets, then Ozu Castle.','Ozu'],
+       ['D4','Kochi Castle','Drive to Kochi (about 2.5 hours) for the castle cherries and Hirome Market.','Kochi'],
+       ['D5','Niyodo River','Nakatsu or Yasui Gorge on the Niyodo River, then drive back to Matsuyama (about 2 hours).','Matsuyama'],
+       ['D6','Fly home','Return the car; Matsuyama Airport.','']],
+       n:['Matsuyama Castle blooms from late March to early April; Kochi is usually a few days earlier.','Shimanami bikes can be dropped at a different terminal, or you can just ride the first bridge and back.','For 5 days, drop D5 Niyodo.']},
+      'sy-sanin':{d:[
+       ['D1','Kaike Onsen','Pick up a car at Yonago Airport; sunset over the Sea of Japan at Kaike Onsen.','Kaike Onsen'],
+       ['D2','Adachi Museum, Matsue','The Adachi Museum gardens at opening time, then Matsue Castle and a Horikawa moat boat; sunset over Lake Shinji.','Tamatsukuri Onsen'],
+       ['D3','Izumo Taisha','The paper-boat fortune at Yaegaki Shrine\'s mirror pond, then drive to Izumo Taisha (about 1 hour), Inasa beach and Hinomisaki Shrine.','Izumo'],
+       ['D4','Mt. Daisen','Izumo Taisha once more in the morning and Izumo soba, then drive to Daisen (about 1.5 hours) for Daisenji and the foliage.','Daisen'],
+       ['D5','Tottori Sand Dunes','Drive to Tottori (about 1.5 hours) for the dunes and the Sand Museum, back to Yonago.','Yonago'],
+       ['D6','Fly home','Return the car; Yonago Airport.','']],
+       n:['The Kamiari-sai, when the gods gather, falls in the tenth lunar month, around mid to late November and different each year; Izumo rooms are hard to get then.','The Adachi garden turns in early to mid November, Daisen in late October to early November.','For 5 days, drop D4 Daisen.']},
+      'sy-sanin-winter':{d:[
+       ['D1','Kaike Onsen','Bus from Yonago Airport to Kaike Onsen (about 25 minutes).','Kaike Onsen'],
+       ['D2','Sakaiminato','The Kitaro train on the JR Sakai Line to Sakaiminato for Mizuki Shigeru Road, and snow crab for lunch.','Kaike Onsen'],
+       ['D3','Matsue, Tamatsukuri','JR to Matsue for the castle in the snow, Tamatsukuri Onsen by evening.','Tamatsukuri Onsen'],
+       ['D4','Tottori Sand Dunes','Limited express to Tottori (about 1 hour 10 minutes) for the dunes, with Mt. Daisen in snow from the train; back to Yonago.','Yonago'],
+       ['D5','Fly home','From Yonago Airport.','']],
+       n:['Snow crab season runs from early November to late March; both Sakaiminato and Kaike serve crab kaiseki.','Winter Taoyuan–Yonago flights are few, so check the schedule.','Snow on the dunes is luck; the morning after a snowfall is best.']},
+      'sy-combo':{d:[
+       ['D1','Kaike Onsen','Pick up a car at Yonago Airport; Kaike Onsen.','Kaike Onsen'],
+       ['D2','Adachi Museum, Matsue','The Adachi Museum, Matsue Castle and a Horikawa boat.','Tamatsukuri Onsen'],
+       ['D3','Izumo Taisha','Yaegaki Shrine, Izumo Taisha and Hinomisaki Shrine.','Izumo'],
+       ['D4','Iwami Ginzan','Drive to Iwami Ginzan (about 1 hour) for the Ryugenji mine shaft; stay at Yunotsu Onsen.','Yunotsu Onsen'],
+       ['D5','Hiroshima','Drive to Hiroshima (about 2.5 hours), return the car; the Atomic Bomb Dome.','Hiroshima'],
+       ['D6','Miyajima','Itsukushima Shrine, Momijidani and Mt. Misen.','Miyajima'],
+       ['D7','Onomichi','JR to Onomichi; Senkoji.','Onomichi'],
+       ['D8','Kurashiki','The Bikan quarter and the Ohara Museum.','Kurashiki'],
+       ['D9','Okayama','Korakuen and Okayama Castle, with Korakuen\'s autumn light-up at night.','Okayama'],
+       ['D10','Fly home','From Okayama Airport.','']],
+       n:['Now Yonago in, Okayama out: from the Sea of Japan side to the Inland Sea side the route keeps heading east and ends in Okayama, with no return to Hiroshima. Okayama flights don\'t run daily; if the date doesn\'t fit, take the shinkansen back to Hiroshima (about 40 minutes) on D10 and fly from there.','San\'in before San\'yo also follows the colors: Daisen and the Adachi garden turn earlier (late Oct–mid Nov), Momijidani on Miyajima later (mid to late Nov).','A Yonago pickup and Hiroshima drop-off costs a one-way fee. Yunotsu is Iwami Ginzan\'s onsen town; its two old public baths, Motoyu and Yakushiyu, are full of character.']},
+      'sk-combo':{d:[
+       ['D1','Takamatsu','Arrive in Takamatsu; Ritsurin Garden.','Takamatsu'],
+       ['D2','Naoshima','Chichu Art Museum (booking required) and the yellow pumpkin.','Naoshima'],
+       ['D3','Teshima, on to Shodoshima','The Art House Project and Teshima Art Museum, then a ferry to Shodoshima in the late afternoon.','Shodoshima'],
+       ['D4','Shodoshima','The Kankakei ropeway and Angel Road, then a ferry back to Takamatsu in the late afternoon.','Takamatsu'],
+       ['D5','Konpira-san, Iya','Pick up a car in Takamatsu, Kotohiragu, then drive to Iya.','Iya Onsen'],
+       ['D6','Iya','The Iya vine bridge and an Oboke gorge boat.','Oboke'],
+       ['D7','Kochi','Kochi Castle and Hirome Market.','Kochi'],
+       ['D8','Katsurahama, Niyodo River','Katsurahama and the Niyodo River.','Kochi'],
+       ['D9','Shimanto River','Low-water bridges and a houseboat.','Shimanto'],
+       ['D10','Cape Ashizuri','Cape Ashizuri and Tatsukushi.','Ashizuri'],
+       ['D11','Uwajima, Uchiko','Uwajima Castle, reaching Uchiko by evening.','Uchiko'],
+       ['D12','Ozu, Dogo','Ozu Castle and the Dogo Onsen Honkan.','Dogo Onsen'],
+       ['D13','Shimanami Kaido','Bike the Kurushima-Kaikyo Bridge from Imabari, back to Matsuyama.','Matsuyama'],
+       ['D14','Fly home','Matsuyama Castle, return the car, Matsuyama Airport.','']],
+       n:['The first 4 days loop Naoshima → Teshima → Shodoshima → Takamatsu by ferry; pick up the car on day 5. Flying into Takamatsu and out of Matsuyama needs an open-jaw ticket.','Going clockwise around Shikoku follows the colors: the Iya mountains first (early to mid November), then the south and Matsuyama, which turn later.','For 13 days, drop D10 Cape Ashizuri.']},
+      /* ===== Kyushu ===== */
+      'ky-sakura':{d:[
+       ['D1','Fukuoka Castle','Arrive in Fukuoka (5 minutes by subway from the airport to Hakata); cherry blossoms and the evening light-up at the Fukuoka Castle ruins in Maizuru Park, then the Nakasu yatai stalls.','Hakata'],
+       ['D2','Fukuoka','Cherry blossoms in Ohori Park and Nishi Park, or the Itoshima coast.','Hakata'],
+       ['D3','Dazaifu, Akizuki','Nishitetsu to Dazaifu Tenmangu (about 30 minutes), then to Amagi and a bus to the cherry-lined Suginobaba avenue at Akizuki Castle ruins.','Hakata'],
+       ['D4','Yanagawa, Kumamoto','Nishitetsu to Yanagawa for a canal boat and steamed eel rice, then via Omuta to Kumamoto.','Kumamoto'],
+       ['D5','Kumamoto Castle','The Kumamoto Castle keep in bloom and Suizenji Jojuen garden.','Kumamoto'],
+       ['D6','Fly home','From Kumamoto Airport (about 50 minutes by airport bus).','']],
+       n:['Now Fukuoka in, Kumamoto out: the route heads south and flies home from Kumamoto instead of going back to Hakata. China Airlines, Starlux and Tigerair fly Kumamoto–Taiwan.','Fukuoka and Kumamoto peak around late March, a few days before Tokyo.','If the Kumamoto return date doesn\'t fit, take the shinkansen back to Hakata (about 35 minutes) on D6. For 5 days, drop D2.']},
+      'ky-fuji':{d:[
+       ['D1','Nemophila','Arrive in Fukuoka and go by boat or JR to Uminonakamichi Seaside Park for the nemophila.','Hakata'],
+       ['D2','Kokura, Mojiko','Shinkansen to Kokura (about 15 minutes) for Kokura Castle; the Mojiko Retro district in the afternoon, then the Kanmon pedestrian tunnel to Shimonoseki\'s Karato Market.','Kokura'],
+       ['D3','Kawachi Fujien, Mt. Sarakura','JR to Yahata and a taxi to Kawachi Fujien (about 20 minutes) for the wisteria tunnels; the Mt. Sarakura cable car for the night view.','Kokura'],
+       ['D4','Dazaifu','Back to Hakata and Nishitetsu to Dazaifu Tenmangu; the Nakasu yatai at night.','Hakata'],
+       ['D5','Fly home','From Fukuoka Airport.','']],
+       n:['Nemophila (mid to late April) peaks before wisteria (late April to early May), so see the nemophila first, then head to Kitakyushu for the wisteria.','Kawachi Fujien needs a dated ticket, which goes on sale just before the bloom.','From Taichung you can fly straight to Kitakyushu: stay in Kokura from D1, see Kawachi Fujien first, and leave the nemophila for the end before flying home from Fukuoka.']},
+      'ky-koyo':{d:[
+       ['D1','Kumamoto','Pick up a car at Kumamoto Airport; Kumamoto Castle and horse meat for dinner.','Kumamoto'],
+       ['D2','Kikuchi Gorge, Aso','Kikuchi Gorge in color, the Aso caldera rim from Daikanbo, Kusasenri, and the Nakadake crater (open depending on volcanic activity).','Aso Uchinomaki Onsen'],
+       ['D3','Takachiho','Drive to Takachiho (about 1.5 hours): a rowboat in Takachiho Gorge, Amano-Iwato Shrine and Amano-Yasukawara; the night kagura at Takachiho Shrine.','Takachiho'],
+       ['D4','Kurokawa Onsen','Drive to Kurokawa Onsen (about 1.5 hours) and use the bath-hopping pass at three outdoor baths.','Kurokawa Onsen'],
+       ['D5','Kuju, Yabakei','Kokonoe Yume Suspension Bridge, then the Hitome Hakkei viewpoint and Ao-no-Domon tunnel at Yabakei, and Usa Jingu in the late afternoon.','Usa or Beppu'],
+       ['D6','Yufuin','Lake Kinrin and Yunotsubo street in Yufuin.','Yufuin'],
+       ['D7','Beppu, fly home','The Beppu Hells, then Oita Airport to return the car.','']],
+       n:['Colors move downhill from Kuju (late Oct–early Nov) to Yabakei and Takachiho (mid Nov).','The Aso Nakadake crater is closed when volcanic activity or gas levels are high; check on the day.','The Takachiho night kagura starts at 20:00 nightly and lasts about an hour. A Kumamoto pickup and Oita drop-off costs a one-way fee.']},
+      'ky-winter':{d:[
+       ['D1','Hakata','Arrive in Fukuoka; Canal City and the Nakasu yatai.','Hakata'],
+       ['D2','Yufuin','The Yufuin no Mori train or a highway bus to Yufuin (about 2 hours); Yunotsubo street.','Yufuin'],
+       ['D3','Beppu','Morning mist on Lake Kinrin, then a bus to Beppu (about 1 hour) for the Hells and steam-cooked food at Kannawa.','Beppu'],
+       ['D4','Nagasaki','Via Hakata on the Kamome limited express and Nishi-Kyushu Shinkansen to Nagasaki (about 2 hours); the Mt. Inasa ropeway at night.','Nagasaki'],
+       ['D5','Takeo, Huis Ten Bosch','Nishi-Kyushu Shinkansen to Takeo Onsen for the library and the gate tower, then Huis Ten Bosch for its Kingdom of Light.','Huis Ten Bosch'],
+       ['D6','Fly home','Huis Ten Bosch to Hakata (about 1 hour 45 minutes), then Fukuoka Airport.','']],
+       n:['The Lake Kinrin mist is clearest on cold winter mornings.','The Huis Ten Bosch Kingdom of Light runs from about November to April.','The JR Kyushu Pass (Northern Kyushu) covers Yufuin no Mori, the Kamome and the limited express to Huis Ten Bosch.']},
+      'ky-south':{d:[
+       ['D1','Kagoshima','Pick up a car at Kagoshima Airport, Sengan-en garden facing Sakurajima, and black pork in Tenmonkan for dinner.','Kagoshima'],
+       ['D2','Sakurajima, Ibusuki','Ferry to Sakurajima (about 15 minutes) for the Yunohira lookout and the lava-coast footbath, then drive to Ibusuki (about 1.5 hours) for a sand bath.','Ibusuki'],
+       ['D3','Chiran, Kirishima','Cape Nagasakibana and Mt. Kaimon, the Chiran samurai houses, then drive to Kirishima (about 2 hours).','Kirishima Onsen'],
+       ['D4','Kirishima Jingu','Kirishima Jingu and Takachiho-gawara, with an afternoon soak at Myoken Onsen or the Kirishima hot springs.','Kirishima Onsen'],
+       ['D5','Obi, Udo Jingu','Drive to the Obi castle town (about 2 hours), then throw lucky stones at Udo Jingu.','Nichinan'],
+       ['D6','Aoshima Shrine','Horikiri Pass, Aoshima Shrine and the Devil\'s Washboard rocks; chicken nanban and local chicken in Miyazaki.','Miyazaki'],
+       ['D7','Fly home','Return the car; Miyazaki Airport.','']],
+       n:['Miyazaki often reaches about 15°C on winter days, the warmest in Kyushu.','Sakurajima often drops ash; bring a mask and a hat.','A Kagoshima pickup and Miyazaki drop-off costs a one-way fee. For 6 days, drop D4.']},
+      'ky-yakushima':{d:[
+       ['D1','Kagoshima','Arrive in Kagoshima; Sengan-en and Tenmonkan.','Kagoshima'],
+       ['D2','Around Yakushima','High-speed ferry to Yakushima (about 2 hours), pick up a car for Senpiro and Ohko Falls, and soak in the Hirauchi seaside spring around low tide.','Onoaida'],
+       ['D3','Jomon Sugi','Mountain bus at 4–5 a.m. to the Arakawa trailhead and the Jomon Sugi hike, about 10 hours round trip.','Anbo'],
+       ['D4','Shiratani Unsuikyo','The moss forest of Shiratani Unsuikyo up to Taiko Rock, about 4–5 hours.','Miyanoura'],
+       ['D5','Yakusugi Museum','Yakusugi Museum and Kigensugi, then the ferry back to Kagoshima.','Kagoshima'],
+       ['D6','Sakurajima','Ferry to Sakurajima and the Yunohira lookout; Tenmonkan in the afternoon.','Kagoshima'],
+       ['D7','Fly home','From Kagoshima Airport.','']],
+       n:['Yakushima is famously rainy: bring rain gear and hiking boots. Private cars are banned on the Jomon Sugi road in season (Mar–Nov); use the mountain bus.','The ferry stops in rough seas, and D6 is the buffer for that.','The Jomon Sugi hike is demanding; without hiking experience, do Shiratani Unsuikyo and Yakusugi Land instead.']},
+      'ky-balloon':{d:[
+       ['D1','Balloon night glow','Arrive at Saga Airport and go to the venue at dusk for the balloon night glow.','Saga'],
+       ['D2','Balloon competition','Be at the launch field before 7 a.m. to see over a hundred balloons lift off (JR runs a temporary station during the event); the Yoshinogari ruins in the afternoon.','Ureshino Onsen'],
+       ['D3','Yutoku Inari','The vermilion halls of Yutoku Inari Shrine, then Ureshino Onsen and its hot-spring tofu.','Ureshino Onsen'],
+       ['D4','Arita, Karatsu','The pottery streets of Arita and Karatsu Castle; live squid in Yobuko for dinner.','Karatsu'],
+       ['D5','Fly home','Back to Saga Airport (about 1.5 hours).','']],
+       n:['The Saga International Balloon Fiesta runs for 5 days around the turn of November, and balloons only fly on calm mornings.','Saga rooms are hard to get during the event; stay in Ureshino or Hakata and commute.','Buses to Yutoku Inari and Yobuko are infrequent; renting a car on D3 makes it easier.']},
+      'ky-combo-autumn':{d:[
+       ['D1','Balloon night glow','Arrive in Saga; the balloon night glow at dusk.','Saga'],
+       ['D2','Balloon competition','The morning launch, then the Yoshinogari ruins.','Ureshino Onsen'],
+       ['D3','Yutoku Inari, Ureshino','Yutoku Inari Shrine and Ureshino Onsen.','Ureshino Onsen'],
+       ['D4','Kumamoto','Via Takeo and Shin-Tosu on the shinkansen to Kumamoto; Kumamoto Castle, then pick up a car at Kumamoto Station.','Kumamoto'],
+       ['D5','Kikuchi Gorge, Aso','Kikuchi Gorge, Daikanbo and Kusasenri.','Aso Uchinomaki Onsen'],
+       ['D6','Takachiho','Takachiho Gorge, Amano-Iwato Shrine and the night kagura.','Takachiho'],
+       ['D7','Kurokawa Onsen','Bath-hopping at Kurokawa Onsen.','Kurokawa Onsen'],
+       ['D8','Kuju','Kokonoe Yume Suspension Bridge and Chojabaru.','Kuju'],
+       ['D9','Yabakei, Usa','Hitome Hakkei and Ao-no-Domon at Yabakei, then Usa Jingu.','Usa'],
+       ['D10','Yufuin','Lake Kinrin and Yunotsubo street.','Yufuin'],
+       ['D11','Beppu','The Hells and Kannawa Onsen.','Beppu'],
+       ['D12','Fly home','Return the car; Oita Airport.','']],
+       n:['The balloon fiesta (around the turn of November) leads straight into the Kuju foliage.','Flying into Saga and out of Oita needs an open-jaw ticket.','For 11 days, drop D8 and fold Kuju into the D7 afternoon.']},
+      'ky-combo-winter':{d:[
+       ['D1','Hakata','Arrive in Fukuoka; the Nakasu yatai.','Hakata'],
+       ['D2','Nagasaki','Kamome limited express and Nishi-Kyushu Shinkansen to Nagasaki (about 1.5 hours); the Mt. Inasa ropeway at night.','Nagasaki'],
+       ['D3','Takeo, Huis Ten Bosch','Nishi-Kyushu Shinkansen to Takeo Onsen for the library and the gate tower, then the Huis Ten Bosch Kingdom of Light.','Huis Ten Bosch'],
+       ['D4','On to Yufuin','Back to Hakata and the Yufuin no Mori to Yufuin (about 4 hours in all); Yunotsubo street.','Yufuin'],
+       ['D5','Beppu','Morning mist on Lake Kinrin, a bus to Beppu (about 1 hour), the Hells and steam-cooked food at Kannawa.','Beppu'],
+       ['D6','On to Miyazaki','The Nichirin limited express down the Nippo Line to Miyazaki (about 3 hours 15 minutes); chicken nanban for dinner.','Miyazaki'],
+       ['D7','Aoshima, Udo','Pick up a car in Miyazaki: Aoshima Shrine and the Devil\'s Washboard, Udo Jingu, and the Obi castle town.','Nichinan'],
+       ['D8','Kirishima','Drive to Kirishima (about 2 hours) for Kirishima Jingu and Takachiho-gawara.','Kirishima Onsen'],
+       ['D9','Chiran, Ibusuki','Drive to the Chiran samurai houses, then a sand bath in Ibusuki.','Ibusuki'],
+       ['D10','Sakurajima','Cape Nagasakibana and Mt. Kaimon, back to Kagoshima, and the ferry to Sakurajima.','Kagoshima'],
+       ['D11','Kagoshima','Sengan-en and the Shiroyama lookout; Tenmonkan at night.','Kagoshima'],
+       ['D12','Fly home','Return the car; Kagoshima Airport.','']],
+       n:['Now one clockwise loop: Nagasaki → Yufuin → Beppu → Miyazaki → Kirishima → Ibusuki → Kagoshima, crossing northern Kyushu only once. The old order went from Beppu back west to Nagasaki and then made a long run south from Huis Ten Bosch.','JR in the north and along the east coast, then a car from Miyazaki returned in Kagoshima (ask about the one-way fee). Kagoshima flights don\'t run daily, so check first.','Flying into Fukuoka and out of Kagoshima needs an open-jaw ticket. For one more day, add a night in Kirishima.']},
+
+      /* ===== Okinawa ===== */
+      'ok-spring':{d:[
+       ['D1','Shuri Castle, Kokusai-dori','Pick up a car at Naha Airport; Shuri Castle (main hall restoration completed Nov 22, 2026), then Kokusai-dori and the Makishi public market.','Naha'],
+       ['D2','Manzamo, Churaumi','North on Route 58: Manzamo → Churaumi Aquarium (the Kuroshio Sea tank and the dolphin show) → the Bise fukugi tree lanes.','Motobu'],
+       ['D3','Junglia, Kouri Island','Junglia theme park (booking required), then Kouri Bridge and the heart rock.','Nago'],
+       ['D4','Central and south','American Village in Chatan on the way back, then Sefa Utaki and Chinen Cape in the afternoon.','Naha or Nanjo'],
+       ['D5','Fly home','Return the car; Naha Airport (30–40 minutes from the south).','']],
+       n:['North first, south last: the farthest part comes first and the last night is in the south or Naha, so the airport is only 30–40 minutes away on the flight day, whatever the traffic on Route 58.','The Shuri Castle main hall opens to visitors from Nov 23, 2026; expect crowds around then.','Late March to early May, before the rainy season, is the most pleasant time, but Golden Week rooms are expensive.']},
+      'ok-autumn':{d:[
+       ['D1','Naha','Pick up a car at Naha Airport; Naminoue Shrine and Kokusai-dori.','Naha'],
+       ['D2','Naha Tug-of-War, Shuri Castle','The Naha Great Tug-of-War festival over the October holiday weekend, Shuri Castle in the afternoon.','Naha'],
+       ['D3','Churaumi','Manzamo, Churaumi Aquarium and Sesoko Beach.','Motobu'],
+       ['D4','Junglia, Kouri Island','Junglia theme park and Kouri Island.','Onna'],
+       ['D5','Fly home','Drive back to Naha and return the car.','']],
+       n:['Late typhoons still happen in October; book rooms with free cancellation.','The Naha Great Tug-of-War is held around the Sports Day holiday in October; dates are announced each year.','The sea is still warm in October–November, good for snorkeling.']},
+      'ok-winter':{d:[
+       ['D1','Naha','Pick up a car at Naha Airport; Kokusai-dori.','Naha'],
+       ['D2','Kerama whale watching','A whale-watching boat from Naha\'s Tomari port (about 3–4 hours) for humpback whales.','Naha'],
+       ['D3','Yaedake, Nakijin','The Yaedake cherry festival in Motobu, then the cherries at Nakijin Castle ruins, lit at night.','Motobu'],
+       ['D4','Nago, Churaumi','The Nago Central Park cherry festival and Churaumi Aquarium, then drive back to Naha.','Naha'],
+       ['D5','Fly home','Return the car; Naha Airport.','']],
+       n:['Whale watching is on D2, so if rough seas cancel it you can take a D3 morning boat before heading north. The last night is back in Naha, with no rush from the north on the flight day.','Okinawa\'s kanhizakura bloom from north to south, starting in the north around late January, the earliest cherries in Japan.','Whale season runs about January to March; take seasickness pills if you need them. Winter is about 15–20°C, so bring a light jacket.']},
+      'ok-ishigaki':{d:[
+       ['D1','Ishigaki','Pick up a car at Ishigaki Airport; the 730 Crossing downtown and Ishigaki beef for dinner.','Ishigaki'],
+       ['D2','Kabira Bay, Hirakubozaki','A glass-bottom boat on Kabira Bay, Cape Ugan, Hirakubozaki lighthouse, and a stargazing tour at night.','Ishigaki'],
+       ['D3','Taketomi Island','Ferry to Taketomi (about 15 minutes) for a water-buffalo cart and the star-sand beach; sunset from Nishi Sanbashi pier.','Taketomi or Ishigaki'],
+       ['D4','Iriomote Island','Ferry to Iriomote (about 40–50 minutes) for a mangrove kayak and the buffalo cart to Yubu Island; back to Ishigaki.','Ishigaki'],
+       ['D5','Fly home','Return the car; Ishigaki Airport.','']],
+       n:['Ferries to Iriomote and Taketomi stop in rough seas, so the middle days leave room to shuffle.','Book Iriomote kayak tours and stargazing tours ahead.','April to early May, before the rainy season, has the steadiest weather.']},
+      'ok-miyako':{d:[
+       ['D1','Irabu Island','Pick up a car at Shimojishima Airport; Irabu Bridge, 17END at low tide, and Toguchi beach.','Miyako'],
+       ['D2','Maehama, Kurima Island','Yonaha Maehama beach, Kurima Bridge and the Ryugujo lookout, and snorkeling at Aragusuku beach.','Miyako'],
+       ['D3','Ikema Island','Sunayama beach, Ikema Bridge, Cape Nishi-Hennazaki and the Yukishio salt works.','Miyako'],
+       ['D4','Higashi-Hennazaki','Cape Higashi-Hennazaki and snorkeling at Yoshino beach, or a tour to the Yabiji reef.','Miyako'],
+       ['D5','Fly home','Return the car; Shimojishima Airport.','']],
+       n:['Typhoons are still possible from late September through October; book rooms with free cancellation.','Some beaches have rip currents: wear a life vest when snorkeling and never go alone.','17END\'s sandbar only appears at low tide; check the tide table.']},
+      'ok-combo':{d:[
+       ['D1','Shuri Castle, Kokusai-dori','Pick up a car at Naha Airport; Shuri Castle and Kokusai-dori.','Naha'],
+       ['D2','Manzamo, Churaumi','Manzamo and Churaumi Aquarium.','Motobu'],
+       ['D3','Junglia, Kouri Island','Junglia and Kouri Island.','Nago'],
+       ['D4','Central and south','American Village and Sefa Utaki, then back to Naha to return the car.','Naha'],
+       ['D5','Fly to Ishigaki','Domestic flight from Naha to Ishigaki (about 1 hour), pick up a car, and drive to Kabira Bay.','Ishigaki'],
+       ['D6','Taketomi Island','Buffalo cart and sunset at Nishi Sanbashi.','Ishigaki'],
+       ['D7','Iriomote Island','Mangrove kayak and Yubu Island.','Ishigaki'],
+       ['D8','Hirakubozaki','Hirakubozaki lighthouse and a stargazing tour.','Ishigaki'],
+       ['D9','Buffer day','Make up Taketomi or Iriomote if a ferry was cancelled, or snorkel at Yonehara beach if the weather is good.','Ishigaki'],
+       ['D10','Fly home','Return the car; Ishigaki Airport.','']],
+       n:['On the main island go north first and south last, ending in Naha for an early flight to Ishigaki next morning; Ishigaki keeps a buffer day for cancelled ferries.','Book the Naha–Ishigaki domestic flight separately; its baggage allowance differs from international flights. Flying into Naha and out of Ishigaki needs an open-jaw ticket.','For 9 days, drop the D9 buffer day.']}
+    };
 
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var AREAS = ['Hokkaido', 'Tohoku', 'Kanto', 'Chubu & Hokuriku', 'Kansai', 'Chugoku & Shikoku', 'Kyushu', 'Okinawa'];
@@ -1065,6 +1973,28 @@
     }
 
     /* ── Plan cards ── */
+    /* ── 逐日行程區塊 ── */
+    var allOpen = false;
+
+    function dayCount(rows) {
+      var m = rows[rows.length - 1][0].match(/\d+/g);
+      return +m[m.length - 1];
+    }
+
+    function detail(p) {
+      var x = DETAIL[p.k];
+      if (!x) { return ''; }
+      return '<details class="jpsea-more"' + (allOpen ? ' open' : '') + '>' + '<summary>Day by day<small>' + dayCount(x.d) + ' days · stays · tips</small></summary>' +
+        '<ol class="jpsea-days">' + x.d.map(function (r) {
+          return '<li class="jpsea-day"><span class="jpsea-dlabel">' + esc(r[0]) + '</span>' +
+            '<div class="jpsea-dbody"><b>' + esc(r[1]) + '</b><p>' + esc(r[2]) + '</p>' +
+            (r[3] ? '<span class="jpsea-stay">' + 'Stay: ' + esc(r[3]) + '</span>' : '') + '</div></li>';
+        }).join('') + '</ol>' +
+        '<div class="jpsea-dtips"><span class="jpsea-dtips-title">' + 'Tips' + '</span><ul>' +
+        x.n.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>' +
+        '</details>';
+    }
+
     function card(p) {
       var days = (p.d[0] === p.d[1] ? p.d[0] : p.d[0] + '–' + p.d[1]) + ' days',
         combo = '';
@@ -1084,6 +2014,7 @@
         '<dt>Route</dt><dd>' + esc(p.r) + '</dd>' +
         '<dt>Highlights</dt><dd>' + esc(p.x) + '</dd></dl>' +
         '<div class="jpsea-tags">' + p.g.map(function (t) { return '<span class="jpsea-tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+        detail(p) +
         '</article>';
     }
 
@@ -1140,6 +2071,20 @@
       });
     });
     root.querySelector('[data-reset]').addEventListener('click', resetFilters);
+
+    var expandBtn = root.querySelector('[data-expand]');
+
+    function syncExpand() {
+      expandBtn.textContent = allOpen ? 'Collapse all itineraries' : 'Expand all itineraries';
+      expandBtn.setAttribute('aria-pressed', allOpen ? 'true' : 'false');
+    }
+
+    expandBtn.addEventListener('click', function () {
+      allOpen = !allOpen;
+      [].slice.call(root.querySelectorAll('.jpsea-more')).forEach(function (d) { d.open = allOpen; });
+      syncExpand();
+    });
+    syncExpand();
 
     /* ── Must-sees, flights ── */
     function spot(it) {
