@@ -75,7 +75,7 @@ y += 84
 d.line((x, y, x + 470, y), fill=RULE, width=2)
 y += 34
 
-kws = ["生醫訊號", "醫療 AI", "航太工程"]
+kws = ["AI 駕馭工程", "資料分析", "生醫訊號"]
 cx = x
 for i, k in enumerate(kws):
     if i:
