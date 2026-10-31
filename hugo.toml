@@ -49,8 +49,9 @@ copyrightName = "Alex Yu"
 description = "Alex Yu's personal website"
 keywords = "blog,developer,personal"
 info = [
-  "Bio-Medical Algorithm RD & Data and Statistical Analysis",
-  "Senior R&D Engineer",
+  "AI Harness Engineering",
+  "Data Mining & Analytics",
+  "Data-Driven Product Integration",
 ]
 # 首頁頭像不走 avatarURL：改由 layouts/_partials/home/avatar.html 覆寫 theme 的
 # partial，從 assets/images/fuji-odd-eyed-meow.jpg 產出 400px 的 WebP + JPEG。
@@ -127,7 +128,7 @@ weight = 2
 [languages.zh-tw.params]
 author = "Alex Yu 尤俊硯"
 copyrightName = "尤俊硯"
-info = ["生醫演算法開發 & 資料與統計分析", "資深研發工程師"]
+info = ["AI 駕馭工程", "資料探勘與分析", "資料驅動產品整合"]
 description = "尤俊硯個人網頁"
 keywords = "部落格,開發,個人"
 
