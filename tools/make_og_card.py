@@ -63,7 +63,7 @@ card.paste(src, (px, py), mask)
 x = px + D + 88
 y = 150
 
-d.text((x, y), "ALGORITHM ENGINEER", font=f_label, fill=ACCENT)
+d.text((x, y), "R&D ENGINEER · AI & DATA", font=f_label, fill=ACCENT)
 y += 52
 
 d.text((x, y), "尤俊硯", font=f_zh, fill=INK)
