@@ -4,7 +4,7 @@ date: 2023-07-23
 lastmod: 2026-08-31
 authors: ["Alex Yu"]
 series: ["Web"]
-tags: ["hugo", "Github Pages", "個人網頁", "靜態網頁", "部落格"]
+tags: ["hugo", "Github Pages", "Personal Website", "Static Site", "Blog"]
 summary: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
 description: "這個網站從選主題到上線的完整過程，以及 2026 年用 Claude 重寫的那一輪。"
 ---
