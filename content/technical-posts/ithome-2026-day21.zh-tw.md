@@ -24,7 +24,7 @@ description: "教召前用猜的 Word 攜帶清單、教召後附推薦指數的
 
 我手上剛好有兩份檔案，是同一件事在不同時間點留下來的。一份是今年教召之前，照著網路上查到的資訊跟自己的想像列的 `攜帶物品.docx`；另一份是實際去過一趟、在空軍基地待了幾天回來之後，把「早知道就帶」跟「帶了根本沒用」重新整理過的 `攜帶物品推薦與說明.xlsx`。這兩份的差別本身就是這篇的重點，而我當時做的很單純：把它們交給 Claude Code，變成掛在個人網站上、自己跟同梯、朋友都能打開來看的頁面。
 
-> 這篇的兩個成品都在網站上：[教召攜帶物品清單](https://ycy1997alex.github.io/zh-tw/posts/call-up-list/)（教召前、Word 轉的）與[教召攜帶物品推薦清單](https://ycy1997alex.github.io/zh-tw/posts/call-up-list-review/)（教召後、Excel 轉的）。兩份原始檔（[攜帶物品.docx](https://github.com/ycy1997alex/ycy1997alex-oss-projects/blob/main/iThome-2026-Ironman/Day21_20260904/攜帶物品.docx)、[攜帶物品推薦與說明.xlsx](https://github.com/ycy1997alex/ycy1997alex-oss-projects/blob/main/iThome-2026-Ironman/Day21_20260904/攜帶物品推薦與說明.xlsx)）放在同一個[專案連結](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman/Day21_20260904)底下。
+> 這篇的兩個成品都在網站上：[教召攜帶物品清單](https://ycy1997alex.github.io/zh-tw/casual-posts/call-up-list/)（教召前、Word 轉的）與[教召攜帶物品推薦清單](https://ycy1997alex.github.io/zh-tw/casual-posts/call-up-list-review/)（教召後、Excel 轉的）。兩份原始檔（[攜帶物品.docx](https://github.com/ycy1997alex/ycy1997alex-oss-projects/blob/main/iThome-2026-Ironman/Day21_20260904/攜帶物品.docx)、[攜帶物品推薦與說明.xlsx](https://github.com/ycy1997alex/ycy1997alex-oss-projects/blob/main/iThome-2026-Ironman/Day21_20260904/攜帶物品推薦與說明.xlsx)）放在同一個[專案連結](https://github.com/ycy1997alex/ycy1997alex-oss-projects/tree/main/iThome-2026-Ironman/Day21_20260904)底下。
 
 ---
 
@@ -34,7 +34,7 @@ description: "教召前用猜的 Word 攜帶清單、教召後附推薦指數的
 
 這份清單的特徵是「每項一樣重要」。每一項的地位都一樣，沒有哪個比哪個重要，因為列的時候我根本不確定哪個重要（當然必帶的部分很重要），全部都是照別人的經驗跟自己的猜測寫下來的，寧可多帶也不要少帶。當時就是隨手用 Word 開了個表格填，一格接一格。
 
-把它交給 Claude Code 的要求很直接：讀這份 docx，做成一頁放在個人網站上的清單，並且套用現在網站的樣式。產出的頁面就在這裡：[教召攜帶物品清單](https://ycy1997alex.github.io/zh-tw/posts/call-up-list/)。分類、項目都照原檔搬過來，那些用重複儲存格湊出來的小標題也被還原成正常的分段，排版換成網站的樣子，一份 Word 就這樣變成一個網址。
+把它交給 Claude Code 的要求很直接：讀這份 docx，做成一頁放在個人網站上的清單，並且套用現在網站的樣式。產出的頁面就在這裡：[教召攜帶物品清單](https://ycy1997alex.github.io/zh-tw/casual-posts/call-up-list/)。分類、項目都照原檔搬過來，那些用重複儲存格湊出來的小標題也被還原成正常的分段，排版換成網站的樣子，一份 Word 就這樣變成一個網址。
 
 ---
 
@@ -57,7 +57,7 @@ description: "教召前用猜的 Word 攜帶清單、教召後附推薦指數的
 
 第一份每一項的份量都一樣，第二份每一項後面都跟著幾顆星跟一句為什麼。
 
-這份也交給 Claude Code 做成頁面：[教召攜帶物品推薦清單](https://ycy1997alex.github.io/zh-tw/posts/call-up-list-review/)。星號、備註、emoji 分類全都在，一樣套進網站的樣式。原本是給自己下次看的，順手也就變成能丟給同梯、丟給之後被抽到的朋友一個連結（還很剛好提供給那時候要去漢光演習的朋友，笑死）。
+這份也交給 Claude Code 做成頁面：[教召攜帶物品推薦清單](https://ycy1997alex.github.io/zh-tw/casual-posts/call-up-list-review/)。星號、備註、emoji 分類全都在，一樣套進網站的樣式。原本是給自己下次看的，順手也就變成能丟給同梯、丟給之後被抽到的朋友一個連結（還很剛好提供給那時候要去漢光演習的朋友，笑死）。
 
 ---
 

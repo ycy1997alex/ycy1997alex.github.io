@@ -108,7 +108,7 @@ description: "把日本旅行的行程交給 Claude：從 Word 整理出 Excel �
 
 ## 5. 成品
 
-最終的成品在網站上：[2026 瀨戶內海五日跟團遊](https://ycy1997alex.github.io/zh-tw/posts/2026-setouchi/)。
+最終的成品在網站上：[2026 瀨戶內海五日跟團遊](https://ycy1997alex.github.io/zh-tw/casual-posts/2026-setouchi/)。
 
 新版一樣是分頁，但分頁重新分過：總覽、分日行程、互動地圖是主要的三個，後面用分隔線隔成行前檢查／入境日本／入境台灣、去程與回程清單、伴手禮採買三組。
 
@@ -130,7 +130,7 @@ description: "把日本旅行的行程交給 Claude：從 Word 整理出 Excel �
 
 今日主要在測試以 Claude 輔助規劃行程的效果怎麼樣。
 
-其實在今年稍早的自由行我已經試著用免費版的 Claude 試做過了（製作時間約是 2026 年 3 月），請見 [2026東京近郊自駕](https://ycy1997alex.github.io/posts/2026-tokyo-drive/)，還記得當時是使用 Sonnet 4.X 的模型做的，其實完成度已經算是不錯了。但到現在已經有 Fable 5.X & Opus 5 & Sonnet 5 的時代，整體的完成度又高了一截，還是讓我驚豔。
+其實在今年稍早的自由行我已經試著用免費版的 Claude 試做過了（製作時間約是 2026 年 3 月），請見 [2026東京近郊自駕](https://ycy1997alex.github.io/zh-tw/casual-posts/2026-tokyo-drive/)，還記得當時是使用 Sonnet 4.X 的模型做的，其實完成度已經算是不錯了。但到現在已經有 Fable 5.X & Opus 5 & Sonnet 5 的時代，整體的完成度又高了一截，還是讓我驚豔。
 
 ![2026 東京近郊自駕，2026 年 3 月用免費版做出來的版本](https://ycy1997alex.github.io/ycy1997alex-oss-projects/iThome-2026-Ironman/Day22_20260905/day22-12-tokyo-drive.png)
 
